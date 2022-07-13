@@ -47,4 +47,8 @@ public class AdminService {
     public Optional<AdminEntity> findAdminById(long id) {
         return adminRepository.findById(id);
     }
+
+    public Optional<UserEntity> findUserById(long id) {
+        return userRepository.findById(id);
+    }
 }
