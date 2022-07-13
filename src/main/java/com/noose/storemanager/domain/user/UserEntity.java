@@ -3,12 +3,10 @@ package com.noose.storemanager.domain.user;
 import com.noose.storemanager.domain.member.MemberBaseEntity;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "USER")
 @NoArgsConstructor
 public class UserEntity extends MemberBaseEntity {
     @Id @GeneratedValue

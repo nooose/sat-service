@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @NoArgsConstructor
 @Entity
+@Table(name = "ADMIN")
 public class AdminEntity extends MemberBaseEntity {
     @Id @GeneratedValue
     @Column(name = "ADMIN_ID")
