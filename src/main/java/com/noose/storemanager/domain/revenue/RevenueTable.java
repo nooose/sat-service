@@ -16,7 +16,7 @@ public class RevenueTable extends BaseEntity {
     @Column(name = "REVENUE_TABLE_ID")
     private long id;
 
-    @OneToMany(mappedBy = "revenue_table")
-    private List<PaymentDetail> paymentHistories = new ArrayList<>();
+    @OneToMany(mappedBy = "revenueTable")
+    private List<PaymentDetail> paymentDetails = new ArrayList<>();
 
 }

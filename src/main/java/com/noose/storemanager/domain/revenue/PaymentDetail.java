@@ -7,12 +7,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PAYMENT_HISTORY")
+@Table(name = "PAYMENT_DETAIL")
 @NoArgsConstructor
 public class PaymentDetail extends BaseEntity {
 
     @Id @GeneratedValue
-    @Column(name = "PAYMENT_HISTORY_ID")
+    @Column(name = "PAYMENT_DETAIL_ID")
     private long id;
 
     private String payerName;
