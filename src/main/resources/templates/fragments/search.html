@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="search" th:fragment="search">
+    <form th:action="@{/members}" method="get">
+        <input type="text" name="query" th:value="${query}"  placeholder="이름 또는 휴대폰 번호" size="25" >
+        <button type="submit" class="btn btn-warning" >검색</button>
+    </form>
+</div>

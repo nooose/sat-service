@@ -20,4 +20,10 @@ public class UserEntity extends MemberBaseEntity {
         this.name = name;
         this.phoneNumber = new PhoneNumber(phoneNumber);
     }
+
+    public void updateUser(String name, String phoneNumber) {
+        this.name = name;
+        this.phoneNumber = new PhoneNumber(phoneNumber);
+    }
+
 }

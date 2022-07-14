@@ -10,8 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,8 +44,8 @@ public class UserController {
     }
 
     @GetMapping("/members")
-    public String getUsers(Model model) {
-        List<ResponseUser> users = userService.findUsers()
+    public String getUsers(@RequestParam(required = false) String query, Model model) {
+        List<ResponseUser> users = userService.findUsers(query)
                 .stream()
                 .map(ResponseUser::createFrom)
                 .collect(Collectors.toList());
@@ -55,4 +54,16 @@ public class UserController {
         return "members/memberList";
     }
 
+    @GetMapping("/members/{userId}/edit")
+    public String updateItemForm(@PathVariable("userId") Long userId, Model model) {
+        ResponseUser user = ResponseUser.createFrom(userService.findOne(userId));
+        model.addAttribute("user", user);
+        return "members/updateMemberForm";
+    }
+    @PostMapping("/members/{userId}/edit")
+    public String updateItem(@PathVariable("userId") Long userId, @ModelAttribute("form") RequestUserForm form) {
+        userService.updateUser(userId, form.getName(), form.getPhoneNumber());
+
+        return "redirect:/members";
+    }
 }

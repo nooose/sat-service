@@ -6,12 +6,14 @@ import com.noose.storemanager.domain.user.UserEntity;
 import com.noose.storemanager.repository.AdminRepository;
 import com.noose.storemanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 
 @Component
+@Profile("default")
 @RequiredArgsConstructor
 public class InitDbConfiguration {
 
