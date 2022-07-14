@@ -8,21 +8,23 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <div class="jumbotron">
-        <h1>HELLO SHOP</h1>
-        <p class="lead">회원 기능</p>
+        <h1>매장 관리 시스템</h1>
+        <p class="lead">멤버 관리</p>
         <p>
-            <a class="btn btn-lg btn-secondary" href="/members/new">회원 가입</a>
-            <a class="btn btn-lg btn-secondary" href="/members">회원 목록</a>
+            <a class="btn btn-lg btn-warning" href="/admins/new">관리자 등록</a>
+            <a class="btn btn-lg btn-warning" href="/admins">관리자 목록</a>
+            <a class="btn btn-lg btn-warning" href="/members/new">회원 등록</a>
+            <a class="btn btn-lg btn-warning" href="/members">회원 목록</a>
         </p>
-        <p class="lead">상품 기능</p>
+        <p class="lead">매출 관리</p>
         <p>
-            <a class="btn btn-lg btn-dark" href="/items/new">상품 등록</a>
-            <a class="btn btn-lg btn-dark" href="/items">상품 목록</a>
+            <a class="btn btn-lg btn-dark" href="/items/new">매출 등록</a>
+            <a class="btn btn-lg btn-dark" href="/items">매출 내역</a>
         </p>
-        <p class="lead">주문 기능</p>
+        <p class="lead">선불권 관리</p>
         <p>
-            <a class="btn btn-lg btn-info" href="/order">상품 주문</a>
-            <a class="btn btn-lg btn-info" href="/orders">주문 내역</a>
+            <a class="btn btn-lg btn-info" href="/order">선불권 등록</a>
+            <a class="btn btn-lg btn-info" href="/orders">선불권 내역</a>
         </p>
     </div>
     <div th:replace="fragments/footer :: footer" />

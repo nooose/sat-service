@@ -10,14 +10,18 @@
             <tr>
                 <th>#</th>
                 <th>이름</th>
+                <th>아이디</th>
                 <th>휴대폰 번호</th>
+                <th>권한</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.id}"></td>
-                <td th:text="${user.name}"></td>
-                <td th:text="${user.phoneNumber}"></td>
+            <tr th:each="admin : ${admins}">
+                <td th:text="${admin.id}"></td>
+                <td th:text="${admin.name}"></td>
+                <td th:text="${admin.memberId}"></td>
+                <td th:text="${admin.phoneNumber}"></td>
+                <td th:text="${admin.role}"></td>
             </tr>
             </tbody>
         </table>

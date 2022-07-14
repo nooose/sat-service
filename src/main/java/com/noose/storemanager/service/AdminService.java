@@ -1,13 +1,15 @@
 package com.noose.storemanager.service;
 
 import com.noose.storemanager.domain.admin.AdminEntity;
-import com.noose.storemanager.domain.member.MemberBaseEntity;
+import com.noose.storemanager.domain.ex.IllegalPhoneNumber;
+import com.noose.storemanager.domain.base.MemberBaseEntity;
 import com.noose.storemanager.domain.user.UserEntity;
 import com.noose.storemanager.repository.AdminRepository;
 import com.noose.storemanager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -17,27 +19,20 @@ public class AdminService {
     private final UserRepository userRepository;
 
     public void joinAdmin(AdminEntity admin) {
-        checkValidateMember(admin);
-        adminRepository.save(admin);
-    }
-
-    public void joinUser(UserEntity user) {
-        checkValidateMember(user);
-        userRepository.save(user);
-    }
-
-    private void checkValidateMember(MemberBaseEntity admin) {
         if (isDuplicatedUserId(admin)) {
             throw new IllegalArgumentException("중복된 아이디입니다.");
         }
 
         if (isDuplicatedPhoneNumber(admin)) {
-            throw new IllegalArgumentException("중복된 휴대폰 번호입니다.");
+            throw new IllegalPhoneNumber();
         }
+
+        adminRepository.save(admin);
     }
 
-    private boolean isDuplicatedUserId(MemberBaseEntity member) {
-        return adminRepository.findByMemberId(member.getMemberId()).isPresent();
+
+    private boolean isDuplicatedUserId(AdminEntity admin) {
+        return adminRepository.findByMemberId(admin.getMemberId()).isPresent();
     }
 
     private boolean isDuplicatedPhoneNumber(MemberBaseEntity member) {
@@ -50,5 +45,9 @@ public class AdminService {
 
     public Optional<UserEntity> findUserById(long id) {
         return userRepository.findById(id);
+    }
+
+    public List<AdminEntity> findAdmins() {
+        return adminRepository.findAll();
     }
 }

@@ -1,4 +1,4 @@
-package com.noose.storemanager.domain;
+package com.noose.storemanager.domain.base;
 
 
 import lombok.Getter;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Getter
-public class BaseEntity {
+public abstract class BaseEntity {
 
     @CreatedDate
     private LocalDateTime createdAt;

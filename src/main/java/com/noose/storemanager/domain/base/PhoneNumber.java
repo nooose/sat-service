@@ -1,6 +1,8 @@
-package com.noose.storemanager.domain.member;
+package com.noose.storemanager.domain.base;
 
+import com.noose.storemanager.domain.ex.IllegalPhoneNumber;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.regex.Matcher;
@@ -9,6 +11,7 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class PhoneNumber {
+    @Getter
     private String phoneNumber;
 
     public PhoneNumber(String phoneNumber) {
@@ -16,9 +19,9 @@ public class PhoneNumber {
         Matcher matcher = pattern.matcher(phoneNumber);
 
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("올바른 휴대폰 번호를 입력해주세요");
+            throw new IllegalPhoneNumber("올바른 휴대폰 번호를 입력해주세요.");
         }
 
-        this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber.replaceAll("-","");
     }
 }

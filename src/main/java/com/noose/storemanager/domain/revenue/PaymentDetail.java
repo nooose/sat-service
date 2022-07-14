@@ -1,6 +1,6 @@
 package com.noose.storemanager.domain.revenue;
 
-import com.noose.storemanager.domain.BaseEntity;
+import com.noose.storemanager.domain.base.BaseEntity;
 import com.noose.storemanager.domain.type.Payment;
 import lombok.NoArgsConstructor;
 

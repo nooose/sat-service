@@ -1,4 +1,4 @@
-package com.noose.storemanager.controller;
+package com.noose.storemanager.web.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "home";
     }
 }
