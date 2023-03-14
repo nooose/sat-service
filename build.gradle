@@ -26,12 +26,15 @@ dependencies {
 
     runtimeOnly 'com.h2database:h2'
 
+    // development
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+    // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.rest-assured:rest-assured:5.2.0'
 }
 
 tasks.named('test') {
