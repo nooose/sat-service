@@ -25,7 +25,7 @@ public class Coupon {
 
     public Coupon(String name, String description) {
         if (checkCharacterLength(name, description)) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("쿠폰의 이름은 2글자 초과하고 10글자 미만이어야 하며 쿠폰 설명은 30글자를 초과해선 안됩니다.");
         }
 
         this.name = name;
