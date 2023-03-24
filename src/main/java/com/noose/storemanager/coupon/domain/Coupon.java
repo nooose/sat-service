@@ -1,6 +1,5 @@
 package com.noose.storemanager.coupon.domain;
 
-import com.noose.storemanager.coupon.application.dto.request.CouponRequest;
 import com.noose.storemanager.coupon.application.dto.response.CouponResponse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,18 +14,26 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Coupon {
 
+    private static final int NAME_MIN_LENGTH = 2;
+    private static final int NAME_MAX_LENGTH = 10;
+    private static final int DESCRIPTION_MAX_LENGTH = 30;
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
 
     public Coupon(String name, String description) {
-        if (name.length() < 2 || name.length() > 10 || description.length() > 30) {
+        if (checkCharacterLength(name, description)) {
             throw new IllegalArgumentException();
         }
 
         this.name = name;
         this.description = description;
+    }
+
+    private static boolean checkCharacterLength(String name, String description) {
+        return name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH || description.length() > DESCRIPTION_MAX_LENGTH;
     }
 
     public CouponResponse toResponse() {
