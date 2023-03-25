@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -37,8 +36,7 @@ public class CouponService {
 
     @Transactional
     public void delete(Long couponId) {
-        findCoupon(couponId);
-        couponRepository.deleteById(couponId);
+        couponRepository.delete(findCoupon(couponId));
     }
 
     private Coupon findCoupon(Long couponId) {

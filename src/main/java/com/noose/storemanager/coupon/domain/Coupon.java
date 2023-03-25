@@ -32,14 +32,13 @@ public class Coupon {
 
     private void validateName(String name) {
         if (name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH) {
-            throw new IllegalArgumentException(String.format("쿠폰 이름은 %d글자 미만이거나 %d글자를 초과할 수 없습니다.",NAME_MIN_LENGTH, NAME_MAX_LENGTH));
+            throw new IllegalArgumentException(String.format("쿠폰 이름은 %d자 이상 %d자 이하로 입력해야 합니다.",NAME_MIN_LENGTH, NAME_MAX_LENGTH));
         }
-
     }
 
     private void validateDescription(String description) {
         if (description.length() > DESCRIPTION_MAX_LENGTH) {
-            throw new IllegalArgumentException(String.format("쿠폰 설명은 %d글자를 초과할 수 없습니다.", DESCRIPTION_MAX_LENGTH));
+            throw new IllegalArgumentException(String.format("쿠폰 설명은 최대 %d자까지만 입력 가능합니다.", DESCRIPTION_MAX_LENGTH));
         }
     }
 }
