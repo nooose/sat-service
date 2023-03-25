@@ -1,6 +1,5 @@
 package com.noose.storemanager.coupon.domain;
 
-import com.noose.storemanager.coupon.application.dto.response.CouponResponse;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,9 +33,5 @@ public class Coupon {
 
     private static boolean checkCharacterLength(String name, String description) {
         return name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH || description.length() > DESCRIPTION_MAX_LENGTH;
-    }
-
-    public CouponResponse toResponse() {
-        return new CouponResponse(id, name, description);
     }
 }
