@@ -19,24 +19,30 @@ public class CouponService {
 
     @Transactional
     public CouponResponse create(CouponRequest request) {
-        Coupon newCoupon = new Coupon(request.name(), request.description());
-        Coupon coupon = couponRepository.save(newCoupon);
+        Coupon coupon = new Coupon(request.name(), request.description());
+        couponRepository.save(coupon);
         return CouponResponse.of(coupon);
     }
 
     public CouponResponse find(Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId).orElseThrow(() -> new IllegalStateException("존재하지 않는 쿠폰번호 입니다."));
-        return CouponResponse.of(coupon);
+        return CouponResponse.of(findCoupon(couponId));
     }
 
     public List<CouponResponse> findAll() {
         List<Coupon> coupons = couponRepository.findAll();
-        return coupons.stream().map(CouponResponse::of).collect(Collectors.toList());
+        return coupons.stream()
+                .map(CouponResponse::of)
+                .toList();
     }
 
     @Transactional
     public void delete(Long couponId) {
-        CouponResponse couponResponse = find(couponId);
-        couponRepository.deleteById(couponResponse.id());
+        findCoupon(couponId);
+        couponRepository.deleteById(couponId);
+    }
+
+    private Coupon findCoupon(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new IllegalStateException(String.format("%d번 쿠폰은 존재하지 않습니다.", couponId)));
     }
 }

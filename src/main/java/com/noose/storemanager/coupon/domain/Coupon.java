@@ -23,15 +23,23 @@ public class Coupon {
     private String description;
 
     public Coupon(String name, String description) {
-        if (checkCharacterLength(name, description)) {
-            throw new IllegalArgumentException("쿠폰의 이름은 2글자 초과하고 10글자 미만이어야 하며 쿠폰 설명은 30글자를 초과해선 안됩니다.");
-        }
+        validateName(name.strip());
+        validateDescription(description.strip());
 
-        this.name = name;
-        this.description = description;
+        this.name = name.strip();
+        this.description = description.strip();
     }
 
-    private static boolean checkCharacterLength(String name, String description) {
-        return name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH || description.length() > DESCRIPTION_MAX_LENGTH;
+    private void validateName(String name) {
+        if (name.length() < NAME_MIN_LENGTH || name.length() > NAME_MAX_LENGTH) {
+            throw new IllegalArgumentException(String.format("쿠폰 이름은 %d글자 미만이거나 %d글자를 초과할 수 없습니다.",NAME_MIN_LENGTH, NAME_MAX_LENGTH));
+        }
+
+    }
+
+    private void validateDescription(String description) {
+        if (description.length() > DESCRIPTION_MAX_LENGTH) {
+            throw new IllegalArgumentException(String.format("쿠폰 설명은 %d글자를 초과할 수 없습니다.", DESCRIPTION_MAX_LENGTH));
+        }
     }
 }
