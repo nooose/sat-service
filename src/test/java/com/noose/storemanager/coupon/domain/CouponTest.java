@@ -14,7 +14,7 @@ class CouponTest {
     @ParameterizedTest(name = "쿠폰 이름 글자 수 : {0}")
     @ValueSource(ints = {1, 11, 14, 30, 0})
     void couponNameException(int numberOfCouponName) {
-        assertThatThrownBy(() -> new Coupon(repeatedRandomString(numberOfCouponName), ""))
+        assertThatThrownBy(() -> new Coupon(repeatedString(numberOfCouponName), ""))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -23,11 +23,11 @@ class CouponTest {
     @DisplayName("쿠폰 설명이 30 글자를 초과하는 경우 예외가 발생한다.")
     @Test
     void couponDescriptionException() {
-        assertThatThrownBy(() -> new Coupon("쿠폰", repeatedRandomString(31)))
+        assertThatThrownBy(() -> new Coupon("쿠폰", repeatedString(31)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    private String repeatedRandomString(int characterLength) {
+    private String repeatedString(int characterLength) {
         return "a".repeat(characterLength);
     }
 }
