@@ -6,7 +6,4 @@ public record CouponRequest(
     String name,
     String description
 ) {
-    public Coupon of(CouponRequest request) {
-        return new Coupon(request.name(), request.description());
-    }
 }
