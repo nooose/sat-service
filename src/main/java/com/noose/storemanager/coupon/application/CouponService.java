@@ -29,8 +29,8 @@ public class CouponService {
     }
 
     public List<CouponResponse> findAll() {
-        List<Coupon> coupons = couponRepository.findAll();
-        return coupons.stream()
+        return couponRepository.findAll()
+                .stream()
                 .map(CouponResponse::of)
                 .toList();
     }
