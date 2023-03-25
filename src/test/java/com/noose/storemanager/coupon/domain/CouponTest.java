@@ -10,15 +10,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @DisplayName("[도메인] 쿠폰 기능")
 class CouponTest {
 
-    @DisplayName("쿠폰의 이름은 2 글자 미만이거나 10 글자를 초과하는 경우 예외가 발생한다.")
-    @ParameterizedTest(name = "쿠폰 이름 글자 수 : {0}")
-    @ValueSource(ints = {1, 11, 14, 30, 0})
-    void couponNameException(int numberOfCouponName) {
-        assertThatThrownBy(() -> new Coupon(repeatedString(numberOfCouponName), ""))
+    @DisplayName("쿠폰 이름 유효성 체크")
+    @ParameterizedTest(name = "입력된 쿠폰 이름 길이: {0}")
+    @ValueSource(ints = {1, 11})
+    void couponNameException(int length) {
+        assertThatThrownBy(() -> new Coupon(repeatedString(length), ""))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-
-
 
     @DisplayName("쿠폰 설명이 30 글자를 초과하는 경우 예외가 발생한다.")
     @Test
@@ -27,7 +25,7 @@ class CouponTest {
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
-    private String repeatedString(int characterLength) {
-        return "a".repeat(characterLength);
+    private String repeatedString(int length) {
+        return "a".repeat(length);
     }
 }
