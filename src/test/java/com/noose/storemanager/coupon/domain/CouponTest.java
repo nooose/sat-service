@@ -14,18 +14,14 @@ class CouponTest {
     @ParameterizedTest(name = "입력된 쿠폰 이름 길이: {0}")
     @ValueSource(ints = {1, 11})
     void couponNameException(int length) {
-        assertThatThrownBy(() -> new Coupon(repeatedString(length), ""))
+        assertThatThrownBy(() -> new Coupon("N".repeat(length), ""))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("쿠폰 설명이 30 글자를 초과하는 경우 예외가 발생한다.")
     @Test
     void couponDescriptionException() {
-        assertThatThrownBy(() -> new Coupon("쿠폰", repeatedString(31)))
+        assertThatThrownBy(() -> new Coupon("쿠폰", "D".repeat(31)))
                 .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    private String repeatedString(int length) {
-        return "a".repeat(length);
     }
 }

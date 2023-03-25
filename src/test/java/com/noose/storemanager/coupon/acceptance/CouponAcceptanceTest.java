@@ -18,11 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 @DisplayName("[E2E] 쿠폰 관련 기능")
 public class CouponAcceptanceTest extends AcceptanceTest {
 
-    Long 일반쿠폰;
-    Long 할인쿠폰;
-    Long 무료쿠폰;
+    private Long 일반쿠폰;
+    private Long 할인쿠폰;
+    private Long 무료쿠폰;
 
-    // Given: 쿠폰을 생성하고
+    /**
+     * Given 쿠폰을 생성하고
+     */
     @BeforeEach
     public void setUp() {
         super.setUp();
@@ -38,7 +40,7 @@ public class CouponAcceptanceTest extends AcceptanceTest {
     @DisplayName("쿠폰 생성")
     @Test
     void createCoupon() {
-        var response = 쿠폰_조회(일반쿠폰);
+        var response = 쿠폰_조회_요청(일반쿠폰);
 
         assertThat(response.jsonPath().getString("name")).isEqualTo("일반");
     }
@@ -58,14 +60,13 @@ public class CouponAcceptanceTest extends AcceptanceTest {
 
 
     /**
-     * Given 쿠폰을 생성하고<p>
-     * When 쿠폰번호를 조회하면<p>
-     * Then 쿠폰번호에 해당하는 쿠폰을 확인할 수 있다.
+     * When 특정 쿠폰을 조회하면<p>
+     * Then 해당 쿠폰을 확인할 수 있다.
      */
     @DisplayName("쿠폰 단건 조회")
     @Test
     void showCouponOfOne() {
-        var response = 쿠폰_조회(일반쿠폰);
+        var response = 쿠폰_조회_요청(일반쿠폰);
 
         assertAll(() -> {
             assertThat(response.jsonPath().getString("name")).isEqualTo("일반");
@@ -112,7 +113,7 @@ public class CouponAcceptanceTest extends AcceptanceTest {
                 .extract();
     }
 
-    private ExtractableResponse<Response> 쿠폰_조회(Long id) {
+    private ExtractableResponse<Response> 쿠폰_조회_요청(Long id) {
         return given().log().all()
                 .pathParam("couponId", id)
                 .when().get("/coupons/{couponId}")
