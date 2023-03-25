@@ -1,6 +1,7 @@
 package com.noose.storemanager.coupon.domain;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -20,10 +21,9 @@ class CouponTest {
 
 
     @DisplayName("쿠폰 설명이 30 글자를 초과하는 경우 예외가 발생한다.")
-    @ParameterizedTest(name = "쿠폰 설명 글자 수 : {0}")
-    @ValueSource(ints = {31})
-    void couponDescriptionException(int numberOfCharacters) {
-        assertThatThrownBy(() -> new Coupon("쿠폰", repeatCharacter(numberOfCharacters)))
+    @Test
+    void couponDescriptionException() {
+        assertThatThrownBy(() -> new Coupon("쿠폰", repeatCharacter(31)))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
