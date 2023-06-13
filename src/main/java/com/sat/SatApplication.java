@@ -1,13 +1,13 @@
-package com.noose.storemanager;
+package com.sat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class StoreManagerApplication {
+public class SatApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(StoreManagerApplication.class, args);
+        SpringApplication.run(SatApplication.class, args);
     }
 
 }
