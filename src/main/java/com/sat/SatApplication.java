@@ -1,11 +1,10 @@
 package com.sat;
 
-import com.sat.auth.domain.JwtProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
-@EnableConfigurationProperties(JwtProperties.class)
+@ConfigurationPropertiesScan
 @SpringBootApplication
 public class SatApplication {
 

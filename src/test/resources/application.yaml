@@ -1,5 +1,5 @@
 jwt:
-  secretKey: ${SECRET_KEY}
+  secretKey: ABCDE12345!@#$%
   access:
     expiration-time: 1h
     header: Authorization
