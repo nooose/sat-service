@@ -47,6 +47,9 @@ dependencies {
     // RestDocs
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:3.0.0'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:3.0.0'
+
+    // jwt
+    implementation 'com.auth0:java-jwt:4.2.1'
 }
 
 bootJar {
