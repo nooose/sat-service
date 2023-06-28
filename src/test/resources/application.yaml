@@ -1,8 +1,6 @@
 jwt:
-  secretKey: ABCDE12345!@#$%
+  secret-key: ABCDE12345!@#$%
   access:
-    expiration-time: 1h
-    header: Authorization
+    expiration-time: 1s
   refresh:
-    expiration-time: 14d
-    header: Authorization-refresh
+    expiration-time: 5s
