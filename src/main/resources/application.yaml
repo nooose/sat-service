@@ -1,8 +1,6 @@
 jwt:
-  secretKey: ${SECRET_KEY}
+  secret-key: ${SECRET_KEY}
   access:
     expiration-time: 1h
-    header: Authorization
   refresh:
     expiration-time: 14d
-    header: Authorization-refresh
