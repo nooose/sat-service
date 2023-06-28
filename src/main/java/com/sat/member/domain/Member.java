@@ -21,7 +21,19 @@ public class Member {
     @Embedded
     private Name name;
 
+    private Long socialId;
+
+    private String refreshToken;
+
     public Member(String name) {
         this.name = new Name(name);
+    }
+
+    public Member(Long socialId) {
+        this.socialId = socialId;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }
