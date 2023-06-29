@@ -25,7 +25,7 @@ public class JwtService {
     private final MemberRepository memberRepository;
     private final JwtProperties jwtProperties;
 
-    public String createAccessToken(Long id) {
+    public String createAccessToken(String id) {
         Date expiresAt = calculateDate(LocalDateTime.now(), jwtProperties.access().expirationTime());
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)

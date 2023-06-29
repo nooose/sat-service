@@ -2,6 +2,7 @@ package com.sat.auth.config.handler;
 
 import com.sat.auth.application.JwtService;
 import com.sat.member.domain.Member;
+import com.sat.member.domain.MemberId;
 import com.sat.member.infrastructure.repository.MemberRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,8 +27,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
-        Long memberId = memberRepository.findBySocialId(Long.valueOf(token.getName()))
-            .map(Member::getSocialId)
+        String memberId = memberRepository.findById(new MemberId(token.getName()))
+            .map(Member::getId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다"));
 
         String accessToken = jwtService.createAccessToken(memberId);

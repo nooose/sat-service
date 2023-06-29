@@ -3,7 +3,7 @@ package com.sat.member.application.dto;
 import com.sat.member.domain.Member;
 
 public record MemberResponse(
-        Long id,
+        String id,
         String name
 ) {
 
