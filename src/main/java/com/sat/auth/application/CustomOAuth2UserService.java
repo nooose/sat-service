@@ -20,37 +20,31 @@ import java.util.Map;
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final MemberRepository memberRepository;
+    private final OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         log.info("CustomOAuth2UserService.loadUser() 실행 - OAuth2 로그인 요청 진입");
 
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
-
         String userNameAttributeName = userRequest.getClientRegistration()
-                .getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
-        Map<String, Object> attributes = oAuth2User.getAttributes();
+            .getProviderDetails()
+            .getUserInfoEndpoint()
+            .getUserNameAttributeName();
+        Map<String, Object> attributes = delegate.loadUser(userRequest).getAttributes();
+        OAuthAttributes extractedAttributes = OAuthAttributes.of(userNameAttributeName, attributes);
 
-        OAuthAttributes extractAttributes = OAuthAttributes.of(userNameAttributeName, attributes);
-
-        Member createdUser = getMember(extractAttributes);
-
-        return (OAuth2User) createdUser;
+        Member member = memberFrom(extractedAttributes);
+        return (OAuth2User) member;
     }
 
-
-    private Member getMember(OAuthAttributes attributes) {
-        Member findMember = memberRepository.findBySocialId(attributes.getOauth2UserInfo().getId()).orElse(null);
-
-        if (findMember == null) {
-            return saveMember(attributes);
-        }
-        return findMember;
+    private Member memberFrom(OAuthAttributes attributes) {
+        long id = attributes.oAuth2UserInfo().getId();
+        return memberRepository.findBySocialId(id)
+            .orElseGet(() -> saveMember(id));
     }
 
-    private Member saveMember(OAuthAttributes attributes) {
-        Member createdUser = attributes.toEntity(attributes.getOauth2UserInfo());
+    private Member saveMember(long id) {
+        Member createdUser = new Member(id);
         return memberRepository.save(createdUser);
     }
 }

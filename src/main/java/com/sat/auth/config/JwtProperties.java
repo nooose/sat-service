@@ -11,6 +11,7 @@ public record JwtProperties (
         TokenConfig refresh
 ) {
     public record TokenConfig(
-            Duration expirationTime) {
+            Duration expirationTime
+    ) {
     }
 }

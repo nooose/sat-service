@@ -6,7 +6,6 @@ import com.sat.member.infrastructure.repository.MemberRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -27,10 +26,11 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
-        Member member = memberRepository.findBySocialId(Long.valueOf(token.getName()))
+        Long memberId = memberRepository.findBySocialId(Long.valueOf(token.getName()))
+            .map(Member::getSocialId)
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다"));
 
-        String accessToken = jwtService.createAccessToken(member.getSocialId());
+        String accessToken = jwtService.createAccessToken(memberId);
         String refreshToken = jwtService.createRefreshToken();
         saveToken("accessToken", accessToken, response);
         saveToken("refreshToken", refreshToken, response);
