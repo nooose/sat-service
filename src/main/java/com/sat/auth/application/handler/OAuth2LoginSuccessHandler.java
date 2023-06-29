@@ -30,8 +30,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         Member member = memberRepository.findBySocialId(Long.valueOf(token.getName()))
             .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다"));
 
-        String accessToken = jwtService.createAccessToken(member.getSocialId(), new Date().getTime());
-        String refreshToken = jwtService.createRefreshToken(new Date().getTime());
+        String accessToken = jwtService.createAccessToken(member.getSocialId());
+        String refreshToken = jwtService.createRefreshToken();
         saveToken("accessToken", accessToken, response);
         saveToken("refreshToken", refreshToken, response);
     }

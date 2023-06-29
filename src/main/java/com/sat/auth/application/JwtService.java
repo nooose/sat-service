@@ -5,16 +5,18 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.sat.auth.config.JwtProperties;
 import com.sat.member.infrastructure.repository.MemberRepository;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-@Slf4j
-@Getter
 @RequiredArgsConstructor
+@Getter
 @Service
 public class JwtService {
     public static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
@@ -23,19 +25,26 @@ public class JwtService {
     private final MemberRepository memberRepository;
     private final JwtProperties jwtProperties;
 
-    public String createAccessToken(Long id, Long now) {
+    public String createAccessToken(Long id) {
+        Date expiresAt = calculateDate(LocalDateTime.now(), jwtProperties.access().expirationTime());
         return JWT.create()
                 .withSubject(ACCESS_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now + jwtProperties.access().expirationTime().toMillis()))
+                .withExpiresAt(expiresAt)
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
     }
 
-    public String createRefreshToken(Long now) {
+    public String createRefreshToken() {
+        Date expiresAt = calculateDate(LocalDateTime.now(), jwtProperties.refresh().expirationTime());
         return JWT.create()
-                .withSubject(REFRESH_TOKEN_SUBJECT)
-                .withExpiresAt(new Date(now + jwtProperties.refresh().expirationTime().toMillis()))
-                .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
+            .withSubject(REFRESH_TOKEN_SUBJECT)
+            .withExpiresAt(expiresAt)
+            .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
+    }
+
+    private Date calculateDate(LocalDateTime now, Duration duration) {
+        ZonedDateTime zonedDateTime = now.plus(duration).atZone(ZoneId.systemDefault());
+        return Date.from(zonedDateTime.toInstant());
     }
 
     public boolean isValidToken(String token) {
@@ -44,7 +53,6 @@ public class JwtService {
                 .build()
                 .verify(token);
         } catch (JWTVerificationException e) {
-            log.error("유효하지 않은 토큰입니다. {}", e.getMessage());
             return false;
         }
         return true;
