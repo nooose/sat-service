@@ -1,4 +1,4 @@
-package com.sat.auth.oauth2.domain;
+package com.sat.auth.application.dto;
 
 import java.util.Map;
 
@@ -6,7 +6,7 @@ public abstract class OAuth2UserInfo {
 
     protected Map<String, Object> attributes;
 
-    public OAuth2UserInfo(Map<String, Object> attributes) {
+    OAuth2UserInfo(Map<String, Object> attributes) {
         this.attributes = attributes;
     }
 

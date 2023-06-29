@@ -1,4 +1,4 @@
-package com.sat.auth.oauth2.domain;
+package com.sat.auth.application.dto;
 
 import java.util.Map;
 

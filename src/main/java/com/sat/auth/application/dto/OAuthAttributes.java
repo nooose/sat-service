@@ -1,8 +1,6 @@
-package com.sat.auth.oauth2.domain.request;
+package com.sat.auth.application.dto;
 
 
-import com.sat.auth.oauth2.domain.KakaoOAuth2UserInfo;
-import com.sat.auth.oauth2.domain.OAuth2UserInfo;
 import com.sat.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;

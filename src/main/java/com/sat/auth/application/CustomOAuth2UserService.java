@@ -1,6 +1,6 @@
-package com.sat.auth.oauth2.service;
+package com.sat.auth.application;
 
-import com.sat.auth.oauth2.domain.request.OAuthAttributes;
+import com.sat.auth.application.dto.OAuthAttributes;
 import com.sat.member.domain.Member;
 import com.sat.member.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

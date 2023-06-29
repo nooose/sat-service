@@ -53,7 +53,7 @@ class JwtServiceTest extends Specification {
                 .sign(Algorithm.HMAC512("24324wefffwfwffjafkjLKJ@#@*@#*%&*#U@JfSDHFh") )
 
         when:
-        def valid = jwtService.isTokenValid(token)
+        def valid = jwtService.isValidToken(token)
 
         then:
         if (valid) {
@@ -69,7 +69,7 @@ class JwtServiceTest extends Specification {
         def token = jwtService.createAccessToken(12321421412L)
 
         when:
-        def valid = jwtService.isTokenValid(token)
+        def valid = jwtService.isValidToken(token)
 
         then:
         if (valid) {
@@ -101,7 +101,7 @@ class JwtServiceTest extends Specification {
                 .sign(Algorithm.HMAC512("24324wefffwfwffjafkjLKJ@#@*@#*%&*#U@JfSDHFh") )
 
         when:
-        def valid = jwtService.isTokenValid(token)
+        def valid = jwtService.isValidToken(token)
 
         then:
         if (valid) {
