@@ -1,6 +1,6 @@
 jwt:
   secret-key: ABCDE12345!@#$%
   access:
-    expiration-time: 1s
+    expiration-time: 1h
   refresh:
-    expiration-time: 5s
+    expiration-time: 14d
