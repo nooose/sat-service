@@ -30,22 +30,23 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-        HttpSecurity http,
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService
+            HttpSecurity http,
+            OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService
     ) throws Exception {
         return http.formLogin(AbstractHttpConfigurer::disable)
-            .csrf(AbstractHttpConfigurer::disable)
-            .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .requestMatchers(HttpMethod.GET, "/").permitAll()
-                    .anyRequest().authenticated())
-            .oauth2Login(oAuth -> oAuth
-                    .successHandler(oAuth2LoginSuccessHandler)
-                    .failureHandler(oAuth2LoginFailureHandler)
-                    .userInfoEndpoint(userInfoEndpointConfig ->
-                        userInfoEndpointConfig.userService(oAuth2UserService)))
-            .build();
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/").permitAll()
+                        .anyRequest().authenticated())
+                .oauth2Login(oAuth -> oAuth
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .failureHandler(oAuth2LoginFailureHandler)
+                        .userInfoEndpoint(userInfoEndpointConfig ->
+                                userInfoEndpointConfig.userService(oAuth2UserService)))
+                .logout(logout -> logout.logoutSuccessUrl("/"))
+                .build();
     }
 
     @Bean
