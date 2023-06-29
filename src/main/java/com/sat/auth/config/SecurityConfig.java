@@ -1,11 +1,13 @@
 package com.sat.auth.config;
 
-import com.sat.auth.oauth2.handler.OAuth2LoginFailureHandler;
-import com.sat.auth.oauth2.handler.OAuth2LoginSuccessHandler;
-import com.sat.auth.oauth2.service.CustomOAuth2UserService;
+import com.sat.auth.application.handler.OAuth2LoginFailureHandler;
+import com.sat.auth.application.handler.OAuth2LoginSuccessHandler;
+import com.sat.auth.application.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,9 +19,9 @@ import org.springframework.security.web.SecurityFilterChain;
  * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
  * JwtAuthenticationProcessingFilter는 AccessToken, RefreshToken 재발급
  */
-@Configuration
-@EnableWebSecurity
 @RequiredArgsConstructor
+@EnableWebSecurity
+@Configuration
 public class SecurityConfig {
 
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
@@ -28,29 +30,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .formLogin(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .headers(headers ->
-                        headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize ->
-                        authorize.requestMatchers(
-                                        "/", "/css/**"
-                                        , "/images/**", "/js/**"
-                                        , "/favicon.ico", "/h2-console/**"
-                                        , "/templates/**", "/sign-up"
-                                        , "/member", "/logInSuccessfully")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated())
-                .oauth2Login(oauth2 ->
-                        oauth2
-                                .successHandler(oAuth2LoginSuccessHandler)
-                                .failureHandler(oAuth2LoginFailureHandler)
-                                .userInfoEndpoint(userInfoEndpointConfig ->
-                                        userInfoEndpointConfig.userService(customOAuth2UserService)));
-        return http.build();
+        return http.formLogin(AbstractHttpConfigurer::disable)
+            .csrf(AbstractHttpConfigurer::disable)
+            .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .requestMatchers(HttpMethod.GET, "/").permitAll()
+                    .anyRequest().authenticated())
+            .oauth2Login(oAuth -> oAuth
+                    .successHandler(oAuth2LoginSuccessHandler)
+                    .failureHandler(oAuth2LoginFailureHandler)
+                    .userInfoEndpoint(userInfoEndpointConfig ->
+                        userInfoEndpointConfig.userService(customOAuth2UserService)))
+            .build();
     }
 }
