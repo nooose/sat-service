@@ -1,4 +1,4 @@
-package com.sat.auth.application.handler;
+package com.sat.auth.config.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

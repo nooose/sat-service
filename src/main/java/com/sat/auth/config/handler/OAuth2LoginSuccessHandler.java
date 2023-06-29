@@ -1,4 +1,4 @@
-package com.sat.auth.application.handler;
+package com.sat.auth.config.handler;
 
 import com.sat.auth.application.JwtService;
 import com.sat.member.domain.Member;

@@ -1,7 +1,7 @@
 package com.sat.auth.config;
 
-import com.sat.auth.application.handler.OAuth2LoginFailureHandler;
-import com.sat.auth.application.handler.OAuth2LoginSuccessHandler;
+import com.sat.auth.config.handler.OAuth2LoginFailureHandler;
+import com.sat.auth.config.handler.OAuth2LoginSuccessHandler;
 import com.sat.auth.application.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
