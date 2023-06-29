@@ -19,7 +19,7 @@ configurations {
 
 ext {
     set('snippetsDir', file("build/generated-snippets"))
-    set('spockVersion', '2.3-groovy-4.0')
+    set('spockVersion', '2.4-M1-groovy-4.0')
     set('restAssuredVersion', '5.3.0')
 }
 
@@ -32,13 +32,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     // jwt
     implementation 'com.auth0:java-jwt:4.2.1'
-
-    // oauth2
-    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
 
     runtimeOnly 'com.h2database:h2'
 

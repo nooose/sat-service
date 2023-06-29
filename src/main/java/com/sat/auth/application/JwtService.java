@@ -28,10 +28,10 @@ public class JwtService {
     public String createAccessToken(String id) {
         Date expiresAt = calculateDate(LocalDateTime.now(), jwtProperties.access().expirationTime());
         return JWT.create()
-                .withSubject(ACCESS_TOKEN_SUBJECT)
-                .withExpiresAt(expiresAt)
-                .withClaim("id", id)
-                .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
+            .withSubject(ACCESS_TOKEN_SUBJECT)
+            .withExpiresAt(expiresAt)
+            .withClaim("id", id)
+            .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
     }
 
     public String createRefreshToken() {
@@ -50,6 +50,7 @@ public class JwtService {
     public boolean isValidToken(String token) {
         try {
             JWT.require(Algorithm.HMAC512(jwtProperties.secretKey()))
+                .acceptExpiresAt(jwtProperties.access().expirationTime().toSeconds())
                 .build()
                 .verify(token);
         } catch (JWTVerificationException e) {
