@@ -69,7 +69,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-task testDocument(type: Test) {
+tasks.register('testDocument', Test) {
     useJUnitPlatform()
     filter {
         includeTestsMatching "*.documentation.*"
@@ -82,7 +82,7 @@ asciidoctor {
     dependsOn test
 }
 
-task copyDocument(type: Copy) {
+tasks.register('copyDocument', Copy) {
     dependsOn asciidoctor
 
     from file("build/docs/asciidoc")

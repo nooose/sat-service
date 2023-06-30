@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
@@ -28,26 +26,26 @@ public class JwtService {
     }
 
     private String createToken(String subject, String id, Duration duration) {
-        Date expiresAt = calculateDate(LocalDateTime.now(), duration);
+
         return JWT.create()
                 .withSubject(subject)
-                .withExpiresAt(expiresAt)
+                .withIssuedAt(new Date())
+                .withExpiresAt(addDuration(duration))
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
     }
 
-    private Date calculateDate(LocalDateTime now, Duration duration) {
-        ZonedDateTime zonedDateTime = now.plus(duration).atZone(ZoneId.systemDefault());
-        return Date.from(zonedDateTime.toInstant());
+    private Date addDuration(Duration duration) {
+        return Date.from(ZonedDateTime.now().plus(duration).toInstant());
     }
 
     public boolean isValidToken(String token) {
         try {
             JWT.require(Algorithm.HMAC512(jwtProperties.secretKey()))
-                .acceptExpiresAt(jwtProperties.access().expirationTime().toSeconds())
                 .build()
                 .verify(token);
         } catch (JWTVerificationException e) {
+            System.out.println(e.getMessage());
             return false;
         }
         return true;

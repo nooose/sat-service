@@ -7,8 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
 
-import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.ZonedDateTime
 
 @SpringBootTest
@@ -22,9 +20,7 @@ class JwtServiceTest extends Specification {
 
     def "기간이 지난 토큰은 유효하지 않다고 판단한다"() {
         given:
-        ZonedDateTime zonedDateTime = LocalDateTime.of(2023, 1, 1, 0, 0).atZone(ZoneId.systemDefault());
-        def expiredDate = Date.from(zonedDateTime.toInstant())
-
+        def expiredDate = Date.from(ZonedDateTime.now().minusHours(1).toInstant())
         String token = JWT.create()
                 .withSubject("test")
                 .withExpiresAt(expiredDate)
