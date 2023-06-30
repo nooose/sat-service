@@ -3,6 +3,7 @@ package com.sat.auth.application;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.sat.auth.application.dto.Token;
 import com.sat.auth.config.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,21 +20,20 @@ public class JwtService {
 
     private final JwtProperties jwtProperties;
 
-    public String createAccessToken(String id) {
-        Date expiresAt = calculateDate(LocalDateTime.now(), jwtProperties.access().expirationTime());
-        return JWT.create()
-            .withSubject("accessToken")
-            .withExpiresAt(expiresAt)
-            .withClaim("id", id)
-            .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
+    public Token createToken(String id) {
+        String accessToken = createToken("accessToken", id, jwtProperties.access().expirationTime());
+        String refreshToken = createToken("refreshToken", null, jwtProperties.refresh().expirationTime());
+
+        return new Token(accessToken, refreshToken);
     }
 
-    public String createRefreshToken() {
-        Date expiresAt = calculateDate(LocalDateTime.now(), jwtProperties.refresh().expirationTime());
+    private String createToken(String subject, String id, Duration duration) {
+        Date expiresAt = calculateDate(LocalDateTime.now(), duration);
         return JWT.create()
-            .withSubject("refreshToken")
-            .withExpiresAt(expiresAt)
-            .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
+                .withSubject(subject)
+                .withExpiresAt(expiresAt)
+                .withClaim("id", id)
+                .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
     }
 
     private Date calculateDate(LocalDateTime now, Duration duration) {
