@@ -19,7 +19,7 @@ configurations {
 
 ext {
     set('snippetsDir', file("build/generated-snippets"))
-    set('spockVersion', '2.3-groovy-4.0')
+    set('spockVersion', '2.4-M1-groovy-4.0')
     set('restAssuredVersion', '5.3.0')
 }
 
@@ -31,6 +31,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    // jwt
+    implementation 'com.auth0:java-jwt:4.2.1'
 
     runtimeOnly 'com.h2database:h2'
 
@@ -40,6 +45,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation "org.spockframework:spock-core:$spockVersion"
     testImplementation "org.spockframework:spock-spring:$spockVersion"
     testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
@@ -47,6 +53,7 @@ dependencies {
     // RestDocs
     testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:3.0.0'
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:3.0.0'
+
 }
 
 bootJar {
@@ -62,7 +69,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-task testDocument(type: Test) {
+tasks.register('testDocument', Test) {
     useJUnitPlatform()
     filter {
         includeTestsMatching "*.documentation.*"
@@ -75,7 +82,7 @@ asciidoctor {
     dependsOn test
 }
 
-task copyDocument(type: Copy) {
+tasks.register('copyDocument', Copy) {
     dependsOn asciidoctor
 
     from file("build/docs/asciidoc")
