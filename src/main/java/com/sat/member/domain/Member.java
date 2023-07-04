@@ -21,7 +21,16 @@ public class Member {
     private Name name;
 
     public Member(String name) {
-        this.name = new Name(name);
+        this(null, new Name(name));
+    }
+
+    public Member(MemberId id, String name) {
+        this(id, new Name(name));
+    }
+
+    public Member(MemberId id, Name name) {
+        this.id = id;
+        this.name = name;
     }
 
     public String getId() {

@@ -1,11 +1,12 @@
 package com.sat.auth.config;
 
-import com.sat.auth.application.MemberAccountService;
+import com.sat.auth.application.dto.KakaoOAuth2Response;
 import com.sat.auth.application.dto.MemberPrincipal;
-import com.sat.auth.application.dto.OAuth2Response;
 import com.sat.auth.config.handler.OAuth2LoginFailureHandler;
 import com.sat.auth.config.handler.OAuth2LoginSuccessHandler;
 import com.sat.member.domain.Member;
+import com.sat.member.domain.MemberId;
+import com.sat.member.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -45,20 +46,23 @@ public class SecurityConfig {
                         .failureHandler(oAuth2LoginFailureHandler)
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)))
-                .logout(logout -> logout.logoutSuccessUrl("/"))
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/"))
                 .build();
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(MemberAccountService accountService) {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(MemberRepository memberRepository) {
         final var delegate = new DefaultOAuth2UserService();
         return userRequest -> {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
             var attributes = oAuth2User.getAttributes();
 
-            OAuth2Response userInfo = OAuth2Response.of(attributes);
-            Member member = accountService.findOrCreate(userInfo.providerId());
-            return MemberPrincipal.of(member.getId(), userInfo);
+            KakaoOAuth2Response userInfo = KakaoOAuth2Response.of(attributes);
+            MemberId memberId = new MemberId(userInfo.id());
+            Member member = memberRepository.findById(memberId)
+                    .orElseGet(() -> memberRepository.save(new Member(memberId, userInfo.profile().nickname())));
+            return MemberPrincipal.of(member.getId(), attributes);
         };
     }
 }
