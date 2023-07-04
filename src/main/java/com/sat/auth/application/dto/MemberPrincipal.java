@@ -35,6 +35,6 @@ public record MemberPrincipal(
 
     @Override
     public String getName() {
-        return String.valueOf(oAuth2Attributes.get("id"));
+        return id;
     }
 }
