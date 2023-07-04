@@ -8,6 +8,7 @@ import com.sat.member.domain.Member;
 import com.sat.member.domain.MemberId;
 import com.sat.member.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
@@ -38,7 +40,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oAuth -> oAuth
@@ -61,7 +65,12 @@ public class SecurityConfig {
             KakaoOAuth2Response userInfo = KakaoOAuth2Response.of(attributes);
             MemberId memberId = new MemberId(userInfo.id());
             Member member = memberRepository.findById(memberId)
-                    .orElseGet(() -> memberRepository.save(new Member(memberId, userInfo.profile().nickname())));
+                    .orElseGet(() -> {
+                        String nickname = userInfo.kakaoAccount().profile().nickname();
+                        Member newMember = new Member(memberId, nickname);
+                        memberRepository.save(newMember);
+                        return newMember;
+                    });
             return MemberPrincipal.of(member.getId(), attributes);
         };
     }
