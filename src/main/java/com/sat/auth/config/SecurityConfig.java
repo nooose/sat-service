@@ -1,12 +1,11 @@
 package com.sat.auth.config;
 
+import com.sat.auth.application.MemberAccountReadService;
+import com.sat.auth.application.MemberAccountWriteService;
 import com.sat.auth.application.dto.KakaoOAuth2Response;
 import com.sat.auth.application.dto.MemberPrincipal;
 import com.sat.auth.config.handler.OAuth2LoginFailureHandler;
 import com.sat.auth.config.handler.OAuth2LoginSuccessHandler;
-import com.sat.member.domain.Member;
-import com.sat.member.domain.MemberId;
-import com.sat.member.infrastructure.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -56,22 +55,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(MemberRepository memberRepository) {
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService(
+            MemberAccountWriteService memberWriteService,
+            MemberAccountReadService memberReadService
+    ) {
         final var delegate = new DefaultOAuth2UserService();
         return userRequest -> {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
             var attributes = oAuth2User.getAttributes();
 
             KakaoOAuth2Response userInfo = KakaoOAuth2Response.of(attributes);
-            MemberId memberId = new MemberId(userInfo.id());
-            Member member = memberRepository.findById(memberId)
-                    .orElseGet(() -> {
-                        String nickname = userInfo.kakaoAccount().profile().nickname();
-                        Member newMember = new Member(memberId, nickname);
-                        memberRepository.save(newMember);
-                        return newMember;
-                    });
-            return MemberPrincipal.of(member.getId(), attributes);
+            if (memberReadService.existById(userInfo.id())) {
+                memberWriteService.join(userInfo.id(), userInfo.kakaoAccount().profile().nickname());
+            }
+            return MemberPrincipal.of(userInfo.id(), attributes);
         };
     }
 }
