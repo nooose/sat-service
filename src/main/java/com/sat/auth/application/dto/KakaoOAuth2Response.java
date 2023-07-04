@@ -2,14 +2,25 @@ package com.sat.auth.application.dto;
 
 import java.util.Map;
 
-public class KakaoOAuth2Response extends OAuth2Response {
+public record KakaoOAuth2Response(
+        String id,
+        Map<String, Object> properties,
+        Profile profile
+) {
+    public record Profile(
+            String nickname
+    ) {
 
-    public KakaoOAuth2Response(Map<String, Object> attributes) {
-        super(attributes);
+        public static Profile of(Map<String, Object> attributes) {
+            return new Profile(String.valueOf(attributes.get("nickname")));
+        }
     }
 
-    @Override
-    public String providerId() {
-        return String.valueOf(attributes.get("id"));
+
+    public static KakaoOAuth2Response of(Map<String, Object> attributes) {
+        return new KakaoOAuth2Response(
+                String.valueOf(attributes.get("id")),
+                (Map<String, Object>) attributes.get("properties"),
+                Profile.of((Map<String, Object>) attributes.get("profile")));
     }
 }

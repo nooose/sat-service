@@ -1,6 +1,6 @@
 package com.sat.auth.config.handler;
 
-import com.sat.auth.application.JwtService;
+import com.sat.auth.application.JwtProvider;
 import com.sat.auth.application.dto.Token;
 import com.sat.member.domain.Member;
 import com.sat.member.domain.MemberId;
@@ -18,12 +18,15 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import static com.sat.auth.application.JwtProvider.ACCESS_TOKEN;
+import static com.sat.auth.application.JwtProvider.REFRESH_TOKEN;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final JwtService jwtService;
+    private final JwtProvider jwtProvider;
     private final MemberRepository memberRepository;
 
     @Override
@@ -33,13 +36,13 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             .map(Member::getId)
             .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다"));
 
-        Token token = jwtService.createToken(memberId);
+        Token token = jwtProvider.createToken(memberId);
         saveToken(token, response);
     }
 
     private void saveToken(Token token, HttpServletResponse response) {
-        Cookie accessTokenCookie = createCookie("accessToken", token.accessToken());
-        Cookie refreshTokenCookie = createCookie("refreshToken", token.refreshToken());
+        Cookie accessTokenCookie = createCookie(ACCESS_TOKEN, token.accessToken());
+        Cookie refreshTokenCookie = createCookie(REFRESH_TOKEN, token.refreshToken());
         response.addCookie(accessTokenCookie);
         response.addCookie(refreshTokenCookie);
     }

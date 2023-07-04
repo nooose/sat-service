@@ -1,12 +1,13 @@
 package com.sat.auth.application.dto;
 
 import com.sat.auth.application.domain.RoleType;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 
 public record MemberPrincipal(
     String id,
@@ -14,12 +15,12 @@ public record MemberPrincipal(
     Collection<? extends GrantedAuthority> authorities
 ) implements OAuth2User {
 
-    public static MemberPrincipal of(String id, OAuth2Response response) {
+    public static MemberPrincipal of(String id, Map<String, Object> oAuth2Attributes) {
         var grantedAuthorities = Set.of(RoleType.USER).stream()
             .map(RoleType::getName)
             .map(SimpleGrantedAuthority::new)
             .toList();
-        return new MemberPrincipal(id, response.getAttributes(), grantedAuthorities);
+        return new MemberPrincipal(id, oAuth2Attributes, grantedAuthorities);
     }
 
     @Override
@@ -34,6 +35,6 @@ public record MemberPrincipal(
 
     @Override
     public String getName() {
-        return (String) oAuth2Attributes.get("id");
+        return String.valueOf(oAuth2Attributes.get("id"));
     }
 }
