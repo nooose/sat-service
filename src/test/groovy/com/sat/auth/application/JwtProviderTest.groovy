@@ -10,10 +10,10 @@ import spock.lang.Specification
 import java.time.ZonedDateTime
 
 @SpringBootTest
-class JwtServiceTest extends Specification {
+class JwtProviderTest extends Specification {
 
     @Autowired
-    private JwtService jwtService
+    private JwtProvider jwtService
 
     @Autowired
     private JwtProperties properties

@@ -9,34 +9,33 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.time.ZonedDateTime;
 import java.util.Date;
 
 @RequiredArgsConstructor
 @Service
-public class JwtService {
+public class JwtProvider {
+    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String REFRESH_TOKEN = "refreshToken";
 
     private final JwtProperties jwtProperties;
 
     public Token createToken(String id) {
-        String accessToken = createToken("accessToken", id, jwtProperties.access().expirationTime());
-        String refreshToken = createToken("refreshToken", null, jwtProperties.refresh().expirationTime());
+        String accessToken = createToken(ACCESS_TOKEN, id, jwtProperties.access().expirationTime());
+        String refreshToken = createToken(REFRESH_TOKEN, null, jwtProperties.refresh().expirationTime());
 
         return new Token(accessToken, refreshToken);
     }
 
     private String createToken(String subject, String id, Duration duration) {
+        Date now = new Date();
+        Date expiredDate = new Date(now.getTime() + duration.toMillis());
 
         return JWT.create()
                 .withSubject(subject)
-                .withIssuedAt(new Date())
-                .withExpiresAt(addDuration(duration))
+                .withIssuedAt(now)
+                .withExpiresAt(expiredDate)
                 .withClaim("id", id)
                 .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
-    }
-
-    private Date addDuration(Duration duration) {
-        return Date.from(ZonedDateTime.now().plus(duration).toInstant());
     }
 
     public boolean isValidToken(String token) {
