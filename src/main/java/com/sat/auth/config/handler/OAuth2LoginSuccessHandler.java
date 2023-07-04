@@ -2,17 +2,12 @@ package com.sat.auth.config.handler;
 
 import com.sat.auth.application.JwtProvider;
 import com.sat.auth.application.dto.Token;
-import com.sat.member.domain.Member;
-import com.sat.member.domain.MemberId;
-import com.sat.member.infrastructure.repository.MemberRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -27,16 +22,10 @@ import static com.sat.auth.application.JwtProvider.REFRESH_TOKEN;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtProvider jwtProvider;
-    private final MemberRepository memberRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        OAuth2AuthenticationToken authenticationToken = (OAuth2AuthenticationToken) authentication;
-        String memberId = memberRepository.findById(new MemberId(authenticationToken.getName()))
-            .map(Member::getId)
-            .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저입니다"));
-
-        Token token = jwtProvider.createToken(memberId);
+        Token token = jwtProvider.createToken(authentication.getName());
         saveToken(token, response);
     }
 
