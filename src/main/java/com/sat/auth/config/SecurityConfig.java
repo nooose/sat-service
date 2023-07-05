@@ -45,10 +45,11 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oAuth -> oAuth
-                        .successHandler(oAuth2LoginSuccessHandler)
-                        .failureHandler(oAuth2LoginFailureHandler)
                         .userInfoEndpoint(userInfoEndpointConfig ->
-                                userInfoEndpointConfig.userService(oAuth2UserService)))
+                                userInfoEndpointConfig.userService(oAuth2UserService))
+                        .successHandler(oAuth2LoginSuccessHandler)
+                        .defaultSuccessUrl("/")
+                        .failureHandler(oAuth2LoginFailureHandler))
                 .logout(logout -> logout
                         .logoutSuccessUrl("/"))
                 .build();
