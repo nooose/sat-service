@@ -4,10 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.sat.auth.application.domain.RoleType;
-import com.sat.auth.application.dto.Token;
-import java.util.List;
-import java.util.Set;
+import com.sat.auth.domain.RoleType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
@@ -24,11 +23,11 @@ public class JwtProcessor {
 
     private final JwtProperties jwtProperties;
 
-    public Token createToken(String id) {
+    public TokenPair createToken(String id) {
         String accessToken = createToken(ACCESS_TOKEN, id, jwtProperties.access().expirationTime());
         String refreshToken = createToken(REFRESH_TOKEN, null, jwtProperties.refresh().expirationTime());
 
-        return new Token(accessToken, refreshToken);
+        return new TokenPair(accessToken, refreshToken);
     }
 
     private String createToken(String subject, String id, Duration duration) {
@@ -51,7 +50,7 @@ public class JwtProcessor {
 
     // TODO: JWT에 권한 넣기
     public List<? extends GrantedAuthority> getRoles(String token) {
-        return Set.of(RoleType.USER).stream()
+        return Set.of(RoleType.MEMBER).stream()
             .map(RoleType::getName)
             .map(SimpleGrantedAuthority::new)
             .toList();
