@@ -1,6 +1,5 @@
 package com.sat.auth.domain;
 
-import com.sat.auth.application.domain.RoleType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -9,18 +8,19 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
-public record MemberPrincipal(
+public record OAuth2MemberPrincipal(
     String id,
+    String nickname,
     Map<String, Object> oAuth2Attributes,
     Collection<? extends GrantedAuthority> authorities
 ) implements OAuth2User {
 
-    public static MemberPrincipal of(String id, Map<String, Object> oAuth2Attributes) {
-        var grantedAuthorities = Set.of(RoleType.USER).stream()
+    public static OAuth2MemberPrincipal of(String id, String nickname, Map<String, Object> oAuth2Attributes) {
+        var grantedAuthorities = Set.of(RoleType.MEMBER).stream()
             .map(RoleType::getName)
             .map(SimpleGrantedAuthority::new)
             .toList();
-        return new MemberPrincipal(id, oAuth2Attributes, grantedAuthorities);
+        return new OAuth2MemberPrincipal(id, nickname, oAuth2Attributes, grantedAuthorities);
     }
 
     @Override

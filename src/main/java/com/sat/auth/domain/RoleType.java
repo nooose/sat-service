@@ -1,9 +1,9 @@
-package com.sat.auth.application.domain;
+package com.sat.auth.domain;
 
 import lombok.Getter;
 
 public enum RoleType {
-    USER("ROLE_MEMBER");
+    MEMBER("ROLE_MEMBER");
 
     @Getter
     private final String name;

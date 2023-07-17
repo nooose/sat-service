@@ -1,4 +1,4 @@
-package com.sat.auth.application.dto;
+package com.sat.auth.config.dto;
 
 import java.util.Map;
 

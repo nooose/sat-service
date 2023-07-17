@@ -4,19 +4,20 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Optional;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import java.io.IOException;
+import java.util.Optional;
 
-public class JwtFilter extends OncePerRequestFilter {
+
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final BearerTokenizer bearerTokenizer;
     private final RequestMatcher requestMatcher;
     private final JwtAuthenticationProvider provider;
 
-    public JwtFilter(RequestMatcher requestMatcher, JwtAuthenticationProvider provider) {
+    public JwtAuthenticationFilter(RequestMatcher requestMatcher, JwtAuthenticationProvider provider) {
         this.bearerTokenizer = new BearerTokenizer();
         this.requestMatcher = requestMatcher;
         this.provider = provider;

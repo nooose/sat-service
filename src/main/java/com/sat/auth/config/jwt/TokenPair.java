@@ -1,6 +1,6 @@
-package com.sat.auth.application.dto;
+package com.sat.auth.config.jwt;
 
-public record Token(
+public record TokenPair(
         String accessToken,
         String refreshToken
 ) {
