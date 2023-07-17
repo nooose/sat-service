@@ -1,4 +1,4 @@
-package com.sat.auth.application.dto;
+package com.sat.auth.domain;
 
 import com.sat.auth.application.domain.RoleType;
 import org.springframework.security.core.GrantedAuthority;

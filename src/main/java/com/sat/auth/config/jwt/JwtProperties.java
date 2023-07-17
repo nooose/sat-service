@@ -1,4 +1,4 @@
-package com.sat.auth.config;
+package com.sat.auth.config.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

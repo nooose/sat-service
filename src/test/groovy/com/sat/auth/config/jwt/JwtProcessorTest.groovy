@@ -1,8 +1,7 @@
-package com.sat.auth.application
+package com.sat.auth.config.jwt
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.sat.auth.config.JwtProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
@@ -10,10 +9,10 @@ import spock.lang.Specification
 import java.time.ZonedDateTime
 
 @SpringBootTest
-class JwtProviderTest extends Specification {
+class JwtProcessorTest extends Specification {
 
     @Autowired
-    private JwtProvider jwtService
+    private JwtProcessor jwtService
 
     @Autowired
     private JwtProperties properties

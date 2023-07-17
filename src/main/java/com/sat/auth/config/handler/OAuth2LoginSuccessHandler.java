@@ -1,6 +1,6 @@
 package com.sat.auth.config.handler;
 
-import com.sat.auth.application.JwtProvider;
+import com.sat.auth.config.jwt.JwtProcessor;
 import com.sat.auth.application.dto.Token;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,20 +13,21 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-import static com.sat.auth.application.JwtProvider.ACCESS_TOKEN;
-import static com.sat.auth.application.JwtProvider.REFRESH_TOKEN;
+import static com.sat.auth.config.jwt.JwtProcessor.ACCESS_TOKEN;
+import static com.sat.auth.config.jwt.JwtProcessor.REFRESH_TOKEN;
 
 @Slf4j
 @RequiredArgsConstructor
 @Component
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
-    private final JwtProvider jwtProvider;
+    private final JwtProcessor jwtProcessor;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        Token token = jwtProvider.createToken(authentication.getName());
+        Token token = jwtProcessor.createToken(authentication.getName());
         saveToken(token, response);
+        response.sendRedirect("/");
     }
 
     private void saveToken(Token token, HttpServletResponse response) {
