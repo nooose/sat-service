@@ -1,19 +1,24 @@
-package com.sat.auth.application;
+package com.sat.auth.config.jwt;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.sat.auth.application.domain.RoleType;
 import com.sat.auth.application.dto.Token;
-import com.sat.auth.config.JwtProperties;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.Date;
 
 @RequiredArgsConstructor
-@Service
-public class JwtProvider {
+@Component
+public class JwtProcessor {
     public static final String ACCESS_TOKEN = "accessToken";
     public static final String REFRESH_TOKEN = "refreshToken";
 
@@ -38,15 +43,32 @@ public class JwtProvider {
                 .sign(Algorithm.HMAC512(jwtProperties.secretKey()));
     }
 
+    public String getId(String token) {
+        return decodedJWT(token)
+            .getClaim("id")
+            .asString();
+    }
+
+    // TODO: JWT에 권한 넣기
+    public List<? extends GrantedAuthority> getRoles(String token) {
+        return Set.of(RoleType.USER).stream()
+            .map(RoleType::getName)
+            .map(SimpleGrantedAuthority::new)
+            .toList();
+    }
+
     public boolean isValidToken(String token) {
         try {
-            JWT.require(Algorithm.HMAC512(jwtProperties.secretKey()))
-                .build()
-                .verify(token);
+            decodedJWT(token);
         } catch (JWTVerificationException e) {
-            System.out.println(e.getMessage());
             return false;
         }
         return true;
+    }
+
+    private DecodedJWT decodedJWT(String token) {
+        return JWT.require(Algorithm.HMAC512(jwtProperties.secretKey()))
+            .build()
+            .verify(token);
     }
 }
