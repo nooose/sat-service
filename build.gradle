@@ -20,7 +20,6 @@ configurations {
 ext {
     set('snippetsDir', file("build/generated-snippets"))
     set('spockVersion', '2.4-M1-groovy-4.0')
-    set('restAssuredVersion', '5.3.0')
 }
 
 repositories {
@@ -48,11 +47,11 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation "org.spockframework:spock-core:$spockVersion"
     testImplementation "org.spockframework:spock-spring:$spockVersion"
-    testImplementation "io.rest-assured:rest-assured:$restAssuredVersion"
+    testImplementation "io.rest-assured:rest-assured"
 
     // RestDocs
-    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured:3.0.0'
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor:3.0.0'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
 }
 
