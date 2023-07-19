@@ -1,0 +1,12 @@
+= SAT Application API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[me]]
+== 사용자
+=== 사용자 정보 조회
+operation::me[snippets='http-request,request-headers,http-response,response-fields']
