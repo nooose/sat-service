@@ -1,4 +1,4 @@
-= SAT Application API Document
+= SAT REST API 문서
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -8,5 +8,5 @@
 
 [[me]]
 == 사용자
-=== 사용자 정보 조회
+=== 인증된 사용자 정보 조회
 operation::me[snippets='http-request,request-headers,http-response,response-fields']
