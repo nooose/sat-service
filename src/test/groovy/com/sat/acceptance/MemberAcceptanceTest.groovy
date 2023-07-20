@@ -1,10 +1,10 @@
-package com.sat.member.acceptance
+package com.sat.acceptance
 
-import com.sat.AcceptanceTest
+
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
-import static com.sat.auth.acceptance.AuthSteps.토큰_발급_요청
+import static com.sat.auth.AuthSteps.토큰_발급_요청
 import static com.sat.member.MemberFixtures.일반_사용자
 import static io.restassured.RestAssured.given
 
@@ -15,7 +15,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
         def token = 토큰_발급_요청(일반_사용자.getId())
 
         when:
-        def response = given().log().all()
+        def response = given(spec).log().all()
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
@@ -30,7 +30,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
     def "유효하지 않은 토큰으로 자신의 정보를 확인할 수 없다."() {
         when:
-        def response = given().log().all()
+        def response = given(spec).log().all()
                 .header("Authorization", "Bearer " + "invalidToken")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()

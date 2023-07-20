@@ -1,6 +1,8 @@
 package com.sat.documentation;
 
 import com.sat.config.TestDocsSecurityConfig;
+import com.sat.utils.CustomRequestLoggingFilter;
+import com.sat.utils.CustomResponseLoggingFilter;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.restassured.RestAssuredRestDocumentation.documentationConfiguration;
 
@@ -31,8 +34,10 @@ abstract public class Documentation {
         spec = new RequestSpecBuilder()
                 .addFilter(documentationConfiguration(restDocumentation)
                         .operationPreprocessors()
-                        .withRequestDefaults(prettyPrint())
-                        .withResponseDefaults(prettyPrint()))
+                        .withRequestDefaults(modifyHeaders().remove("Host"), prettyPrint())
+                        .withResponseDefaults(modifyHeaders().remove("Date"), prettyPrint()))
+                .addFilter(new CustomRequestLoggingFilter())
+                .addFilter(new CustomResponseLoggingFilter())
                 .build();
     }
 }
