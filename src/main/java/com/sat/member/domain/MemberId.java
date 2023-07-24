@@ -2,11 +2,12 @@ package com.sat.member.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
@@ -19,6 +20,10 @@ public class MemberId implements Serializable {
 
     public MemberId(String id) {
         this.id = id;
+    }
+
+    public static MemberId of(String id) {
+        return new MemberId(id);
     }
 }
 

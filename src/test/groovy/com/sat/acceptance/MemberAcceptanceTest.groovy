@@ -12,7 +12,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
     def "발급받은 토큰으로 자신의 정보를 확인할 수 있다."() {
         given:
-        def token = 토큰_발급_요청(일반_사용자.getId())
+        def token = 토큰_발급_요청(일반_사용자.fetchId())
 
         when:
         def response = given(spec).log().all()
@@ -24,7 +24,7 @@ class MemberAcceptanceTest extends AcceptanceTest {
 
         then:
         response.statusCode(HttpStatus.OK.value())
-        response.extract().jsonPath().getString("id") == 일반_사용자.getId()
+        response.extract().jsonPath().getString("id") == 일반_사용자.fetchId()
         response.extract().jsonPath().getString("name") == 일반_사용자.getName().getValue()
     }
 
