@@ -5,7 +5,8 @@ import com.sat.member.domain.MemberId
 import spock.lang.Specification
 
 import static com.sat.member.MemberFixtures.일반_사용자
-import static com.sat.study.StudyGroupFixtures.getStudyGroupFixture
+import static com.sat.study.ParticipantStatus.APPROVED
+import static com.sat.study.ParticipantStatus.WAITING
 
 class StudyGroupTest extends Specification {
 
@@ -13,7 +14,10 @@ class StudyGroupTest extends Specification {
 
     def "수용 인원은 최소 2명이다."() {
         when:
-        def studyGroup = getStudyGroupFixture(HOST_ID, 1)
+        def studyGroup = StudyGroupBuilder.builder()
+        .withHostId(HOST_ID)
+        .withMaxCapacity(1)
+        .build()
 
         then:
         thrown(IllegalArgumentException.class)
@@ -21,11 +25,12 @@ class StudyGroupTest extends Specification {
 
     def "참여 요청을 할 수 있다."() {
         given:
-        def studyGroup = getStudyGroupFixture(HOST_ID, 2)
-        def participantId = MemberId.of("2000")
+        def studyGroup = StudyGroupBuilder.builder()
+                .withHostId(HOST_ID)
+                .build()
 
         when:
-        studyGroup.requestJoin(participantId)
+        studyGroup.requestJoin(MemberId.of("2000"))
 
         then:
         studyGroup.fetchActiveMemberIds().size() == 1
@@ -33,12 +38,13 @@ class StudyGroupTest extends Specification {
 
     def "스터디 그룹이 닫히면 참여 요청을 할 수 없다."() {
         given:
-        def studyGroup = getStudyGroupFixture(HOST_ID, 2)
-        def participantId = MemberId.of("2000")
+        def studyGroup = StudyGroupBuilder.builder()
+                .withHostId(HOST_ID)
+                .build()
         studyGroup.stopRecruitment(HOST_ID)
 
         when:
-        studyGroup.requestJoin(participantId)
+        studyGroup.requestJoin(MemberId.of("2000"))
 
         then:
         thrown(RuntimeException.class)
@@ -46,12 +52,13 @@ class StudyGroupTest extends Specification {
 
     def "같은 사용자가 중복 요청을 하면 예외를 던진다."() {
         given:
-        def studyGroup = getStudyGroupFixture(HOST_ID, 2)
-        def participantId = MemberId.of("2000")
-        studyGroup.requestJoin(participantId)
+        def studyGroup = StudyGroupBuilder.builder()
+                .withHostId(HOST_ID)
+                .withParticipants(WAITING, "2000")
+                .build()
 
         when:
-        studyGroup.requestJoin(participantId)
+        studyGroup.requestJoin(MemberId.of("2000"))
 
         then:
         thrown(RuntimeException.class)
@@ -59,12 +66,13 @@ class StudyGroupTest extends Specification {
 
     def "그룹장의 승인이 완료되면 스터디 그룹에 참여할 수 있다."() {
         given:
-        def studyGroup = getStudyGroupFixture(HOST_ID, 2)
-        def participantId = MemberId.of("2000")
+        def studyGroup = StudyGroupBuilder.builder()
+                .withHostId(HOST_ID)
+                .withParticipants(WAITING, "2000")
+                .build()
 
         when:
-        studyGroup.requestJoin(participantId)
-        studyGroup.approve(HOST_ID, participantId)
+        studyGroup.approve(HOST_ID, MemberId.of("2000"))
 
         then:
         studyGroup.fetchActiveMemberIds().size() == 2
@@ -72,13 +80,13 @@ class StudyGroupTest extends Specification {
 
     def "그룹장은 스터디 그룹 인원을 추방할 수 있다."() {
         given:
-        def studyGroup = getStudyGroupFixture(HOST_ID, 2)
-        def participantId = MemberId.of("2000")
-        studyGroup.requestJoin(participantId)
-        studyGroup.approve(HOST_ID, participantId)
+        def studyGroup = StudyGroupBuilder.builder()
+                .withHostId(HOST_ID)
+                .withParticipants(APPROVED, "2000")
+                .build()
 
         when:
-        studyGroup.kick(HOST_ID, participantId)
+        studyGroup.kick(HOST_ID, MemberId.of("2000"))
 
         then:
         studyGroup.fetchActiveMemberIds().size() == 1
@@ -86,15 +94,15 @@ class StudyGroupTest extends Specification {
 
     def "수용 인원을 초과하면 더 이상 참여자를 받을 수 없다."() {
         given:
-        def studyGroup = getStudyGroupFixture(HOST_ID, 2)
-        def participantAId = MemberId.of("2000")
-        def participantBId = MemberId.of("3000")
-        studyGroup.requestJoin(participantAId)
-        studyGroup.requestJoin(participantBId)
-        studyGroup.approve(HOST_ID, participantAId)
+        def studyGroup = StudyGroupBuilder.builder()
+                .withHostId(HOST_ID)
+                .withMaxCapacity(2)
+                .withParticipants(APPROVED, "2000")
+                .withParticipants(WAITING, "3000")
+                .build()
 
         when:
-        studyGroup.approve(HOST_ID, participantBId)
+        studyGroup.approve(HOST_ID, MemberId.of("3000"))
 
         then:
         studyGroup.fetchActiveMemberIds().size() == 2

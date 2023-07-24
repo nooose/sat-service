@@ -36,6 +36,10 @@ public class Participant {
     }
 
     public boolean isActive() {
+        return status == ParticipantStatus.APPROVED;
+    }
+
+    public boolean isHostOrActive() {
         return status == ParticipantStatus.HOST || status == ParticipantStatus.APPROVED;
     }
 

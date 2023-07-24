@@ -18,6 +18,10 @@ public class StudyGroup {
     private StudyGroupEnrollment enrollment;
     private StudyGroupStatus status;
 
+    private StudyGroup(Host host, StudyGroupInfo information, StudyGroupEnrollment enrollment) {
+        this(null, host, information, enrollment, StudyGroupStatus.OPEN);
+    }
+
     private StudyGroup(Host host, StudyGroupInfo information, int maxCapacity) {
         this(null, host, information, new StudyGroupEnrollment(host.getId(), maxCapacity), StudyGroupStatus.OPEN);
     }
@@ -28,6 +32,21 @@ public class StudyGroup {
         this.information = information;
         this.enrollment = enrollment;
         this.status = status;
+    }
+
+    public static StudyGroup of(MemberId hostId,
+                                String title,
+                                String contents,
+                                StudyCategory category,
+                                StudyGroupEnrollment enrollment,
+                                LocalDateTime startDateTime,
+                                LocalDateTime endDateTime,
+                                Set<DayOfWeek> studyDays,
+                                int studyRounds,
+                                Duration timePerSession) {
+
+        StudyGroupInfo information = new StudyGroupInfo(title, contents, category, startDateTime, endDateTime, studyDays, studyRounds, timePerSession);
+        return new StudyGroup(new Host(hostId), information, enrollment);
     }
 
     public static StudyGroup of(MemberId hostId,

@@ -2,6 +2,8 @@ package com.sat.study;
 
 import com.sat.member.domain.MemberId;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -11,6 +13,12 @@ public class Participants {
 
     public Participants(Participant host) {
         participants.add(host);
+    }
+
+    public Participants(Participant host, Collection<Participant> participants) {
+        ArrayList<Participant> initializedParticipants = new ArrayList<>(participants);
+        initializedParticipants.add(host);
+        this.participants = new HashSet<>(initializedParticipants);
     }
 
     public int activeMembersCount() {
@@ -55,7 +63,7 @@ public class Participants {
 
     public List<Participant> activeMembers() {
         return participants.stream()
-                .filter(Participant::isActive)
+                .filter(Participant::isHostOrActive)
                 .toList();
     }
 }
