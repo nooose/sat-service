@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Member {
 
+    @Getter
     @Id @EmbeddedId
     private MemberId id;
 
@@ -33,7 +34,7 @@ public class Member {
         this.name = name;
     }
 
-    public String getId() {
+    public String fetchId() {
         return id.getId();
     }
 }

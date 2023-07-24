@@ -1,9 +1,11 @@
 package com.sat.study;
 
 import com.sat.member.domain.MemberId;
+import lombok.Getter;
 
 import java.util.Objects;
 
+@Getter
 public class Participant {
     private MemberId id;
     private ParticipantStatus status;

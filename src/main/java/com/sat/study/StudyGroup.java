@@ -1,12 +1,15 @@
 package com.sat.study;
 
 import com.sat.member.domain.MemberId;
+import lombok.Getter;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
+@Getter
 public class StudyGroup {
 
     private Long id;
@@ -14,21 +17,6 @@ public class StudyGroup {
     private StudyGroupInfo information;
     private StudyGroupEnrollment enrollment;
     private StudyGroupStatus status;
-
-    public StudyGroup of(MemberId hostId,
-                         int maxCapacity,
-                         String title,
-                         String contents,
-                         StudyCategory category,
-                         LocalDateTime startDateTime,
-                         LocalDateTime endDateTime,
-                         Set<DayOfWeek> studyDays,
-                         int studyRounds,
-                         Duration timePerSession) {
-
-        StudyGroupInfo information = new StudyGroupInfo(title, contents, category, startDateTime, endDateTime, studyDays, studyRounds, timePerSession);
-        return new StudyGroup(new Host(hostId), information, maxCapacity);
-    }
 
     private StudyGroup(Host host, StudyGroupInfo information, int maxCapacity) {
         this(null, host, information, new StudyGroupEnrollment(host.getId(), maxCapacity), StudyGroupStatus.OPEN);
@@ -40,6 +28,21 @@ public class StudyGroup {
         this.information = information;
         this.enrollment = enrollment;
         this.status = status;
+    }
+
+    public static StudyGroup of(MemberId hostId,
+                                String title,
+                                String contents,
+                                StudyCategory category,
+                                int maxCapacity,
+                                LocalDateTime startDateTime,
+                                LocalDateTime endDateTime,
+                                Set<DayOfWeek> studyDays,
+                                int studyRounds,
+                                Duration timePerSession) {
+
+        StudyGroupInfo information = new StudyGroupInfo(title, contents, category, startDateTime, endDateTime, studyDays, studyRounds, timePerSession);
+        return new StudyGroup(new Host(hostId), information, maxCapacity);
     }
 
     public void requestJoin(MemberId participantId) {
@@ -76,13 +79,16 @@ public class StudyGroup {
 
     public void stopRecruitment(MemberId hostId) {
         validateOwner(hostId);
-        status = StudyGroupStatus.OPEN;
+        status = StudyGroupStatus.CLOSED;
     }
-
 
     private void validateOwner(MemberId hostId) {
         if (!host.isOwner(hostId)) {
             throw new RuntimeException();
         }
+    }
+
+    public List<MemberId> fetchActiveMemberIds() {
+        return enrollment.activeMemberIds();
     }
 }

@@ -8,8 +8,9 @@ public class StudyPeriod {
     private LocalDateTime endDateTime;
 
     public StudyPeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        if (startDateTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("시작 시간이 올바르지 않습니다.");
+        LocalDateTime now = LocalDateTime.now();
+        if (startDateTime.isBefore(now) || endDateTime.isBefore(now)) {
+            throw new IllegalArgumentException("기간이 올바르지 않습니다.");
         }
 
         if (startDateTime.isAfter(endDateTime)) {

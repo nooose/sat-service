@@ -3,6 +3,7 @@ package com.sat.study;
 import com.sat.member.domain.MemberId;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Participants {
@@ -13,13 +14,16 @@ public class Participants {
     }
 
     public int activeMembersCount() {
-        return (int) participants.stream()
-                .filter(Participant::isActive)
-                .count();
+        return activeMembers().size();
     }
 
     public void add(Participant participant) {
         participants.add(participant);
+    }
+
+    public boolean isPresent(MemberId participantId) {
+        return participants.stream()
+                .anyMatch(it -> it.matches(participantId));
     }
 
     public void approve(MemberId participantId) {
@@ -47,5 +51,11 @@ public class Participants {
                 .filter(participant -> participant.matches(participantId))
                 .findAny()
                 .orElseThrow();
+    }
+
+    public List<Participant> activeMembers() {
+        return participants.stream()
+                .filter(Participant::isActive)
+                .toList();
     }
 }

@@ -2,6 +2,8 @@ package com.sat.study;
 
 import com.sat.member.domain.MemberId;
 
+import java.util.List;
+
 public class StudyGroupEnrollment {
 
     private static final int MIN_CAPACITY = 2;
@@ -27,6 +29,10 @@ public class StudyGroupEnrollment {
     }
 
     public void request(MemberId participantId) {
+        if (participants.isPresent(participantId)) {
+            throw new RuntimeException("더 이상 지원할 수 없습니다.");
+        }
+
         participants.add(new Participant(participantId));
     }
 
@@ -46,8 +52,14 @@ public class StudyGroupEnrollment {
         participants.remove(participantId);
     }
 
-
     public void block(MemberId participantId) {
         participants.block(participantId);
+    }
+
+    public List<MemberId> activeMemberIds() {
+        return participants.activeMembers()
+                .stream()
+                .map(Participant::getId)
+                .toList();
     }
 }
