@@ -1,4 +1,4 @@
-package com.sat.study;
+package com.sat.study.domain;
 
 public enum StudyGroupStatus {
     OPEN, CLOSED, COMPLETE;

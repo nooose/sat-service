@@ -1,4 +1,4 @@
-package com.sat.study;
+package com.sat.study.domain;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
