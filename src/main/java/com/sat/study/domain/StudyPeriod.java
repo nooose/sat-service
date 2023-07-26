@@ -1,7 +1,13 @@
 package com.sat.study.domain;
 
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Embeddable
 public class StudyPeriod {
 
     private LocalDateTime startDateTime;
