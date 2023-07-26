@@ -1,6 +1,12 @@
 package com.sat.study;
 
 import com.sat.member.domain.MemberId;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,7 +14,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Embeddable
 public class Participants {
+
+    @ElementCollection
+    @CollectionTable(name = "participant", joinColumns = @JoinColumn(name = "study_group_id"))
     private Set<Participant> participants = new HashSet<>();
 
     public Participants(Participant host) {

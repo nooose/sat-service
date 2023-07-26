@@ -1,14 +1,21 @@
 package com.sat.study;
 
 import com.sat.member.domain.MemberId;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Embeddable
 public class StudyGroupEnrollment {
 
     private static final int MIN_CAPACITY = 2;
     private static final int MAX_CAPACITY = 10;
 
+    @Embedded
     private Participants participants;
     private int maxCapacity;
 
