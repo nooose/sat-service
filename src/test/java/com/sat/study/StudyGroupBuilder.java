@@ -11,8 +11,9 @@ import com.sat.study.domain.StudyGroupEnrollment;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,8 +27,7 @@ public class StudyGroupBuilder {
     private String contents;
     private StudyCategory category;
     private int maxCapacity = 2;
-    private StudyGroupEnrollment enrollment;
-    private Set<Participant> participants = new HashSet<>();
+    private List<Participant> participants = new ArrayList<>();
     private final LocalDateTime now = LocalDateTime.now();
     private LocalDateTime startDateTime = now.plusDays(1);
     private LocalDateTime endDateTime = now.plusDays(7);
@@ -93,7 +93,7 @@ public class StudyGroupBuilder {
                 requireNonNullElse(title, "테스트 제목"),
                 requireNonNullElse(contents, "테스트 내용"),
                 requireNonNullElse(category, StudyCategory.IT),
-                requireNonNullElse(enrollment, defaultStudyGroupEnrollment()),
+                defaultStudyGroupEnrollment(),
                 startDateTime, endDateTime,
                 requireNonNullElse(studyDays,  Set.of(DayOfWeek.MONDAY)),
                 studyRounds, requireNonNullElse(timePerSession, Duration.ofHours(1))

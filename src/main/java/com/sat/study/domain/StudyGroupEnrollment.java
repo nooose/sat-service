@@ -44,7 +44,7 @@ public class StudyGroupEnrollment {
     }
 
     public void enroll(MemberId participantId) {
-        if (maxCapacity == participants.activeMembersCount()) {
+        if (participants.isMaxCapacity(maxCapacity)) {
             throw new IllegalArgumentException(String.format("최대 수용 인원은 %d명까지입니다.", maxCapacity));
         }
 
