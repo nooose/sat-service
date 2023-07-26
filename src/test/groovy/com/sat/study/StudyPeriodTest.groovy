@@ -1,5 +1,6 @@
 package com.sat.study
 
+import com.sat.study.domain.StudyPeriod
 import spock.lang.Specification
 
 import java.time.LocalDateTime

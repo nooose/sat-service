@@ -1,13 +1,29 @@
-package com.sat.study;
+package com.sat.study.domain;
 
 import com.sat.member.domain.MemberId;
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Getter
+@NoArgsConstructor()
+@Embeddable
 public class Participant {
+
+    @AttributeOverrides({
+            @AttributeOverride(name = "id", column = @Column(name = "participant_id"))
+    })
+    @Embedded
     private MemberId id;
+    @Enumerated(EnumType.STRING)
     private ParticipantStatus status;
 
     public static Participant host(MemberId hostId) {

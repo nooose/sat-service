@@ -5,8 +5,8 @@ import com.sat.member.domain.MemberId
 import spock.lang.Specification
 
 import static com.sat.member.MemberFixtures.일반_사용자
-import static com.sat.study.ParticipantStatus.APPROVED
-import static com.sat.study.ParticipantStatus.WAITING
+import static com.sat.study.domain.ParticipantStatus.APPROVED
+import static com.sat.study.domain.ParticipantStatus.WAITING
 
 class StudyGroupTest extends Specification {
 

@@ -1,7 +1,16 @@
-package com.sat.study;
+package com.sat.study.domain;
 
 import com.sat.member.domain.MemberId;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
@@ -10,12 +19,20 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 public class StudyGroup {
 
+    @Column(name = "study_group_id")
+    @Id @GeneratedValue
     private Long id;
+    @Embedded
     private Host host;
+    @Embedded
     private StudyGroupInfo information;
+    @Embedded
     private StudyGroupEnrollment enrollment;
+    @Enumerated(EnumType.STRING)
     private StudyGroupStatus status;
 
     private StudyGroup(Host host, StudyGroupInfo information, StudyGroupEnrollment enrollment) {

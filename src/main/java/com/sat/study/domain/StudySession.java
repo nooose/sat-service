@@ -1,7 +1,13 @@
-package com.sat.study;
+package com.sat.study.domain;
+
+import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.time.Duration;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Embeddable
 public class StudySession {
 
     private static final int SESSION_MIN_ROUND = 1;
