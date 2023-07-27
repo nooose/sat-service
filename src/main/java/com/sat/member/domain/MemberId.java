@@ -16,10 +16,10 @@ public class MemberId implements Serializable {
 
     @Getter
     @Column(name = "member_id")
-    private String id;
+    private String value;
 
     public MemberId(String id) {
-        this.id = id;
+        this.value = id;
     }
 
     public static MemberId of(String id) {
