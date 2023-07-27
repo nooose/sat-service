@@ -21,10 +21,6 @@ public class Member {
     @Embedded
     private Name name;
 
-    public Member(String name) {
-        this(null, new Name(name));
-    }
-
     public Member(MemberId id, String name) {
         this(id, new Name(name));
     }
@@ -32,9 +28,5 @@ public class Member {
     public Member(MemberId id, Name name) {
         this.id = id;
         this.name = name;
-    }
-
-    public String fetchId() {
-        return id.getId();
     }
 }
