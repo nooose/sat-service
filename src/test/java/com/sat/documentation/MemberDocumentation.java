@@ -1,6 +1,6 @@
 package com.sat.documentation;
 
-import com.sat.member.application.MemberReadService;
+import com.sat.member.application.MemberService;
 import com.sat.member.application.dto.MemberResponse;
 import io.restassured.RestAssured;
 import org.apache.http.HttpHeaders;
@@ -26,7 +26,7 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 class MemberDocumentation extends Documentation {
 
     @MockBean
-    private MemberReadService memberService;
+    private MemberService memberService;
 
     @Test
     void me() {
