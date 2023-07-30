@@ -14,18 +14,23 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final BearerTokenizer bearerTokenizer;
-    private final RequestMatcher requestMatcher;
+    private final RequestMatcher allowdRequestMatcher;
+    private final RequestMatcher authenticatedRequestMatcher;
     private final JwtAuthenticationProvider provider;
 
-    public JwtAuthenticationFilter(RequestMatcher requestMatcher, JwtAuthenticationProvider provider) {
+    public JwtAuthenticationFilter(RequestMatcher allowdRequestMatcher, RequestMatcher authenticatedRequestMatcher, JwtAuthenticationProvider provider) {
         this.bearerTokenizer = new BearerTokenizer();
-        this.requestMatcher = requestMatcher;
+        this.allowdRequestMatcher = allowdRequestMatcher;
+        this.authenticatedRequestMatcher = authenticatedRequestMatcher;
         this.provider = provider;
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return requestMatcher.matches(request);
+        if (allowdRequestMatcher.matches(request)) {
+            return true;
+        }
+        return !authenticatedRequestMatcher.matches(request);
     }
 
     @Override

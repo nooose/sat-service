@@ -9,11 +9,10 @@ import com.sat.auth.config.jwt.JwtAuthenticationProvider;
 import com.sat.auth.domain.OAuth2MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,49 +26,45 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatchers;
 
-import static org.springframework.http.HttpMethod.GET;
-
 @Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfig {
-    private static final RequestMatcher ACCESSIBLE_REQUESTS;
+
+    private static final RequestMatcher ALLOWED_REQUEST_MATCHER;
+    private static final RequestMatcher AUTHENTICATED_REQUEST_MATCHER;
 
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
     static {
-        ACCESSIBLE_REQUESTS = RequestMatchers.anyOf(
-                PathRequest.toH2Console(),
-                AntPathRequestMatcher.antMatcher(GET, "/"),
-                AntPathRequestMatcher.antMatcher(GET, "/oauth2/authorization/**"),
-                AntPathRequestMatcher.antMatcher(GET, "/login/oauth2/code/**")
+        ALLOWED_REQUEST_MATCHER = RequestMatchers.anyOf(
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups")
+        );
+        AUTHENTICATED_REQUEST_MATCHER = RequestMatchers.anyOf(
+                AntPathRequestMatcher.antMatcher("/v1/**")
         );
     }
 
     @Bean
-    public WebSecurityCustomizer configure() {
-        return web -> web.ignoring()
-            .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        var jwtAuthFilter = new JwtAuthenticationFilter(ACCESSIBLE_REQUESTS, jwtAuthenticationProvider);
+        var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, AUTHENTICATED_REQUEST_MATCHER, jwtAuthenticationProvider);
         return http.formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(ACCESSIBLE_REQUESTS).permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers(ALLOWED_REQUEST_MATCHER).permitAll()
+                        .requestMatchers(AUTHENTICATED_REQUEST_MATCHER).authenticated()
+                        .anyRequest().permitAll())
                 .oauth2Login(oAuth -> oAuth
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService()))
                         .successHandler(oAuth2LoginSuccessHandler)
                         .failureHandler(oAuth2LoginFailureHandler))
                 .logout(logout -> logout
+                        .logoutUrl("/logout")
                         .logoutSuccessUrl("/"))
                 .addFilterBefore(jwtAuthFilter, OAuth2AuthorizationRequestRedirectFilter.class)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new CustomAuthenticationEntrypoint()))
