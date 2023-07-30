@@ -51,7 +51,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         cookie.setPath("/");
         // TODO: 쿠키 만료시간을 토큰과 동일한 시간으로 조정
         cookie.setMaxAge(60 * 60);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(false);
         return cookie;
     }
 }
