@@ -15,22 +15,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final BearerTokenizer bearerTokenizer;
     private final RequestMatcher allowdRequestMatcher;
-    private final RequestMatcher authenticatedRequestMatcher;
-    private final JwtAuthenticationProvider provider;
+    private final JwtAuthenticationProvider authenticationProvider;
 
-    public JwtAuthenticationFilter(RequestMatcher allowdRequestMatcher, RequestMatcher authenticatedRequestMatcher, JwtAuthenticationProvider provider) {
+    public JwtAuthenticationFilter(RequestMatcher allowdRequestMatcher, JwtAuthenticationProvider provider) {
         this.bearerTokenizer = new BearerTokenizer();
         this.allowdRequestMatcher = allowdRequestMatcher;
-        this.authenticatedRequestMatcher = authenticatedRequestMatcher;
-        this.provider = provider;
+        this.authenticationProvider = provider;
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        if (allowdRequestMatcher.matches(request)) {
-            return true;
-        }
-        return !authenticatedRequestMatcher.matches(request);
+        return allowdRequestMatcher.matches(request);
     }
 
     @Override
@@ -41,8 +36,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
-        provider.authenticate(jwt.get());
+        System.out.println(jwt.get());
+        authenticationProvider.authenticate(jwt.get());
         filterChain.doFilter(request, response);
     }
 }

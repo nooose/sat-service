@@ -9,17 +9,19 @@ import com.sat.auth.config.jwt.JwtAuthenticationProvider;
 import com.sat.auth.domain.OAuth2MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
-import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -32,7 +34,6 @@ import org.springframework.security.web.util.matcher.RequestMatchers;
 public class SecurityConfig {
 
     private static final RequestMatcher ALLOWED_REQUEST_MATCHER;
-    private static final RequestMatcher AUTHENTICATED_REQUEST_MATCHER;
 
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
@@ -40,33 +41,34 @@ public class SecurityConfig {
 
     static {
         ALLOWED_REQUEST_MATCHER = RequestMatchers.anyOf(
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups")
-        );
-        AUTHENTICATED_REQUEST_MATCHER = RequestMatchers.anyOf(
-                AntPathRequestMatcher.antMatcher("/v1/**")
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups"),
+                PathRequest.toH2Console()
         );
     }
 
     @Bean
+    public WebSecurityCustomizer configure() {
+        return web -> web.ignoring()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
+                .requestMatchers( "/static/**", "/index.html", "/images/**", "manifest.json");
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, AUTHENTICATED_REQUEST_MATCHER, jwtAuthenticationProvider);
-        return http.formLogin(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
+        var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, jwtAuthenticationProvider);
+        return http.csrf(AbstractHttpConfigurer::disable)
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(ALLOWED_REQUEST_MATCHER).permitAll()
-                        .requestMatchers(AUTHENTICATED_REQUEST_MATCHER).authenticated()
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
                 .oauth2Login(oAuth -> oAuth
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService()))
                         .successHandler(oAuth2LoginSuccessHandler)
                         .failureHandler(oAuth2LoginFailureHandler))
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/"))
-                .addFilterBefore(jwtAuthFilter, OAuth2AuthorizationRequestRedirectFilter.class)
+                .addFilterAfter(jwtAuthFilter, OAuth2LoginAuthenticationFilter.class)
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new CustomAuthenticationEntrypoint()))
                 .build();
     }
