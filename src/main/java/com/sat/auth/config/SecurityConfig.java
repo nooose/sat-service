@@ -42,6 +42,7 @@ public class SecurityConfig {
     static {
         ALLOWED_REQUEST_MATCHER = RequestMatchers.anyOf(
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/login*"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups"),
                 PathRequest.toH2Console()
         );
@@ -51,7 +52,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer configure() {
         return web -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers( "/static/**", "/index.html", "/images/**", "manifest.json");
+                .requestMatchers("index.html", "manifest.json", "/static/**", "/images/**");
     }
 
     @Bean
