@@ -1,9 +1,11 @@
 package com.sat.auth.config.jwt;
 
+import com.sat.auth.domain.JwtAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -36,8 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        System.out.println(jwt.get());
-        authenticationProvider.authenticate(jwt.get());
+
+        JwtAuthenticationToken token = authenticationProvider.authenticate(jwt.get());
+        SecurityContextHolder.getContext().setAuthentication(token);
         filterChain.doFilter(request, response);
     }
 }
