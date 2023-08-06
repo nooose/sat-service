@@ -101,15 +101,15 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos
 
 ### Front-End
-front-end/node_modules
-front-end/.pnp
-front-end/.pnp.js
+front-end/react/node_modules
+front-end/react/.pnp
+front-end/react/.pnp.js
 
 # testing
-front-end/coverage
+front-end/react/coverage
 
 # production
-front-end/build
+front-end/react/build
 
 # misc
 front-end/.env.local
