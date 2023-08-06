@@ -20,7 +20,7 @@ export const Login = () => {
             .then(response => {
                 localStorage.setItem("sat-access-token", response.data.accessToken);
                 localStorage.setItem("sat-refresh-token", response.data.refreshToken);
-                navigate(-1);
+                navigate("/");
             })
             .catch(error => {
                 console.log(error)

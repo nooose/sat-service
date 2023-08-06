@@ -21,7 +21,7 @@ const Header = () => {
         <div>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h3">
+                    <Typography variant="h4" sx={{flexGrow: 2}}>
                         SAT
                     </Typography>
                     {isLoggedIn ? (
