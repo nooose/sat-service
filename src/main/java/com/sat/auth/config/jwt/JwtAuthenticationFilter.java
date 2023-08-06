@@ -1,9 +1,11 @@
 package com.sat.auth.config.jwt;
 
+import com.sat.auth.domain.JwtAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -14,18 +16,18 @@ import java.util.Optional;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final BearerTokenizer bearerTokenizer;
-    private final RequestMatcher requestMatcher;
-    private final JwtAuthenticationProvider provider;
+    private final RequestMatcher allowdRequestMatcher;
+    private final JwtAuthenticationProvider authenticationProvider;
 
-    public JwtAuthenticationFilter(RequestMatcher requestMatcher, JwtAuthenticationProvider provider) {
+    public JwtAuthenticationFilter(RequestMatcher allowdRequestMatcher, JwtAuthenticationProvider provider) {
         this.bearerTokenizer = new BearerTokenizer();
-        this.requestMatcher = requestMatcher;
-        this.provider = provider;
+        this.allowdRequestMatcher = allowdRequestMatcher;
+        this.authenticationProvider = provider;
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        return requestMatcher.matches(request);
+        return allowdRequestMatcher.matches(request);
     }
 
     @Override
@@ -37,7 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        provider.authenticate(jwt.get());
+        JwtAuthenticationToken token = authenticationProvider.authenticate(jwt.get());
+        SecurityContextHolder.getContext().setAuthentication(token);
         filterChain.doFilter(request, response);
     }
 }

@@ -99,3 +99,24 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos
+
+### Front-End
+front-end/react/node_modules
+front-end/react/.pnp
+front-end/react/.pnp.js
+
+# testing
+front-end/react/coverage
+
+# production
+front-end/react/build
+
+# misc
+front-end/.env.local
+front-end/.env.development.local
+front-end/.env.test.local
+front-end/.env.production.local
+
+front-end/npm-debug.log*
+front-end/yarn-debug.log*
+front-end/yarn-error.log*

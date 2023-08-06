@@ -18,8 +18,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Component
 public class JwtProcessor {
-    public static final String ACCESS_TOKEN = "accessToken";
-    public static final String REFRESH_TOKEN = "refreshToken";
+    public static final String ACCESS_TOKEN = "sat-access-token";
+    public static final String REFRESH_TOKEN = "sat-refresh-token";
 
     private final JwtProperties jwtProperties;
 
