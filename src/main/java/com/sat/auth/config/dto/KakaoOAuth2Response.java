@@ -1,10 +1,12 @@
 package com.sat.auth.config.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 public record KakaoOAuth2Response(
         String id,
         Map<String, Object> properties,
+        @JsonProperty("kakao_account")
         KakaoAccount kakaoAccount
 ) {
     public record KakaoAccount(
@@ -13,21 +15,11 @@ public record KakaoOAuth2Response(
         public record Profile(
                 String nickname
         ) {
-            public static Profile of(Map<String, Object> attributes) {
-                return new Profile(String.valueOf(attributes.get("nickname")));
-            }
-        }
-
-        public static KakaoAccount of(Map<String, Object> attributes) {
-            return new KakaoAccount(Profile.of((Map<String, Object>) attributes.get("profile")));
         }
     }
 
-    public static KakaoOAuth2Response of(Map<String, Object> attributes) {
-        return new KakaoOAuth2Response(
-                String.valueOf(attributes.get("id")),
-                (Map<String, Object>) attributes.get("properties"),
-                KakaoAccount.of((Map<String, Object>) attributes.get("kakao_account"))
-        );
+    @Override
+    public String id() {
+        return "kakao-" + id;
     }
 }
