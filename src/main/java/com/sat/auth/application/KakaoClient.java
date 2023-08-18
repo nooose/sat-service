@@ -12,17 +12,23 @@ import org.springframework.web.client.RestTemplate;
 
 @RequiredArgsConstructor
 @Component
-public class KakaoClient {
+public class KakaoClient implements UserInfoClient {
 
     @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
     private String userInfoUri;
     private final RestTemplate restTemplate;
 
+    @Override
     public KakaoOAuth2Response response(String accessToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         var request = new RequestEntity<>(headers, HttpMethod.GET, URI.create(userInfoUri));
         var response = restTemplate.exchange(request, KakaoOAuth2Response.class);
         return response.getBody();
+    }
+
+    @Override
+    public boolean isSupported(String providerName) {
+        return providerName.equals("kakao");
     }
 }

@@ -8,7 +8,7 @@ public record KakaoOAuth2Response(
         Map<String, Object> properties,
         @JsonProperty("kakao_account")
         KakaoAccount kakaoAccount
-) {
+) implements OAuth2Response {
     public record KakaoAccount(
             Profile profile
     ) {
@@ -21,5 +21,10 @@ public record KakaoOAuth2Response(
     @Override
     public String id() {
         return "kakao-" + id;
+    }
+
+    @Override
+    public String name() {
+        return kakaoAccount.profile.nickname;
     }
 }
