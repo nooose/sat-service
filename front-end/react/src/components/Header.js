@@ -3,7 +3,7 @@ import {
     AppBar, Toolbar, Typography
 } from "@mui/material";
 import LogoutButton from "./LogoutButton";
-import LoginButton from "./LoginButton";
+import KakaoLogin from "./KakaoLogin";
 
 const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,7 +27,7 @@ const Header = () => {
                     {isLoggedIn ? (
                         <LogoutButton/>
                     ) : (
-                        <LoginButton/>
+                        <KakaoLogin/>
                     )}
                 </Toolbar>
             </AppBar>

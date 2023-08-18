@@ -104,6 +104,7 @@ $RECYCLE.BIN/
 front-end/react/node_modules
 front-end/react/.pnp
 front-end/react/.pnp.js
+front-end/react/.env
 
 # testing
 front-end/react/coverage
