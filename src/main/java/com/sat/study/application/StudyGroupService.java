@@ -1,5 +1,6 @@
 package com.sat.study.application;
 
+import com.sat.common.exception.DataNotFoundException;
 import com.sat.member.domain.MemberId;
 import com.sat.study.application.dto.ParticipantUpdateRequest;
 import com.sat.study.application.dto.StudyGroupCreateRequest;
@@ -55,6 +56,7 @@ public class StudyGroupService {
     }
 
     private StudyGroup getStudyGroup(Long studyGroupId) {
-        return studyGroupRepository.findById(studyGroupId).orElseThrow();
+        return studyGroupRepository.findById(studyGroupId)
+                .orElseThrow(() -> new DataNotFoundException(studyGroupId + " 스터디그룹을 찾을 수 없습니다."));
     }
 }

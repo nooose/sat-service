@@ -1,5 +1,6 @@
 package com.sat.member.application;
 
+import com.sat.common.exception.DataNotFoundException;
 import com.sat.member.application.dto.MemberResponse;
 import com.sat.member.domain.Member;
 import com.sat.member.domain.MemberId;
@@ -18,7 +19,7 @@ public class MemberService {
     public MemberResponse findBy(String principal) {
         return memberRepository.findById(MemberId.of(principal))
                 .map(MemberResponse::of)
-                .orElseThrow();
+                .orElseThrow(() -> new DataNotFoundException(principal + " 사용자를 찾을 수 없습니다."));
     }
 
     @Transactional

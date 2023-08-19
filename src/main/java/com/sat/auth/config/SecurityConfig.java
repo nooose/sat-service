@@ -1,5 +1,6 @@
 package com.sat.auth.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sat.auth.config.jwt.JwtAuthenticationFilter;
 import com.sat.auth.config.jwt.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class SecurityConfig {
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/oauth2"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/login/kakao"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/error"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups"),
                 PathRequest.toH2Console()
         );
@@ -46,7 +48,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, ObjectMapper objectMapper) throws Exception {
         var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, jwtAuthenticationProvider);
         return http.csrf(AbstractHttpConfigurer::disable)
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
@@ -56,6 +58,7 @@ public class SecurityConfig {
                         .requestMatchers(ALLOWED_REQUEST_MATCHER).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper)))
                 .build();
     }
 }
