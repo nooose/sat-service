@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 export const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -11,18 +10,18 @@ export const Login = () => {
   const grantType = "authorization_code";
 
   useEffect(() => {
-    const codeVerifier = Cookies.get('code_verifier');
-    exchangeCodeForAccessToken(grantType, CLIENT_ID, REDIRECT_URI, searchParams.get('code'), codeVerifier);
+    const codeVerifier = sessionStorage.getItem("code_verifier");
+    exchangeCodeForAccessToken(grantType, searchParams.get('code'), codeVerifier);
   }, []);
 
-  const exchangeCodeForAccessToken = (grantType, clientId, redirectUri, code, codeVerifier) => {
+  const exchangeCodeForAccessToken = (grantType, code, codeVerifier) => {
     axios.post(
         `https://kauth.kakao.com/oauth/token`, { },
         {
           params: {
             grant_type: grantType,
-            client_id: clientId,
-            redirect_uri: redirectUri,
+            client_id: CLIENT_ID,
+            redirect_uri: REDIRECT_URI,
             code: code,
             code_verifier: codeVerifier
           },
