@@ -5,20 +5,26 @@ import axios from "axios";
 export const Login = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
+  const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
+  const grantType = "authorization_code";
 
   useEffect(() => {
-    const grantType = "authorization_code";
-    const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-    exchangeCodeForAccessToken(grantType, CLIENT_ID, REDIRECT_URI,
-        searchParams.get('code'));
+    const codeVerifier = sessionStorage.getItem("code_verifier");
+    exchangeCodeForAccessToken(grantType, searchParams.get('code'), codeVerifier);
   }, []);
 
-  const exchangeCodeForAccessToken = (grantType, clientId, redirectUri, code) => {
+  const exchangeCodeForAccessToken = (grantType, code, codeVerifier) => {
     axios.post(
-        `https://kauth.kakao.com/oauth/token?grant_type=${grantType}&client_id=${clientId}&redirect_uri=${redirectUri}&code=${code}`,
-        {},
+        `https://kauth.kakao.com/oauth/token`, { },
         {
+          params: {
+            grant_type: grantType,
+            client_id: CLIENT_ID,
+            redirect_uri: REDIRECT_URI,
+            code: code,
+            code_verifier: codeVerifier
+          },
           headers: {
             "Content-type": "application/x-www-form-urlencoded;charset=utf-8"
           },
