@@ -1,6 +1,7 @@
-package com.sat.common.exception;
+package com.sat.common.exhandler;
 
 import com.sat.common.dto.ErrorResponse;
+import com.sat.common.exception.DataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
