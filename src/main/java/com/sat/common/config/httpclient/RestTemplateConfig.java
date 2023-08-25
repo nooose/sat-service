@@ -1,4 +1,4 @@
-package com.sat.common.config.http;
+package com.sat.common.config.httpclient;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
