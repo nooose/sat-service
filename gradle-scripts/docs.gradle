@@ -1,0 +1,20 @@
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+tasks.register('copyDocument', Copy) {
+    dependsOn asciidoctor
+
+    from("$buildDir/docs/asciidoc")
+    into("src/main/resources/static/docs/restdocs")
+}
+
+test {
+    outputs.dir snippetsDir
+}
