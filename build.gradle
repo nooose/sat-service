@@ -17,7 +17,7 @@ configurations {
     asciidoctorExt
 }
 
-apply from: 'gradle-scritps/docs.gradle'
+apply from: 'gradle-scripts/docs.gradle'
 
 ext {
     snippetsDir = file('build/generated-snippets')
@@ -55,7 +55,7 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
-apply from: 'gradle-scritps/etc.gradle'
+apply from: 'gradle-scripts/etc.gradle'
 
 test {
     useJUnitPlatform()
