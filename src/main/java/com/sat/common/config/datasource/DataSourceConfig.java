@@ -1,10 +1,10 @@
 package com.sat.common.config.datasource;
 
 import com.zaxxer.hikari.HikariConfig;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.config.BeanDefinitionCustomizer;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
@@ -13,7 +13,6 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 @RequiredArgsConstructor
-@ConditionalOnBean(DataSourceProperties.class)
 @Configuration
 public class DataSourceConfig {
 
@@ -22,39 +21,45 @@ public class DataSourceConfig {
     private final DataSourceProperties dataSourceProperties;
     private final GenericApplicationContext applicationContext;
 
-    @PostConstruct
-    public void init() {
-        for (var entry : dataSourceProperties.groups().entrySet()) {
+    @Bean
+    public DataSource init() {
+        DataSource primaryDataSource = null;
+        for (var entry: dataSourceProperties.groups().entrySet()) {
             String key = entry.getKey();
-            var dataSourceInfo = entry.getValue();
             HikariConfig defaultHikariConfig = dataSourceProperties.hikari();
-            DataSource dataSource = DataSourceFactory.generateDataSource(key, dataSourceInfo, defaultHikariConfig);
-            registerDataSourceBean(entry, dataSource);
+            DataSource dataSource = entry.getValue().initializeDataSource(key, defaultHikariConfig);
+            DataSource dataSourceBean = registerDataSource(entry, dataSource);
+            if (entry.getValue().primary()) {
+                primaryDataSource = dataSourceBean;
+            }
         }
+        return primaryDataSource;
     }
 
-    private void registerDataSourceBean(Map.Entry<String, DataSourceProperties.FlexibleDataSourceInfo> dataSourceInfoEntry, DataSource dataSource) {
+    private DataSource registerDataSource(Map.Entry<String, DataSourceProperties.DataSourceGroup> dataSourceInfoEntry, DataSource dataSource) {
         String beanName = dataSourceInfoEntry.getKey() + DATA_SOURCE_SUFFIX;
         var dataSourceInfo = dataSourceInfoEntry.getValue();
-        registerDataSourceBeanWithCustomization(dataSource, dataSourceInfo, beanName);
+
+        DataSource initializedDataSource = initializeAndWrapDataSource(dataSourceInfo.isCluster(), dataSource, beanName);
+        registerBean(beanName, initializedDataSource, dataSourceInfo.primary());
+        return initializedDataSource;
     }
 
-    private void registerDataSourceBeanWithCustomization(DataSource dataSource, DataSourceProperties.FlexibleDataSourceInfo dataSourceInfo, String beanName) {
-        if (dataSourceInfo.isCluster()) {
+    private DataSource initializeAndWrapDataSource(boolean isCluster, DataSource dataSource, String beanName) {
+        if (isCluster) {
             applicationContext.getBeanFactory().initializeBean(dataSource, beanName);
-            applicationContext.registerBean(beanName, LazyConnectionDataSourceProxy.class, primaryBeanCustomizer(dataSourceInfo, dataSource));
-            return;
+            return new LazyConnectionDataSourceProxy(dataSource);
         }
-        applicationContext.registerBean(beanName, DataSource.class, () -> dataSource, primaryBeanCustomizer(dataSourceInfo, dataSource));
+        return dataSource;
     }
 
-    private static BeanDefinitionCustomizer primaryBeanCustomizer(DataSourceProperties.FlexibleDataSourceInfo dataSourceInfo, DataSource dataSource) {
-        return beanDefinition -> {
-            beanDefinition.getConstructorArgumentValues().addGenericArgumentValue(dataSource);
-            beanDefinition.isSingleton();
-            if (dataSourceInfo.primary()) {
-                beanDefinition.setPrimary(true);
-            }
-        };
+    private void registerBean(String beanName, Object object, boolean isPrimary) {
+        var beanFactory = applicationContext.getBeanFactory();
+        var beanDefinition = BeanDefinitionBuilder.genericBeanDefinition()
+                .setPrimary(isPrimary)
+                .getBeanDefinition();
+        ((DefaultListableBeanFactory) beanFactory).registerBeanDefinition(beanName, beanDefinition);
+        beanFactory.registerSingleton(beanName, object);
+        beanFactory.initializeBean(object, beanName);
     }
 }

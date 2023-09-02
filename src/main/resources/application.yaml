@@ -8,8 +8,18 @@ spring:
   h2:
     console:
       enabled: true
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
   datasource:
-    url: jdbc:h2:mem:testdb
+    groups:
+      default:
+        primary: true
+        writer:
+          url: jdbc:h2:mem:testdb
+          username: sa
 
   security:
     oauth2:
