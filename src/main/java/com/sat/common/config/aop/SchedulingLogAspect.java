@@ -11,12 +11,12 @@ import org.aspectj.lang.annotation.Before;
 @Aspect
 public class SchedulingLogAspect {
 
-    @Before("@annotation(org.springframework.scheduling.annotation.Scheduled)")
+    @Before(value = "@annotation(org.springframework.scheduling.annotation.Scheduled)")
     public void doBefore(JoinPoint joinPoint) {
         log.info("{} 스케줄러 시작", joinPoint.getSignature().toShortString());
     }
 
-    @After("@annotation(org.springframework.scheduling.annotation.Scheduled)")
+    @After(value = "@annotation(org.springframework.scheduling.annotation.Scheduled)")
     public void doAfter(JoinPoint joinPoint) {
         log.info("{} 스케줄러 종료", joinPoint.getSignature().toShortString());
     }

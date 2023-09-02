@@ -24,7 +24,7 @@ public class DataSourceConfig {
     @Bean
     public DataSource init() {
         DataSource primaryDataSource = null;
-        for (var entry: dataSourceProperties.groups().entrySet()) {
+        for (var entry : dataSourceProperties.groups().entrySet()) {
             String key = entry.getKey();
             HikariConfig defaultHikariConfig = dataSourceProperties.hikari();
             DataSource dataSource = entry.getValue().initializeDataSource(key, defaultHikariConfig);

@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import java.util.LinkedHashMap;
@@ -13,7 +12,6 @@ import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
-@Component
 public class LogInterceptor implements HandlerInterceptor {
 
     public static final List<String> LOG_HEADER_NAMES = List.of(
@@ -23,6 +21,9 @@ public class LogInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (skipCondition(request)) {
+            return true;
+        }
         logRequestBasicInfo(request);
         logRequestHeaderInfo(request);
         return true;
@@ -30,7 +31,14 @@ public class LogInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
+        if (skipCondition(request)) {
+            return;
+        }
         logResponseBasicInfo(request);
+    }
+
+    private static boolean skipCondition(HttpServletRequest request) {
+        return request.getRequestURI().startsWith("/static") || request.getRequestURI().equals("/favicon.ico");
     }
 
     private static void logRequestBasicInfo(HttpServletRequest request) {
