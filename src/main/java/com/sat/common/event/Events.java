@@ -9,7 +9,7 @@ public class Events {
         Events.publisher = publisher;
     }
 
-    public static void raise(Object event) {
+    public static void publish(Object event) {
         if (publisher != null) {
             publisher.publishEvent(event);
         }
