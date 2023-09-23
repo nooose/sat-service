@@ -12,7 +12,7 @@ const KakaoLogin = () => {
             if (!error) {
                 sessionStorage.setItem("code_verifier", verifier);
                 sessionStorage.setItem("code_challenge", challenge);
-                window.location.href = kakaoOAuthURL(sessionStorage.getItem("code_challenge"));
+                window.location.href = kakaoOAuthURL(challenge);
             }
         });
     };

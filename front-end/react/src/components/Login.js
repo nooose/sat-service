@@ -11,7 +11,8 @@ export const Login = () => {
 
   useEffect(() => {
     const codeVerifier = sessionStorage.getItem("code_verifier");
-    exchangeCodeForAccessToken(grantType, searchParams.get('code'), codeVerifier);
+    const authorizationCode = searchParams.get('code');
+    exchangeCodeForAccessToken(grantType, authorizationCode, codeVerifier);
   }, []);
 
   const exchangeCodeForAccessToken = (grantType, code, codeVerifier) => {
