@@ -12,10 +12,6 @@ import java.util.Map;
 @Slf4j
 public class RoutingDataSource extends AbstractRoutingDataSource {
 
-    public enum Target {
-        WRITER, READER
-    }
-
     public RoutingDataSource(@NotNull DataSource readerDataSource, @NotNull DataSource writerDataSource) {
         Map<Object, Object> dataSources = Map.of(Target.WRITER, writerDataSource, Target.READER, readerDataSource);
         setTargetDataSources(dataSources);
@@ -31,5 +27,9 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
             log.debug("routing: {}", dataSource.getPoolName());
         }
         return target;
+    }
+
+    public enum Target {
+        WRITER, READER
     }
 }
