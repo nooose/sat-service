@@ -8,8 +8,14 @@ spring:
   h2:
     console:
       enabled: true
+
   datasource:
-    url: jdbc:h2:mem:testdb
+    writer:
+      url: jdbc:h2:mem:testdb
+      username: sa
+    reader:
+      url: jdbc:h2:mem:testdb
+      username: sa
 
   security:
     oauth2:

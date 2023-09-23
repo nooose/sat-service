@@ -17,6 +17,8 @@ configurations {
     asciidoctorExt
 }
 
+apply from: 'gradle-scripts/docs.gradle'
+
 ext {
     snippetsDir = file('build/generated-snippets')
     spockVersion = '2.4-M1-groovy-4.0'
@@ -53,24 +55,8 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
-bootJar {
-    archiveFileName = 'application.jar'
-}
+apply from: 'gradle-scripts/etc.gradle'
 
 test {
-    outputs.dir snippetsDir
     useJUnitPlatform()
-}
-
-task testDocument(type: Test) {
-    useJUnitPlatform()
-    filter {
-        includeTestsMatching "*.documentation.*"
-    }
-}
-
-asciidoctor {
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
-    dependsOn test
 }

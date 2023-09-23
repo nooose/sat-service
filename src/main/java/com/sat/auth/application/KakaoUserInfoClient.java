@@ -1,7 +1,6 @@
 package com.sat.auth.application;
 
 import com.sat.auth.config.dto.KakaoOAuth2Response;
-import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -10,9 +9,11 @@ import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+
 @RequiredArgsConstructor
 @Component
-public class KakaoClient implements UserInfoClient {
+public class KakaoUserInfoClient implements UserInfoClient {
 
     @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
     private String userInfoUri;
