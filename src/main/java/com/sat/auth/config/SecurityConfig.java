@@ -44,7 +44,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer configure() {
         return web -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("index.html", "manifest.json", "/static/**", "/images/**");
+                .requestMatchers("index.html", "manifest.json", "/static/**", "/images/**", "/error");
     }
 
     @Bean
@@ -58,7 +58,8 @@ public class SecurityConfig {
                         .requestMatchers(ALLOWED_REQUEST_MATCHER).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper)))
+                .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
+                        .accessDeniedHandler(new CustomAccessDeniedHandler(objectMapper)))
                 .build();
     }
 }
