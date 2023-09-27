@@ -1,4 +1,4 @@
-package com.sat.auth.config.login;
+package com.sat.auth.config.login.oauth2;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,9 +1,7 @@
 package com.sat.auth.config.login;
 
-import com.sat.auth.config.jwt.JwtProcessor;
-import com.sat.auth.config.jwt.TokenPair;
-import com.sat.auth.domain.JwtAuthenticationToken;
-import com.sat.auth.domain.RefreshAuthenticationToken;
+import com.sat.auth.config.application.JwtProcessor;
+import com.sat.auth.config.application.dto.TokenPair;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;

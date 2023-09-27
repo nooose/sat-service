@@ -1,6 +1,6 @@
 package com.sat.utils;
 
-import com.sat.auth.config.jwt.JwtProcessor;
+import com.sat.auth.config.application.JwtProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

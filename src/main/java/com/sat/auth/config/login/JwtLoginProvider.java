@@ -1,11 +1,9 @@
 package com.sat.auth.config.login;
 
-import com.sat.auth.application.UserInfoClient;
+import com.sat.auth.config.login.oauth2.UserInfoClient;
 import com.sat.auth.config.dto.OAuth2Response;
-import com.sat.auth.config.jwt.JwtProcessor;
-import com.sat.auth.config.jwt.TokenPair;
-import com.sat.auth.domain.JwtAuthenticationToken;
-import com.sat.auth.domain.RoleType;
+import com.sat.auth.config.application.JwtProcessor;
+import com.sat.auth.config.application.dto.TokenPair;
 import com.sat.member.application.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -37,6 +35,7 @@ public class JwtLoginProvider implements AuthenticationProvider {
                 .orElseThrow(() -> new ProviderNotFoundException(providerName + "은(는) 지원하지 않습니다."));
 
         memberService.joinIfNotExists(oAuth2Response.id(), oAuth2Response.name());
+        // TODO: Member 권한까지 DB에서 조회하기
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(RoleType.MEMBER.getName()));
         TokenPair tokenPair = jwtProcessor.createToken(oAuth2Response.id(), authorities);
         return JwtAuthenticationToken.authenticatedToken(oAuth2Response.id(), tokenPair, authorities);

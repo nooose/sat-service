@@ -1,4 +1,4 @@
-package com.sat.auth.config.jwt;
+package com.sat.auth.config.login;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

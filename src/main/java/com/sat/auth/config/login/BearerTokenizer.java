@@ -1,8 +1,9 @@
-package com.sat.auth.config.jwt;
+package com.sat.auth.config.login;
 
 import jakarta.servlet.http.HttpServletRequest;
-import java.util.Optional;
 import org.springframework.http.HttpHeaders;
+
+import java.util.Optional;
 
 public class BearerTokenizer {
 

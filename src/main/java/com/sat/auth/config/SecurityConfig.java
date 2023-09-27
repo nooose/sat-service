@@ -1,12 +1,14 @@
 package com.sat.auth.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sat.auth.config.jwt.JwtAuthenticationFilter;
-import com.sat.auth.config.jwt.JwtAuthenticationProvider;
-import com.sat.auth.config.login.AuthorizationCodeFilter;
+import com.sat.auth.config.exception.CustomAccessDeniedHandler;
+import com.sat.auth.config.exception.CustomAuthenticationEntryPoint;
+import com.sat.auth.config.login.JwtAuthenticationFilter;
+import com.sat.auth.config.login.JwtAuthenticationProvider;
+import com.sat.auth.config.login.oauth2.AuthorizationCodeFilter;
 import com.sat.auth.config.login.JwtLoginFilter;
 import com.sat.auth.config.login.TokenRepository;
-import com.sat.auth.domain.RoleType;
+import com.sat.auth.config.login.RoleType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -63,7 +65,7 @@ public class SecurityConfig {
                                                    AuthenticationManager authenticationManager,
                                                    TokenRepository tokenRepository,
                                                    ObjectMapper objectMapper) throws Exception {
-        var jwtLoginFilter = new JwtLoginFilter(authenticationManager, objectMapper, tokenRepository);
+        var jwtLoginFilter = new JwtLoginFilter(authenticationManager, tokenRepository, objectMapper);
         var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, jwtAuthenticationProvider);
         var authorizationCodeFilter = new AuthorizationCodeFilter();
         return http.csrf(AbstractHttpConfigurer::disable)
@@ -76,7 +78,8 @@ public class SecurityConfig {
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(authorizationCodeFilter, JwtLoginFilter.class)
                 .addFilterAfter(jwtAuthFilter, AuthorizationCodeFilter.class)
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
                         .accessDeniedHandler(new CustomAccessDeniedHandler(objectMapper)))
                 .build();
     }

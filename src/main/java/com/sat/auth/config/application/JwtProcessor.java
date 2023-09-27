@@ -1,8 +1,10 @@
-package com.sat.auth.config.jwt;
+package com.sat.auth.config.application;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import com.sat.auth.config.application.dto.TokenPair;
+import com.sat.auth.config.jwt.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

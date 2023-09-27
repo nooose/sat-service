@@ -2,9 +2,7 @@ package com.sat.auth.config.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sat.auth.config.dto.TokenRequest;
-import com.sat.auth.config.jwt.TokenPair;
-import com.sat.auth.domain.JwtAuthenticationToken;
-import com.sat.auth.domain.RefreshAuthenticationToken;
+import com.sat.auth.config.application.dto.TokenPair;
 import com.sat.common.dto.ErrorResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,13 +22,13 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private static final int PROVIDER_INDEX = 1;
 
-    private final ObjectMapper objectMapper;
     private final TokenRepository tokenRepository;
+    private final ObjectMapper objectMapper;
 
-    public JwtLoginFilter(AuthenticationManager authenticationManager, ObjectMapper objectMapper, TokenRepository tokenRepository) {
+    public JwtLoginFilter(AuthenticationManager authenticationManager, TokenRepository tokenRepository, ObjectMapper objectMapper) {
         super("/*/token", authenticationManager);
-        this.objectMapper = objectMapper;
         this.tokenRepository = tokenRepository;
+        this.objectMapper = objectMapper;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.sat.auth.domain;
+package com.sat.auth.config.login;
 
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

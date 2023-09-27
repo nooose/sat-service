@@ -1,6 +1,6 @@
 package com.sat.auth.config.login;
 
-import com.sat.auth.config.jwt.TokenPair;
+import com.sat.auth.config.application.dto.TokenPair;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;

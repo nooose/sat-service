@@ -1,4 +1,4 @@
-package com.sat.auth.config.jwt;
+package com.sat.auth.config.application.dto;
 
 
 public record TokenPair(
