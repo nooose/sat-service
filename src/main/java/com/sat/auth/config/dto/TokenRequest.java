@@ -1,6 +1,14 @@
 package com.sat.auth.config.dto;
 
+import org.springframework.util.StringUtils;
+
 public record TokenRequest(
-    String accessToken
+    TokenRequestType type,
+    String accessToken,
+    String refreshToken
 ) {
+    public boolean isRefreshRequest() {
+        return type == TokenRequestType.REFRESH && StringUtils.hasText(refreshToken);
+    }
+
 }
