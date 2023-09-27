@@ -1,6 +1,6 @@
 package com.sat.auth.config.jwt
 
-import com.sat.auth.config.jwt.JwtProperties
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification

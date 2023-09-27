@@ -1,4 +1,4 @@
-package com.sat.auth.config;
+package com.sat.auth.config.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sat.common.dto.ErrorResponse;

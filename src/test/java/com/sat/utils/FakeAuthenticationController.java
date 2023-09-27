@@ -1,6 +1,6 @@
 package com.sat.utils;
 
-import com.sat.auth.config.jwt.JwtProcessor;
+import com.sat.auth.application.JwtProcessor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class FakeAuthenticationController {
 
     @GetMapping("/token")
     public ResponseEntity<Void> accessToken(@RequestParam String id) {
-        String token = jwtProcessor.createToken(id).accessToken();
+        String token = jwtProcessor.createToken(id, null).accessToken();
         return ResponseEntity.ok().header("X-Access-Token", token).build();
     }
 }

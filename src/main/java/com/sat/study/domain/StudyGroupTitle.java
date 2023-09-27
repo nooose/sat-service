@@ -27,6 +27,6 @@ public class StudyGroupTitle {
     }
 
     public static boolean isValid(String value) {
-        return value.length() < MIN_LENGTH || value.length() > MAX_LENGTH;
+        return value != null && value.length() >= MIN_LENGTH && value.length() <= MAX_LENGTH;
     }
 }

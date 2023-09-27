@@ -1,7 +1,8 @@
-package com.sat.auth.config.jwt;
+package com.sat.auth.config.login;
 
-import com.sat.auth.domain.JwtAuthenticationToken;
+import com.sat.auth.application.JwtProcessor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -10,11 +11,11 @@ public class JwtAuthenticationProvider {
 
     private final JwtProcessor jwtProcessor;
 
-    public JwtAuthenticationToken authenticate(String token) {
+    public Authentication authenticate(String token) {
         if (!jwtProcessor.isValidToken(token)) {
             return JwtAuthenticationToken.unauthenticatedToken();
         }
 
-        return JwtAuthenticationToken.authenticatedToken(jwtProcessor.getId(token), jwtProcessor.getRoles(token));
+        return JwtAuthenticationToken.authenticatedToken(jwtProcessor.getId(token), jwtProcessor.getAuthorities(token));
     }
 }

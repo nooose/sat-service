@@ -1,11 +1,9 @@
 package com.sat.common.exception;
 
-public class NotSupportedException extends NoStackTraceException {
+import javax.naming.AuthenticationException;
+
+public class NotSupportedException extends AuthenticationException {
     public NotSupportedException(String message) {
         super(message);
-    }
-
-    public NotSupportedException(String message, Throwable cause) {
-        super(message, cause);
     }
 }

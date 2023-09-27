@@ -1,4 +1,4 @@
-package com.sat.auth.application;
+package com.sat.auth.config.login.oauth2;
 
 import com.sat.auth.config.dto.OAuth2Response;
 
