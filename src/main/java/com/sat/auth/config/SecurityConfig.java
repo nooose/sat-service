@@ -3,6 +3,7 @@ package com.sat.auth.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sat.auth.config.jwt.JwtAuthenticationFilter;
 import com.sat.auth.config.jwt.JwtAuthenticationProvider;
+import com.sat.auth.config.login.AuthorizationCodeFilter;
 import com.sat.auth.config.login.JwtLoginFilter;
 import com.sat.auth.config.login.TokenRepository;
 import com.sat.auth.domain.RoleType;
@@ -64,6 +65,7 @@ public class SecurityConfig {
                                                    ObjectMapper objectMapper) throws Exception {
         var jwtLoginFilter = new JwtLoginFilter(authenticationManager, objectMapper, tokenRepository);
         var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, jwtAuthenticationProvider);
+        var authorizationCodeFilter = new AuthorizationCodeFilter();
         return http.csrf(AbstractHttpConfigurer::disable)
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -72,7 +74,8 @@ public class SecurityConfig {
                         .requestMatchers(ALLOWED_REQUEST_MATCHER).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(jwtAuthFilter, JwtLoginFilter.class)
+                .addFilterAfter(authorizationCodeFilter, JwtLoginFilter.class)
+                .addFilterAfter(jwtAuthFilter, AuthorizationCodeFilter.class)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
                         .accessDeniedHandler(new CustomAccessDeniedHandler(objectMapper)))
                 .build();
