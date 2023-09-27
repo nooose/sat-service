@@ -15,6 +15,6 @@ public class JwtAuthenticationProvider {
             return JwtAuthenticationToken.unauthenticatedToken();
         }
 
-        return JwtAuthenticationToken.authenticatedToken(jwtProcessor.getId(token), jwtProcessor.getRoles(token));
+        return JwtAuthenticationToken.authenticatedToken(jwtProcessor.getId(token), jwtProcessor.getAuthorities(token));
     }
 }

@@ -19,7 +19,7 @@ public class FakeAuthenticationController {
 
     @GetMapping("/token")
     public ResponseEntity<Void> accessToken(@RequestParam String id) {
-        String token = jwtProcessor.createToken(id).accessToken();
+        String token = jwtProcessor.createToken(id, null).accessToken();
         return ResponseEntity.ok().header("X-Access-Token", token).build();
     }
 }
