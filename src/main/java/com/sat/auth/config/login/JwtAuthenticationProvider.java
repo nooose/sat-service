@@ -1,6 +1,6 @@
 package com.sat.auth.config.login;
 
-import com.sat.auth.config.application.JwtProcessor;
+import com.sat.auth.application.JwtProcessor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

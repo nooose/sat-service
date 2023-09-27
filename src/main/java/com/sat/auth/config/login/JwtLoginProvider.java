@@ -2,8 +2,9 @@ package com.sat.auth.config.login;
 
 import com.sat.auth.config.login.oauth2.UserInfoClient;
 import com.sat.auth.config.dto.OAuth2Response;
-import com.sat.auth.config.application.JwtProcessor;
-import com.sat.auth.config.application.dto.TokenPair;
+import com.sat.auth.application.JwtProcessor;
+import com.sat.auth.application.dto.TokenPair;
+import com.sat.auth.domain.MemberRole;
 import com.sat.member.application.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -32,11 +33,11 @@ public class JwtLoginProvider implements AuthenticationProvider {
         String providerName = authenticationToken.getProviderName();
         OAuth2Response oAuth2Response = getOAuth2Response(providerName, accessToken);
 
-        memberService.joinIfNotExists(oAuth2Response.id(), oAuth2Response.name());
-        // TODO: Member 권한까지 DB에서 조회하기
-        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(RoleType.MEMBER.getName()));
-        TokenPair tokenPair = jwtProcessor.createToken(oAuth2Response.id(), authorities);
-        return JwtAuthenticationToken.authenticatedToken(oAuth2Response.id(), tokenPair, authorities);
+        String memberId = oAuth2Response.id();
+        MemberRole memberRole = memberService.joinIfNotExists(memberId, oAuth2Response.name());
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(memberRole.getRole().getName()));
+        TokenPair tokenPair = jwtProcessor.createToken(memberId, authorities);
+        return JwtAuthenticationToken.authenticatedToken(memberId, tokenPair, authorities);
     }
 
     private OAuth2Response getOAuth2Response(String providerName, String accessToken) {

@@ -1,6 +1,6 @@
 package com.sat.auth.config.login;
 
-import com.sat.auth.config.application.dto.TokenPair;
+import com.sat.auth.application.dto.TokenPair;
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

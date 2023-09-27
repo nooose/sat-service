@@ -1,4 +1,4 @@
-package com.sat.auth.config.login;
+package com.sat.member.domain;
 
 import lombok.Getter;
 

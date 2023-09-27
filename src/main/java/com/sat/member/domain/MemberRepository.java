@@ -1,7 +1,5 @@
-package com.sat.member.infrastructure.repository;
+package com.sat.member.domain;
 
-import com.sat.member.domain.Member;
-import com.sat.member.domain.MemberId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

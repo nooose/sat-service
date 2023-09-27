@@ -1,8 +1,10 @@
 package com.sat.auth.config.login;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sat.auth.application.dto.TokenPair;
 import com.sat.auth.config.dto.TokenRequest;
-import com.sat.auth.config.application.dto.TokenPair;
+import com.sat.auth.domain.Token;
+import com.sat.auth.domain.TokenRepository;
 import com.sat.common.dto.ErrorResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,7 +68,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
             throw new IllegalArgumentException(TokenPair.class.getSimpleName() + " JSON 직렬화 실패");
         }
 
-        tokenRepository.save(tokenPair);
+        tokenRepository.save(new Token(tokenPair.accessToken(), tokenPair.refreshToken()));
     }
 
     @Override

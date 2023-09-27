@@ -1,6 +1,6 @@
 package com.sat.utils;
 
-import com.sat.member.infrastructure.repository.MemberRepository;
+import com.sat.member.domain.MemberRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
