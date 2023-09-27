@@ -26,19 +26,25 @@ public class JwtLoginProvider implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String accessToken = (String) authentication.getCredentials();
-        String providerName = "kakao";
-        OAuth2Response oAuth2Response = userInfoClients.stream()
-                .filter(it -> it.isSupported(providerName))
-                .findAny()
-                .map(it -> it.response(accessToken))
-                .orElseThrow(() -> new ProviderNotFoundException(providerName + "은(는) 지원하지 않습니다."));
+        JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) authentication;
+
+        String accessToken = authenticationToken.getCredentials();
+        String providerName = authenticationToken.getProviderName();
+        OAuth2Response oAuth2Response = getOAuth2Response(providerName, accessToken);
 
         memberService.joinIfNotExists(oAuth2Response.id(), oAuth2Response.name());
         // TODO: Member 권한까지 DB에서 조회하기
         List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(RoleType.MEMBER.getName()));
         TokenPair tokenPair = jwtProcessor.createToken(oAuth2Response.id(), authorities);
         return JwtAuthenticationToken.authenticatedToken(oAuth2Response.id(), tokenPair, authorities);
+    }
+
+    private OAuth2Response getOAuth2Response(String providerName, String accessToken) {
+        return userInfoClients.stream()
+                .filter(it -> it.isSupported(providerName))
+                .findAny()
+                .map(it -> it.response(accessToken))
+                .orElseThrow(() -> new ProviderNotFoundException(providerName + "은(는) 지원하지 않습니다."));
     }
 
     @Override
