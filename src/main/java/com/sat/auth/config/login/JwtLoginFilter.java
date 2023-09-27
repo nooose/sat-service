@@ -22,13 +22,13 @@ import java.io.IOException;
 
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private static final int PROVIDER_INDEX = 2;
+    private static final int PROVIDER_INDEX = 1;
 
     private final ObjectMapper objectMapper;
     private final TokenRepository tokenRepository;
 
     public JwtLoginFilter(AuthenticationManager authenticationManager, ObjectMapper objectMapper, TokenRepository tokenRepository) {
-        super("/login/*", authenticationManager);
+        super("/*/token", authenticationManager);
         this.objectMapper = objectMapper;
         this.tokenRepository = tokenRepository;
     }

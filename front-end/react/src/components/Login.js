@@ -43,7 +43,7 @@ export const Login = () => {
 
   const getJwt = (accessToken) => {
     axios.post(
-        "/login/kakao",
+        "/kakao/token",
         { "accessToken": accessToken },
     )
     .then(response => {
