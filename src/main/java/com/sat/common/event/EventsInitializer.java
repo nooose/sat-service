@@ -3,11 +3,11 @@ package com.sat.common.event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
-@Configuration
-public class EventsConfiguration implements InitializingBean{
+@Component
+public class EventsInitializer implements InitializingBean{
 
     private final ApplicationContext applicationContext;
 
