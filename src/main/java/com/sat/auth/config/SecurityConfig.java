@@ -47,6 +47,7 @@ public class SecurityConfig {
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/error"),
+                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/docs/*"),
                 PathRequest.toH2Console()
         );
     }
@@ -55,7 +56,7 @@ public class SecurityConfig {
     public WebSecurityCustomizer configure() {
         return web -> web.ignoring()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("index.html", "manifest.json", "static/**");
+                .requestMatchers("index.html", "manifest.json", "static/**", "docs/**");
     }
 
     @Bean
