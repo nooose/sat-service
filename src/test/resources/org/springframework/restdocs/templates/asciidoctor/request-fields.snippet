@@ -1,10 +1,11 @@
 |===
-|이름|타입|설명|필수
+|이름|타입|설명|제약조건|필수
 
 {{#fields}}
 |{{#tableCellContent}}`+{{path}}+`{{/tableCellContent}}
 |{{#tableCellContent}}`+{{type}}+`{{/tableCellContent}}
 |{{#tableCellContent}}{{description}}{{/tableCellContent}}
+|{{#tableCellContent}}{{#constraints}}{{constraints}}{{/constraints}}{{^constraints}}{{/constraints}}{{/tableCellContent}}
 |{{#tableCellContent}}{{#optional}}X{{/optional}}{{^optional}}**O**{{/optional}}{{/tableCellContent}}
 
 {{/fields}}

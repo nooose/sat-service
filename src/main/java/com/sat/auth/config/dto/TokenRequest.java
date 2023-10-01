@@ -7,8 +7,7 @@ public record TokenRequest(
     String accessToken,
     String refreshToken
 ) {
-    public boolean isRefreshRequest() {
+    public boolean hasRefreshRequest() {
         return type == TokenRequestType.REFRESH && StringUtils.hasText(refreshToken);
     }
-
 }

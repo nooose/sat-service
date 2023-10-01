@@ -48,7 +48,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     }
 
     private Authentication createAuthenticationFrom(TokenRequest tokenRequest, String providerName) {
-        if (tokenRequest.isRefreshRequest()) {
+        if (tokenRequest.hasRefreshRequest()) {
             return RefreshAuthenticationToken.from(tokenRequest.refreshToken());
         }
 

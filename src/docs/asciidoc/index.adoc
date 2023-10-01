@@ -6,7 +6,8 @@
 :toclevels: 2
 :sectlinks:
 
-[[me]]
-== 사용자
-=== 인증된 사용자 정보 조회
-operation::me[snippets='http-request,request-headers,http-response,response-fields']
+== 인증
+=== 토큰 발급
+operation::token[snippets='http-request,request-fields,http-response,response-fields']
+=== 토큰 갱신
+operation::refresh-token[snippets='http-request,request-fields,http-response,response-fields']
