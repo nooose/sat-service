@@ -3,16 +3,42 @@ ext {
 }
 
 asciidoctor {
+    dependsOn test
     inputs.dir snippetsDir
     configurations 'asciidoctorExt'
-    dependsOn test
+    sources {
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceFile()
 }
 
-tasks.register('copyDocument', Copy) {
+tasks.register('generateRestDocs', Copy) {
     dependsOn asciidoctor
 
+    delete file('src/main/resources/static/docs/restdocs')
     from("$buildDir/docs/asciidoc")
     into("src/main/resources/static/docs/restdocs")
+}
+
+tasks.register('testDocument', Test) {
+    useJUnitPlatform()
+    filter {
+        includeTestsMatching "*.documentation.*"
+    }
+}
+
+openapi3 {
+    server = 'http://localhost:8080'
+    title = 'REST API 문서'
+    description = 'REST API 문서'
+    version = '0.0.1'
+    format = 'yaml'
+}
+
+tasks.register('generateOasToSwagger', Copy) {
+    dependsOn("openapi3")
+    from("$buildDir/api-spec/openapi3.yaml")
+    into("src/main/resources/static/docs/swagger")
 }
 
 test {

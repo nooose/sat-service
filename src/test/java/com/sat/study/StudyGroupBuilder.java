@@ -1,5 +1,6 @@
 package com.sat.study;
 
+import com.sat.member.domain.Member;
 import com.sat.member.domain.MemberId;
 import com.sat.study.domain.Participant;
 import com.sat.study.domain.ParticipantStatus;
@@ -17,10 +18,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.sat.member.MemberFixtures.일반_사용자;
 import static java.util.Objects.requireNonNullElse;
 
 public class StudyGroupBuilder {
+    private static final Member MEMBER = new Member(MemberId.of("noose"), "noose");
 
     private MemberId hostId;
     private String title;
@@ -89,7 +90,7 @@ public class StudyGroupBuilder {
     }
 
     public StudyGroup build() {
-        return StudyGroup.of(requireNonNullElse(hostId, 일반_사용자.getId()),
+        return StudyGroup.of(requireNonNullElse(hostId, MEMBER.getId()),
                 requireNonNullElse(title, "테스트 제목"),
                 requireNonNullElse(contents, "테스트 내용"),
                 requireNonNullElse(category, StudyCategory.IT),
