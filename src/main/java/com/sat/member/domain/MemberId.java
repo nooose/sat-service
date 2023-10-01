@@ -10,16 +10,16 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @EqualsAndHashCode
 @Embeddable
 public class MemberId implements Serializable {
 
-    @Getter
     @Column(name = "member_id")
-    private String value;
+    private String id;
 
     public MemberId(String id) {
-        this.value = id;
+        this.id = id;
     }
 
     public static MemberId of(String id) {

@@ -6,7 +6,7 @@ import com.sat.study.application.dto.ParticipantUpdateRequest;
 import com.sat.study.application.dto.StudyGroupCreateRequest;
 import com.sat.study.application.dto.StudyGroupResponse;
 import com.sat.study.domain.StudyGroup;
-import com.sat.study.infrastructure.repository.StudyGroupRepository;
+import com.sat.study.domain.StudyGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

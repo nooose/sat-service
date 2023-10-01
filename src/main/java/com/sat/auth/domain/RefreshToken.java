@@ -1,5 +1,6 @@
 package com.sat.auth.domain;
 
+import com.sat.member.domain.MemberId;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,23 +12,23 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Table(name = "token_box",
         indexes = {
         @Index(columnList = "refreshToken", name = "refresh_idx")
 })
 @Entity
-public class Token {
+public class RefreshToken {
     @Id @GeneratedValue
     private Long id;
 
     @Column(columnDefinition = "TEXT")
     private String refreshToken;
-    @Getter
-    @Column(columnDefinition = "TEXT")
-    private String accessToken;
 
-    public Token(String refreshToken, String accessToken) {
+    private MemberId memberId;
+
+    public RefreshToken(String refreshToken, MemberId memberId) {
         this.refreshToken = refreshToken;
-        this.accessToken = accessToken;
+        this.memberId = memberId;
     }
 }

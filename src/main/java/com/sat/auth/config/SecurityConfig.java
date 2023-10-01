@@ -8,7 +8,7 @@ import com.sat.auth.config.login.JwtAuthenticationProvider;
 import com.sat.auth.config.login.JwtLoginFilter;
 import com.sat.member.domain.RoleType;
 import com.sat.auth.config.login.oauth2.AuthorizationCodeFilter;
-import com.sat.auth.domain.TokenRepository;
+import com.sat.auth.domain.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -42,8 +42,6 @@ public class SecurityConfig {
 
     private static final RequestMatcher ALLOWED_REQUEST_MATCHER;
 
-    private final JwtAuthenticationProvider jwtAuthenticationProvider;
-
     static {
         ALLOWED_REQUEST_MATCHER = RequestMatchers.anyOf(
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/"),
@@ -63,7 +61,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    AuthenticationManager authenticationManager,
-                                                   TokenRepository tokenRepository,
+                                                   RefreshTokenRepository tokenRepository,
+                                                   JwtAuthenticationProvider jwtAuthenticationProvider,
                                                    ObjectMapper objectMapper) throws Exception {
         var jwtLoginFilter = new JwtLoginFilter(authenticationManager, tokenRepository, objectMapper);
         var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, jwtAuthenticationProvider);
@@ -79,8 +78,8 @@ public class SecurityConfig {
                 .addFilterAfter(authorizationCodeFilter, JwtLoginFilter.class)
                 .addFilterAfter(jwtAuthFilter, AuthorizationCodeFilter.class)
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint(objectMapper))
-                        .accessDeniedHandler(new CustomAccessDeniedHandler(objectMapper)))
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                        .accessDeniedHandler(new CustomAccessDeniedHandler()))
                 .build();
     }
 

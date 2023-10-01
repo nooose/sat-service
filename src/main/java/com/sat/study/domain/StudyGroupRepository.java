@@ -1,6 +1,5 @@
-package com.sat.study.infrastructure.repository;
+package com.sat.study.domain;
 
-import com.sat.study.domain.StudyGroup;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudyGroupRepository extends JpaRepository<StudyGroup, Long> {

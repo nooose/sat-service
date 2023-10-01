@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 @Slf4j
 @RequiredArgsConstructor
-@ConditionalOnProperty(prefix = "spring.datasource", name = {"reader.url", "writer.url"})
+@ConditionalOnProperty(prefix = "spring.datasource", name = {"writer.url"})
 @Configuration
 public class DataSourceConfig {
 
