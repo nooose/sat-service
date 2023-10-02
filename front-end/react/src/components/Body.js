@@ -1,53 +1,56 @@
-import {Box, Card, CardContent, CardHeader, Grid, Typography} from "@mui/material";
+import {Box, Card, CardContent, CardHeader, Fab, Grid, Typography} from "@mui/material";
 import {styled} from '@mui/material/styles';
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
+import axios from "axios";
+import StudyGroupCreateButton from "./StudyGroupCreateButton";
+import {useAuth} from "./AuthProvider";
+import AddIcon from "@mui/icons-material/Add";
 
-const data = [
-    {
-        id: 1,
-        title: "제목1",
-        contents: "내용이 길어내용이 길어내용이 길어",
-        startDate: "2023-01-01",
-        endDate: "2023-02-01"
-    },
-    {
-        id: 2,
-        title: "제목 길이 제한 걸려있다.",
-        contents: "내용2",
-        startDate: "2023-02-01",
-        endDate: "2023-03-01"
-    },
-    {
-        id: 3,
-        title: "제목3",
-        contents: "내용3",
-        startDate: "2023-02-01",
-        endDate: "2023-03-01"
-    },
-    {
-        id: 4,
-        title: "제목3",
-        contents: "내용3",
-        startDate: "2023-02-01",
-        endDate: "2023-03-01"
-    },
-];
+let data
 
 const Body = () => {
+    const [studyGroups, setStudyGroups] = useState([]);
+    const { isLoggedIn } = useAuth();
+    const [isOpen, setIsOpen] = useState(false); // 다이얼로그 열림/닫힘 상태를 관리하는 상태 변수
+
+    const handleOpenDialog = () => {
+        setIsOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setIsOpen(false);
+    };
+
     useEffect(() => {
-        // TODO: 스터디그룹 정보 받기
-        console.log("스터디그룹 정보 받기");
+        axios.get("/v1/studygroups")
+            .then(response => {
+                console.log(response.data);
+                setStudyGroups(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }, []);
 
     return (
         <Box m={20}>
             <Grid container spacing={5}>
-                {data.map((studyGroup, index) => renderCard(studyGroup, index))}
+                {studyGroups.map((studyGroup, index) => renderCard(studyGroup, index))}
             </Grid>
+            {isLoggedIn ? (
+                <Fab color="primary" aria-label="add" onClick={handleOpenDialog} handleCloseDialog={handleCloseDialog}
+                     style={{
+                         position: 'fixed',
+                         bottom: '20px',
+                         right: '20px',
+                     }}>
+                    <AddIcon/>
+                </Fab>
+            ) : (<div></div>)}
+            <StudyGroupCreateButton isOpen={isOpen} handleCloseDialog={handleCloseDialog}/>
         </Box>
     );
 };
-
 
 const CardWrapper = styled(Card)({
     transition: 'transform 0.2s',

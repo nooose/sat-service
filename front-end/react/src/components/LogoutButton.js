@@ -1,15 +1,13 @@
 import React from 'react';
 import {Button} from "@mui/material";
-import {useDispatch} from "react-redux";
-import {logout} from "../store/action";
 import {navigateRelativePath} from "../common/common";
+import {useAuth} from "./AuthProvider";
 
 const LogoutButton = () => {
-    const dispatch = useDispatch();
+    const { isLoggedIn, login, logout } = useAuth();
 
     const handleLogout = () => {
-        localStorage.removeItem("sat-access-token");
-        dispatch(logout());
+        logout();
         navigateRelativePath("/");
     };
 

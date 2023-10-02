@@ -3,11 +3,12 @@ import Header from "./Header";
 import Body from "./Body";
 
 const Home = () => {
+
     return (
-      <div>
+        <div>
             <Header/>
             <Body/>
-      </div>
+        </div>
     );
 };
 

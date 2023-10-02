@@ -4,18 +4,10 @@ import {
 } from "@mui/material";
 import LogoutButton from "./LogoutButton";
 import KakaoLogin from "./KakaoLogin";
+import {useAuth} from "./AuthProvider";
 
 const Header = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-    useLayoutEffect(() => {
-        const token = localStorage.getItem("sat-access-token");
-        if (token == null) {
-            setIsLoggedIn(false);
-            return;
-        }
-        setIsLoggedIn(true);
-    }, []);
+    const { isLoggedIn } = useAuth();
 
     return (
         <div>
