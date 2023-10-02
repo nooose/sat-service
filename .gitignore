@@ -121,3 +121,16 @@ front-end/.env.production.local
 front-end/npm-debug.log*
 front-end/yarn-debug.log*
 front-end/yarn-error.log*
+
+
+### Front-End
+front-end/react-app/node_modules
+front-end/react-app/.pnp
+front-end/react-app/.pnp.js
+front-end/react-app/.env
+
+# testing
+front-end/react-app/coverage
+
+# production
+front-end/react-app/build
