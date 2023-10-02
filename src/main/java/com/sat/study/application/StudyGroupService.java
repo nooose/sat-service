@@ -25,7 +25,7 @@ public class StudyGroupService {
         StudyGroup studyGroup = StudyGroup.of(MemberId.of(hostId),
                 request.title(), request.contents(), request.category(),
                 request.maxCapacity(),
-                request.startDateTime(), request.endDateTime(),
+                request.startDate(), request.endDate(),
                 request.studyDays(), request.studyRounds(), request.timePerSession());
         studyGroupRepository.save(studyGroup);
         return StudyGroupResponse.of(studyGroup);

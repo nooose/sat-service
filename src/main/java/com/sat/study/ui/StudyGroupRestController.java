@@ -4,6 +4,7 @@ import com.sat.study.application.StudyGroupService;
 import com.sat.study.application.dto.ParticipantUpdateRequest;
 import com.sat.study.application.dto.StudyGroupCreateRequest;
 import com.sat.study.application.dto.StudyGroupResponse;
+import com.sat.study.domain.StudyCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 
 @RequestMapping("/v1")
@@ -52,5 +54,13 @@ public class StudyGroupRestController {
                                             @RequestBody ParticipantUpdateRequest participantStatusRequest) {
         studyGroupService.updateStatus(principal, studyGroupId, participantId, participantStatusRequest);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/studygroups/categories")
+    public ResponseEntity<List<String>> getCategories() {
+        List<String> categories = Arrays.stream(StudyCategory.values())
+                .map(Enum::name)
+                .toList();
+        return ResponseEntity.ok(categories);
     }
 }

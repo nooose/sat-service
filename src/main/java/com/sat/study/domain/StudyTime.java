@@ -6,15 +6,17 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.JoinColumn;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Embeddable
 public class StudyTime {
 
@@ -27,7 +29,7 @@ public class StudyTime {
     @Embedded
     private StudySession session;
 
-    public StudyTime(LocalDateTime startDateTime, LocalDateTime endDateTime, Set<DayOfWeek> studyDays, int studyRounds, Duration timePerSession) {
+    public StudyTime(LocalDate startDateTime, LocalDate endDateTime, Set<DayOfWeek> studyDays, int studyRounds, Duration timePerSession) {
         this(new StudyPeriod(startDateTime, endDateTime), studyDays, new StudySession(studyRounds, timePerSession));
     }
 

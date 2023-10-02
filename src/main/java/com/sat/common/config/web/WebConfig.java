@@ -11,7 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    public static final String[] ALLOWED_ORIGINS = {"https://front-end.com"};
+    private static final String[] ALLOWED_ORIGINS = {"http://localhost:3000"};
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -25,10 +25,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(ALLOWED_ORIGINS)
                 .allowedMethods(
                         HttpMethod.GET.name(),
-                        HttpMethod.HEAD.name(),
                         HttpMethod.POST.name(),
                         HttpMethod.PUT.name(),
-                        HttpMethod.DELETE.name()
+                        HttpMethod.DELETE.name(),
+                        HttpMethod.HEAD.name(),
+                        HttpMethod.OPTIONS.name()
                 );
     }
 }

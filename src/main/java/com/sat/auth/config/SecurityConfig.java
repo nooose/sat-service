@@ -6,9 +6,8 @@ import com.sat.auth.config.exception.CustomAuthenticationEntryPoint;
 import com.sat.auth.config.login.JwtAuthenticationFilter;
 import com.sat.auth.config.login.JwtAuthenticationProvider;
 import com.sat.auth.config.login.JwtLoginFilter;
-import com.sat.member.domain.RoleType;
-import com.sat.auth.config.login.oauth2.AuthorizationCodeFilter;
 import com.sat.auth.domain.RefreshTokenRepository;
+import com.sat.member.domain.RoleType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -19,9 +18,9 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -44,19 +43,11 @@ public class SecurityConfig {
 
     static {
         ALLOWED_REQUEST_MATCHER = RequestMatchers.anyOf(
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/error"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/docs/*"),
                 PathRequest.toH2Console()
         );
-    }
-
-    @Bean
-    public WebSecurityCustomizer configure() {
-        return web -> web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("index.html", "manifest.json", "static/**", "docs/**");
     }
 
     @Bean
@@ -67,8 +58,8 @@ public class SecurityConfig {
                                                    ObjectMapper objectMapper) throws Exception {
         var jwtLoginFilter = new JwtLoginFilter(authenticationManager, tokenRepository, objectMapper);
         var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, jwtAuthenticationProvider);
-        var authorizationCodeFilter = new AuthorizationCodeFilter();
         return http.csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -76,8 +67,7 @@ public class SecurityConfig {
                         .requestMatchers(ALLOWED_REQUEST_MATCHER).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(authorizationCodeFilter, JwtLoginFilter.class)
-                .addFilterAfter(jwtAuthFilter, AuthorizationCodeFilter.class)
+                .addFilterAfter(jwtAuthFilter, JwtLoginFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                         .accessDeniedHandler(new CustomAccessDeniedHandler()))

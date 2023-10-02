@@ -29,13 +29,24 @@ public class JwtRefreshProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String refreshToken = (String) authentication.getCredentials();
-        RefreshToken token = tokenRepository.findByRefreshToken(refreshToken)
-                .orElseThrow(() -> new BadCredentialsException("갱신 정보가 올바르지 않습니다."));
+        RefreshToken token = getRefreshTokenInfo(refreshToken);
+
         MemberId memberId = token.getMemberId();
-        MemberRole memberRole = memberRoleRepository.findByMemberId(memberId).orElseThrow();
+        MemberRole memberRole = getMemberRole(memberId);
+
         List<GrantedAuthority> roles = AuthorityUtils.createAuthorityList(memberRole.getRole().getName());
-        TokenPair tokenPair = jwtProcessor.createToken(memberId.getId(), roles);
-        return JwtAuthenticationToken.authenticatedToken(memberId.getId(), tokenPair, roles);
+        TokenPair newTokenPair = jwtProcessor.createToken(memberId.getId(), roles);
+        return JwtAuthenticationToken.authenticatedToken(memberId.getId(), newTokenPair, roles);
+    }
+
+    private RefreshToken getRefreshTokenInfo(String refreshToken) {
+        return tokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new BadCredentialsException("갱신 정보가 올바르지 않습니다."));
+    }
+
+    private MemberRole getMemberRole(MemberId memberId) {
+        return memberRoleRepository.findByMemberId(memberId)
+                .orElseThrow(() -> new BadCredentialsException(memberId.getId() + "를 찾을 수 없습니다."));
     }
 
     @Override
