@@ -2,6 +2,7 @@ package com.sat.common.config.web;
 
 import com.sat.common.config.web.interceptor.LogInterceptor;
 import com.sat.common.config.web.interceptor.MetricInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,7 +12,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    private static final String[] ALLOWED_ORIGINS = {"http://localhost:3000"};
+    @Value("${spring.web.cors.allowed-origins}")
+    private String[] allowedOrigins;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -22,7 +24,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(ALLOWED_ORIGINS)
+                .allowedOrigins(allowedOrigins)
                 .allowedMethods(
                         HttpMethod.GET.name(),
                         HttpMethod.POST.name(),
