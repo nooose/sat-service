@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
 import {Form, Button, Container, Col, Row, InputGroup, FormControl} from "react-bootstrap";
 import axiosInstance from "../Config/AxiosConfig";
+import {useNavigate} from "react-router-dom";
 
 
 function StudyGroupForm() {
+    const navigate = useNavigate();
+
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("");
@@ -55,7 +58,7 @@ function StudyGroupForm() {
         axiosInstance.post('/v1/studygroups', studyGroupRequest, {}).
         then(response => {
             console.log(response.data);
-            window.location.href = "/";
+            navigate("/");
         }).
         catch(error => {
             console.log(error)
@@ -64,7 +67,7 @@ function StudyGroupForm() {
 
     return (
         <Container fluid className="project-section d-flex justify-content-center align-items-center">
-            <Form className="col-md-6" onSubmit={handleSubmit}>
+            <Form className="col-md-6">
                 <Form.Group controlId="title">
                     <Form.Label className="form-label-name">스터디 그룹 이름</Form.Label>
                     <Form.Control
@@ -187,7 +190,7 @@ function StudyGroupForm() {
                     </Row>
                 </Form.Group>
 
-                <Button variant="primary" type="submit" style={{marginTop: "30px"}}>
+                <Button variant="primary" onClick={handleSubmit} style={{marginTop: "30px"}}>
                     저장
                 </Button>
             </Form>
