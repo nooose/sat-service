@@ -462,6 +462,11 @@ button:focus {
   font-size: 20px;
   color: white;
   font-weight: bold;
+  margin: 10px;
+}
+
+.form-row {
+  margin: 15px;
 }
 
 .project-section {
@@ -762,4 +767,9 @@ button:focus {
 }
 .fork-btn-inner::after {
   display: none !important;
+}
+
+.form-control, .form-select {
+  opacity: 0.9;
+  box-shadow: 0 0 15px rgba(220, 200, 200, 0.5);
 }

@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
-import {Form, Button, Container, Col, Row, InputGroup, FormControl} from "react-bootstrap";
+import {Form, Button, Container, Col, Row, InputGroup, FormControl, Toast, Modal} from "react-bootstrap";
 import axiosInstance from "../Config/AxiosConfig";
 import {useNavigate} from "react-router-dom";
+import {useAuth} from "../Auth/AuthProvider";
 
 
 function StudyGroupForm() {
     const navigate = useNavigate();
+    const {isLoggedIn} = useAuth();
 
     const [title, setTitle] = useState("");
     const [contents, setContents] = useState("");
@@ -17,7 +19,26 @@ function StudyGroupForm() {
     const [studyTimePerSession, setStudyTimePerSession] = useState(1);
     const [maxCapacity, setMaxCapacity] = useState(2);
     const [categories, setCategories] = useState([]);
-    const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+    // const daysOfWeek = ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY", "SUNDAY"];
+    const daysOfWeek = {
+        MONDAY: "월",
+        TUESDAY: "화",
+        WEDNESDAY: "수",
+        THURSDAY: "목",
+        FRIDAY: "금",
+        SATURDAY: "토",
+        SUNDAY: "일",
+    };
+
+    const [showAlert, setShowAlert] = useState(false);
+
+    const handleShowAlert = () => {
+        setShowAlert(true);
+    };
+
+    const handleCloseAlert = () => {
+        setShowAlert(false);
+    };
 
     useEffect(() => {
         axiosInstance.get('/v1/studygroups/categories')
@@ -28,7 +49,6 @@ function StudyGroupForm() {
             .catch(error => {
                 console.log(error);
             });
-
     }, []);
 
 
@@ -55,12 +75,10 @@ function StudyGroupForm() {
             timePerSession: studyTimePerSession
         };
 
-        axiosInstance.post('/v1/studygroups', studyGroupRequest, {}).
-        then(response => {
+        axiosInstance.post('/v1/studygroups', studyGroupRequest, {}).then(response => {
             console.log(response.data);
             navigate("/");
-        }).
-        catch(error => {
+        }).catch(error => {
             console.log(error)
         });
     };
@@ -69,29 +87,41 @@ function StudyGroupForm() {
         <Container fluid className="project-section d-flex justify-content-center align-items-center">
             <Form className="col-md-6">
                 <Form.Group controlId="title">
-                    <Form.Label className="form-label-name">스터디 그룹 이름</Form.Label>
-                    <Form.Control
-                        className="form-control"
-                        type="text"
-                        placeholder="스터디 그룹 이름을 입력해 주세요."
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
+                    <Row className="form-row">
+                        <Col md={4}>
+                            <Form.Label className="form-label-name">스터디 그룹 이름</Form.Label>
+                        </Col>
+                        <Col md={8}>
+                            <Form.Control
+                                className="form-control"
+                                type="text"
+                                placeholder="스터디 그룹 이름을 입력해 주세요."
+                                value={title}
+                                onChange={(e) => setTitle(e.target.value)}
+                            />
+                        </Col>
+                    </Row>
                 </Form.Group>
 
                 <Form.Group controlId="category">
-                    <Form.Label className="form-label-name">카테고리</Form.Label>
-                    <Form.Select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                    >
-                        <option value="">카테고리 선택</option>
-                        {categories.map((category) => (
-                            <option key={category} value={category}>
-                                {category}
-                            </option>
-                        ))}
-                    </Form.Select>
+                    <Row>
+                        <Col md={4}>
+                            <Form.Label className="form-label-name">카테고리</Form.Label>
+                        </Col>
+                        <Col md={8}>
+                            <Form.Select className="form-select"
+                                         value={selectedCategory}
+                                         onChange={(e) => setSelectedCategory(e.target.value)}
+                            >
+                                <option value="">카테고리 선택</option>
+                                {categories.map((category) => (
+                                    <option key={category} value={category}>
+                                        {category}
+                                    </option>
+                                ))}
+                            </Form.Select>
+                        </Col>
+                    </Row>
                 </Form.Group>
 
                 <Form.Group controlId="contents">
@@ -137,11 +167,12 @@ function StudyGroupForm() {
                 <Form.Group controlId="daysOfWeek">
                     <Form.Label className="form-label-name">스터디 요일</Form.Label>
                     <Row>
-                        {daysOfWeek.map((day) => (
+                        {Object.keys(daysOfWeek).map((day) => (
                             <Col key={day}>
                                 <Form.Check
+                                    id={day}
                                     type="checkbox"
-                                    label={day}
+                                    label={daysOfWeek[day]}
                                     checked={selectedDays.includes(day)}
                                     onChange={() => handleDayChange(day)}
                                     style={{color: "white"}}
@@ -152,7 +183,6 @@ function StudyGroupForm() {
                 </Form.Group>
 
                 <Form.Group controlId="studyInfo">
-                    <Form.Label className="form-label-name">스터디 정보</Form.Label>
                     <Row>
                         <Col>
                             <Form.Label className="form-label-name">스터디 회차</Form.Label>
@@ -191,7 +221,7 @@ function StudyGroupForm() {
                 </Form.Group>
 
                 <Button variant="primary" onClick={handleSubmit} style={{marginTop: "30px"}}>
-                    저장
+                    생성
                 </Button>
             </Form>
         </Container>

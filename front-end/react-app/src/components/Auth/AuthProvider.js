@@ -1,4 +1,5 @@
 import React, {createContext, useContext, useEffect, useLayoutEffect, useState} from 'react';
+import {useNavigate} from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -8,6 +9,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    // const navigate = useNavigate();
 
     useLayoutEffect(() => {
         const token = localStorage.getItem("sat-access-token");
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("sat-access-token");
         localStorage.removeItem("sat-refresh-token");
         setIsLoggedIn(false);
+        window.location.href = "/";
     };
 
     return (
