@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public record StudyGroupResponse(
         Long id,
         String title,
+        String contents,
         LocalDate startDate,
         LocalDate endDate
 ) {
@@ -14,6 +15,7 @@ public record StudyGroupResponse(
         return new StudyGroupResponse(
                 entity.getId(),
                 entity.getInformation().getTitle().getValue(),
+                entity.getInformation().getContents().getValue(),
                 entity.getInformation().getTime().getPeriod().getStartDate(),
                 entity.getInformation().getTime().getPeriod().getEndDate()
         );

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Form, Button, Container, Col, Row, InputGroup, FormControl, Toast, Modal} from "react-bootstrap";
+import {Form, Button, Container, Col, Row, InputGroup, FormControl, Modal} from "react-bootstrap";
 import axiosInstance from "../Config/AxiosConfig";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../Auth/AuthProvider";
@@ -28,16 +28,6 @@ function StudyGroupForm() {
         FRIDAY: "금",
         SATURDAY: "토",
         SUNDAY: "일",
-    };
-
-    const [showAlert, setShowAlert] = useState(false);
-
-    const handleShowAlert = () => {
-        setShowAlert(true);
-    };
-
-    const handleCloseAlert = () => {
-        setShowAlert(false);
     };
 
     useEffect(() => {
@@ -82,6 +72,32 @@ function StudyGroupForm() {
             console.log(error)
         });
     };
+
+    if (!isLoggedIn) {
+        return (
+            <div>
+                <h1>경고 모달 창 예제</h1>
+                <Button variant="danger" onClick={() => navigate("/")}>
+                    경고 표시
+                </Button>
+
+                <Modal show={true} onHide={() => navigate("/")}>
+                    <Modal.Header closeButton>
+                        <Modal.Title></Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>로그인 후 이용해 주세요.</Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => navigate("/")}>
+                            닫기
+                        </Button>
+                        <Button variant="warning" onClick={() => navigate("/")}>
+                            확인
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        );
+    }
 
     return (
         <Container fluid className="project-section d-flex justify-content-center align-items-center">

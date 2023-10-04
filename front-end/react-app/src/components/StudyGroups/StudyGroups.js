@@ -1,19 +1,14 @@
 import React, {useEffect, useState} from "react";
-import {Container, Row, Col, Modal} from "react-bootstrap";
+import {Container, Row, Col} from "react-bootstrap";
 import ProjectCard from "./StudyGroupCards";
 import Particle from "../Particle";
 import Button from "react-bootstrap/Button";
 import {AiOutlineAppstoreAdd} from "react-icons/ai";
 
 import axiosInstance from "../Config/AxiosConfig";
-import {useAuth} from "../Auth/AuthProvider";
-import Nav from "react-bootstrap/Nav";
-import KakaoLoginButton from "../Auth/KakaoLoginButton";
 
 function StudyGroups() {
     const [studyGroups, setStudyGroups] = useState([]);
-    const {isLoggedIn} = useAuth();
-
 
     useEffect(() => {
         axiosInstance.get("/v1/studygroups")
@@ -49,22 +44,16 @@ function StudyGroups() {
                         </Col>
                     ))}
                 </Row>
-
-                {isLoggedIn ? (
-                    <Row style={{justifyContent: "center", position: "relative"}}>
-                        <Button
-                            variant="primary"
-                            style={{maxWidth: "250px"}}
-                            href="/studygroups/form"
-                        >
-                            <AiOutlineAppstoreAdd/>
-                            &nbsp;스터디 그룹 만들기
-                        </Button>
-                    </Row>
-                ) : (
-                    <div/>
-                )}
-
+                <Row style={{justifyContent: "center", position: "relative"}}>
+                    <Button
+                        variant="primary"
+                        style={{maxWidth: "250px"}}
+                        href="/studygroups/form"
+                    >
+                        <AiOutlineAppstoreAdd/>
+                        &nbsp;스터디 그룹 만들기
+                    </Button>
+                </Row>
             </Container>
         </Container>
     );
