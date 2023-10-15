@@ -6,5 +6,5 @@ public interface UserInfoClient {
 
     OAuth2Response response(String accessToken);
 
-    boolean isSupported(String providerName);
+    boolean supports(String providerName);
 }

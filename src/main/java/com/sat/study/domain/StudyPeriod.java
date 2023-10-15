@@ -2,28 +2,30 @@ package com.sat.study.domain;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Embeddable
 public class StudyPeriod {
 
-    private LocalDateTime startDateTime;
-    private LocalDateTime endDateTime;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
-    public StudyPeriod(LocalDateTime startDateTime, LocalDateTime endDateTime) {
-        LocalDateTime now = LocalDateTime.now();
-        if (startDateTime.isBefore(now) || endDateTime.isBefore(now)) {
+    public StudyPeriod(LocalDate startDate, LocalDate endDate) {
+        LocalDate now = LocalDate.now();
+        if (startDate.isBefore(now) || endDate.isBefore(now)) {
             throw new IllegalArgumentException("기간이 올바르지 않습니다.");
         }
 
-        if (startDateTime.isAfter(endDateTime)) {
+        if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작 시간은 종료 시간보다 빨라야합니다.");
         }
 
-        this.startDateTime = startDateTime;
-        this.endDateTime = endDateTime;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 }

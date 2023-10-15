@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
 @Component
-public class EventsInitializer implements InitializingBean{
+public class EventsInitializer implements InitializingBean {
 
     private final ApplicationContext applicationContext;
 

@@ -6,11 +6,11 @@ import com.sat.auth.config.exception.CustomAuthenticationEntryPoint;
 import com.sat.auth.config.login.JwtAuthenticationFilter;
 import com.sat.auth.config.login.JwtAuthenticationProvider;
 import com.sat.auth.config.login.JwtLoginFilter;
-import com.sat.member.domain.RoleType;
-import com.sat.auth.config.login.oauth2.AuthorizationCodeFilter;
 import com.sat.auth.domain.RefreshTokenRepository;
+import com.sat.member.domain.RoleType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +21,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,6 +29,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatchers;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.List;
@@ -37,14 +39,16 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
+
+    @Value("${spring.web.cors.allowed-origins}")
+    private List<String> allowedOrigins;
 
     private static final RequestMatcher ALLOWED_REQUEST_MATCHER;
 
     static {
         ALLOWED_REQUEST_MATCHER = RequestMatchers.anyOf(
-                AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/v1/studygroups"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/error"),
                 AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/docs/*"),
@@ -53,22 +57,16 @@ public class SecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer configure() {
-        return web -> web.ignoring()
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations())
-                .requestMatchers("index.html", "manifest.json", "static/**", "docs/**");
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   CorsConfigurationSource corsConfigurationSource,
                                                    AuthenticationManager authenticationManager,
                                                    RefreshTokenRepository tokenRepository,
                                                    JwtAuthenticationProvider jwtAuthenticationProvider,
                                                    ObjectMapper objectMapper) throws Exception {
         var jwtLoginFilter = new JwtLoginFilter(authenticationManager, tokenRepository, objectMapper);
         var jwtAuthFilter = new JwtAuthenticationFilter(ALLOWED_REQUEST_MATCHER, jwtAuthenticationProvider);
-        var authorizationCodeFilter = new AuthorizationCodeFilter();
         return http.csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .formLogin(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -76,12 +74,25 @@ public class SecurityConfig {
                         .requestMatchers(ALLOWED_REQUEST_MATCHER).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtLoginFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAfter(authorizationCodeFilter, JwtLoginFilter.class)
-                .addFilterAfter(jwtAuthFilter, AuthorizationCodeFilter.class)
+                .addFilterAfter(jwtAuthFilter, JwtLoginFilter.class)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                         .accessDeniedHandler(new CustomAccessDeniedHandler()))
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setAllowedOrigins(allowedOrigins);
+        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS", "HEAD"));
+        corsConfig.setAllowedHeaders(List.of("*"));
+        corsConfig.setExposedHeaders(List.of("*"));
+
+        UrlBasedCorsConfigurationSource corsConfigSource = new UrlBasedCorsConfigurationSource();
+        corsConfigSource.registerCorsConfiguration("/**", corsConfig);
+        return corsConfigSource;
     }
 
     @Bean

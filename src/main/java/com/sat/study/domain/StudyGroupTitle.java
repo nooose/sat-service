@@ -20,7 +20,7 @@ public class StudyGroupTitle {
     private String value;
 
     public StudyGroupTitle(String value) {
-        if (isValid(value)) {
+        if (!isValid(value)) {
             throw new IllegalArgumentException(EX_MESSAGE);
         }
         this.value = value;

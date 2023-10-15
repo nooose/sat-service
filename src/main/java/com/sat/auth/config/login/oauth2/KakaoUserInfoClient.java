@@ -29,7 +29,7 @@ public class KakaoUserInfoClient implements UserInfoClient {
     }
 
     @Override
-    public boolean isSupported(String providerName) {
-        return providerName.equals("kakao");
+    public boolean supports(String providerName) {
+        return "kakao".equals(providerName);
     }
 }

@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -26,7 +26,7 @@ public class StudyGroupInfo {
     @Embedded
     private StudyTime time;
 
-    public StudyGroupInfo(String title, String contents, StudyCategory category, LocalDateTime startDateTime, LocalDateTime endDateTime, Set<DayOfWeek> studyDays, int studyRounds, Duration timePerSession) {
+    public StudyGroupInfo(String title, String contents, StudyCategory category, LocalDate startDateTime, LocalDate endDateTime, Set<DayOfWeek> studyDays, int studyRounds, Duration timePerSession) {
         this(title, contents, category, new StudyTime(startDateTime, endDateTime, studyDays, studyRounds, timePerSession));
     }
 

@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
@@ -56,8 +56,8 @@ public class StudyGroup {
                                 String contents,
                                 StudyCategory category,
                                 StudyGroupEnrollment enrollment,
-                                LocalDateTime startDateTime,
-                                LocalDateTime endDateTime,
+                                LocalDate startDateTime,
+                                LocalDate endDateTime,
                                 Set<DayOfWeek> studyDays,
                                 int studyRounds,
                                 Duration timePerSession) {
@@ -71,8 +71,8 @@ public class StudyGroup {
                                 String contents,
                                 StudyCategory category,
                                 int maxCapacity,
-                                LocalDateTime startDateTime,
-                                LocalDateTime endDateTime,
+                                LocalDate startDateTime,
+                                LocalDate endDateTime,
                                 Set<DayOfWeek> studyDays,
                                 int studyRounds,
                                 Duration timePerSession) {

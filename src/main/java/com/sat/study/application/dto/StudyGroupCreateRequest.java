@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.DayOfWeek;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 
 public record StudyGroupCreateRequest(
@@ -15,9 +15,9 @@ public record StudyGroupCreateRequest(
         StudyCategory category,
         int maxCapacity,
         @NotNull
-        LocalDateTime startDateTime,
+        LocalDate startDate,
         @NotNull
-        LocalDateTime endDateTime,
+        LocalDate endDate,
         Set<DayOfWeek> studyDays,
         int studyRounds,
         Duration timePerSession

@@ -1,10 +1,7 @@
 package com.sat.member.application;
 
-import com.sat.auth.domain.MemberRole;
-import com.sat.auth.domain.MemberRoleRepository;
 import com.sat.common.exception.DataNotFoundException;
 import com.sat.member.application.dto.MemberResponse;
-import com.sat.member.domain.Member;
 import com.sat.member.domain.MemberId;
 import com.sat.member.domain.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,22 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberRoleRepository memberRoleRepository;
 
     public MemberResponse findBy(String principal) {
         return memberRepository.findById(MemberId.of(principal))
                 .map(MemberResponse::of)
                 .orElseThrow(() -> new DataNotFoundException(principal + " 사용자를 찾을 수 없습니다."));
-    }
-
-    @Transactional
-    public MemberRole joinIfNotExists(String id, String name) {
-        MemberId memberId = MemberId.of(id);
-        return memberRoleRepository.findByMemberId(memberId)
-                .orElseGet(() -> {
-                    memberRepository.save(new Member(memberId, name));
-                    return memberRoleRepository.save(new MemberRole(memberId));
-                });
-
     }
 }
