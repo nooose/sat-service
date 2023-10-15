@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RequiredArgsConstructor
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class SecurityConfig {
 
     private static final RequestMatcher ALLOWED_REQUEST_MATCHER;
