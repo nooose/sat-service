@@ -1,6 +1,6 @@
 import newAxios from 'axios';
 
-const API_SERVER = process.env.REACT_APP_API_SERVER;
+const API_SERVER = import.meta.env.REACT_APP_API_SERVER;
 
 const axiosInstance = newAxios.create({
     baseURL: API_SERVER,

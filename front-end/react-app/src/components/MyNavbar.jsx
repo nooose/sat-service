@@ -11,7 +11,7 @@ import KakaoLoginButton from "./Auth/KakaoLoginButton";
 import {useAuth} from "./Auth/AuthProvider";
 import Button from "react-bootstrap/Button";
 
-function NavBar() {
+function MyNavbar() {
   const [expand, updateExpanded] = useState(false);
   const [navColour, updateNavbar] = useState(false);
   const { isLoggedIn, login, logout } = useAuth();
@@ -86,4 +86,4 @@ function NavBar() {
 }
 
 
-export default NavBar;
+export default MyNavbar;

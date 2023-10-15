@@ -4,9 +4,9 @@ import axios from "axios";
 import {useAuth} from "./AuthProvider";
 
 export const OAuth2Login = () => {
-    const CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
-    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URI;
-    const API_SERVER = process.env.REACT_APP_API_SERVER;
+    const CLIENT_ID = import.meta.env.REACT_APP_CLIENT_ID;
+    const REDIRECT_URI = import.meta.env.REACT_APP_REDIRECT_URI;
+    const API_SERVER = import.meta.env.REACT_APP_API_SERVER;
 
     const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
