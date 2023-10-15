@@ -27,7 +27,6 @@ cd ${PROJECT_DIR}
 java -jar build/libs/application.jar
 
 # FE(:3000)
-cd ${PROJECT_DIR}/front-end/react-app
-npm install
-npm run start
+make react-install
+make react-start
 ```
