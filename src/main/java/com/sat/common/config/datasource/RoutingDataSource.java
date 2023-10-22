@@ -24,7 +24,7 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
         Target target = readOnly ? Target.READER : Target.WRITER;
         if (TransactionSynchronizationManager.isActualTransactionActive()) {
             HikariDataSource dataSource = (HikariDataSource) getResolvedDataSources().get(target);
-            log.debug("routing: {}", dataSource.getPoolName());
+            log.debug("Routing - {}", dataSource.getPoolName());
         }
         return target;
     }

@@ -57,6 +57,6 @@ public class StudyGroupService {
 
     private StudyGroup getStudyGroup(Long studyGroupId) {
         return studyGroupRepository.findById(studyGroupId)
-                .orElseThrow(() -> new DataNotFoundException(studyGroupId + " 스터디그룹을 찾을 수 없습니다."));
+                .orElseThrow(() -> new DataNotFoundException("스터디그룹을 찾을 수 없습니다. - " + studyGroupId));
     }
 }

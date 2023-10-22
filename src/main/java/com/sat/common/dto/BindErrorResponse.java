@@ -5,7 +5,7 @@ import org.springframework.validation.FieldError;
 public record BindErrorResponse(
         String field,
         String message,
-        String inValidValue
+        String invalidValue
 ) {
 
     public static BindErrorResponse of(FieldError error) {

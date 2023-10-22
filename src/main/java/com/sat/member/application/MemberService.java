@@ -18,6 +18,6 @@ public class MemberService {
     public MemberResponse findBy(String principal) {
         return memberRepository.findById(MemberId.of(principal))
                 .map(MemberResponse::of)
-                .orElseThrow(() -> new DataNotFoundException(principal + " 사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new DataNotFoundException("사용자를 찾을 수 없습니다. - " + principal));
     }
 }

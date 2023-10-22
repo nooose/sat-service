@@ -13,8 +13,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Set;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Embeddable
 public class StudyGroupInfo {
     @Embedded
