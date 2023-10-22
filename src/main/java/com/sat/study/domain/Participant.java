@@ -2,21 +2,21 @@ package com.sat.study.domain;
 
 import com.sat.member.domain.MemberId;
 import com.sat.study.domain.type.ParticipantStatus;
+import com.sat.study.domain.type.convertor.ParticipantStatusConvertor;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Objects;
-
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@EqualsAndHashCode
 @Embeddable
 public class Participant {
 
@@ -25,12 +25,8 @@ public class Participant {
     })
     @Embedded
     private MemberId id;
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = ParticipantStatusConvertor.class)
     private ParticipantStatus status;
-
-    public static Participant host(MemberId hostId) {
-        return new Participant(hostId, ParticipantStatus.HOST);
-    }
 
     public Participant(MemberId id) {
         this(id, ParticipantStatus.WAITING);
@@ -57,24 +53,7 @@ public class Participant {
         return status == ParticipantStatus.APPROVED;
     }
 
-    public boolean isHostOrActive() {
-        return status == ParticipantStatus.HOST || status == ParticipantStatus.APPROVED;
-    }
-
     public boolean matches(MemberId participantId) {
         return id.equals(participantId);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Participant that = (Participant) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

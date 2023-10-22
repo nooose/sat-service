@@ -5,8 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum ParticipantStatus {
-    HOST("HOST", "그룹장"),
+public enum ParticipantStatus implements CodeEnum {
     WAITING("WAITING", "대기"),
     APPROVED("APPROVED", "승인"),
     REJECTED("REJECTED", "거절"),

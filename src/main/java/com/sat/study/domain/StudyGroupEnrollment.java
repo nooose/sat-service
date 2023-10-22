@@ -12,15 +12,15 @@ import java.util.List;
 @Embeddable
 public class StudyGroupEnrollment {
 
-    private static final int MIN_CAPACITY = 2;
+    private static final int MIN_CAPACITY = 1;
     private static final int MAX_CAPACITY = 10;
 
     @Embedded
     private Participants participants;
     private int maxCapacity;
 
-    public StudyGroupEnrollment(MemberId hostId, int maxCapacity) {
-        this(new Participants(Participant.host(hostId)), maxCapacity);
+    public StudyGroupEnrollment(int maxCapacity) {
+        this(new Participants(), maxCapacity);
     }
 
     public StudyGroupEnrollment(Participants participants) {

@@ -6,9 +6,11 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Embeddable
 public class Host {
 
@@ -23,9 +25,5 @@ public class Host {
 
     public boolean isOwner(MemberId memberId) {
         return id.equals(memberId);
-    }
-
-    public MemberId getId() {
-        return id;
     }
 }

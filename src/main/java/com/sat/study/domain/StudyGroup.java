@@ -3,11 +3,11 @@ package com.sat.study.domain;
 import com.sat.member.domain.MemberId;
 import com.sat.study.domain.type.StudyCategory;
 import com.sat.study.domain.type.StudyGroupStatus;
+import com.sat.study.domain.type.convertor.StudyGroupStatusConvertor;
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,7 +33,7 @@ public class StudyGroup {
     private StudyGroupInfo information;
     @Embedded
     private StudyGroupEnrollment enrollment;
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = StudyGroupStatusConvertor.class)
     private StudyGroupStatus status;
 
     private StudyGroup(Host host, StudyGroupInfo information, StudyGroupEnrollment enrollment) {
@@ -42,7 +41,7 @@ public class StudyGroup {
     }
 
     private StudyGroup(Host host, StudyGroupInfo information, int maxCapacity) {
-        this(null, host, information, new StudyGroupEnrollment(host.getId(), maxCapacity), StudyGroupStatus.OPEN);
+        this(null, host, information, new StudyGroupEnrollment(maxCapacity), StudyGroupStatus.OPEN);
     }
 
     private StudyGroup(Long id, Host host, StudyGroupInfo information, StudyGroupEnrollment enrollment, StudyGroupStatus status) {
@@ -124,9 +123,5 @@ public class StudyGroup {
         if (!host.isOwner(hostId)) {
             throw new RuntimeException();
         }
-    }
-
-    public List<MemberId> fetchActiveMemberIds() {
-        return enrollment.activeMemberIds();
     }
 }

@@ -1,10 +1,10 @@
 package com.sat.study.domain;
 
 import com.sat.study.domain.type.StudyCategory;
+import com.sat.study.domain.type.convertor.StudyCategoryConvertor;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ public class StudyGroupInfo {
     private StudyGroupTitle title;
     @Embedded
     private StudyGroupContents contents;
-    @Enumerated(EnumType.STRING)
+    @Convert(converter = StudyCategoryConvertor.class)
     private StudyCategory studyCategory;
     @Embedded
     private StudyTime time;

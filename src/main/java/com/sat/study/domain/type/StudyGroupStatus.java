@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum StudyGroupStatus {
+public enum StudyGroupStatus implements CodeEnum {
     OPEN("OPEN", "모집 중"),
     CLOSED("CLOSED", "모집 종료"),
     PROCEEDING("PROCEEDING", "진행 중"),

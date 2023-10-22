@@ -19,16 +19,9 @@ public class Participants {
     @CollectionTable(name = "participant", joinColumns = @JoinColumn(name = "study_group_id"))
     private List<Participant> participants = new ArrayList<>();
 
-    public Participants(Participant host) {
-        participants.add(host);
+    public Participants(List<Participant> participants) {
+        this.participants.addAll(participants);
     }
-
-    public Participants(Participant host, List<Participant> participants) {
-        ArrayList<Participant> initializedParticipants = new ArrayList<>(participants);
-        initializedParticipants.add(host);
-        this.participants = new ArrayList<>(initializedParticipants);
-    }
-
 
     public boolean isMaxCapacity(int maxCapacity) {
         return participants.size() == maxCapacity;
@@ -72,7 +65,7 @@ public class Participants {
 
     public List<Participant> activeMembers() {
         return participants.stream()
-                .filter(Participant::isHostOrActive)
+                .filter(Participant::isActive)
                 .toList();
     }
 }
