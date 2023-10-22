@@ -98,7 +98,7 @@ public class SecurityConfig {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        String hierarchy = Arrays.stream(RoleType.values()).map(RoleType::getName)
+        String hierarchy = Arrays.stream(RoleType.values()).map(RoleType::getRoleName)
                 .collect(Collectors.joining(" > "));
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;

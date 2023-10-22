@@ -1,6 +1,7 @@
 package com.sat.study.domain;
 
 import com.sat.member.domain.MemberId;
+import com.sat.study.domain.type.ParticipantStatus;
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -14,8 +15,8 @@ import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Embeddable
 public class Participant {
 

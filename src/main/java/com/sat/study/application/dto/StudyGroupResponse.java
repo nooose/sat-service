@@ -11,7 +11,7 @@ public record StudyGroupResponse(
         LocalDate startDate,
         LocalDate endDate
 ) {
-    public static StudyGroupResponse of(StudyGroup entity) {
+    public static StudyGroupResponse from(StudyGroup entity) {
         return new StudyGroupResponse(
                 entity.getId(),
                 entity.getInformation().getTitle().getValue(),

@@ -1,6 +1,8 @@
 package com.sat.study.domain;
 
 import com.sat.member.domain.MemberId;
+import com.sat.study.domain.type.StudyCategory;
+import com.sat.study.domain.type.StudyGroupStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -56,13 +58,13 @@ public class StudyGroup {
                                 String contents,
                                 StudyCategory category,
                                 StudyGroupEnrollment enrollment,
-                                LocalDate startDateTime,
-                                LocalDate endDateTime,
+                                LocalDate startDate,
+                                LocalDate endDate,
                                 Set<DayOfWeek> studyDays,
                                 int studyRounds,
                                 Duration timePerSession) {
 
-        StudyGroupInfo information = new StudyGroupInfo(title, contents, category, startDateTime, endDateTime, studyDays, studyRounds, timePerSession);
+        StudyGroupInfo information = new StudyGroupInfo(title, contents, category, startDate, endDate, studyDays, studyRounds, timePerSession);
         return new StudyGroup(new Host(hostId), information, enrollment);
     }
 
@@ -71,13 +73,13 @@ public class StudyGroup {
                                 String contents,
                                 StudyCategory category,
                                 int maxCapacity,
-                                LocalDate startDateTime,
-                                LocalDate endDateTime,
+                                LocalDate startDate,
+                                LocalDate endDate,
                                 Set<DayOfWeek> studyDays,
                                 int studyRounds,
                                 Duration timePerSession) {
 
-        StudyGroupInfo information = new StudyGroupInfo(title, contents, category, startDateTime, endDateTime, studyDays, studyRounds, timePerSession);
+        StudyGroupInfo information = new StudyGroupInfo(title, contents, category, startDate, endDate, studyDays, studyRounds, timePerSession);
         return new StudyGroup(new Host(hostId), information, maxCapacity);
     }
 

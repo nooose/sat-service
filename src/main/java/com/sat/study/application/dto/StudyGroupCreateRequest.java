@@ -1,6 +1,8 @@
 package com.sat.study.application.dto;
 
-import com.sat.study.domain.StudyCategory;
+import com.sat.member.domain.MemberId;
+import com.sat.study.domain.type.StudyCategory;
+import com.sat.study.domain.StudyGroup;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.DayOfWeek;
@@ -22,4 +24,18 @@ public record StudyGroupCreateRequest(
         int studyRounds,
         Duration timePerSession
 ) {
+
+        public StudyGroup toEntity(MemberId memberId) {
+                return StudyGroup.of(memberId,
+                        title,
+                        contents,
+                        category,
+                        maxCapacity,
+                        startDate,
+                        endDate,
+                        studyDays,
+                        studyRounds,
+                        timePerSession
+                );
+        }
 }

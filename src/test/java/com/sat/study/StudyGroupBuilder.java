@@ -3,9 +3,9 @@ package com.sat.study;
 import com.sat.member.domain.Member;
 import com.sat.member.domain.MemberId;
 import com.sat.study.domain.Participant;
-import com.sat.study.domain.ParticipantStatus;
+import com.sat.study.domain.type.ParticipantStatus;
 import com.sat.study.domain.Participants;
-import com.sat.study.domain.StudyCategory;
+import com.sat.study.domain.type.StudyCategory;
 import com.sat.study.domain.StudyGroup;
 import com.sat.study.domain.StudyGroupEnrollment;
 

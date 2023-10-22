@@ -34,7 +34,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
         MemberId memberId = token.getMemberId();
         MemberRole memberRole = getMemberRole(memberId);
 
-        List<GrantedAuthority> roles = AuthorityUtils.createAuthorityList(memberRole.getRole().getName());
+        List<GrantedAuthority> roles = AuthorityUtils.createAuthorityList(memberRole.getRole().getRoleName());
         TokenPair newTokenPair = jwtProcessor.createToken(memberId.getId(), roles);
         return JwtAuthenticationToken.authenticatedToken(memberId.getId(), newTokenPair, roles);
     }
@@ -46,7 +46,7 @@ public class JwtRefreshProvider implements AuthenticationProvider {
 
     private MemberRole getMemberRole(MemberId memberId) {
         return memberRoleRepository.findByMemberId(memberId)
-                .orElseThrow(() -> new BadCredentialsException(memberId.getId() + "를 찾을 수 없습니다."));
+                .orElseThrow(() -> new BadCredentialsException("권한 정보를 찾을 수 없습니다. - " + memberId.getId()));
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.sat.study.application.StudyGroupService;
 import com.sat.study.application.dto.ParticipantUpdateRequest;
 import com.sat.study.application.dto.StudyGroupCreateRequest;
 import com.sat.study.application.dto.StudyGroupResponse;
-import com.sat.study.domain.StudyCategory;
+import com.sat.study.domain.type.StudyCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

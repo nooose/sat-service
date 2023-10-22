@@ -34,7 +34,7 @@ public class JwtLoginProvider implements AuthenticationProvider {
 
         String memberId = oAuth2Response.id();
         MemberRole memberRole = roleService.joinIfNotExists(memberId, oAuth2Response.name());
-        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(memberRole.getRole().getName()));
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(memberRole.getRole().getRoleName()));
         TokenPair tokenPair = jwtProcessor.createToken(memberId, authorities);
         return JwtAuthenticationToken.authenticatedToken(memberId, tokenPair, authorities);
     }

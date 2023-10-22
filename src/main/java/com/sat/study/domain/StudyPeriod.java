@@ -16,6 +16,13 @@ public class StudyPeriod {
     private LocalDate endDate;
 
     public StudyPeriod(LocalDate startDate, LocalDate endDate) {
+        validate(startDate, endDate);
+
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    private static void validate(LocalDate startDate, LocalDate endDate) {
         LocalDate now = LocalDate.now();
         if (startDate.isBefore(now) || endDate.isBefore(now)) {
             throw new IllegalArgumentException("기간이 올바르지 않습니다.");
@@ -24,8 +31,5 @@ public class StudyPeriod {
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("시작 시간은 종료 시간보다 빨라야합니다.");
         }
-
-        this.startDate = startDate;
-        this.endDate = endDate;
     }
 }

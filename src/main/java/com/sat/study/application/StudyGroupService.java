@@ -22,30 +22,26 @@ public class StudyGroupService {
 
     @Transactional
     public StudyGroupResponse create(String hostId, StudyGroupCreateRequest request) {
-        StudyGroup studyGroup = StudyGroup.of(MemberId.of(hostId),
-                request.title(), request.contents(), request.category(),
-                request.maxCapacity(),
-                request.startDate(), request.endDate(),
-                request.studyDays(), request.studyRounds(), request.timePerSession());
+        StudyGroup studyGroup = request.toEntity(MemberId.of(hostId));
         studyGroupRepository.save(studyGroup);
-        return StudyGroupResponse.of(studyGroup);
+        return StudyGroupResponse.from(studyGroup);
     }
 
     public List<StudyGroupResponse> findAll() {
         return studyGroupRepository.findAll()
                 .stream()
-                .map(StudyGroupResponse::of)
+                .map(StudyGroupResponse::from)
                 .toList();
     }
 
     @Transactional
-    public void requestJoin(Long studyGroupId, String participantId) {
+    public void requestJoin(long studyGroupId, String participantId) {
         StudyGroup studyGroup = getStudyGroup(studyGroupId);
         studyGroup.requestJoin(MemberId.of(participantId));
     }
 
     @Transactional
-    public void updateStatus(String hostId, Long studyGroupId, String participantId, ParticipantUpdateRequest statusRequest) {
+    public void updateStatus(String hostId, long studyGroupId, String participantId, ParticipantUpdateRequest statusRequest) {
         StudyGroup studyGroup = getStudyGroup(studyGroupId);
 
         switch (statusRequest.status()) {
@@ -55,7 +51,7 @@ public class StudyGroupService {
         }
     }
 
-    private StudyGroup getStudyGroup(Long studyGroupId) {
+    private StudyGroup getStudyGroup(long studyGroupId) {
         return studyGroupRepository.findById(studyGroupId)
                 .orElseThrow(() -> new DataNotFoundException("스터디그룹을 찾을 수 없습니다. - " + studyGroupId));
     }

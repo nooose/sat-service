@@ -1,5 +1,6 @@
 package com.sat.study.domain;
 
+import com.sat.study.domain.type.StudyCategory;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.EnumType;
