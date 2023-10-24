@@ -4,8 +4,8 @@ import login from "../../assets/kakao_login_medium_narrow.png";
 import Nav from "react-bootstrap/Nav";
 
 const KakaoLoginButton = () => {
-    const CLIENT_ID = import.meta.env.REACT_APP_CLIENT_ID;
-    const REDIRECT_URI = import.meta.env.REACT_APP_REDIRECT_URI;
+    const CLIENT_ID = import.meta.env.VITE_CLIENT_ID;
+    const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
 
     const handleLogin = () => {
         pkce(32, (error, { verifier, challenge }) => {
