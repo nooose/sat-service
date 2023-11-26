@@ -62,7 +62,7 @@ function StudyGroupForm() {
             endDate,
             studyRounds: studyRounds,
             studyDays: selectedDays,
-            timePerSession: studyTimePerSession
+            timePerSession: studyTimePerSession * 3600
         };
 
         axiosInstance.post('/v1/studygroups', studyGroupRequest, {}).then(response => {
