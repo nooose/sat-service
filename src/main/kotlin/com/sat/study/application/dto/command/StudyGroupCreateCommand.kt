@@ -1,7 +1,7 @@
 package com.sat.study.application.dto.command
 
+import com.sat.study.domain.Participant
 import com.sat.study.domain.Period
-import com.sat.study.domain.Status
 import com.sat.study.domain.StudyGroup
 import jakarta.validation.constraints.NotBlank
 
@@ -23,12 +23,12 @@ data class StudyGroupCreateCommand(
     val period: Period
         get() = _period!!
 
-    fun toEntity(): StudyGroup {
-        return StudyGroup(
+    fun toEntity(hostId: Long): StudyGroup {
+        return StudyGroup.open(
             title = title,
             content = content,
-            status = Status.RECRUITING,
             period = period,
+            Participant.host(hostId)
         )
     }
 }
