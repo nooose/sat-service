@@ -1,5 +1,6 @@
 package com.sat.board.domain
 
+import com.sat.common.domain.AuditingFields
 import jakarta.persistence.*
 
 @Entity
