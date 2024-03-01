@@ -1,0 +1,79 @@
+openapi: 3.0.1
+info:
+  title: API 규격
+  description: API 규격 문서
+  version: 0.0.1
+servers:
+- url: http://localhost:8080
+  description: 로컬 서버
+tags: []
+paths:
+  /study/groups:
+    post:
+      tags:
+      - 스터디 > 그룹
+      summary: 스터디그룹 생성
+      description: 스터디그룹 생성
+      operationId: study-group-rest-controller-test/스터디그룹 생성
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/study-groups612517345'
+            examples:
+              study-group-rest-controller-test/스터디그룹 생성:
+                value: |-
+                  {
+                    "title" : "스터디그룹 A",
+                    "content" : "내용",
+                    "period" : {
+                      "startDate" : "2024-03-01",
+                      "endDate" : "2024-03-08"
+                    }
+                  }
+      responses:
+        "200":
+          description: "200"
+  /study/groups/{groupId}/participants:request:
+    post:
+      tags:
+      - 스터디 > 그룹
+      summary: 스터디그룹 생성
+      description: 스터디그룹 생성
+      operationId: study-group-rest-controller-test/스터디그룹 참여 요청
+      parameters:
+      - name: groupId
+        in: path
+        description: 스터디그룹 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+components:
+  schemas:
+    study-groups612517345:
+      required:
+      - content
+      - title
+      type: object
+      properties:
+        period:
+          required:
+          - endDate
+          - startDate
+          type: object
+          properties:
+            endDate:
+              type: string
+              description: 스터디그룹 종료일
+            startDate:
+              type: string
+              description: 스터디그룹 시작일
+        title:
+          type: string
+          description: 스터디그룹 제목
+        content:
+          type: string
+          description: 스터디그룹 내용

@@ -8,6 +8,7 @@ class StudyGroup(
     var content: String,
     @Embedded
     var period: Period,
+    @Enumerated(EnumType.STRING)
     var status: Status,
     @OneToMany(cascade = [CascadeType.ALL], mappedBy = "studyGroup", orphanRemoval = true)
     val participants: MutableList<Participant> = mutableListOf(),

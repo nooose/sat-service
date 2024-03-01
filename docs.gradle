@@ -1,0 +1,54 @@
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+asciidoctor {
+    dependsOn test
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    sources {
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceFile()
+}
+
+tasks.register('generateRestDocs', Copy) {
+    dependsOn asciidoctor
+
+    def generated = layout.buildDirectory.dir("docs/asciidoc").get().asFile
+    delete file('src/main/resources/static/docs/restdocs')
+    from(generated)
+    into("src/main/resources/static/docs/restdocs")
+}
+
+tasks.register('testDocument', Test) {
+    useJUnitPlatform()
+    filter {
+        includeTestsMatching "*.documentation.*"
+    }
+}
+
+openapi3 {
+    servers = [
+            { server ->
+                server.url = "http://localhost:8080"
+                server.description = "로컬 서버"
+            },
+    ]
+    title = "API 규격"
+    description = 'API 규격 문서'
+    version = '0.0.1'
+    format = 'yaml'
+}
+
+tasks.register('generateOasToSwagger', Copy) {
+    dependsOn("openapi3")
+
+    def generated = layout.buildDirectory.dir("api-spec/openapi3.yaml").get().asFile
+    from(generated)
+    into("src/main/resources/static/docs/swagger")
+}
+
+test {
+    outputs.dir snippetsDir
+}
