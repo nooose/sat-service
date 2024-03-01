@@ -16,6 +16,6 @@
 :operation-response-fields-title: 응답 본문
 :operation-query-parameters-title: 쿼리 파라미터
 
-= **스터디그룹**
+= **게시판**
 
-include::study.adoc[]
+include::article.adoc[]
