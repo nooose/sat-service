@@ -79,15 +79,8 @@ tasks.withType<Test> {
 
 // docs
 
-val snippetsDir = file("build/generated-snippets")
-
-tasks.test {
-	outputs.dir("snippetsDir")
-}
-
 tasks.asciidoctor {
 	dependsOn("test")
-	inputs.dir("snippetsDir")
 	configurations("asciidoctorExt")
 	sources {
 		include("**/index.adoc")
@@ -122,4 +115,9 @@ tasks.register<Copy>("generateOasToSwagger") {
 	val generated = layout.buildDirectory.dir("api-spec/openapi3.yaml").get().asFile
 	from(generated)
 	into("src/main/resources/static/docs/swagger")
+}
+
+tasks.register("generateDocs") {
+	dependsOn("generateRestDocs")
+	dependsOn("generateOasToSwagger")
 }
