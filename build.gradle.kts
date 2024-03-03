@@ -98,7 +98,6 @@ tasks.asciidoctor {
 tasks.register<Copy>("generateRestDocs") {
 	dependsOn("asciidoctor")
 	val generated = layout.buildDirectory.dir("docs/asciidoc").get().asFile
-	delete("src/main/resources/static/docs/restdocs")
 	from(generated)
 	into("src/main/resources/static/docs/restdocs")
 }
