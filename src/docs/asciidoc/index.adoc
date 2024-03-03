@@ -7,7 +7,6 @@
 :toclevels: 1
 :sectlinks:
 
-:operation-code-response-fields-title: 공통 코드
 :operation-http-request-title: HTTP 요청
 :operation-path-parameters-title: Path 변수
 :operation-http-response-title: HTTP 응답
