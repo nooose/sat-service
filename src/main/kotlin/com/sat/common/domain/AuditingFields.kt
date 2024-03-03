@@ -20,7 +20,7 @@ abstract class AuditingFields {
 
     @Column(updatable = false)
     @CreatedBy
-    var createdBy: String? = null
+    var createdBy: Long? = null
         protected set
 
     @LastModifiedDate
@@ -28,6 +28,6 @@ abstract class AuditingFields {
         protected set
 
     @LastModifiedBy
-    var modifiedBy: String? = null
+    var modifiedBy: Long? = null
         protected set
 }

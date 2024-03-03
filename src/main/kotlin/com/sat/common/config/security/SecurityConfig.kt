@@ -1,5 +1,6 @@
 package com.sat.common.config.security
 
+import com.sat.member.application.MemberLoginService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,6 +22,7 @@ class SecurityConfig {
         http: HttpSecurity,
         oidcService: OAuth2UserService<OidcUserRequest, OidcUser>,
         clientRegistrationRepository: ClientRegistrationRepository,
+        oidcSuccessHandler: OidcSuccessHandler,
     ): SecurityFilterChain {
         val resolver = DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)
         resolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce())
@@ -28,23 +30,25 @@ class SecurityConfig {
         http {
             csrf { disable() }
             formLogin { disable() }
+            headers { frameOptions { sameOrigin = true } }
             oauth2Login {
                 authorizationEndpoint { authorizationRequestResolver = resolver }
                 userInfoEndpoint { oidcUserService = oidcService }
-                authenticationSuccessHandler = CustomSuccessHandler()
+                authenticationSuccessHandler = oidcSuccessHandler
             }
             authorizeHttpRequests {
-                authorize("/**", permitAll)
+                authorize("/**", authenticated)
             }
         }
         return http.build()
     }
 
     @Bean
-    fun oAuth2UserService(): OAuth2UserService<OidcUserRequest, OidcUser> {
+    fun oAuth2UserService(memberLoginService: MemberLoginService): OAuth2UserService<OidcUserRequest, OidcUser> {
         return OAuth2UserService {
-            // TODO: 사용자 저장
-            AuthenticatedMember.of(it, listOf())
+            val principal = AuthenticatedMember.from(it)
+            val loginMember = memberLoginService.login(principal.name, principal.email)
+            principal.copy(id = loginMember.id!!)
         }
     }
 }

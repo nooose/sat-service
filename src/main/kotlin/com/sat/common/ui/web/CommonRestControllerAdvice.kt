@@ -3,6 +3,7 @@ package com.sat.common.ui.web
 import com.sat.common.domain.exception.NotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.propertyeditors.StringTrimmerEditor
+import org.springframework.dao.DataIntegrityViolationException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.WebDataBinder
@@ -29,6 +30,11 @@ class CommonRestControllerAdvice {
     @ExceptionHandler(NotFoundException::class)
     fun error(e: NotFoundException): ResponseEntity<ErrorResponse> {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(e.message))
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException::class)
+    fun error(e: DataIntegrityViolationException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorResponse("데이터 정합성이 올바르지 않습니다."))
     }
 
     @ExceptionHandler(Exception::class)

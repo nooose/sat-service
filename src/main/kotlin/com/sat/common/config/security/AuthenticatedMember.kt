@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.core.oidc.OidcUserInfo
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 
 data class AuthenticatedMember(
+    val id: Long,
     private val name: String,
     private val authorities: Collection<GrantedAuthority>,
     private val claims: Map<String, Any>,
@@ -36,14 +37,20 @@ data class AuthenticatedMember(
         return idToken
     }
 
+    override fun getEmail(): String {
+        return claims["email"] as String
+    }
+
     companion object {
-        fun of(request: OidcUserRequest, roles: Collection<GrantedAuthority>): OidcUser {
-            return AuthenticatedMember(
+        fun from(request: OidcUserRequest): AuthenticatedMember {
+            val authenticatedMember = AuthenticatedMember(
+                id = 0L,
                 name = request.idToken.nickName as String,
-                authorities = roles,
+                authorities = listOf(),
                 claims = request.idToken.claims,
                 idToken = request.idToken,
             )
+            return authenticatedMember
         }
     }
 }

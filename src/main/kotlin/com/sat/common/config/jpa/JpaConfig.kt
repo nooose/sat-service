@@ -1,6 +1,6 @@
 package com.sat.common.config.jpa
 
-import com.sat.common.config.security.AuthenticatedMember
+import com.sat.common.utils.principal
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.AuditorAware
@@ -13,10 +13,10 @@ import java.util.*
 class JpaConfig {
 
     @Bean
-    fun auditorAware(): AuditorAware<String> {
+    fun auditorAware(): AuditorAware<Long> {
         return AuditorAware {
-            val principal = SecurityContextHolder.getContext().authentication.principal as AuthenticatedMember
-            Optional.ofNullable(principal.name)
+            val principal = SecurityContextHolder.getContext().principal()
+            Optional.ofNullable(principal.id)
         }
     }
 }

@@ -5,8 +5,10 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
+import org.springframework.stereotype.Component
 
-class CustomSuccessHandler : AuthenticationSuccessHandler {
+@Component
+class OidcSuccessHandler : AuthenticationSuccessHandler {
     override fun onAuthenticationSuccess(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -16,6 +18,11 @@ class CustomSuccessHandler : AuthenticationSuccessHandler {
         response.status = HttpStatus.OK.value()
         response.characterEncoding = "utf-8"
         response.contentType = "application/json"
-        response.writer.write("$principal")
+        response.writer.write(
+            """
+            ${request.getSession(true).id}
+            $principal
+            """.trimIndent()
+        )
     }
 }

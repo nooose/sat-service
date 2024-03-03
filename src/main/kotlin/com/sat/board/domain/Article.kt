@@ -8,7 +8,7 @@ import jakarta.persistence.*
 class Article(
     var title: String,
     var content: String,
-    @ManyToOne @JoinColumn(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "category_id")
     var category: Category,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,

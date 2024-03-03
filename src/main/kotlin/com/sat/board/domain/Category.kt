@@ -16,4 +16,10 @@ class Category(
     fun isRoot(): Boolean {
         return parentId == null
     }
+
+    companion object {
+        fun childOf(parentId: Long, name: String): Category {
+            return Category(name = name, parentId = parentId)
+        }
+    }
 }
