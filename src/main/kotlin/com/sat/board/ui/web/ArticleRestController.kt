@@ -3,7 +3,9 @@ package com.sat.board.ui.web
 import com.sat.board.application.ArticleCommandService
 import com.sat.board.application.ArticleQueryService
 import com.sat.board.application.dto.command.ArticleCreateCommand
+import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.application.dto.query.ArticleQuery
+import com.sat.board.application.dto.query.ArticleSimpleQuery
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodName
@@ -30,7 +32,20 @@ class ArticleRestController(
     }
 
     @GetMapping("/board/articles")
-    fun articles(): List<ArticleQuery> {
+    fun articles(): List<ArticleSimpleQuery> {
         return articleQueryService.get()
+    }
+
+    @PutMapping("/board/articles/{articleId}")
+    fun update(
+        @PathVariable articleId: Long,
+        @RequestBody command: ArticleUpdateCommand,
+    ) {
+        articleCommandService.update(articleId, command)
+    }
+
+    @DeleteMapping("/board/articles/{articleId}")
+    fun delete(@PathVariable articleId: Long) {
+        return articleCommandService.delete(articleId)
     }
 }

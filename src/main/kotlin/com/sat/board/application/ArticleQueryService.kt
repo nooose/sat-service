@@ -1,6 +1,7 @@
 package com.sat.board.application
 
 import com.sat.board.application.dto.query.ArticleQuery
+import com.sat.board.application.dto.query.ArticleSimpleQuery
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -17,8 +18,8 @@ class ArticleQueryService(
         return ArticleQuery.from(article)
     }
 
-    fun get(): List<ArticleQuery> {
+    fun get(): List<ArticleSimpleQuery> {
         return articleRepository.findAllWithCategory()
-            .map { ArticleQuery.from(it) }
+            .map { ArticleSimpleQuery.from(it) }
     }
 }

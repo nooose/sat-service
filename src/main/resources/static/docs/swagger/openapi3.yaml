@@ -20,24 +20,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/board-articles1285459536'
+                $ref: '#/components/schemas/board-articles-1499844002'
               examples:
                 article-rest-controller-test/게시글 목록 조회:
                   value: |-
                     [ {
                       "id" : 1,
                       "title" : "제목 A",
-                      "content" : "내용 A",
                       "category" : "IT"
                     }, {
                       "id" : 2,
                       "title" : "제목 B",
-                      "content" : "내용 B",
                       "category" : "IT"
                     }, {
                       "id" : 3,
                       "title" : "제목 C",
-                      "content" : "내용 C",
                       "category" : "스포츠"
                     } ]
     post:
@@ -97,8 +94,71 @@ paths:
                       "content" : "내용",
                       "category" : "IT"
                     }
+    put:
+      tags:
+      - 게시판 > 게시글
+      summary: 게시글 수정
+      description: 게시글 수정
+      operationId: article-rest-controller-test/게시글 수정
+      parameters:
+      - name: articleId
+        in: path
+        description: 게시글 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/board-articles-1450587914'
+            examples:
+              article-rest-controller-test/게시글 수정:
+                value: |-
+                  {
+                    "title" : "수정 제목",
+                    "content" : "수정 내용",
+                    "categoryId" : 10
+                  }
+      responses:
+        "200":
+          description: "200"
+    delete:
+      tags:
+      - 게시판 > 게시글
+      summary: 게시글 삭제
+      description: 게시글 삭제
+      operationId: article-rest-controller-test/게시글 삭제
+      parameters:
+      - name: articleId
+        in: path
+        description: 게시글 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
 components:
   schemas:
+    board-articles-1499844002:
+      type: array
+      items:
+        required:
+        - category
+        - id
+        - title
+        type: object
+        properties:
+          id:
+            type: number
+            description: 게시글 ID
+          category:
+            type: string
+            description: 카테고리
+          title:
+            type: string
+            description: 게시글 제목
     board-articles-articleId1038093111:
       required:
       - category
@@ -119,28 +179,6 @@ components:
         content:
           type: string
           description: 게시글 내용
-    board-articles1285459536:
-      type: array
-      items:
-        required:
-        - category
-        - content
-        - id
-        - title
-        type: object
-        properties:
-          id:
-            type: number
-            description: 게시글 ID
-          category:
-            type: string
-            description: 카테고리
-          title:
-            type: string
-            description: 게시글 제목
-          content:
-            type: string
-            description: 게시글 내용
     board-articles-1450587914:
       required:
       - categoryId
