@@ -1,6 +1,7 @@
 package com.sat.common.config.security
 
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
 import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo
@@ -46,7 +47,7 @@ data class AuthenticatedMember(
             val authenticatedMember = AuthenticatedMember(
                 id = 0L,
                 name = request.idToken.nickName as String,
-                authorities = listOf(),
+                authorities = AuthorityUtils.NO_AUTHORITIES,
                 claims = request.idToken.claims,
                 idToken = request.idToken,
             )

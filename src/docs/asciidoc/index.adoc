@@ -16,5 +16,7 @@
 :operation-query-parameters-title: 쿼리 파라미터
 
 = **게시판**
-
 include::article.adoc[]
+
+= **사용자**
+include::user.adoc[]

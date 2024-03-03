@@ -1,6 +1,6 @@
 package com.sat.common.config.security
 
-import com.sat.member.application.MemberLoginService
+import com.sat.user.application.MemberLoginService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

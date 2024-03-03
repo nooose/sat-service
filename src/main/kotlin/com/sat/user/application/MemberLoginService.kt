@@ -1,7 +1,7 @@
-package com.sat.member.application
+package com.sat.user.application
 
-import com.sat.member.domain.Member
-import com.sat.member.domain.port.MemberRepository
+import com.sat.user.domain.Member
+import com.sat.user.domain.port.MemberRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
