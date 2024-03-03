@@ -26,12 +26,15 @@ class ArticleCommandService(
 
     fun update(id: Long, command: ArticleUpdateCommand) {
         val category = categoryRepository.getReferenceById(command.categoryId)
-        val article = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
+        val article = getArticle(id)
         val articleDto = ArticleDto(command.title, command.content, category)
         article.update(articleDto)
     }
 
     fun delete(id: Long) {
-        articleRepository.deleteById(id)
+        val article = getArticle(id)
+        article.delete()
     }
+
+    private fun getArticle(id: Long) = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
 }

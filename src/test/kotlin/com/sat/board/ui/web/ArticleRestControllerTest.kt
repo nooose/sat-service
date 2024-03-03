@@ -139,6 +139,7 @@ class ArticleRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "게시판 > 게시글"
             summary = "게시글 삭제"
+            description = "Soft delete 수행"
             pathVariables {
                 param("articleId", "게시글 ID")
             }

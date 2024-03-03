@@ -10,6 +10,7 @@ interface ArticleRepository : JpaRepository<Article, Long> {
         """
             select a from Article a
             join fetch a.category c
+            where a.isDeleted = false
         """
     )
     fun findAllWithCategory(): List<Article>
