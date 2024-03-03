@@ -43,6 +43,7 @@ configurations {
 val kotestVersion = "5.8.0"
 val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
+val kotlinLoggingVersion = "6.0.3"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -50,6 +51,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 	runtimeOnly("com.h2database:h2")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

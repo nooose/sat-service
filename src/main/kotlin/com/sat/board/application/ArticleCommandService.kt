@@ -14,9 +14,10 @@ class ArticleCommandService(
     private val categoryRepository: CategoryRepository,
 ) {
 
-    fun create(command: ArticleCreateCommand) {
+    fun create(command: ArticleCreateCommand): Long {
         val category = categoryRepository.getReferenceById(command.categoryId)
         val article = Article(command.title, command.content, category)
         articleRepository.save(article)
+        return article.id!!
     }
 }

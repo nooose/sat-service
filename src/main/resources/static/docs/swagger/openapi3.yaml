@@ -9,6 +9,38 @@ servers:
 tags: []
 paths:
   /board/articles:
+    get:
+      tags:
+      - 게시판 > 게시글
+      summary: 게시글 목록 조회
+      description: 게시글 목록 조회
+      operationId: article-rest-controller-test/게시글 목록 조회
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-articles1285459536'
+              examples:
+                article-rest-controller-test/게시글 목록 조회:
+                  value: |-
+                    [ {
+                      "id" : 1,
+                      "title" : "제목 A",
+                      "content" : "내용 A",
+                      "category" : "IT"
+                    }, {
+                      "id" : 2,
+                      "title" : "제목 B",
+                      "content" : "내용 B",
+                      "category" : "IT"
+                    }, {
+                      "id" : 3,
+                      "title" : "제목 C",
+                      "content" : "내용 C",
+                      "category" : "스포츠"
+                    } ]
     post:
       tags:
       - 게시판 > 게시글
@@ -17,7 +49,7 @@ paths:
       operationId: article-rest-controller-test/게시글 생성
       requestBody:
         content:
-          application/json:
+          application/json;charset=utf-8:
             schema:
               $ref: '#/components/schemas/board-articles-1450587914'
             examples:
@@ -29,10 +61,87 @@ paths:
                     "categoryId" : 10
                   }
       responses:
+        "201":
+          description: "201"
+          headers:
+            Location:
+              description: 게시글 URI
+              schema:
+                type: string
+  /board/articles/{articleId}:
+    get:
+      tags:
+      - 게시판 > 게시글
+      summary: 게시글 조회
+      description: 게시글 조회
+      operationId: article-rest-controller-test/게시글 조회
+      parameters:
+      - name: articleId
+        in: path
+        description: 게시글 ID
+        required: true
+        schema:
+          type: string
+      responses:
         "200":
           description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-articles-articleId1038093111'
+              examples:
+                article-rest-controller-test/게시글 조회:
+                  value: |-
+                    {
+                      "id" : 1,
+                      "title" : "제목",
+                      "content" : "내용",
+                      "category" : "IT"
+                    }
 components:
   schemas:
+    board-articles-articleId1038093111:
+      required:
+      - category
+      - content
+      - id
+      - title
+      type: object
+      properties:
+        id:
+          type: number
+          description: 게시글 ID
+        category:
+          type: string
+          description: 카테고리
+        title:
+          type: string
+          description: 게시글 제목
+        content:
+          type: string
+          description: 게시글 내용
+    board-articles1285459536:
+      type: array
+      items:
+        required:
+        - category
+        - content
+        - id
+        - title
+        type: object
+        properties:
+          id:
+            type: number
+            description: 게시글 ID
+          category:
+            type: string
+            description: 카테고리
+          title:
+            type: string
+            description: 게시글 제목
+          content:
+            type: string
+            description: 게시글 내용
     board-articles-1450587914:
       required:
       - categoryId

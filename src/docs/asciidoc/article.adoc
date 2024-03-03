@@ -2,3 +2,9 @@
 [[article]]
 == 게시글 생성
 operation::article-rest-controller-test/게시글 생성[]
+
+== 게시글 조회
+operation::article-rest-controller-test/게시글 조회[]
+
+== 게시글 목록 조회
+operation::article-rest-controller-test/게시글 목록 조회[]
