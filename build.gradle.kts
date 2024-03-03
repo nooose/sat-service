@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
 plugins {
 	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
@@ -26,10 +25,6 @@ tasks.named<Jar>("jar") {
 
 repositories {
 	mavenCentral()
-}
-
-apply {
-	from("docs.gradle")
 }
 
 val asciidoctorExt = configurations.create("asciidoctorExt") {
@@ -80,4 +75,52 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+// docs
+
+val snippetsDir = file("build/generated-snippets")
+
+tasks.test {
+	outputs.dir("snippetsDir")
+}
+
+tasks.asciidoctor {
+	dependsOn("test")
+	inputs.dir("snippetsDir")
+	configurations("asciidoctorExt")
+	sources {
+		include("**/index.adoc")
+	}
+	baseDirFollowsSourceFile()
+}
+
+tasks.register<Copy>("generateRestDocs") {
+	dependsOn("asciidoctor")
+	val generated = layout.buildDirectory.dir("docs/asciidoc").get().asFile
+	delete("src/main/resources/static/docs/restdocs")
+	from(generated)
+	into("src/main/resources/static/docs/restdocs")
+}
+
+tasks.register<Test>("testDocument") {
+	useJUnitPlatform()
+	filter {
+		includeTestsMatching("*.documentation.*")
+	}
+}
+
+project.openapi3 {
+	setServer("http://localhost:8080")
+	title = "API 규격"
+	description = "API 규격 문서"
+	version = "0.0.1"
+	format = "yaml"
+}
+
+tasks.register<Copy>("generateOasToSwagger") {
+	dependsOn("openapi3")
+	val generated = layout.buildDirectory.dir("api-spec/openapi3.yaml").get().asFile
+	from(generated)
+	into("src/main/resources/static/docs/swagger")
 }
