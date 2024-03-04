@@ -1,3 +1,4 @@
+import io.swagger.v3.oas.models.servers.Server
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -7,6 +8,7 @@ plugins {
 	id("com.epages.restdocs-api-spec") version "0.19.1"
 
 	kotlin("jvm") version "1.9.22"
+	kotlin("kapt") version "1.9.22"
 	kotlin("plugin.spring") version "1.9.22"
 	kotlin("plugin.jpa") version "1.9.22"
 	kotlin("plugin.allopen") version "1.9.22"
@@ -39,6 +41,7 @@ val kotestVersion = "5.8.0"
 val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
 val kotlinLoggingVersion = "6.0.3"
+val querydslVersion = dependencyManagement.importedProperties["querydsl.version"]
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -50,6 +53,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
 	runtimeOnly("com.h2database:h2")
+	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+	kapt("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
@@ -106,7 +114,10 @@ tasks.register<Test>("testDocument") {
 }
 
 project.openapi3 {
-	setServer("http://localhost:8080")
+	val localServer = Server()
+	localServer.url = "http://localhost:8080"
+	localServer.description = "로컬 서버"
+	servers.addLast(localServer)
 	title = "API 규격"
 	description = "API 규격 문서"
 	version = "0.0.1"
