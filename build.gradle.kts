@@ -117,6 +117,7 @@ project.openapi3 {
 	val localServer = Server()
 	localServer.url = "http://localhost:8080"
 	localServer.description = "로컬 서버"
+	setServers(listOf())
 	servers.addLast(localServer)
 	title = "API 규격"
 	description = "API 규격 문서"
