@@ -8,18 +8,7 @@ import jakarta.persistence.Id
 @Entity
 class Category(
     var name: String,
+    val parentId: Long? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-    val parentId: Long? = null,
-) {
-
-    fun isRoot(): Boolean {
-        return parentId == null
-    }
-
-    companion object {
-        fun childOf(parentId: Long, name: String): Category {
-            return Category(name = name, parentId = parentId)
-        }
-    }
-}
+)
