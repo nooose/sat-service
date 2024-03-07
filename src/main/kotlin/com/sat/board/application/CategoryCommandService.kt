@@ -3,7 +3,7 @@ package com.sat.board.application
 import com.sat.board.application.dto.command.CategoryCreateCommand
 import com.sat.board.domain.Category
 import com.sat.board.domain.port.CategoryRepository
-import com.sat.common.domain.exception.NotFoundException
+import com.sat.common.domain.exception.DuplicateException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -16,7 +16,7 @@ class CategoryCommandService(
     fun create(command: CategoryCreateCommand) {
         val isDuplicated = categoryRepository.existsByNameIs(command.name)
         if (isDuplicated) {
-            throw NotFoundException("카테고리 이름이 존재합니다. - ${command.name}")
+            throw DuplicateException("카테고리 이름이 존재합니다. - ${command.name}")
         }
 
         if (command.parentId != null) {

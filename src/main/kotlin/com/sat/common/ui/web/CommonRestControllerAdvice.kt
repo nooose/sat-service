@@ -1,5 +1,6 @@
 package com.sat.common.ui.web
 
+import com.sat.common.domain.exception.DuplicateException
 import com.sat.common.domain.exception.NotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.propertyeditors.StringTrimmerEditor
@@ -41,5 +42,10 @@ class CommonRestControllerAdvice {
     fun error(e: Exception): ResponseEntity<ErrorResponse> {
         log.error { e.message }
         return ResponseEntity.internalServerError().body(ErrorResponse("에러 발생"))
+    }
+
+    @ExceptionHandler(DuplicateException::class)
+    fun error(e: DuplicateException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse(e.message))
     }
 }
