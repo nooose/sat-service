@@ -109,8 +109,8 @@ paths:
                     "parentId" : 1
                   }
       responses:
-        "200":
-          description: "200"
+        "201":
+          description: "201"
   /board/articles/{articleId}:
     get:
       tags:
@@ -180,6 +180,51 @@ paths:
       - name: articleId
         in: path
         description: 게시글 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+  /board/category/{id}:
+    put:
+      tags:
+      - 게시판 > 카테고리
+      summary: 카테고리 수정
+      description: 카테고리 수정
+      operationId: category-rest-controller-test/카테고리 수정
+      parameters:
+      - name: id
+        in: path
+        description: 카테고리 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/board-categories1661442423'
+            examples:
+              category-rest-controller-test/카테고리 수정:
+                value: |-
+                  {
+                    "name" : "수정",
+                    "parentId" : 1
+                  }
+      responses:
+        "200":
+          description: "200"
+    delete:
+      tags:
+      - 게시판 > 카테고리
+      summary: 카테고리 삭제
+      description: Hard delete 수행
+      operationId: category-rest-controller-test/카테고리 삭제
+      parameters:
+      - name: id
+        in: path
+        description: 카테고리 ID
         required: true
         schema:
           type: string
