@@ -12,7 +12,7 @@ data class ArticleSimpleQuery(
             return ArticleSimpleQuery(
                 id = entity.id!!,
                 title = entity.title,
-                category = entity.category.name,
+                category = entity.category.name.value,
             )
         }
     }

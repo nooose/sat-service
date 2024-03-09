@@ -14,7 +14,7 @@ data class ArticleQuery(
                 id = entity.id!!,
                 title = entity.title,
                 content = entity.content,
-                category = entity.category.name,
+                category = entity.category.name.value,
             )
         }
     }

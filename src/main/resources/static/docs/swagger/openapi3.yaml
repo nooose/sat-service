@@ -5,6 +5,7 @@ info:
   version: 0.0.1
 servers:
 - url: http://localhost:8080
+  description: 로컬 서버
 tags: []
 paths:
   /board/articles:
@@ -64,6 +65,52 @@ paths:
               description: 게시글 URI
               schema:
                 type: string
+  /board/categories:
+    get:
+      tags:
+      - 게시판 > 카테고리
+      summary: 카테고리 조회
+      description: 카테고리 조회
+      operationId: category-rest-controller-test/카테고리 조회
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-categories-1002833915'
+              examples:
+                category-rest-controller-test/카테고리 조회:
+                  value: |-
+                    [ {
+                      "id" : 1,
+                      "name" : "컴퓨터",
+                      "children" : [ {
+                        "id" : 2,
+                        "name" : "맥북"
+                      } ]
+                    } ]
+    post:
+      tags:
+      - 게시판 > 카테고리
+      summary: 카테고리 생성
+      description: 카테고리 생성
+      operationId: category-rest-controller-test/카테고리 생성
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/board-categories1661442423'
+            examples:
+              category-rest-controller-test/카테고리 생성:
+                value: |-
+                  {
+                    "name" : "IT",
+                    "parentId" : 1
+                  }
+      responses:
+        "201":
+          description: "201"
   /board/articles/{articleId}:
     get:
       tags:
@@ -127,12 +174,57 @@ paths:
       tags:
       - 게시판 > 게시글
       summary: 게시글 삭제
-      description: 게시글 삭제
+      description: Soft delete 수행
       operationId: article-rest-controller-test/게시글 삭제
       parameters:
       - name: articleId
         in: path
         description: 게시글 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+  /board/category/{id}:
+    put:
+      tags:
+      - 게시판 > 카테고리
+      summary: 카테고리 수정
+      description: 카테고리 수정
+      operationId: category-rest-controller-test/카테고리 수정
+      parameters:
+      - name: id
+        in: path
+        description: 카테고리 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/board-categories1661442423'
+            examples:
+              category-rest-controller-test/카테고리 수정:
+                value: |-
+                  {
+                    "name" : "수정",
+                    "parentId" : 1
+                  }
+      responses:
+        "200":
+          description: "200"
+    delete:
+      tags:
+      - 게시판 > 카테고리
+      summary: 카테고리 삭제
+      description: Hard delete 수행
+      operationId: category-rest-controller-test/카테고리 삭제
+      parameters:
+      - name: id
+        in: path
+        description: 카테고리 ID
         required: true
         schema:
           type: string
@@ -197,6 +289,18 @@ paths:
                     }
 components:
   schemas:
+    board-categories1661442423:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: 카테고리 이름
+        parentId:
+          type: number
+          description: 카테고리 부모 ID
+          nullable: true
     board-articles-1499844002:
       type: array
       items:
@@ -235,6 +339,34 @@ components:
         content:
           type: string
           description: 게시글 내용
+    board-categories-1002833915:
+      type: array
+      items:
+        required:
+        - id
+        - name
+        type: object
+        properties:
+          children:
+            type: array
+            items:
+              required:
+              - id
+              - name
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 자식 카테고리 이름
+                id:
+                  type: number
+                  description: 자식 카테고리 ID
+          name:
+            type: string
+            description: 카테고리 이름
+          id:
+            type: number
+            description: 카테고리 ID
     user-members-me-115117825:
       required:
       - email
