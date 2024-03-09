@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class BoardRestControllerAdvice {
 
     @ExceptionHandler(ChildExistsException::class)
-    fun error(e: ChildExistsException): ResponseEntity<ErrorResponse> {
+    fun error(e: ChildExistsException): ResponseEntity<ErrorResponse<String>> {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ErrorResponse(e.message))
     }
 }
