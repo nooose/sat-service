@@ -2,8 +2,8 @@ package com.sat.board.application.dto.command
 
 import jakarta.validation.constraints.NotBlank
 
-data class CategoryCreateCommand(
+data class CategoryUpdateCommand(
     @field:NotBlank
-    val name: String?,
-    val parentId: Long? = null,
+    val name: String,
+    val parentId: Long?,
 )

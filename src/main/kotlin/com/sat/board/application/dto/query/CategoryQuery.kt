@@ -22,7 +22,7 @@ data class CategoryQuery(
             return CategoryQuery(
                 id = entity.id!!,
                 parentId = entity.parentId,
-                name = entity.name
+                name = entity.name.value
             )
         }
     }
