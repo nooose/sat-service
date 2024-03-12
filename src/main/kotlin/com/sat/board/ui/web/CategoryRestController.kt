@@ -37,6 +37,7 @@ class CategoryRestController(
     ) {
         categoryCommandService.update(id, command)
     }
+
     @DeleteMapping("/board/category/{id}")
     fun delete(@PathVariable id: Long) {
         categoryCommandService.delete(id)
