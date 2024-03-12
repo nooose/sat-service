@@ -231,6 +231,40 @@ paths:
       responses:
         "200":
           description: "200"
+  /board/articles/{articleId}/comments:
+    post:
+      tags:
+      - 게시판 > 댓글
+      summary: 댓글 생성
+      description: 댓글 생성
+      operationId: comment-rest-controller-test/댓글 생성
+      parameters:
+      - name: articleId
+        in: path
+        description: 게시글 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/board-articles-articleId-comments-1938465350'
+            examples:
+              comment-rest-controller-test/댓글 생성:
+                value: |-
+                  {
+                    "content" : "이 게시글은 정말 유익합니다.",
+                    "parentId" : 2
+                  }
+      responses:
+        "201":
+          description: "201"
+          headers:
+            Location:
+              description: 게시글 URI
+              schema:
+                type: string
   /user/members:
     get:
       tags:
@@ -387,6 +421,18 @@ components:
         email:
           type: string
           description: 이메일
+    board-articles-articleId-comments-1938465350:
+      required:
+      - content
+      type: object
+      properties:
+        parentId:
+          type: number
+          description: 댓글 부모 ID
+          nullable: true
+        content:
+          type: string
+          description: 댓글 내용
     board-articles-1450587914:
       required:
       - categoryId
