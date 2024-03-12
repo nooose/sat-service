@@ -1,0 +1,7 @@
+package com.sat.board.domain.port
+
+import com.sat.board.domain.Comment
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface CommentRepository : JpaRepository<Comment, Long>{
+}
