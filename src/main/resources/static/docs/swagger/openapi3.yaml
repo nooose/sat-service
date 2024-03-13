@@ -232,6 +232,39 @@ paths:
         "200":
           description: "200"
   /board/articles/{articleId}/comments:
+    get:
+      tags:
+      - 게시판 > 댓글
+      summary: 댓글 조회
+      description: 댓글 조회
+      operationId: comment-rest-controller-test/댓글 조회
+      parameters:
+      - name: articleId
+        in: path
+        description: ""
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/board-articles-articleId-comments1378980847'
+              examples:
+                comment-rest-controller-test/댓글 조회:
+                  value: |-
+                    [ {
+                      "articleId" : 1,
+                      "id" : 1,
+                      "content" : "유익한 게시글 입니다.",
+                      "children" : [ {
+                        "articleId" : 1,
+                        "id" : 2,
+                        "content" : "유익한 부모 댓글 입니다."
+                      } ]
+                    } ]
     post:
       tags:
       - 게시판 > 댓글
@@ -421,18 +454,42 @@ components:
         email:
           type: string
           description: 이메일
-    board-articles-articleId-comments-1938465350:
-      required:
-      - content
-      type: object
-      properties:
-        parentId:
-          type: number
-          description: 댓글 부모 ID
-          nullable: true
-        content:
-          type: string
-          description: 댓글 내용
+    board-articles-articleId-comments1378980847:
+      type: array
+      items:
+        required:
+        - articleId
+        - content
+        - id
+        type: object
+        properties:
+          children:
+            type: array
+            items:
+              required:
+              - articleId
+              - content
+              - id
+              type: object
+              properties:
+                articleId:
+                  type: number
+                  description: 자식 게시판 ID
+                id:
+                  type: number
+                  description: 자식 ID
+                content:
+                  type: string
+                  description: 자식 댓글 내용
+          articleId:
+            type: number
+            description: 게시판 ID
+          id:
+            type: number
+            description: 댓글 ID
+          content:
+            type: string
+            description: 댓글 내용
     board-articles-1450587914:
       required:
       - categoryId
@@ -471,3 +528,15 @@ components:
           email:
             type: string
             description: 이메일
+    board-articles-articleId-comments-1938465350:
+      required:
+      - content
+      type: object
+      properties:
+        parentId:
+          type: number
+          description: 댓글 부모 ID
+          nullable: true
+        content:
+          type: string
+          description: 댓글 내용

@@ -3,8 +3,11 @@ package com.sat.board.ui.web
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.CommentCommandService
+import com.sat.board.application.CommentQueryService
 import com.sat.board.application.dto.command.CommentCreateCommand
+import com.sat.board.application.dto.query.CommentQuery
 import com.sat.board.common.documentation.Documentation
+import com.sat.board.common.documentation.dsl.GET
 import com.sat.board.common.documentation.dsl.POST
 import com.sat.board.common.documentation.dsl.andDocument
 import io.mockk.every
@@ -26,6 +29,10 @@ class CommentRestControllerTest @Autowired constructor(
 
     @MockkBean
     lateinit var commentCommandService: CommentCommandService
+
+    @MockkBean
+    lateinit var commentQueryService: CommentQueryService
+
 
     @Test
     fun `댓글 생성`() {
@@ -51,6 +58,41 @@ class CommentRestControllerTest @Autowired constructor(
             }
             responseHeaders {
                 header(HttpHeaders.LOCATION, "게시글 URI")
+            }
+        }
+    }
+
+    @Test
+    fun `댓글 조회`() {
+        val response = listOf(
+            CommentQuery(
+                articleId = 1L,
+                id = 1L,
+                content = "유익한 게시글 입니다.",
+                mutableListOf(
+                    CommentQuery(
+                        articleId = 1L,
+                        id = 2L,
+                        content = "유익한 부모 댓글 입니다.")
+                )
+            )
+        )
+
+        every { commentQueryService.get(any()) } returns response
+
+        mockMvc.GET("/board/articles/{articleId}/comments", 1L) {
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "게시판 > 댓글"
+            summary = "댓글 조회"
+            responseBody {
+                field("[].articleId", "게시판 ID")
+                field("[].id", "댓글 ID")
+                field("[].content", "댓글 내용")
+                field("[].children[].articleId", "자식 게시판 ID")
+                field("[].children[].id", "자식 ID")
+                field("[].children[].content", "자식 댓글 내용")
             }
         }
     }
