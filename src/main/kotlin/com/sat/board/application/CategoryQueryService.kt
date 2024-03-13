@@ -1,7 +1,7 @@
 package com.sat.board.application
 
+import com.sat.board.application.dto.query.CategoryHierarchy
 import com.sat.board.application.dto.query.CategoryQuery
-import com.sat.board.application.dto.query.OrganizationCategory
 import com.sat.board.domain.port.CategoryRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,7 +13,7 @@ class CategoryQueryService(
 ) {
     fun get(): List<CategoryQuery> {
         val categories = categoryRepository.findAll()
-        val organized = OrganizationCategory(categories)
-        return organized.categories
+        val hierarchy = CategoryHierarchy(categories)
+        return hierarchy.categories
     }
 }

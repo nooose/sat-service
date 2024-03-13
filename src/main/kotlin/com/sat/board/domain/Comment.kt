@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 data class Comment(
-    @ManyToOne @JoinColumn(name = "comment_id")
+    @ManyToOne @JoinColumn(name = "article_id")
     val article: Article,
     val content: String,
     val parentId: Long? = null,
