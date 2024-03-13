@@ -42,6 +42,7 @@ val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
 val kotlinLoggingVersion = "6.0.3"
 val querydslVersion = dependencyManagement.importedProperties["querydsl.version"]
+val jjwtVersion = "0.12.5"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -49,9 +50,14 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("io.github.oshai:kotlin-logging-jvm:$kotlinLoggingVersion")
+	implementation("io.jsonwebtoken:jjwt-api:${jjwtVersion}")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
+
 	runtimeOnly("com.h2database:h2")
 	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
 	annotationProcessor("com.querydsl:querydsl-apt:$querydslVersion:jakarta")

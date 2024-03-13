@@ -28,3 +28,7 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v1/oidc/userinfo
             user-name-attribute: id
+
+token:
+  secret-key: ${JWT_SECRET_KEY}
+  expiration-time: 10m
