@@ -1,7 +1,9 @@
 package com.sat.board.application
 
 import com.sat.board.application.dto.command.CommentCreateCommand
+import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.domain.Comment
+import com.sat.board.domain.exception.ChildExistsException
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
 import com.sat.common.utils.findByIdOrThrow
@@ -17,10 +19,31 @@ class CommentCommandService(
 
     fun create(articleId: Long, command: CommentCreateCommand) {
         val article = articleRepository.findByIdOrThrow(articleId) { "게시글이 존재하지 않습니다. - $articleId" }
-        if (command.parentId != null) {
-            commentRepository.findByIdOrThrow(command.parentId) { "부모 댓글이 존재하지 않습니다. - ${command.parentId}" }
-        }
+        validateParent(command.parentId)
         val comment = Comment(article, command.content, command.parentId)
         commentRepository.save(comment)
+    }
+
+    fun update(id: Long, command: CommentUpdateCommand) {
+        val comment = getComment(id)
+        comment.update(command)
+    }
+
+    private fun validateParent(parentId: Long?) {
+        if (parentId != null) {
+            val exist = commentRepository.existsById(parentId)
+            require(exist) { "부모 댓글이 존재하지 않습니다. - $parentId" }
+        }
+    }
+
+    fun delete(id: Long) {
+        val comment = getComment(id)
+        val exist = commentRepository.existsByParentIdIs(id)
+        require(!exist) { throw ChildExistsException("자식이 존재하는 댓글입니다. - $id") }
+        commentRepository.delete(comment)
+    }
+
+    private fun getComment(id: Long): Comment {
+        return commentRepository.findByIdOrThrow(id) { "댓글이 존재하지 않습니다. - $id" }
     }
 }

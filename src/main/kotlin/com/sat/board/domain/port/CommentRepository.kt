@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface CommentRepository : JpaRepository<Comment, Long>{
     fun findAllByArticle(article: Article): List<Comment>
+
+    fun existsByParentIdIs(commentId : Long): Boolean
 }

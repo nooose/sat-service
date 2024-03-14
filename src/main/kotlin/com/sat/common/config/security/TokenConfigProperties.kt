@@ -1,8 +1,7 @@
 package com.sat.common.config.security
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import kotlin.time.Duration
-import kotlin.time.DurationUnit
+import java.time.Duration
 
 private const val KEY_MIN_LENGTH = 32
 
@@ -15,5 +14,5 @@ data class TokenConfigProperties(
         require(secretKey.length >= KEY_MIN_LENGTH) { "$KEY_MIN_LENGTH 길이 이상의 키가 필요합니다." }
     }
 
-    val expirationMills = expirationTime.toLong(DurationUnit.MILLISECONDS)
+    val expirationMills = expirationTime.toMillis()
 }
