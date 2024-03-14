@@ -5,11 +5,10 @@ import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.CommentCommandService
 import com.sat.board.application.CommentQueryService
 import com.sat.board.application.dto.command.CommentCreateCommand
+import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.application.dto.query.CommentQuery
 import com.sat.board.common.documentation.Documentation
-import com.sat.board.common.documentation.dsl.GET
-import com.sat.board.common.documentation.dsl.POST
-import com.sat.board.common.documentation.dsl.andDocument
+import com.sat.board.common.documentation.dsl.*
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -97,5 +96,44 @@ class CommentRestControllerTest @Autowired constructor(
         }
     }
 
+    @Test
+    fun `댓글 수정`() {
+        val request = CommentUpdateCommand("너무너무 재밌어요")
+
+        every { commentCommandService.update(any(), any()) } just runs
+
+        mockMvc.PUT("/board/comments/{id}", 2L) {
+            content = objectMapper.writeValueAsString(request)
+            contentType = MediaType.APPLICATION_JSON
+            characterEncoding = "utf-8"
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "게시판 > 댓글"
+            summary = "댓글 수정"
+            pathVariables {
+                param("id", "댓글 ID")
+            }
+            requestBody {
+                field("content", "댓글 내용")
+            }
+        }
+    }
+
+    @Test
+    fun `댓글 삭제`() {
+        every { commentCommandService.delete(any()) } just runs
+
+        mockMvc.DELETE("/board/comments/{id}", 1L) {
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "게시판 > 댓글"
+            summary = "댓글 삭제"
+            pathVariables {
+                param("id", "댓글 ID")
+            }
+        }
+    }
 }
 

@@ -7,8 +7,8 @@ import io.kotest.core.annotation.DisplayName
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import java.time.Duration
 import java.util.*
-import kotlin.time.Duration
 
 @DisplayName(name = "JWT 테스트")
 class JwtProviderTest : BehaviorSpec({

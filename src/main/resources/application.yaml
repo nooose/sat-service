@@ -29,6 +29,6 @@ spring:
             user-info-uri: https://kapi.kakao.com/v1/oidc/userinfo
             user-name-attribute: id
 
-token:
+jwt:
   secret-key: ${JWT_SECRET_KEY}
   expiration-time: 10m

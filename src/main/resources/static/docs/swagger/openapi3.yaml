@@ -231,6 +231,50 @@ paths:
       responses:
         "200":
           description: "200"
+  /board/comments/{id}:
+    put:
+      tags:
+      - 게시판 > 댓글
+      summary: 댓글 수정
+      description: 댓글 수정
+      operationId: comment-rest-controller-test/댓글 수정
+      parameters:
+      - name: id
+        in: path
+        description: 댓글 ID
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json;charset=utf-8:
+            schema:
+              $ref: '#/components/schemas/board-comments-id-1563718501'
+            examples:
+              comment-rest-controller-test/댓글 수정:
+                value: |-
+                  {
+                    "content" : "너무너무 재밌어요"
+                  }
+      responses:
+        "200":
+          description: "200"
+    delete:
+      tags:
+      - 게시판 > 댓글
+      summary: 댓글 삭제
+      description: 댓글 삭제
+      operationId: comment-rest-controller-test/댓글 삭제
+      parameters:
+      - name: id
+        in: path
+        description: 댓글 ID
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
   /board/articles/{articleId}/comments:
     get:
       tags:
@@ -356,6 +400,14 @@ paths:
                     }
 components:
   schemas:
+    board-comments-id-1563718501:
+      required:
+      - content
+      type: object
+      properties:
+        content:
+          type: string
+          description: 댓글 내용
     board-categories1661442423:
       required:
       - name
