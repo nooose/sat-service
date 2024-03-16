@@ -2,7 +2,7 @@ package com.sat.board.application.dto.query
 
 import com.sat.board.domain.Category
 
-class OrganizationCategory(
+class CategoryHierarchy(
     categories: List<Category>,
 ) {
     private val _categoryQueries: MutableList<CategoryQuery> = mutableListOf()

@@ -7,7 +7,7 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 
 @DisplayName("도메인 - 카테고리 계층 테스트")
-class OrganizationCategoryTest : BehaviorSpec({
+class CategoryHierarchyTest : BehaviorSpec({
     Given("부모 카테고리와 자식카테고리가 섞인 카테고리 리스트가 있고") {
         val categories = listOf(
             Category(CategoryName("컴퓨터"), null, 1L),
@@ -18,7 +18,7 @@ class OrganizationCategoryTest : BehaviorSpec({
             Category(CategoryName("갤럭시북"), 3L, 7L),
         )
         When("계층을 만들면") {
-            val organizationCategories = OrganizationCategory(categories)
+            val organizationCategories = CategoryHierarchy(categories)
             Then("부모하위에 자식 카테고리가 존재한다.") {
                 organizationCategories.categories shouldBe listOf(
                     CategoryQuery(

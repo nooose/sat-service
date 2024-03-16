@@ -20,9 +20,11 @@ data class ErrorResponse <T> (
         }
 
         fun from(e: HttpMessageNotReadableException): ErrorResponse<List<BindErrorResponse>> {
-            val mismatchedInputException = e.cause as MismatchedInputException
-            val errors = mismatchedInputException.path.map {
-                BindErrorResponse(it.fieldName, "Non-nullable")
+            val errors = when (e.cause) {
+                is MismatchedInputException -> (e.cause as MismatchedInputException).path.map {
+                    BindErrorResponse(it.fieldName, "Non-nullable")
+                }
+                else -> listOf(BindErrorResponse("", "Json 규격이 올바르지 않습니다."))
             }
             return ErrorResponse(errors)
         }
