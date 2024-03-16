@@ -19,9 +19,16 @@ class CommentCommandService(
 
     fun create(articleId: Long, command: CommentCreateCommand) {
         val article = articleRepository.findByIdOrThrow(articleId) { "게시글이 존재하지 않습니다. - $articleId" }
-        validateParent(command.parentId)
+        checkParentId(command.parentId)
         val comment = Comment(article, command.content, command.parentId)
         commentRepository.save(comment)
+    }
+
+    private fun checkParentId(parentId: Long?) {
+        if (parentId != null) {
+            val exist = commentRepository.existsById(parentId)
+            require(exist) { "부모 댓글이 존재하지 않습니다. - $parentId" }
+        }
     }
 
     fun update(id: Long, command: CommentUpdateCommand) {
@@ -29,18 +36,13 @@ class CommentCommandService(
         comment.update(command)
     }
 
-    private fun validateParent(parentId: Long?) {
-        if (parentId != null) {
-            val exist = commentRepository.existsById(parentId)
-            require(exist) { "부모 댓글이 존재하지 않습니다. - $parentId" }
-        }
-    }
 
     fun delete(id: Long) {
-        val comment = getComment(id)
         val exist = commentRepository.existsByParentIdIs(id)
-        require(!exist) { throw ChildExistsException("자식이 존재하는 댓글입니다. - $id") }
-        commentRepository.delete(comment)
+        if (exist) {
+            throw ChildExistsException("자식이 존재하는 댓글입니다. - $id")
+        }
+        commentRepository.deleteById(id)
     }
 
     private fun getComment(id: Long): Comment {

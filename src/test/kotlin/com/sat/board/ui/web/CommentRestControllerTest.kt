@@ -62,7 +62,7 @@ class CommentRestControllerTest @Autowired constructor(
     }
 
     @Test
-    fun `댓글 조회`() {
+    fun `댓글 목록 조회`() {
         val response = listOf(
             CommentQuery(
                 articleId = 1L,
@@ -84,7 +84,7 @@ class CommentRestControllerTest @Autowired constructor(
             status { isOk() }
         }.andDocument {
             tag = "게시판 > 댓글"
-            summary = "댓글 조회"
+            summary = "댓글 목록 조회"
             responseBody {
                 field("[].articleId", "게시판 ID")
                 field("[].id", "댓글 ID")
