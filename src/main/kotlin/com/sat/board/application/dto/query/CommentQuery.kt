@@ -13,6 +13,11 @@ data class CommentQuery(
     @JsonIgnore
     val parentId: Long? = null,
 ){
+
+    fun hasParent(): Boolean {
+        return parentId != null
+    }
+
     companion object {
         fun from(entity: Comment): CommentQuery {
             return CommentQuery(

@@ -54,7 +54,9 @@ class CategoryCommandService(
     fun delete(id: Long) {
         val category = getCategory(id)
         val exists = categoryRepository.existsByParentIdIs(id)
-        require(!exists) { throw ChildExistsException("자식이 존재하는 카테고리입니다. - $id") }
+        if (exists) {
+            throw ChildExistsException("자식이 존재하는 카테고리입니다. - $id")
+        }
         categoryRepository.delete(category)
     }
 
