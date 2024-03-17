@@ -1,4 +1,4 @@
-package com.sat.board.common.documentation.dsl
+package com.sat.common.documentation.dsl
 
 import com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper
 import org.springframework.restdocs.snippet.Snippet

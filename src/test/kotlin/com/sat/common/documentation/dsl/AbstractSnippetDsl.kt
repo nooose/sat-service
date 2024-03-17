@@ -1,4 +1,4 @@
-package com.megazone.act.cms.common.documentation.dsl
+package com.sat.common.documentation.dsl
 
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.request.ParameterDescriptor

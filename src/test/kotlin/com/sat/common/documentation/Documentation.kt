@@ -1,4 +1,4 @@
-package com.sat.board.common.documentation
+package com.sat.common.documentation
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.extension.ExtendWith

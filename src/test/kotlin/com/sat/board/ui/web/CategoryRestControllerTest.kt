@@ -7,8 +7,8 @@ import com.sat.board.application.CategoryQueryService
 import com.sat.board.application.dto.command.CategoryCreateCommand
 import com.sat.board.application.dto.command.CategoryUpdateCommand
 import com.sat.board.application.dto.query.CategoryQuery
-import com.sat.board.common.documentation.Documentation
-import com.sat.board.common.documentation.dsl.*
+import com.sat.common.documentation.Documentation
+import com.sat.common.documentation.dsl.*
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs

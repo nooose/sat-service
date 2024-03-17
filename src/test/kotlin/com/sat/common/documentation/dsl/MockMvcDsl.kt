@@ -1,4 +1,4 @@
-package com.sat.board.common.documentation.dsl
+package com.sat.common.documentation.dsl
 
 import org.springframework.restdocs.generate.RestDocumentationGenerator
 import org.springframework.test.web.servlet.*

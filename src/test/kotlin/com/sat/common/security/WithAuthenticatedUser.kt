@@ -1,4 +1,4 @@
-package com.sat.board.common.security
+package com.sat.common.security
 
 import org.springframework.security.test.context.support.TestExecutionEvent
 import org.springframework.security.test.context.support.WithSecurityContext

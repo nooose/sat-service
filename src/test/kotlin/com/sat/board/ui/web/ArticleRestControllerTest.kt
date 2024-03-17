@@ -8,8 +8,8 @@ import com.sat.board.application.dto.command.ArticleCreateCommand
 import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.application.dto.query.ArticleQuery
 import com.sat.board.application.dto.query.ArticleSimpleQuery
-import com.sat.board.common.documentation.Documentation
-import com.sat.board.common.documentation.dsl.*
+import com.sat.common.documentation.Documentation
+import com.sat.common.documentation.dsl.*
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs

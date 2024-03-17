@@ -1,6 +1,5 @@
-package com.sat.board.common.documentation.dsl
+package com.sat.common.documentation.dsl
 
-import com.megazone.act.cms.common.documentation.dsl.AbstractSnippetDsl
 import org.springframework.restdocs.request.RequestDocumentation
 import org.springframework.restdocs.request.RequestPartDescriptor
 import org.springframework.restdocs.snippet.Snippet

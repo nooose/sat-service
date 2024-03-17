@@ -1,4 +1,4 @@
-package com.sat.board.common.security
+package com.sat.common.security
 
 import com.sat.common.config.security.AuthenticatedMember
 import org.springframework.security.core.Authentication

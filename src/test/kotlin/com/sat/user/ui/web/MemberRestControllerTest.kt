@@ -1,10 +1,10 @@
 package com.sat.user.ui.web
 
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.board.common.documentation.Documentation
-import com.sat.board.common.documentation.dsl.GET
-import com.sat.board.common.documentation.dsl.andDocument
-import com.sat.board.common.security.WithAuthenticatedUser
+import com.sat.common.documentation.Documentation
+import com.sat.common.documentation.dsl.GET
+import com.sat.common.documentation.dsl.andDocument
+import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.application.MemberQueryService
 import com.sat.user.application.dto.query.MemberSimpleQuery
 import io.mockk.every
