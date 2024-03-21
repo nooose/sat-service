@@ -20,10 +20,10 @@ class CommentCommandService(
 ) {
 
     fun create(articleId: Long, command: CommentCreateCommand) {
-        val article = articleRepository.findByIdOrThrow(articleId) { "게시글이 존재하지 않습니다. - $articleId" }
+        articleRepository.findByIdOrThrow(articleId) { "게시글이 존재하지 않습니다. - $articleId" }
         checkParentId(command.parentId)
         val content = Content(command.content)
-        val comment = Comment(article, content, command.parentId)
+        val comment = Comment(articleId, content, command.parentId)
         commentRepository.save(comment)
     }
 

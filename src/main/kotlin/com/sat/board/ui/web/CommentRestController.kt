@@ -36,7 +36,7 @@ class CommentRestController(
     fun update(
         @PathVariable id: Long,
         @RequestBody command: CommentUpdateCommand,
-        ) {
+    ) {
         commentCommandService.update(id, command)
     }
 

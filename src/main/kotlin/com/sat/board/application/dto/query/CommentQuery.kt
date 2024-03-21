@@ -21,7 +21,7 @@ data class CommentQuery(
     companion object {
         fun from(entity: Comment): CommentQuery {
             return CommentQuery(
-                articleId = entity.article.id!!,
+                articleId = entity.articleId,
                 id = entity.id!!,
                 content = entity.content.value,
                 parentId = entity.parentId,

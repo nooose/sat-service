@@ -12,42 +12,18 @@ class CommentHierarchyTest : BehaviorSpec( {
             Comment(
                 id = 1L,
                 content = Content("재밌어요"),
-                article = Article(
-                    id = 1L,
-                    title = "테스트",
-                    content = "테스트입니다",
-                    category = Category(
-                        id = 1L,
-                        name = CategoryName("IT")
-                    )
-                )
+                articleId = 1L
             ),
             Comment(
                 id = 2L,
                 content = Content("재미없어요"),
-                article = Article(
-                    id = 1L,
-                    title = "테스트",
-                    content = "테스트입니다",
-                    category = Category(
-                        id = 1L,
-                        name = CategoryName("IT")
-                    )
-                )
+                articleId = 1L
             ),
             Comment(
                 id = 3L,
                 content = Content("재밌을뻔했어요"),
                 parentId = 1L,
-                article = Article(
-                    id = 1L,
-                    title = "테스트",
-                    content = "테스트입니다",
-                    category = Category(
-                        id = 1L,
-                        name = CategoryName("IT")
-                    )
-                )
+                articleId = 1L
             ),
         )
         When("계층화 하면") {

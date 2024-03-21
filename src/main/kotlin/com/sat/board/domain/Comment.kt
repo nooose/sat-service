@@ -6,8 +6,7 @@ import jakarta.persistence.*
 
 @Entity
 data class Comment(
-    @ManyToOne @JoinColumn(name = "article_id")
-    val article: Article,
+    val articleId: Long,
     @Embedded
     var content: Content,
     var parentId: Long? = null,
