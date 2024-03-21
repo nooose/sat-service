@@ -3,6 +3,8 @@ package com.sat.board.application
 import com.sat.board.application.dto.command.CommentCreateCommand
 import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.domain.Comment
+import com.sat.board.domain.Content
+import com.sat.board.domain.dto.CommentDto
 import com.sat.board.domain.exception.ChildExistsException
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
@@ -20,7 +22,8 @@ class CommentCommandService(
     fun create(articleId: Long, command: CommentCreateCommand) {
         val article = articleRepository.findByIdOrThrow(articleId) { "게시글이 존재하지 않습니다. - $articleId" }
         checkParentId(command.parentId)
-        val comment = Comment(article, command.content, command.parentId)
+        val content = Content(command.content)
+        val comment = Comment(article, content, command.parentId)
         commentRepository.save(comment)
     }
 
@@ -33,7 +36,9 @@ class CommentCommandService(
 
     fun update(id: Long, command: CommentUpdateCommand) {
         val comment = getComment(id)
-        comment.update(command)
+        val content = Content(command.content)
+        val commentDto = CommentDto(content)
+        comment.update(commentDto)
     }
 
 

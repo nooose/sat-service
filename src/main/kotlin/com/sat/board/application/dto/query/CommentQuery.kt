@@ -23,7 +23,7 @@ data class CommentQuery(
             return CommentQuery(
                 articleId = entity.article.id!!,
                 id = entity.id!!,
-                content =  entity.content,
+                content = entity.content.value,
                 parentId = entity.parentId,
             )
         }

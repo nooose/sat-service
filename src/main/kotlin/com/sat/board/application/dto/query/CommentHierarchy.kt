@@ -16,6 +16,10 @@ class CommentHierarchy(
         for (commentQuery in commentQueries) {
             map[commentQuery.parentId]!!.children.add(commentQuery)
         }
-        this._commentQueries.addAll(map.values.filter { it.hasParent() })
+        this._commentQueries.addAll(map.values.filter { !it.hasParent() })
+    }
+
+    override fun toString(): String {
+        return "CommentHierarchy(comments=$comments)"
     }
 }
