@@ -55,7 +55,7 @@ paths:
                   {
                     "title" : "테스트 제목",
                     "content" : "테스트 내용",
-                    "categoryId" : 10
+                    "categoryId" : 1
                   }
       responses:
         "201":
