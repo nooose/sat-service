@@ -43,11 +43,12 @@ class CommentCommandService(
 
 
     fun delete(id: Long) {
+        val comment = getComment(id)
         val exist = commentRepository.existsByParentIdIs(id)
         if (exist) {
             throw ChildExistsException("자식이 존재하는 댓글입니다. - $id")
         }
-        commentRepository.deleteById(id)
+        comment.delete()
     }
 
     private fun getComment(id: Long): Comment {

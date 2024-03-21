@@ -16,7 +16,7 @@ class CommentQueryService(
 ) {
     fun get(articleId: Long): List<CommentQuery> {
         val article = articleRepository.findByIdOrThrow(articleId) { "게시글이 존재하지 않습니다." }
-        val comments = commentRepository.findAllByArticle(article)
+        val comments = commentRepository.findAll(article)
         val hierarchy = CommentHierarchy(comments)
         return hierarchy.comments
     }
