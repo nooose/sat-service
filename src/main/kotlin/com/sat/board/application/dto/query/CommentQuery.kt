@@ -2,11 +2,12 @@ package com.sat.board.application.dto.query
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.sat.board.domain.Comment
+import com.sat.board.domain.dto.CommentDto
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class CommentQuery(
-    val articleId: Long,
+    val memberId: Long,
+    var memberName: String? = null,
     val id: Long,
     val content: String,
     val children: MutableList<CommentQuery> = mutableListOf(),
@@ -19,12 +20,13 @@ data class CommentQuery(
     }
 
     companion object {
-        fun from(entity: Comment): CommentQuery {
+        fun from(that: CommentDto): CommentQuery {
             return CommentQuery(
-                articleId = entity.articleId,
-                id = entity.id!!,
-                content = entity.content.value,
-                parentId = entity.parentId,
+                memberId = that.memberId,
+                memberName = that.memberName,
+                id = that.id,
+                content = that.content,
+                parentId = that.parentId,
             )
         }
     }
