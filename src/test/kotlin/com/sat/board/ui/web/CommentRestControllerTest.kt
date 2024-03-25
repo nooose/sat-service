@@ -9,6 +9,7 @@ import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.application.dto.query.CommentQuery
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
+import com.sat.common.security.WithAuthenticatedUser
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -65,15 +66,18 @@ class CommentRestControllerTest @Autowired constructor(
     fun `댓글 목록 조회`() {
         val response = listOf(
             CommentQuery(
-                articleId = 1L,
+                memberId = 1L,
+                memberName = "test1",
                 id = 1L,
                 content = "유익한 게시글 입니다.",
                 mutableListOf(
                     CommentQuery(
-                        articleId = 1L,
+                        memberId = 2L,
+                        memberName = "test2",
                         id = 2L,
-                        content = "유익한 부모 댓글 입니다.")
-                )
+                        content = "유익한 부모 댓글 입니다.",
+                    )
+                ),
             )
         )
 
@@ -86,21 +90,24 @@ class CommentRestControllerTest @Autowired constructor(
             tag = "게시판 > 댓글"
             summary = "댓글 목록 조회"
             responseBody {
-                field("[].articleId", "게시판 ID")
+                field("[].memberId", "작성자 ID")
+                field("[].memberName", "작성자 닉네임")
                 field("[].id", "댓글 ID")
                 field("[].content", "댓글 내용")
-                field("[].children[].articleId", "자식 게시판 ID")
-                field("[].children[].id", "자식 ID")
+                field("[].children[].memberId", "작성자 ID")
+                field("[].children[].memberName", "작성자 닉네임")
+                field("[].children[].id", "자식 댓글 ID")
                 field("[].children[].content", "자식 댓글 내용")
             }
         }
     }
 
+    @WithAuthenticatedUser
     @Test
     fun `댓글 수정`() {
         val request = CommentUpdateCommand("너무너무 재밌어요")
 
-        every { commentCommandService.update(any(), any()) } just runs
+        every { commentCommandService.update(any(), any(), any()) } just runs
 
         mockMvc.PUT("/board/comments/{id}", 2L) {
             content = objectMapper.writeValueAsString(request)
@@ -111,6 +118,7 @@ class CommentRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "게시판 > 댓글"
             summary = "댓글 수정"
+
             pathVariables {
                 param("id", "댓글 ID")
             }
@@ -120,9 +128,10 @@ class CommentRestControllerTest @Autowired constructor(
         }
     }
 
+    @WithAuthenticatedUser
     @Test
     fun `댓글 삭제`() {
-        every { commentCommandService.delete(any()) } just runs
+        every { commentCommandService.delete(any(), any()) } just runs
 
         mockMvc.DELETE("/board/comments/{id}", 1L) {
         }.andExpect {
