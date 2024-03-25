@@ -11,7 +11,7 @@ insert into article(title, content, category_id, is_deleted) values
 ('테스트 제목 B', '테스트 내용 B', 1, false),
 ('테스트 제목 C', '테스트 내용 C', 2, false);
 
-insert into comments(article_id, content, created_by, is_deleted) values
+insert into comment(article_id, content, created_by, is_deleted) values
 (1, '테스트 댓글 A', 1, false),
 (1, '테스트 댓글 B', 2, false),
 (1, '테스트 댓글 C', 3, false);

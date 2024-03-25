@@ -1,9 +1,9 @@
 package com.sat.board.application.dto.query
 
-import com.sat.board.domain.dto.CommentDto
+import com.sat.board.domain.dto.CommentWithMemberDto
 
 class CommentHierarchy(
-    comments: List<CommentDto>,
+    comments: List<CommentWithMemberDto>,
 ) {
     private val _commentQueries: MutableList<CommentQuery> = mutableListOf()
 

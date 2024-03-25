@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 class CategoryQueryService(
     private val categoryRepository: CategoryRepository,
 ) {
+    // TODO: 캐싱 처리
     fun get(): List<CategoryQuery> {
         val categories = categoryRepository.findAll()
         val hierarchy = CategoryHierarchy(categories)

@@ -2,7 +2,7 @@ package com.sat.board.application.dto.query
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.sat.board.domain.dto.CommentDto
+import com.sat.board.domain.dto.CommentWithMemberDto
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class CommentQuery(
@@ -20,7 +20,7 @@ data class CommentQuery(
     }
 
     companion object {
-        fun from(that: CommentDto): CommentQuery {
+        fun from(that: CommentWithMemberDto): CommentQuery {
             return CommentQuery(
                 memberId = that.memberId,
                 memberName = that.memberName,

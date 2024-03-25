@@ -2,20 +2,20 @@ package com.sat.board.domain.dto
 
 import com.sat.board.domain.Comment
 
-data class CommentDto(
-    val memberId: Long,
-    var memberName: String? = null,
+data class CommentWithMemberDto(
     val id: Long,
     val content: String,
+    val memberId: Long,
+    var memberName: String? = null,
     val parentId: Long? = null,
 ) {
     companion object {
-        fun from(entity: Comment): CommentDto {
-            return CommentDto(
-                memberId = entity.createdBy!!,
+        fun from(entity: Comment): CommentWithMemberDto {
+            return CommentWithMemberDto(
                 id = entity.id!!,
-                parentId = entity.parentId,
                 content = entity.content,
+                memberId = entity.createdBy!!,
+                parentId = entity.parentId,
             )
         }
     }

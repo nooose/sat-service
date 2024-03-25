@@ -40,14 +40,14 @@ class CategoryCommandService(
     private fun validateName(name: CategoryName) {
         val isDuplicated = categoryRepository.existsByName(name)
         if (isDuplicated) {
-            throw DuplicateException("카테고리 이름이 존재합니다. - ${name.value}")
+            throw DuplicateException("중복된 카테고리 이름입니다. - ${name.value}")
         }
     }
 
     private fun validateParent(parentId: Long?) {
         if (parentId != null) {
             val exists = categoryRepository.existsById(parentId)
-            require(exists) { "존재하지 않는 ID 입니다. - $parentId" }
+            require(exists) { "상위 카테고리가 존재하지 않습니다. - $parentId" }
         }
     }
 
@@ -55,7 +55,7 @@ class CategoryCommandService(
         val category = getCategory(id)
         val exists = categoryRepository.existsByParentIdIs(id)
         if (exists) {
-            throw ChildExistsException("자식이 존재하는 카테고리입니다. - $id")
+            throw ChildExistsException("하위 카테고리를 모두 삭제 후 삭제할 수 있습니다. - $id")
         }
         categoryRepository.delete(category)
     }

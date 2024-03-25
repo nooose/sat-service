@@ -1,7 +1,7 @@
 package com.sat.board.application.dto.query
 
 import com.sat.board.domain.*
-import com.sat.board.domain.dto.CommentDto
+import com.sat.board.domain.dto.CommentWithMemberDto
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -11,19 +11,19 @@ import io.kotest.matchers.shouldBe
 class CommentHierarchyTest : BehaviorSpec( {
     Given("댓글리스트가 있고") {
         val comments = listOf(
-            CommentDto(
+            CommentWithMemberDto(
                 memberId = 1L,
                 memberName = "영록",
                 id = 1L,
                 content = "재밌어요",
             ),
-            CommentDto(
+            CommentWithMemberDto(
                 memberId = 2L,
                 memberName = "준혁",
                 id = 2L,
                 content = "재미없어요",
             ),
-            CommentDto(
+            CommentWithMemberDto(
                 memberId = 3L,
                 memberName = "규정",
                 id = 3L,

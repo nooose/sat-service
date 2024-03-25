@@ -6,6 +6,7 @@ import com.sat.board.domain.Comment
 import com.sat.board.domain.exception.ChildExistsException
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
+import com.sat.board.domain.port.hasChild
 import com.sat.board.domain.port.hasParent
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -19,7 +20,7 @@ class CommentCommandService(
 ) {
 
     fun create(articleId: Long, command: CommentCreateCommand) {
-        articleRepository.findByIdOrThrow(articleId) { "게시글이 존재하지 않습니다. - $articleId" }
+        check(articleRepository.existsById(articleId)) { "게시글에 상위 댓글이 존재하지 않습니다. - $articleId" }
         checkParentId(command.parentId, articleId)
         val comment = Comment(articleId, command.content, command.parentId)
         commentRepository.save(comment)
@@ -28,7 +29,7 @@ class CommentCommandService(
     private fun checkParentId(parentId: Long?, articleId: Long) {
         if (parentId != null) {
             val exist = commentRepository.hasParent(parentId, articleId)
-            require(exist) { "부모 댓글이 존재하지 않습니다. - $parentId" }
+            require(exist) { "상위 댓글이 존재하지 않습니다. - $parentId" }
         }
     }
 
@@ -37,12 +38,11 @@ class CommentCommandService(
         comment.update(command, loginId)
     }
 
-
     fun delete(id: Long, loginId: Long) {
         val comment = getComment(id)
-        val exist = commentRepository.hasParent(id)
+        val exist = commentRepository.hasChild(id)
         if (exist) {
-            throw ChildExistsException("자식이 존재하는 댓글입니다. - $id")
+            throw ChildExistsException("하위 댓글이 존재합니다. - $id") // TODO: 예외 제거 후 소프트 delete 처리
         }
         comment.delete(loginId)
     }

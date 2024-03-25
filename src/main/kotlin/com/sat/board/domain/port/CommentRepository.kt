@@ -4,7 +4,7 @@ import com.sat.board.domain.Comment
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
-fun CommentRepository.hasParent(commentId: Long): Boolean {
+fun CommentRepository.hasChild(commentId: Long): Boolean {
     return existsByParentIdIsAndIsDeletedIsFalse(commentId)
 }
 
