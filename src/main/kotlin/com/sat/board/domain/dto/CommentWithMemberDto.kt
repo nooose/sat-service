@@ -4,11 +4,18 @@ import com.sat.board.domain.Comment
 
 data class CommentWithMemberDto(
     val id: Long,
-    val content: String,
+    var content: String,
     val memberId: Long,
     var memberName: String? = null,
     val parentId: Long? = null,
+    val isDeleted: Boolean,
 ) {
+    init {
+        if (isDeleted) {
+            content = ""
+        }
+    }
+
     companion object {
         fun from(entity: Comment): CommentWithMemberDto {
             return CommentWithMemberDto(
@@ -16,6 +23,7 @@ data class CommentWithMemberDto(
                 content = entity.content,
                 memberId = entity.createdBy!!,
                 parentId = entity.parentId,
+                isDeleted = entity.isDeleted,
             )
         }
     }

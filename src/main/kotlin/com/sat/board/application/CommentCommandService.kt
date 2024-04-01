@@ -3,10 +3,8 @@ package com.sat.board.application
 import com.sat.board.application.dto.command.CommentCreateCommand
 import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.domain.Comment
-import com.sat.board.domain.exception.ChildExistsException
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
-import com.sat.board.domain.port.hasChild
 import com.sat.board.domain.port.hasParent
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -40,10 +38,6 @@ class CommentCommandService(
 
     fun delete(id: Long, loginId: Long) {
         val comment = getComment(id)
-        val exist = commentRepository.hasChild(id)
-        if (exist) {
-            throw ChildExistsException("하위 댓글이 존재합니다. - $id") // TODO: 예외 제거 후 소프트 delete 처리
-        }
         comment.delete(loginId)
     }
 

@@ -13,6 +13,7 @@ data class CommentQuery(
     val children: MutableList<CommentQuery> = mutableListOf(),
     @JsonIgnore
     val parentId: Long? = null,
+    val isDeleted: Boolean,
 ){
 
     fun hasParent(): Boolean {
@@ -27,6 +28,7 @@ data class CommentQuery(
                 id = that.id,
                 content = that.content,
                 parentId = that.parentId,
+                isDeleted = that.isDeleted,
             )
         }
     }

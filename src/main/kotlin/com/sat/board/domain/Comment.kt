@@ -15,7 +15,7 @@ data class Comment(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 ) : AuditingFields() {
-    private var isDeleted: Boolean = false
+    var isDeleted: Boolean = false
 
     fun update(that: CommentUpdateCommand, ownerId: Long) {
         validate(ownerId)
