@@ -1,6 +1,7 @@
 package com.sat.board.domain
 
 import com.sat.board.domain.dto.CategoryDto
+import com.sat.common.domain.AuditingFields
 import jakarta.persistence.*
 
 @Entity
@@ -10,7 +11,7 @@ class Category(
     var parentId: Long? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-) {
+) : AuditingFields() {
 
     fun update(that: CategoryDto) {
         this.name = that.name
@@ -26,7 +27,7 @@ data class CategoryName(
     init {
         require(value.length in MIN..MAX) { "카테고리 이름은 ${MIN}글자이상 ${MAX}글자 이하로 작성해주세요. - $value" }
         require(DEFAULT_PATTERN.matches(value)) { "카테고리 이름은 한글 또는 영문만 가능합니다. - $value" }
-        require(value.trim() == value) { "카테고리 이름 앞뒤에 공백이 존재합니다." }
+        require(value.trim() == value) { "카테고리 이름 앞뒤에 공백을 넣을 수 없습니다." }
     }
 
     companion object {

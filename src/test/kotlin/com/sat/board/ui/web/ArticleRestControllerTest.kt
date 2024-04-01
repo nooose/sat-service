@@ -34,7 +34,7 @@ class ArticleRestControllerTest @Autowired constructor(
 
     @Test
     fun `게시글 생성`() {
-        val request = ArticleCreateCommand("테스트 제목", "테스트 내용", 10L)
+        val request = ArticleCreateCommand("테스트 제목", "테스트 내용", 1L)
 
         every { articleCommandService.create(any()) } returns 1L
 
