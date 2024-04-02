@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 
 
-fun CommentRepository.hasParent(commentId: Long, articleId: Long): Boolean {
+fun CommentRepository.existParent(commentId: Long, articleId: Long): Boolean {
     return existsByIdIsAndArticleIdIs(commentId, articleId)
 }
 
