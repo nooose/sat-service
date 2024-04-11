@@ -62,7 +62,7 @@ class CommentCommandServiceTest @Autowired constructor(
 
     @WithAuthenticatedUser
     @Test
-    fun `게시글이 존재하지 않을때 댓글 생성 실패 테스트`() {
+    fun `게시글이 존재하지 않으면 댓글 생성이 실패한다`() {
         val request = CommentCreateCommand("너무 재밌어요")
 
         assertThrows<IllegalStateException> { commentCommandService.create(10L, request) }
@@ -86,7 +86,7 @@ class CommentCommandServiceTest @Autowired constructor(
 
     @WithAuthenticatedUser
     @Test
-    fun `존재하지 않는 부모아이디로 자식 댓글을 생성할때 발생하는 에러 테스트`() {
+    fun `존재하지 않는 부모아이디로 자식 댓글을 생성하면 에러가 발생한다`() {
         val 게시글_ID = 게시글.id!!
         val request = CommentCreateCommand("보고싶어요", 10L)
 
@@ -111,7 +111,7 @@ class CommentCommandServiceTest @Autowired constructor(
 
     @WithAuthenticatedUser
     @Test
-    fun `삭제된 댓글을 수정하려고 했을때 발생하는 에러 테스트`() {
+    fun `삭제된 댓글을 수정하면 에러가 발생한다`() {
         val 게시글_ID = 게시글.id!!
         val newComment = Comment(게시글_ID, "너무 재밌어요")
         commentRepository.save(newComment)
@@ -125,7 +125,7 @@ class CommentCommandServiceTest @Autowired constructor(
 
     @WithAuthenticatedUser
     @Test
-    fun `댓글 주인이 아닌데 수정하려 했을때 발생하는 에러 테스트`() {
+    fun `다른 사람의 댓글 수정하면 에러가 발생한다`() {
         val 게시글_ID = 게시글.id!!
         val newComment = Comment(게시글_ID, "너무 재밌어요")
         commentRepository.save(newComment)
