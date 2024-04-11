@@ -16,12 +16,14 @@ class CommentHierarchyTest : BehaviorSpec( {
                 memberName = "영록",
                 id = 1L,
                 content = "재밌어요",
+                isDeleted = false,
             ),
             CommentWithMemberDto(
                 memberId = 2L,
                 memberName = "준혁",
                 id = 2L,
                 content = "재미없어요",
+                isDeleted = false,
             ),
             CommentWithMemberDto(
                 memberId = 3L,
@@ -29,6 +31,7 @@ class CommentHierarchyTest : BehaviorSpec( {
                 id = 3L,
                 content = "재밌을뻔했어요",
                 parentId = 1L,
+                isDeleted = false,
             ),
         )
         When("계층화 하면") {
@@ -47,14 +50,17 @@ class CommentHierarchyTest : BehaviorSpec( {
                                 id = 3L,
                                 content = "재밌을뻔했어요",
                                 parentId = 1L,
+                                isDeleted = false,
                             )
-                        )
+                        ),
+                        isDeleted = false,
                     ),
                     CommentQuery(
                         memberId = 2L,
                         memberName = "준혁",
                         id = 2L,
                         content = "재미없어요",
+                        isDeleted = false,
                     )
                 )
             }

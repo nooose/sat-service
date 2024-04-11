@@ -76,8 +76,10 @@ class CommentRestControllerTest @Autowired constructor(
                         memberName = "test2",
                         id = 2L,
                         content = "유익한 부모 댓글 입니다.",
+                        isDeleted = false,
                     )
                 ),
+                isDeleted = false,
             )
         )
 

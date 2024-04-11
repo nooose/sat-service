@@ -5,7 +5,7 @@ import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.domain.Comment
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
-import com.sat.board.domain.port.hasParent
+import com.sat.board.domain.port.existParent
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,7 +18,7 @@ class CommentCommandService(
 ) {
 
     fun create(articleId: Long, command: CommentCreateCommand) {
-        check(articleRepository.existsById(articleId)) { "게시글에 상위 댓글이 존재하지 않습니다. - $articleId" }
+        check(articleRepository.existsById(articleId)) { "게시글이 존재하지 않습니다. - $articleId" }
         checkParentId(command.parentId, articleId)
         val comment = Comment(articleId, command.content, command.parentId)
         commentRepository.save(comment)
@@ -26,7 +26,7 @@ class CommentCommandService(
 
     private fun checkParentId(parentId: Long?, articleId: Long) {
         if (parentId != null) {
-            val exist = commentRepository.hasParent(parentId, articleId)
+            val exist = commentRepository.existParent(parentId, articleId)
             require(exist) { "상위 댓글이 존재하지 않습니다. - $parentId" }
         }
     }
