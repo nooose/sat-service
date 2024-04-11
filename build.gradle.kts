@@ -14,8 +14,9 @@ plugins {
 	kotlin("plugin.allopen") version "1.9.22"
 }
 
+val satVersion = "0.0.1"
 group = "com.sat"
-version = "0.0.1"
+version = satVersion
 
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
@@ -94,8 +95,6 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-// docs
-
 tasks.asciidoctor {
 	dependsOn("test")
 	configurations("asciidoctorExt")
@@ -124,10 +123,10 @@ project.openapi3 {
 	localServer.url = "http://localhost:8080"
 	localServer.description = "로컬 서버"
 	setServers(listOf())
-	servers.addLast(localServer)
+	(servers as MutableList).add(localServer)
 	title = "API 규격"
 	description = "API 규격 문서"
-	version = "0.0.1"
+	version = satVersion
 	format = "yaml"
 }
 
