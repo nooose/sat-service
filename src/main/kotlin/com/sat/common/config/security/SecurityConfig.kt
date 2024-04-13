@@ -13,22 +13,25 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration(proxyBeanMethods = false)
 class SecurityConfig {
 
     @Bean
     fun filterChain(
-        http: HttpSecurity,
-        oidcService: OAuth2UserService<OidcUserRequest, OidcUser>,
-        clientRegistrationRepository: ClientRegistrationRepository,
-        oidcSuccessHandler: OidcSuccessHandler,
+            http: HttpSecurity,
+            corsConfigurationSource: UrlBasedCorsConfigurationSource,
+            oidcService: OAuth2UserService<OidcUserRequest, OidcUser>,
+            clientRegistrationRepository: ClientRegistrationRepository,
+            oidcSuccessHandler: OidcSuccessHandler,
     ): SecurityFilterChain {
         val resolver = DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)
         resolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce())
 
         http {
             csrf { disable() }
+            cors { configurationSource = corsConfigurationSource }
             formLogin { disable() }
             headers { frameOptions { sameOrigin = true } }
             oauth2Login {
@@ -37,7 +40,7 @@ class SecurityConfig {
                 authenticationSuccessHandler = oidcSuccessHandler
             }
             authorizeHttpRequests {
-                authorize("/**", authenticated)
+                authorize("/**", permitAll)
             }
         }
         return http.build()
