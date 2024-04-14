@@ -1,14 +1,5 @@
-import ArticleSimpleResponse from "@/model/response/ArticleSimpleResponse";
-import {Card, CardBody} from "@nextui-org/react";
-import {useRouter} from "next/navigation";
-
 export async function getArticle(id: number) {
-    const config = {
-        headers: {
-            'Accept': 'application/json',
-        }
-    }
-    const response = await fetch(`http://localhost:8080/board/articles/${id}`, config);
+    const response = await fetch(`/board/articles/${id}`);
     return await response.json();
 }
 

@@ -5,17 +5,17 @@ import {Card, CardBody} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import styles from "@styles/article.module.css"
 
-export default function Article({id, title, category}: ArticleSimpleResponse){
+export default function Article({ article }: { article: ArticleSimpleResponse }){
     const router = useRouter();
     const onClick = () => {
-        router.push(`/articles/${id}`);
+        router.push(`/articles/${article.id}`);
     }
 
     return(
         <div className={styles.article}>
-            <Card key={id}>
+            <Card key={article.id}>
                 <CardBody onClick={onClick}>
-                    <p>{title}</p>
+                    <p>{article.title}</p>
                 </CardBody>
             </Card>
         </div>

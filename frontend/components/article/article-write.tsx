@@ -16,7 +16,7 @@ function saveArticle(articleCreateRequest: ArticleCreateRequest) {
     })
 }
 
-export default function ArticleWrite({categories}: { categories: any }) {
+export default function ArticleWrite({ categories }: { categories: CategoryResponse[] }) {
     const state = articleCreateStore((state: any) => state);
 
     return (
@@ -26,12 +26,13 @@ export default function ArticleWrite({categories}: { categories: any }) {
                     label="카테고리 선택"
                     className="max-w-xs"
                     onSelectionChange={(input: React.Key) => state.setCategoryId(input)}
-                >
-                    {categories.map((category: CategoryResponse) => (
+                >{
+                    categories.map(category => (
                         <AutocompleteItem key={category.id} value={category.id}>
                             {category.name}
                         </AutocompleteItem>
-                    ))}
+                    ))
+                }
                 </Autocomplete>
             </div>
             <Input type="text" label="제목" placeholder="제목을 입력해 주세요"
