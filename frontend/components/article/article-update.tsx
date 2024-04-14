@@ -1,27 +1,35 @@
 "use client"
 
 import {Input, Textarea} from "@nextui-org/input";
-import articleCreateStore from "@/store/article-store";
+import articleStore from "@/store/article-store";
 import {Button} from "@nextui-org/react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 import CategoryResponse from "@/model/response/CategoryResponse";
 import {useRouter} from "next/navigation";
 import {httpClient} from "@/utils/client";
-import ArticleCreateRequest from "@/model/request/ArticleCreateRequest";
+import ArticleUpdateRequest from "@/model/request/ArticleUpdateRequest";
+import ArticleCreateRequest from "@/model/request/ArticleUpdateRequest";
+import articleResponse from "@/model/response/ArticleResponse";
+import {useEffect} from "react";
 
-function saveArticle(articleCreateRequest: ArticleCreateRequest) {
-    return httpClient("/board/articles", "POST", articleCreateRequest);
+function updateArticle(id: number, request: ArticleUpdateRequest) {
+    return httpClient(`/board/articles/${id}`, "PUT", request);
 }
 
-export default function ArticleWrite({categories}: { categories: CategoryResponse[] }) {
-    const state = articleCreateStore((state: any) => state);
+export default function ArticleUpdate({article, categories}: { article: articleResponse, categories: CategoryResponse[] }) {
+    const state = articleStore((state: any) => state);
+    useEffect(() => {
+        state.setTitle(article.title);
+        state.setContent(article.content);
+    }, []);
     const router = useRouter();
-
     return (
         <div>
             <Autocomplete
                 label="카테고리 선택"
                 className="max-w-xs"
+                value={article.category}
+                key={1}
                 onSelectionChange={(input: React.Key) => state.setCategoryId(input)}
             >{
                 categories.map(category => (
@@ -33,33 +41,35 @@ export default function ArticleWrite({categories}: { categories: CategoryRespons
             </Autocomplete>
             <Input type="text" label="제목" placeholder="제목을 입력해 주세요"
                    value={state.title}
-                   onChange={event => state.setTitle(event.target.value)}
+                   defaultValue={article.title}
+                   onValueChange={value => state.setTitle(value)}
             />
             <Textarea
                 label="내용"
                 placeholder="내용을 입력해 주세요"
                 className="max-w-xs"
                 value={state.content}
-                onChange={event => state.setContent(event.target.value)}
+                defaultValue={article.content}
+                onValueChange={value => state.setContent(value)}
             />
             <Button color="primary" onClick={
                 () => {
-                    const request: ArticleCreateRequest = {
+                    const request: ArticleUpdateRequest = {
                         title: state.title,
                         content: state.content,
                         categoryId: state.categoryId,
                     }
-                    saveArticle(request)
+                    updateArticle(article.id, request)
                         .then(response => {
                             if (response.ok) {
-                                router.push('/');
+                                router.push(`/articles/${article.id}`);
                             }
                         })
                         .catch(error => {
                             console.error('API 요청 중 오류가 발생하였습니다:', error);
                         });
                 }
-            }>등록</Button>
+            }>수정</Button>
         </div>
     );
 }

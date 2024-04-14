@@ -3,10 +3,10 @@
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 
-export default function ArticleWriteButton(){
+export default function ArticleUpdateButton({id} : {id: number}) {
     const router = useRouter();
     const onClick = () => {
-        router.push("/articles/write");
+        router.push(`/articles/${id}/edit`);
     }
 
     return (
@@ -14,7 +14,7 @@ export default function ArticleWriteButton(){
             <Button
                 color = "primary"
                 onClick={onClick}
-            >글 쓰기</Button>
+            >수정하기</Button>
         </div>
     );
 }
