@@ -1,6 +1,6 @@
 "use client"
 
-import {Input} from "@nextui-org/input";
+import {Input, Textarea} from "@nextui-org/input";
 import articleCreateStore from "@/store/article-store";
 import {Button} from "@nextui-org/react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
@@ -39,9 +39,12 @@ export default function ArticleWrite({ categories }: { categories: CategoryRespo
                    value={state.title}
                    onChange={event => state.setTitle(event.target.value)}
             />
-            <Input type="text" label="내용" placeholder="내용을 입력해 주세요"
-                   value={state.content}
-                   onChange={event => state.setContent(event.target.value)}
+            <Textarea
+                label="내용"
+                placeholder="내용을 입력해 주세요"
+                className="max-w-xs"
+                value={state.content}
+                onChange={event => state.setContent(event.target.value)}
             />
             <Button color="primary" onClick={
                 () => {

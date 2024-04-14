@@ -1,7 +1,8 @@
 import ArticleWrite from "@/components/article/article-write";
+import {httpClient} from "@/utils/client";
 
 async function getCategories() {
-    const response = await fetch("/board/categories");
+    const response = await httpClient("/board/categories");
     return await response.json();
 }
 

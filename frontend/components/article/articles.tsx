@@ -1,8 +1,9 @@
 import ArticleSimpleResponse from "@/model/response/ArticleSimpleResponse";
 import Article from "@/components/article/article";
+import {httpClient} from "@/utils/client";
 
 async function getArticles() {
-    const response = await fetch("/board/articles");
+    const response = await httpClient("/board/articles");
     return await response.json();
 }
 

@@ -3,7 +3,7 @@ const DEFAULT_HEADERS = {
     'Accept': 'application/json',
 };
 
-async function fetch(path: string, method = 'GET', body = null) {
+export async function httpClient(path: string, method = 'GET', body = null) {
     const url = `${API_HOST}${path}`;
     const config = {
         method,
@@ -11,6 +11,5 @@ async function fetch(path: string, method = 'GET', body = null) {
         body: body ? JSON.stringify(body) : null,
     };
 
-    const response = await fetch(url, config);
-    return await response.json();
+    return await fetch(url, config);
 }

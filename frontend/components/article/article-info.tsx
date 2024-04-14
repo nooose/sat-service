@@ -1,5 +1,7 @@
+import {httpClient} from "@/utils/client";
+
 export async function getArticle(id: number) {
-    const response = await fetch(`/board/articles/${id}`);
+    const response = await httpClient(`/board/articles/${id}`);
     return await response.json();
 }
 
