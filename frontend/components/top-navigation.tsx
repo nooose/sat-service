@@ -13,9 +13,9 @@ export default function Navigation() {
         <a href="/" className="font-bold text-inherit">S.A.T</a>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
-        <NavbarItem isActive={path === "/menu1"}>
-          <Link href="/menu1">
-            메뉴1
+        <NavbarItem isActive={path === "/category"}>
+          <Link href="/category">
+            카테고리
           </Link>
         </NavbarItem>
         <NavbarItem isActive={path === "/menu2"}>
