@@ -15,14 +15,12 @@ import com.sat.user.domain.Member
 import com.sat.user.domain.port.MemberRepository
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
 
+@DisplayName(value = "서비스 - 댓글 기능 테스트")
 @SpringBootTest
 class CommentCommandServiceTest @Autowired constructor(
     private val commentRepository: CommentRepository,
