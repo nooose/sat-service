@@ -158,14 +158,13 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/board-articles-1450587914'
+              $ref: '#/components/schemas/board-articles-articleId27737830'
             examples:
               article-rest-controller-test/게시글 수정:
                 value: |-
                   {
                     "title" : "수정 제목",
-                    "content" : "수정 내용",
-                    "categoryId" : 10
+                    "content" : "수정 내용"
                   }
       responses:
         "200":
@@ -279,9 +278,9 @@ paths:
     get:
       tags:
       - 게시판 > 댓글
-      summary: 댓글 조회
-      description: 댓글 조회
-      operationId: 'comment-rest-controller-test/댓글 '
+      summary: 댓글 목록 조회
+      description: 댓글 목록 조회
+      operationId: comment-rest-controller-test/댓글 목록 조회
       parameters:
       - name: articleId
         in: path
@@ -295,20 +294,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/board-articles-articleId-comments-1889567638'
+                $ref: '#/components/schemas/board-articles-articleId-comments-848727755'
               examples:
-                comment-rest-controller-test/댓글 조회:
-                  value: |-
-                    [ {
-                      "articleId" : 1,
-                      "id" : 1,
-                      "content" : "유익한 게시글 입니다.",
-                      "children" : [ {
-                        "articleId" : 1,
-                        "id" : 2,
-                        "content" : "유익한 부모 댓글 입니다."
-                      } ]
-                    } ]
                 comment-rest-controller-test/댓글 목록 조회:
                   value: |-
                     [ {
@@ -320,8 +307,10 @@ paths:
                         "memberId" : 2,
                         "memberName" : "test2",
                         "id" : 2,
-                        "content" : "유익한 부모 댓글 입니다."
-                      } ]
+                        "content" : "유익한 부모 댓글 입니다.",
+                        "isDeleted" : false
+                      } ],
+                      "isDeleted" : false
                     } ]
     post:
       tags:
@@ -434,6 +423,18 @@ components:
           type: number
           description: 카테고리 부모 ID
           nullable: true
+    board-articles-articleId27737830:
+      required:
+      - content
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+          description: 게시글 제목
+        content:
+          type: string
+          description: 게시글 내용
     board-articles-1499844002:
       type: array
       items:
@@ -452,58 +453,6 @@ components:
           title:
             type: string
             description: 게시글 제목
-    board-articles-articleId-comments-1889567638:
-      type: array
-      items:
-        required:
-        - articleId
-        - content
-        - id
-        - memberId
-        - memberName
-        type: object
-        properties:
-          children:
-            type: array
-            items:
-              required:
-              - articleId
-              - content
-              - id
-              - memberId
-              - memberName
-              type: object
-              properties:
-                articleId:
-                  type: number
-                  description: 자식 게시판 ID
-                memberName:
-                  type: string
-                  description: 작성자 닉네임
-                id:
-                  type: number
-                  description: 자식 댓글 ID
-                content:
-                  type: string
-                  description: 자식 댓글 내용
-                memberId:
-                  type: number
-                  description: 작성자 ID
-          articleId:
-            type: number
-            description: 게시판 ID
-          memberName:
-            type: string
-            description: 작성자 닉네임
-          id:
-            type: number
-            description: 댓글 ID
-          content:
-            type: string
-            description: 댓글 내용
-          memberId:
-            type: number
-            description: 작성자 ID
     board-articles-articleId1038093111:
       required:
       - category
@@ -552,6 +501,58 @@ components:
           id:
             type: number
             description: 카테고리 ID
+    board-articles-articleId-comments-848727755:
+      type: array
+      items:
+        required:
+        - content
+        - id
+        - isDeleted
+        - memberId
+        - memberName
+        type: object
+        properties:
+          isDeleted:
+            type: boolean
+            description: 댓글 삭제 여부
+          children:
+            type: array
+            items:
+              required:
+              - content
+              - id
+              - isDeleted
+              - memberId
+              - memberName
+              type: object
+              properties:
+                isDeleted:
+                  type: boolean
+                  description: 댓글 삭제 여부
+                memberName:
+                  type: string
+                  description: 작성자 닉네임
+                id:
+                  type: number
+                  description: 자식 댓글 ID
+                content:
+                  type: string
+                  description: 자식 댓글 내용
+                memberId:
+                  type: number
+                  description: 작성자 ID
+          memberName:
+            type: string
+            description: 작성자 닉네임
+          id:
+            type: number
+            description: 댓글 ID
+          content:
+            type: string
+            description: 댓글 내용
+          memberId:
+            type: number
+            description: 작성자 ID
     user-members-me-115117825:
       required:
       - email
