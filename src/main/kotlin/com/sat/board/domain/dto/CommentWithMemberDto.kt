@@ -6,7 +6,7 @@ data class CommentWithMemberDto(
     val id: Long,
     var content: String,
     val memberId: Long,
-    var memberName: String? = null,
+    var memberName: String,
     val parentId: Long? = null,
     val isDeleted: Boolean,
 ) {
@@ -17,11 +17,12 @@ data class CommentWithMemberDto(
     }
 
     companion object {
-        fun from(entity: Comment): CommentWithMemberDto {
+        fun from(entity: Comment, memberName: String): CommentWithMemberDto {
             return CommentWithMemberDto(
                 id = entity.id!!,
                 content = entity.content,
                 memberId = entity.createdBy!!,
+                memberName = memberName,
                 parentId = entity.parentId,
                 isDeleted = entity.isDeleted,
             )

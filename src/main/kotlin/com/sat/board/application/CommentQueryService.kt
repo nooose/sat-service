@@ -27,10 +27,9 @@ class CommentQueryService(
         val members = memberRepository.findAllById(memberIds)
         val memberMap = members.associateBy { it.id }
 
-        val commentWithMember = comments.map { CommentWithMemberDto.from(it) }
-        for (commentDto in commentWithMember) {
-            val member = memberMap[commentDto.memberId]!!
-            commentDto.memberName = member.nickname
+        val commentWithMember = comments.map {
+            val member = memberMap[it.createdBy]!!
+            CommentWithMemberDto.from(it, member.nickname)
         }
         val hierarchy = CommentHierarchy(commentWithMember)
         return hierarchy.comments
