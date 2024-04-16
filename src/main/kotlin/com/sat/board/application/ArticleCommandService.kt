@@ -3,7 +3,7 @@ package com.sat.board.application
 import com.sat.board.application.dto.command.ArticleCreateCommand
 import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.domain.Article
-import com.sat.board.domain.dto.ArticleDto
+import com.sat.board.domain.dto.ArticleWithoutCategoryDto
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CategoryRepository
 import com.sat.common.utils.findByIdOrThrow
@@ -25,9 +25,8 @@ class ArticleCommandService(
     }
 
     fun update(id: Long, command: ArticleUpdateCommand) {
-        val category = categoryRepository.getReferenceById(command.categoryId)
         val article = getArticle(id)
-        val articleDto = ArticleDto(command.title, command.content, category)
+        val articleDto = ArticleWithoutCategoryDto(command.title, command.content)
         article.update(articleDto)
     }
 

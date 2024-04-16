@@ -11,6 +11,7 @@ import ArticleUpdateRequest from "@/model/request/ArticleUpdateRequest";
 import ArticleCreateRequest from "@/model/request/ArticleUpdateRequest";
 import articleResponse from "@/model/response/ArticleResponse";
 import {useEffect} from "react";
+import {Code} from "@nextui-org/code";
 
 function updateArticle(id: number, request: ArticleUpdateRequest) {
     return httpClient(`/board/articles/${id}`, "PUT", request);
@@ -25,20 +26,7 @@ export default function ArticleUpdate({article, categories}: { article: articleR
     const router = useRouter();
     return (
         <div>
-            <Autocomplete
-                label="카테고리 선택"
-                className="max-w-xs"
-                value={article.category}
-                key={1}
-                onSelectionChange={(input: React.Key) => state.setCategoryId(input)}
-            >{
-                categories.map(category => (
-                    <AutocompleteItem key={category.id} value={category.id}>
-                        {category.name}
-                    </AutocompleteItem>
-                ))
-            }
-            </Autocomplete>
+            <Code size="md">{article.category}</Code>
             <Input type="text" label="제목" placeholder="제목을 입력해 주세요"
                    value={state.title}
                    defaultValue={article.title}
@@ -57,7 +45,6 @@ export default function ArticleUpdate({article, categories}: { article: articleR
                     const request: ArticleUpdateRequest = {
                         title: state.title,
                         content: state.content,
-                        categoryId: state.categoryId,
                     }
                     updateArticle(article.id, request)
                         .then(response => {

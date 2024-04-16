@@ -30,4 +30,8 @@ abstract class AuditingFields {
     @LastModifiedBy
     var modifiedBy: Long? = null
         protected set
+
+    fun isOwner(ownerId: Long): Boolean {
+        return createdBy == ownerId
+    }
 }

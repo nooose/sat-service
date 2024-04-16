@@ -105,7 +105,7 @@ class ArticleRestControllerTest @Autowired constructor(
 
     @Test
     fun `게시글 수정`() {
-        val request = ArticleUpdateCommand("수정 제목", "수정 내용", 10L)
+        val request = ArticleUpdateCommand("수정 제목", "수정 내용")
 
         every { articleCommandService.update(any(), any()) } just runs
 
@@ -124,7 +124,6 @@ class ArticleRestControllerTest @Autowired constructor(
             requestBody {
                 field("title", "게시글 제목")
                 field("content", "게시글 내용")
-                field("categoryId", "카테고리 ID")
             }
         }
     }
