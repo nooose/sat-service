@@ -4,28 +4,28 @@ import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import {httpClient} from "@/utils/client";
-import RootCategoryCreateRequest from "@/model/request/RootCategoryCreateRequest";
-import categoryStore from "@/store/category-store";
-import category from "@/app/category/page";
+import CategoryCreateRequest from "@/model/request/CategoryCreateRequest";
+import categoryCreateStore from "@/store/category-create-store";
 
-function saveCategory(rootCategoryCreateRequest: RootCategoryCreateRequest) {
-    return httpClient("/board/categories", "POST", rootCategoryCreateRequest);
+function saveCategory(categoryCreateRequest: CategoryCreateRequest) {
+    return httpClient("/board/categories", "POST", categoryCreateRequest);
 }
 
-export default function RootCategoryWrite() {
-    const state = categoryStore((state: any) => state);
+export default function CategoryWrite() {
+    const state = categoryCreateStore((state: any) => state);
     const router = useRouter();
 
     return (
         <div>
+            {state.parentName !== undefined? <div>상위 카테고리 : {state.parentName}</div> : ''}
             <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
-                   value={state.name}
                    onChange={event => state.setName(event.target.value)}
             />
             <Button color="primary" onClick={
                 () => {
-                    const request: RootCategoryCreateRequest = {
-                        name: state.name
+                    const request: CategoryCreateRequest = {
+                        name: state.name,
+                        parentId: state.parentId,
                     }
                     saveCategory(request)
                         .then(response => {

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import ArticleCreateRequest from "@/model/request/ArticleCreateRequest";
 
 const articleCreateStore = create<ArticleCreateRequest>((set) => ({
     title: "",

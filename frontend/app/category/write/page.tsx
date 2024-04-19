@@ -1,11 +1,11 @@
 import React from "react";
-import RootCategoryWrite from "@/components/category/root-category-write";
+import CategoryWrite from "@/components/category/category-write";
 
 
 export default async function CategoryWritePage() {
     return (
         <div>
-            <RootCategoryWrite/>
+            <CategoryWrite/>
         </div>
     );
 }
