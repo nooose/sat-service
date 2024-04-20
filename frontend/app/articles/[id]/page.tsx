@@ -1,8 +1,6 @@
 import ArticleInfo, {getArticle} from "@/components/article/article-info";
 import Comments from "@/components/comment/comments";
 import React from "react";
-import {Textarea} from "@nextui-org/input";
-import {Button} from "@nextui-org/react";
 import CommentWrite from "@/components/comment/comment-write";
 
 export async function generateMetadata({params:{id}} : any) {

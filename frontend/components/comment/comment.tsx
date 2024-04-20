@@ -1,8 +1,7 @@
-import styles from "@styles/category.module.css";
-import {Card, CardBody, Divider, Link, Image} from "@nextui-org/react";
+import {Card, CardBody, Divider, Image} from "@nextui-org/react";
 import React from "react";
 import CommentResponse from "@/model/response/CommentResponse";
-import {CardFooter, CardHeader} from "@nextui-org/card";
+import {CardHeader} from "@nextui-org/card";
 
 export default function Comment({ comment }: { comment: CommentResponse }) {
     return (

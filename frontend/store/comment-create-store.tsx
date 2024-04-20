@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-import CategoryCreateRequest from "@/model/request/CategoryCreateRequest";
 import CommentCreateRequest from "@/model/request/CommentCreateRequest";
 
 const commentCreateStore = create<CommentCreateRequest>((set) => ({

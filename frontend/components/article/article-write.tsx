@@ -7,7 +7,6 @@ import {useRouter} from "next/navigation";
 import {post} from "@/utils/client";
 import ArticleCreateRequest from "@/model/request/ArticleCreateRequest";
 import React from "react";
-import {Select, SelectItem} from "@nextui-org/select";
 import {Button} from "@nextui-org/react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 

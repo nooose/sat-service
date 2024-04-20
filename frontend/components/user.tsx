@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import {Button, Link, NavbarItem} from "@nextui-org/react";
+import {Link, NavbarItem} from "@nextui-org/react";
 
 export default function User({ username, authenticated }: { username: string; authenticated: boolean }) {
     return (
