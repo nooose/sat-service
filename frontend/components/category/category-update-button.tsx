@@ -10,6 +10,7 @@ import categoryUpdateStore from "@/store/category-update-store";
 export default function CategoryUpdateButton({category}: {category: CategoryResponse}) {
     const router = useRouter();
     const state = categoryUpdateStore((state: any) => state);
+
     const onClick = () => {
         state.setName(category.name)
         state.setParentId(category.parentId);

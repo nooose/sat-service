@@ -1,4 +1,9 @@
 import ArticleInfo, {getArticle} from "@/components/article/article-info";
+import Comments from "@/components/comment/comments";
+import React from "react";
+import {Textarea} from "@nextui-org/input";
+import {Button} from "@nextui-org/react";
+import CommentWrite from "@/components/comment/comment-write";
 
 export async function generateMetadata({params:{id}} : any) {
     const article = await getArticle(id)
@@ -11,6 +16,10 @@ export const revalidate = 0;
 
 export default async function ArticlePage({params:{id}} : any) {
     return (
-        <ArticleInfo id={id}/>
+        <div>
+            <ArticleInfo id={id}/>
+            <CommentWrite articleId={id}/>
+            <Comments articleId={id}/>
+        </div>
     );
 }

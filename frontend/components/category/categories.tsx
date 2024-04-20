@@ -12,6 +12,7 @@ async function getCategories() {
 
 export default async function Categories() {
     const categories = await getCategories();
+
     return (
         <div>
             {categories.map((category: CategoryResponse) => (

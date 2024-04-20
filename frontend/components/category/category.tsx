@@ -2,7 +2,7 @@
 
 import CategoryResponse from "@/model/response/CategoryResponse";
 import styles from "@styles/category.module.css";
-import {Button, ButtonGroup, Card, CardBody} from "@nextui-org/react";
+import {ButtonGroup, Card, CardBody} from "@nextui-org/react";
 import React from "react";
 import CategoryCreateButton from "@/components/category/category-write-button";
 import CategoryUpdateButton from "@/components/category/category-update-button";

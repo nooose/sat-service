@@ -2,12 +2,14 @@
 
 import {Input, Textarea} from "@nextui-org/input";
 import articleCreateStore from "@/store/article-store";
-import {Button} from "@nextui-org/react";
-import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 import CategoryResponse from "@/model/response/CategoryResponse";
 import {useRouter} from "next/navigation";
 import {post} from "@/utils/client";
 import ArticleCreateRequest from "@/model/request/ArticleCreateRequest";
+import React from "react";
+import {Select, SelectItem} from "@nextui-org/select";
+import {Button} from "@nextui-org/react";
+import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 
 function saveArticle(articleCreateRequest: ArticleCreateRequest) {
     return post("/board/articles", articleCreateRequest);
@@ -25,7 +27,7 @@ export default function ArticleWrite({categories}: { categories: CategoryRespons
                 onSelectionChange={(input: React.Key) => state.setCategoryId(input)}
             >{
                 categories.map(category => (
-                    <AutocompleteItem key={category.id} value={category.id}>
+                    <AutocompleteItem key={category.id} value={category.id} style={{color: "black"}}>
                         {category.name}
                     </AutocompleteItem>
                 ))
