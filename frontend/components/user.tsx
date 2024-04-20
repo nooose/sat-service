@@ -10,7 +10,7 @@ export default function User({ username, authenticated }: { username: string; au
             )}
             {!authenticated && (
                 <NavbarItem className="hidden lg:flex">
-                    <Link href="#">로그인</Link>
+                    <Link href="http://localhost:8080/oauth2/authorization/kakao">로그인</Link>
                 </NavbarItem>
             )}
         </div>

@@ -23,8 +23,9 @@ export async function request(path: string, method: string, authenticationCookie
         headers,
         body: body ? JSON.stringify(body) : null,
     };
-    if (authenticationCookie != null) {
-        headers['Cookie'] = `JSESSIONID=${authenticationCookie}`;
+    console.log(`>>> ${authenticationCookie}`);
+    if (authenticationCookie != null || authenticationCookie != undefined) {
+        headers['Cookie'] = `${headers["Cookie"]};JSESSIONID=${authenticationCookie}`;
     }
     return await fetch(url, {
         ...config,
