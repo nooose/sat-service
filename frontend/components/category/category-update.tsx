@@ -3,12 +3,12 @@
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
-import {httpClient} from "@/utils/client";
 import CategoryUpdateRequest from "@/model/request/CategoryUpdateRequest";
 import categoryUpdateStore from "@/store/category-update-store";
+import {put} from "@/utils/client";
 
 function updateCategory(id: number, categoryUpdateRequest: CategoryUpdateRequest) {
-    return httpClient(`/board/category/${id}`, "PUT", categoryUpdateRequest);
+    return put(`/board/category/${id}`, categoryUpdateRequest);
 }
 
 export default function CategoryUpdate({id}: {id:number}) {

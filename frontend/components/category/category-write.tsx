@@ -3,12 +3,12 @@
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
-import {httpClient} from "@/utils/client";
 import CategoryCreateRequest from "@/model/request/CategoryCreateRequest";
 import categoryCreateStore from "@/store/category-create-store";
+import {post} from "@/utils/client";
 
 function saveCategory(categoryCreateRequest: CategoryCreateRequest) {
-    return httpClient("/board/categories", "POST", categoryCreateRequest);
+    return post("/board/categories", categoryCreateRequest);
 }
 
 export default function CategoryWrite() {
