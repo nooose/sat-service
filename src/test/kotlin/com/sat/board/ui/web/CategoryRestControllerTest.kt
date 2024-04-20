@@ -70,6 +70,7 @@ class CategoryRestControllerTest @Autowired constructor(
                 field("[].name", "카테고리 이름")
                 field("[].children[].id", "자식 카테고리 ID")
                 field("[].children[].name", "자식 카테고리 이름")
+                field("[].children[].parentId", "부모 카테고리 ID")
             }
         }
     }
