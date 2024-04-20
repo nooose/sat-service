@@ -1,12 +1,13 @@
-import {httpClient} from "@/utils/client";
 import {Input, Textarea} from "@nextui-org/input";
 import ArticleResponse from "@/model/response/ArticleResponse";
 import {Code} from "@nextui-org/code";
-import {Button} from "@nextui-org/react";
 import ArticleUpdateButton from "@/components/article/article-update-button";
+import {cookies} from "next/headers";
+import {get} from "@/utils/client";
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
-    const response = await httpClient(`/board/articles/${id}`);
+    const cookie = cookies().get("JSESSIONID")?.value
+    const response = await get(`/board/articles/${id}`, cookie);
     return await response.json();
 }
 

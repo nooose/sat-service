@@ -6,11 +6,11 @@ import {Button} from "@nextui-org/react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 import CategoryResponse from "@/model/response/CategoryResponse";
 import {useRouter} from "next/navigation";
-import {httpClient} from "@/utils/client";
+import {post} from "@/utils/client";
 import ArticleCreateRequest from "@/model/request/ArticleCreateRequest";
 
 function saveArticle(articleCreateRequest: ArticleCreateRequest) {
-    return httpClient("/board/articles", "POST", articleCreateRequest);
+    return post("/board/articles", articleCreateRequest);
 }
 
 export default function ArticleWrite({categories}: { categories: CategoryResponse[] }) {

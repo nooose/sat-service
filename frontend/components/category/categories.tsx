@@ -1,10 +1,12 @@
-import {httpClient} from "@/utils/client";
+import {get} from "@/utils/client";
 import React from "react";
 import Category from "@/components/category/category";
 import CategoryResponse from "@/model/response/CategoryResponse";
+import {cookies} from "next/headers";
 
 async function getCategories() {
-    const response = await httpClient("/board/categories");
+    const cookie = cookies().get("JSESSIONID")?.value
+    const response = await get("/board/categories", cookie);
     return await response.json();
 }
 

@@ -40,7 +40,7 @@ class SecurityConfig {
                 authenticationSuccessHandler = oidcSuccessHandler
             }
             authorizeHttpRequests {
-                authorize("/**", permitAll)
+                authorize("/**", authenticated)
             }
         }
         return http.build()

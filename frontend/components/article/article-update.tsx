@@ -3,18 +3,16 @@
 import {Input, Textarea} from "@nextui-org/input";
 import articleStore from "@/store/article-store";
 import {Button} from "@nextui-org/react";
-import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 import CategoryResponse from "@/model/response/CategoryResponse";
 import {useRouter} from "next/navigation";
-import {httpClient} from "@/utils/client";
+import {put} from "@/utils/client";
 import ArticleUpdateRequest from "@/model/request/ArticleUpdateRequest";
-import ArticleCreateRequest from "@/model/request/ArticleUpdateRequest";
 import articleResponse from "@/model/response/ArticleResponse";
 import {useEffect} from "react";
 import {Code} from "@nextui-org/code";
 
 function updateArticle(id: number, request: ArticleUpdateRequest) {
-    return httpClient(`/board/articles/${id}`, "PUT", request);
+    return put(`/board/articles/${id}`, request);
 }
 
 export default function ArticleUpdate({article, categories}: { article: articleResponse, categories: CategoryResponse[] }) {
