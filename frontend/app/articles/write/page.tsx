@@ -1,10 +1,10 @@
 import ArticleWrite from "@/components/article/article-write";
-import {httpClient} from "@/utils/client";
 import {cookies} from "next/headers";
+import {get} from "@/utils/client";
 
 async function getCategories() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await httpClient("/board/categories", "GET", null, cookie);
+    const response = await get("/board/categories", cookie);
     return await response.json();
 }
 

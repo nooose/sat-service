@@ -1,7 +1,7 @@
-import {httpClient} from "@/utils/client";
 import ArticleResponse from "@/model/response/ArticleResponse";
 import ArticleUpdate from "@/components/article/article-update";
 import {cookies} from "next/headers";
+import {get} from "@/utils/client";
 
 export async function generateMetadata({params:{id}} : any) {
     const article = await getArticle(id)
@@ -12,13 +12,13 @@ export async function generateMetadata({params:{id}} : any) {
 
 async function getCategories() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await httpClient("/board/categories", "GET", null, cookie);
+    const response = await get("/board/categories", cookie);
     return await response.json();
 }
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await httpClient(`/board/articles/${id}`, "GET", null, cookie);
+    const response = await get(`/board/articles/${id}`, cookie);
     return await response.json();
 }
 
