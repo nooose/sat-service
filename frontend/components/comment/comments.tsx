@@ -1,10 +1,10 @@
-import {httpClient} from "@/utils/client";
 import CommentResponse from "@/model/response/CommentResponse";
 import Comment from "@/components/comment/comment";
+import {get} from "@/utils/client";
 
 
 async function getComments(articleId: number) {
-    const response = await httpClient(`/board/articles/${articleId}/comments`);
+    const response = await get(`/board/articles/${articleId}/comments`);
     return await response.json();
 }
 

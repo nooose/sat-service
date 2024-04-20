@@ -5,15 +5,15 @@ import {Button} from "@nextui-org/react";
 import React from "react";
 import commentCreateStore from "@/store/comment-create-store";
 import CommentCreateRequest from "@/model/request/CommentCreateRequest";
-import {httpClient} from "@/utils/client";
 import {useRouter} from "next/navigation";
+import {post} from "@/utils/client";
 
 export default function CommentWrite({articleId}: {articleId : number}) {
     const state = commentCreateStore((state: any) => state);
     const router = useRouter();
 
     function saveComment(commentCreateRequest: CommentCreateRequest) {
-        return httpClient(`/board/articles/${articleId}/comments`, "POST", commentCreateRequest);
+        return post(`/board/articles/${articleId}/comments`, commentCreateRequest);
     }
 
     return (
