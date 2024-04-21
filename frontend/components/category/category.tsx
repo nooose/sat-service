@@ -1,5 +1,3 @@
-"use client"
-
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import styles from "@styles/category.module.css";
 import {ButtonGroup, Card, CardBody} from "@nextui-org/react";
