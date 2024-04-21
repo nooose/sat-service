@@ -3,7 +3,7 @@
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 
-export default function ArticleWriteButton(){
+export default function ClientArticleWriteButton(){
     const router = useRouter();
     const onClick = () => {
         router.push("/articles/write");

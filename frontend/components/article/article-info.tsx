@@ -1,9 +1,9 @@
 import {Input, Textarea} from "@nextui-org/input";
 import ArticleResponse from "@/model/dto/response/ArticleResponse";
-import {Code} from "@nextui-org/code";
-import ArticleUpdateButton from "@/components/article/article-update-button";
+import ClientArticleUpdateButton from "@/components/article/client-article-update-button";
 import {cookies} from "next/headers";
 import {get} from "@/utils/client";
+import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
     const cookie= cookies().get("JSESSIONID")?.value
@@ -16,7 +16,7 @@ export default async function ArticleInfo({id}: any){
 
     return (
         <div>
-            <Code size="md">{article.category}</Code>
+            <ClientArticleCategoryInfo category={article.category}/>
             <Input
                 isReadOnly
                 type="text"
@@ -35,7 +35,7 @@ export default async function ArticleInfo({id}: any){
                 defaultValue={article.content}
                 className="max-w-xs"
             />
-            <ArticleUpdateButton id={id}/>
+            <ClientArticleUpdateButton id={id}/>
         </div>
     );
 }

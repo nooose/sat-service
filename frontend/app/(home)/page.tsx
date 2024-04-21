@@ -1,7 +1,7 @@
 import Articles from "@/components/article/articles";
 import {Suspense} from "react";
 import styles from "@/styles/home.module.css"
-import ArticleWriteButton from "@/components/article/article-write-button";
+import ClientArticleWriteButton from "@/components/article/client-article-write-button";
 import {Spinner} from "@nextui-org/spinner";
 import {cookies} from "next/headers";
 import {getUserInfo} from "@/components/user-login";
@@ -14,7 +14,7 @@ export default async function Home() {
         <div className={styles.container}>
             { userInfo.isAuthenticated() &&
                 <div className={styles.writeButton}>
-                    <ArticleWriteButton/>
+                    <ClientArticleWriteButton/>
                 </div>
             }
             <Suspense fallback={<Spinner/>}>

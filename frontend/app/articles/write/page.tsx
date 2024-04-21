@@ -1,4 +1,4 @@
-import ArticleWrite from "@/components/article/article-write";
+import ClientArticleWrite from "@/components/article/client-article-write";
 import {cookies} from "next/headers";
 import {get} from "@/utils/client";
 
@@ -11,8 +11,6 @@ async function getCategories() {
 export default async function ArticleWritePage() {
     const categories = await getCategories();
     return (
-        <div>
-            <ArticleWrite categories={categories}/>
-        </div>
+        <ClientArticleWrite categories={categories}/>
     );
 }

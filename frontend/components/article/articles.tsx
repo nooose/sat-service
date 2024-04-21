@@ -1,5 +1,5 @@
 import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
-import Article from "@/components/article/article";
+import ClientArticle from "@/components/article/client-article";
 import {get} from "@/utils/client";
 import {cookies} from "next/headers";
 
@@ -14,7 +14,7 @@ export default async function Articles() {
     return (
         <div>
             {articles.map((article: ArticleSimpleResponse) => (
-                <Article key={article.id} article={article}/>
+                <ClientArticle key={article.id} article={article}/>
             ))}
         </div>
     );

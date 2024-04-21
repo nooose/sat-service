@@ -1,48 +1,43 @@
 "use client"
 
 import {Input, Textarea} from "@nextui-org/input";
-import articleStore from "@/store/article-store";
 import {Button} from "@nextui-org/react";
-import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {useRouter} from "next/navigation";
 import {put} from "@/utils/client";
 import ArticleUpdateRequest from "@/model/dto/request/ArticleUpdateRequest";
 import articleResponse from "@/model/dto/response/ArticleResponse";
-import {useEffect} from "react";
-import {Code} from "@nextui-org/code";
+import {useState} from "react";
+import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
 
 function updateArticle(id: number, request: ArticleUpdateRequest) {
     return put(`/board/articles/${id}`, request);
 }
 
-export default function ArticleUpdate({article, categories}: { article: articleResponse, categories: CategoryResponse[] }) {
-    const state = articleStore((state: any) => state);
-    useEffect(() => {
-        state.setTitle(article.title);
-        state.setContent(article.content);
-    }, []);
+export default function ClientArticleUpdate({article}: { article: articleResponse }) {
+    const [title, setTitle] = useState(article.title);
+    const [content, setContent] = useState(article.content);
+
     const router = useRouter();
     return (
         <div>
-            <Code size="md">{article.category}</Code>
+            <ClientArticleCategoryInfo category={article.category}/>
             <Input type="text" label="제목" placeholder="제목을 입력해 주세요"
-                   value={state.title}
-                   defaultValue={article.title}
-                   onValueChange={value => state.setTitle(value)}
+                   value={title}
+                   defaultValue={title}
+                   onValueChange={value => setTitle(value)}
             />
             <Textarea
                 label="내용"
                 placeholder="내용을 입력해 주세요"
                 className="max-w-xs"
-                value={state.content}
+                value={content}
                 defaultValue={article.content}
-                onValueChange={value => state.setContent(value)}
+                onValueChange={value => setContent(value)}
             />
-            <Button color="primary" onClick={
-                () => {
+            <Button color="primary" onClick={() => {
                     const request: ArticleUpdateRequest = {
-                        title: state.title,
-                        content: state.content,
+                        title: title,
+                        content: content,
                     }
                     updateArticle(article.id, request)
                         .then(response => {

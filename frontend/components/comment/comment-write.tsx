@@ -9,10 +9,9 @@ import {useRouter} from "next/navigation";
 import {post} from "@/utils/client";
 import styles from "@/styles/comment.module.css"
 
-export default ({articleId, parentId, onSuccess}: {
+export default ({articleId, parentId}: {
     articleId: number,
     parentId?: number | null | undefined,
-    onSuccess: () => void
 }) => {
     const state = commentCreateStore((state: any) => state);
     const router = useRouter();
@@ -32,26 +31,21 @@ export default ({articleId, parentId, onSuccess}: {
                     onChange={event => state.setContent(event.target.value)}
                 />
                 <Button className={styles.requestButtonContainer} color="primary" size="md"
-                        onClick={
-                            () => {
-                                const request: CommentCreateRequest = {
-                                    content: state.content,
-                                    parentId: parentId,
-                                }
-                                saveComment(request)
-                                    .then(response => {
-                                        if (response.ok) {
-                                            if (onSuccess !== undefined && onSuccess !== null) {
-                                                onSuccess();
-                                            }
-                                            router.push(`/articles/${articleId}`);
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('API 요청 중 오류가 발생하였습니다:', error);
-                                    });
-                        }
-                }>등록</Button>
+                        onClick={() => {
+                            const request: CommentCreateRequest = {
+                                content: state.content,
+                                parentId: parentId,
+                            }
+                            saveComment(request)
+                                .then(response => {
+                                    if (response.ok) {
+                                        router.push(`/articles/${articleId}`);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('API 요청 중 오류가 발생하였습니다:', error);
+                                });
+                        }}>등록</Button>
             </Card>
         </div>
     )
