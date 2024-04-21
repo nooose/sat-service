@@ -6,6 +6,7 @@ import CommentResponse from "@/model/dto/response/CommentResponse";
 import CommentWrite from "@/components/comment/comment-write";
 import styles from "@styles/comment.module.css";
 import CommentUpdate from "@/components/comment/comment-update";
+import {Comment} from "postcss";
 
 export default function Comment({articleId, comment, loginUserId}: {articleId: number, comment: CommentResponse, loginUserId: number | undefined | null}) {
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -19,14 +20,6 @@ export default function Comment({articleId, comment, loginUserId}: {articleId: n
         setIsUpdateOpen(false);
         setIsReplyOpen(!isReplyOpen);
     }
-
-    const handleUpdateCommentSubmitSuccess = () => {
-        setIsUpdateOpen(false);
-    };
-
-    const handleReplyCommentSubmitSuccess = () => {
-        setIsReplyOpen(false);
-    };
 
     return (
         <div className={styles.container}>
@@ -57,8 +50,8 @@ export default function Comment({articleId, comment, loginUserId}: {articleId: n
                 </CardBody>
                 <Divider/>
             </Card>
-            {isUpdateOpen && <CommentUpdate articleId={articleId} commentId={comment.id} onSuccess={handleUpdateCommentSubmitSuccess}/>}
-            {isReplyOpen && <CommentWrite articleId={articleId} parentId={comment.id} onSuccess={handleReplyCommentSubmitSuccess}/>}
+            {isUpdateOpen && <CommentUpdate articleId={articleId} commentId={comment.id}/>}
+            {isReplyOpen && <CommentWrite articleId={articleId} parentId={comment.id}/>}
 
             {comment.children?.map((comment: CommentResponse) => (
                 <div className={styles.childrenContainer}>

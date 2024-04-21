@@ -12,6 +12,7 @@ function saveCategory(categoryCreateRequest: CategoryCreateRequest) {
 }
 
 export default function CategoryWrite() {
+    // TODO: useSate 사용 Store 제거
     const state = categoryCreateStore((state: any) => state);
     const router = useRouter();
 

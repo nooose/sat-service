@@ -6,12 +6,12 @@ import {get} from "@/utils/client";
 import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
-    const cookie= cookies().get("JSESSIONID")?.value
+    const cookie = cookies().get("JSESSIONID")?.value
     const response = await get(`/board/articles/${id}`, cookie);
     return await response.json();
 }
 
-export default async function ArticleInfo({id}: any){
+export default async function ArticleInfo({id}: any) {
     const article = await getArticle(id);
 
     return (

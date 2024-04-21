@@ -9,10 +9,9 @@ import CommentUpdateRequest from "@/model/dto/request/CommentUpdateRequest";
 import commentUpdateStore from "@/store/comment-update-store";
 import styles from "@styles/comment.module.css";
 
-export default ({commentId, articleId, onSuccess}: {
+export default ({commentId, articleId}: {
     commentId: number,
     articleId: number,
-    onSuccess: () => void
 }) => {
     const state = commentUpdateStore((state: any) => state);
     const router = useRouter();
@@ -40,7 +39,6 @@ export default ({commentId, articleId, onSuccess}: {
                                 saveComment(request)
                                     .then(response => {
                                         if (response.ok) {
-                                            onSuccess();
                                             router.push(`/articles/${articleId}`);
                                         }
                                     })

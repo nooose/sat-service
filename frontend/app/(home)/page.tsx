@@ -12,7 +12,7 @@ export default async function Home() {
 
     return (
         <div className={styles.container}>
-            { userInfo.isAuthenticated() &&
+            {userInfo.isAuthenticated() &&
                 <div className={styles.writeButton}>
                     <ClientArticleWriteButton/>
                 </div>

@@ -11,7 +11,8 @@ function updateCategory(id: number, categoryUpdateRequest: CategoryUpdateRequest
     return put(`/board/category/${id}`, categoryUpdateRequest);
 }
 
-export default function CategoryUpdate({id}: {id:number}) {
+export default function CategoryUpdate({id}: { id: number }) {
+    // TODO: useSate 사용 Store 제거
     const state = categoryUpdateStore((state: any) => state);
     const router = useRouter();
     return (

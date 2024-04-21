@@ -8,6 +8,7 @@ import categoryUpdateStore from "@/store/category-update-store";
 
 export default function CategoryUpdateButton({category}: {category: CategoryResponse}) {
     const router = useRouter();
+    // TODO: useSate 사용 Store 제거
     const state = categoryUpdateStore((state: any) => state);
 
     const onClick = () => {

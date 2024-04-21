@@ -7,6 +7,7 @@ import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import categoryCreateStore from "@/store/category-create-store";
 
 export default function CategoryCreateButton({buttonName, category}: {buttonName: string, category?: CategoryResponse}) {
+    // TODO: useSate 사용 Store 제거
     const router = useRouter();
     const state = categoryCreateStore((state: any) => state);
     const onClick = () => {
