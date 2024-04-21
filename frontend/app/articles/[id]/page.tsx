@@ -1,6 +1,6 @@
 import ArticleInfo, {getArticle} from "@/components/article/article-info";
 import Comments from "@/components/comment/comments";
-import React from "react";
+import React, {Suspense} from "react";
 import CommentWrite from "@/components/comment/comment-write";
 
 export async function generateMetadata({params:{id}} : any) {
@@ -15,7 +15,9 @@ export default async function ArticlePage({params:{id}} : any) {
         <div>
             <ArticleInfo id={id}/>
             <CommentWrite articleId={id}/>
-            <Comments articleId={id}/>
+            <Suspense>
+                <Comments articleId={id}/>
+            </Suspense>
         </div>
     );
 }

@@ -3,22 +3,22 @@
 import {Textarea} from "@nextui-org/input";
 import {Button, Card} from "@nextui-org/react";
 import React from "react";
-import commentCreateStore from "@/store/comment-create-store";
-import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
-import {post} from "@/utils/client";
-import styles from "@/styles/comment.module.css"
+import {put} from "@/utils/client";
+import CommentUpdateRequest from "@/model/dto/request/CommentUpdateRequest";
+import commentUpdateStore from "@/store/comment-update-store";
+import styles from "@styles/comment.module.css";
 
-export default ({articleId, parentId, onSuccess}: {
+export default ({commentId, articleId, onSuccess}: {
+    commentId: number,
     articleId: number,
-    parentId?: number | null | undefined,
     onSuccess: () => void
 }) => {
-    const state = commentCreateStore((state: any) => state);
+    const state = commentUpdateStore((state: any) => state);
     const router = useRouter();
 
-    function saveComment(commentCreateRequest: CommentCreateRequest) {
-        return post(`/board/articles/${articleId}/comments`, commentCreateRequest);
+    function saveComment(commentUpdateRequest: CommentUpdateRequest) {
+        return put(`/board/comments/${commentId}`, commentUpdateRequest);
     }
 
     return (
@@ -26,7 +26,7 @@ export default ({articleId, parentId, onSuccess}: {
             <Card className={styles.requestCardContainer}>
                 <Textarea
                     variant="underlined"
-                    label="댓글 작성"
+                    label="댓글 수정"
                     labelPlacement="outside"
                     placeholder="내용을 입력해 주세요"
                     onChange={event => state.setContent(event.target.value)}
@@ -34,16 +34,13 @@ export default ({articleId, parentId, onSuccess}: {
                 <Button className={styles.requestButtonContainer} color="primary" size="md"
                         onClick={
                             () => {
-                                const request: CommentCreateRequest = {
+                                const request: CommentUpdateRequest = {
                                     content: state.content,
-                                    parentId: parentId,
                                 }
                                 saveComment(request)
                                     .then(response => {
                                         if (response.ok) {
-                                            if (onSuccess !== undefined && onSuccess !== null) {
-                                                onSuccess();
-                                            }
+                                            onSuccess();
                                             router.push(`/articles/${articleId}`);
                                         }
                                     })
@@ -51,7 +48,7 @@ export default ({articleId, parentId, onSuccess}: {
                                         console.error('API 요청 중 오류가 발생하였습니다:', error);
                                     });
                         }
-                }>등록</Button>
+                }>수정</Button>
             </Card>
         </div>
     )
