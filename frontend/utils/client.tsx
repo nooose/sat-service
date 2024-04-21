@@ -1,4 +1,4 @@
-const API_HOST = "http://localhost:8080";
+const API_HOST = process.env.API_HOST;
 const headers: Record<string, string> = {
     'Accept': 'application/json',
     'Content-Type': 'application/json',

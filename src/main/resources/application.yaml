@@ -32,3 +32,7 @@ spring:
 jwt:
   secret-key: ${JWT_SECRET_KEY}
   expiration-time: 10m
+
+external:
+  frontend:
+    url: http://localhost:3000
