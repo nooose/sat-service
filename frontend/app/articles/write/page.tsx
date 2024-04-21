@@ -4,7 +4,7 @@ import {get} from "@/utils/client";
 
 async function getCategories() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await get("/board/categories", cookie);
+    const response = await get("/board/categories?flatten=true", cookie);
     return await response.json();
 }
 
