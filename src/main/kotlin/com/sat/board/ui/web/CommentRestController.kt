@@ -7,6 +7,7 @@ import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.application.dto.query.CommentQuery
 import com.sat.user.domain.LoginMemberInfo
 import com.sat.user.ui.web.LoginMember
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodName
@@ -20,7 +21,7 @@ class CommentRestController(
     @PostMapping("/board/articles/{articleId}/comments")
     fun create(
         @PathVariable articleId: Long,
-        @RequestBody command: CommentCreateCommand,
+        @RequestBody @Valid command: CommentCreateCommand,
     ): ResponseEntity<Unit> {
         commentCommandService.create(articleId, command)
         val uri = fromMethodName(ArticleRestController::class.java, "article", articleId)
@@ -37,7 +38,7 @@ class CommentRestController(
     @PutMapping("/board/comments/{id}")
     fun update(
         @PathVariable id: Long,
-        @RequestBody command: CommentUpdateCommand,
+        @RequestBody @Valid command: CommentUpdateCommand,
         @LoginMember loginMember: LoginMemberInfo,
     ) {
         commentCommandService.update(id, command, loginMember.id)

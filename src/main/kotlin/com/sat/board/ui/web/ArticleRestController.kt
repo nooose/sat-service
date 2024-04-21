@@ -6,6 +6,7 @@ import com.sat.board.application.dto.command.ArticleCreateCommand
 import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.application.dto.query.ArticleQuery
 import com.sat.board.application.dto.query.ArticleSimpleQuery
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodName
@@ -18,7 +19,7 @@ class ArticleRestController(
 ) {
 
     @PostMapping("/board/articles")
-    fun create(@RequestBody command: ArticleCreateCommand): ResponseEntity<Unit> {
+    fun create(@RequestBody @Valid command: ArticleCreateCommand): ResponseEntity<Unit> {
         val articleId = articleCommandService.create(command)
         val uri = fromMethodName(ArticleRestController::class.java, "article", articleId)
             .build()
@@ -39,7 +40,7 @@ class ArticleRestController(
     @PutMapping("/board/articles/{articleId}")
     fun update(
         @PathVariable articleId: Long,
-        @RequestBody command: ArticleUpdateCommand,
+        @RequestBody @Valid command: ArticleUpdateCommand,
     ) {
         articleCommandService.update(articleId, command)
     }

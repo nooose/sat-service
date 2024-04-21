@@ -2,7 +2,7 @@ import io.swagger.v3.oas.models.servers.Server
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.2.3"
+	id("org.springframework.boot") version "3.2.5"
 	id("io.spring.dependency-management") version "1.1.4"
 	id("org.asciidoctor.jvm.convert") version "3.3.2"
 	id("com.epages.restdocs-api-spec") version "0.19.1"

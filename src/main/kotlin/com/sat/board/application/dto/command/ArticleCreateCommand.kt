@@ -3,7 +3,7 @@ package com.sat.board.application.dto.command
 import jakarta.validation.constraints.NotBlank
 
 data class ArticleCreateCommand(
-    @field:NotBlank
+    @field:NotBlank(message = "제목을 입력해 주세요.")
     val title: String,
     @field:NotBlank
     val content: String,
