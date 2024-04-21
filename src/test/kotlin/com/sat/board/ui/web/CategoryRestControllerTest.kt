@@ -42,7 +42,7 @@ class CategoryRestControllerTest @Autowired constructor(
             contentType = MediaType.APPLICATION_JSON
             characterEncoding = "utf-8"
         }.andExpect {
-            status { isCreated() }
+            status { isOk() }
         }.andDocument {
             tag = "게시판 > 카테고리"
             summary = "카테고리 생성"

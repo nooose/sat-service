@@ -21,6 +21,7 @@ class WithMockAuthenticatedUserSecurityContextFactory : WithSecurityContextFacto
             "name" to annotation.name,
             "nickname" to annotation.nickname,
             "email" to annotation.email,
+            "picture" to "",
         )
         val accessToken = OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "token", null, null)
         val oidcIdToken = OidcIdToken("token", null, null, claims)

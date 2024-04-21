@@ -12,8 +12,17 @@ class CategoryQueryService(
     private val categoryRepository: CategoryRepository,
 ) {
     // TODO: 캐싱 처리
-    fun get(): List<CategoryQuery> {
+    fun get(flatten: Boolean? = false): List<CategoryQuery> {
         val categories = categoryRepository.findAll()
+
+        if (flatten == true) {
+            return categories.map { CategoryQuery(
+                id = it.id!!,
+                name = it.name.value,
+                parentId = it.parentId
+            ) }
+        }
+
         val hierarchy = CategoryHierarchy(categories)
         return hierarchy.categories
     }
