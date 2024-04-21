@@ -1,10 +1,11 @@
 import CommentResponse from "@/model/dto/response/CommentResponse";
 import Comment from "@/components/comment/comment";
 import {get} from "@/utils/client";
-
+import {cookies} from "next/headers";
 
 async function getComments(articleId: number) {
-    const response = await get(`/board/articles/${articleId}/comments`);
+    const cookie = cookies().get("JSESSIONID")?.value
+    const response = await get(`/board/articles/${articleId}/comments`, cookie);
     return await response.json();
 }
 

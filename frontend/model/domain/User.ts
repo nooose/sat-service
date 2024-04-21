@@ -1,4 +1,4 @@
-class SatUser {
+class User {
     id: number;
     name: string;
     nickname: string;
@@ -11,8 +11,8 @@ class SatUser {
         this.email = email;
     }
 
-    static unauthenticated(): SatUser {
-        return new SatUser(0, "", "", "");
+    static unauthenticated(): User {
+        return new User(0, "", "", "");
     }
 
     isAuthenticated(): boolean {
@@ -20,4 +20,4 @@ class SatUser {
     }
 }
 
-export default SatUser;
+export default User;

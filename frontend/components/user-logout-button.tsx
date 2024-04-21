@@ -5,6 +5,8 @@ import React from "react";
 import {get} from "@/utils/client";
 import {useRouter} from "next/navigation";
 
+export const revalidate = 0;
+
 export default function LogoutButton({cookie}: { cookie: string }) {
     const router = useRouter();
     function logout() {

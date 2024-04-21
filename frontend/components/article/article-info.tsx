@@ -6,7 +6,7 @@ import {cookies} from "next/headers";
 import {get} from "@/utils/client";
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
-    const cookie = cookies().get("JSESSIONID")?.value
+    const cookie= cookies().get("JSESSIONID")?.value
     const response = await get(`/board/articles/${id}`, cookie);
     return await response.json();
 }
