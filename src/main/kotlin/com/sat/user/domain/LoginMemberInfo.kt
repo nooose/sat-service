@@ -5,4 +5,5 @@ data class LoginMemberInfo(
     val name: String,
     val nickname: String,
     val email: String,
+    val avatar: String,
 )

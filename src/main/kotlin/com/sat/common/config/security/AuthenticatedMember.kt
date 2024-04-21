@@ -42,6 +42,10 @@ data class AuthenticatedMember(
         return claims["email"] as String
     }
 
+    fun avatar(): String {
+        return claims["picture"] as String
+    }
+
     companion object {
         fun from(request: OidcUserRequest): AuthenticatedMember {
             val authenticatedMember = AuthenticatedMember(

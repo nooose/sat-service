@@ -10,8 +10,6 @@ export async function generateMetadata({params:{id}} : any) {
     };
 }
 
-export const revalidate = 0;
-
 export default async function ArticlePage({params:{id}} : any) {
     return (
         <div>

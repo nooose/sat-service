@@ -27,6 +27,7 @@ class LoginMemberArgumentResolver : HandlerMethodArgumentResolver {
             name = principal.name,
             nickname = principal.nickName,
             email = principal.email,
+            avatar = principal.avatar()
         )
     }
 
