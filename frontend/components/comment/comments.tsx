@@ -1,4 +1,4 @@
-import CommentResponse from "@/model/response/CommentResponse";
+import CommentResponse from "@/model/dto/response/CommentResponse";
 import Comment from "@/components/comment/comment";
 import {get} from "@/utils/client";
 

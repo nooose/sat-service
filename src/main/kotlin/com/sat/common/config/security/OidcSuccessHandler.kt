@@ -24,13 +24,7 @@ class OidcSuccessHandler : AuthenticationSuccessHandler {
         response.status = HttpStatus.OK.value()
         response.characterEncoding = "utf-8"
         response.contentType = "application/json"
-        response.writer.write(
-            """
-            ${request.getSession(true).id}
-            $principal
-            """.trimIndent()
-        )
-
+        response.sendRedirect("http://localhost:3000")
         Events.publish(LoginSuccessEvent(principal.id, LocalDateTime.now()))
     }
 }

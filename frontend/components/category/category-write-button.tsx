@@ -3,7 +3,7 @@
 import {useRouter} from "next/navigation";
 import React from "react";
 import {Button} from "@nextui-org/react";
-import CategoryResponse from "@/model/response/CategoryResponse";
+import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import categoryCreateStore from "@/store/category-create-store";
 
 export default function CategoryCreateButton({buttonName, category}: {buttonName: string, category?: CategoryResponse}) {

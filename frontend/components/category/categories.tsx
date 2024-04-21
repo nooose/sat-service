@@ -1,7 +1,7 @@
 import {get} from "@/utils/client";
 import React from "react";
 import Category from "@/components/category/category";
-import CategoryResponse from "@/model/response/CategoryResponse";
+import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {cookies} from "next/headers";
 
 async function getCategories() {

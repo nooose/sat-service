@@ -3,11 +3,11 @@
 import {Input, Textarea} from "@nextui-org/input";
 import articleStore from "@/store/article-store";
 import {Button} from "@nextui-org/react";
-import CategoryResponse from "@/model/response/CategoryResponse";
+import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {useRouter} from "next/navigation";
 import {put} from "@/utils/client";
-import ArticleUpdateRequest from "@/model/request/ArticleUpdateRequest";
-import articleResponse from "@/model/response/ArticleResponse";
+import ArticleUpdateRequest from "@/model/dto/request/ArticleUpdateRequest";
+import articleResponse from "@/model/dto/response/ArticleResponse";
 import {useEffect} from "react";
 import {Code} from "@nextui-org/code";
 

@@ -1,4 +1,4 @@
-import ArticleSimpleResponse from "@/model/response/ArticleSimpleResponse";
+import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
 import Article from "@/components/article/article";
 import {get} from "@/utils/client";
 import {cookies} from "next/headers";

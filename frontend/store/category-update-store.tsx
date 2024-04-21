@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import CategoryUpdateRequest from "@/model/request/CategoryUpdateRequest";
+import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
 
 const categoryUpdateRequest = create<CategoryUpdateRequest>((set) => ({
     name: "",

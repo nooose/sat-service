@@ -4,7 +4,7 @@ import {Textarea} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import React from "react";
 import commentCreateStore from "@/store/comment-create-store";
-import CommentCreateRequest from "@/model/request/CommentCreateRequest";
+import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
 import {post} from "@/utils/client";
 

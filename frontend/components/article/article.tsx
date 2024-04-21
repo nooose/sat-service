@@ -1,6 +1,6 @@
 "use client"
 
-import ArticleSimpleResponse from "@/model/response/ArticleSimpleResponse";
+import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
 import {Card, CardBody} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import styles from "@styles/article.module.css"

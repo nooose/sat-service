@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import CommentCreateRequest from "@/model/request/CommentCreateRequest";
+import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 
 const commentCreateStore = create<CommentCreateRequest>((set) => ({
     content: "",

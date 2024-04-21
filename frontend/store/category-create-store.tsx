@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import CategoryCreateRequest from "@/model/request/CategoryCreateRequest";
+import CategoryCreateRequest from "@/model/dto/request/CategoryCreateRequest";
 
 const categoryCreateStore = create<CategoryCreateRequest>((set) => ({
     name: "",

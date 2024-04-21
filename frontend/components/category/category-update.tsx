@@ -3,7 +3,7 @@
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
-import CategoryUpdateRequest from "@/model/request/CategoryUpdateRequest";
+import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
 import categoryUpdateStore from "@/store/category-update-store";
 import {put} from "@/utils/client";
 

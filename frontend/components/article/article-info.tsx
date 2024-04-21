@@ -1,5 +1,5 @@
 import {Input, Textarea} from "@nextui-org/input";
-import ArticleResponse from "@/model/response/ArticleResponse";
+import ArticleResponse from "@/model/dto/response/ArticleResponse";
 import {Code} from "@nextui-org/code";
 import ArticleUpdateButton from "@/components/article/article-update-button";
 import {cookies} from "next/headers";

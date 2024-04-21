@@ -1,6 +1,6 @@
 import {Card, CardBody, Divider, Image} from "@nextui-org/react";
 import React from "react";
-import CommentResponse from "@/model/response/CommentResponse";
+import CommentResponse from "@/model/dto/response/CommentResponse";
 import {CardHeader} from "@nextui-org/card";
 
 export default function Comment({ comment }: { comment: CommentResponse }) {

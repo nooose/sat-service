@@ -2,10 +2,10 @@
 
 import {Input, Textarea} from "@nextui-org/input";
 import articleCreateStore from "@/store/article-store";
-import CategoryResponse from "@/model/response/CategoryResponse";
+import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {useRouter} from "next/navigation";
 import {post} from "@/utils/client";
-import ArticleCreateRequest from "@/model/request/ArticleCreateRequest";
+import ArticleCreateRequest from "@/model/dto/request/ArticleCreateRequest";
 import React from "react";
 import {Button} from "@nextui-org/react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
