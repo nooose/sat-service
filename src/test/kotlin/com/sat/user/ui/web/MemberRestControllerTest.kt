@@ -34,6 +34,7 @@ class MemberRestControllerTest : Documentation() {
                 field("name", "이름")
                 field("nickname", "닉네임")
                 field("email", "이메일")
+                field("avatar", "Avatar 사진 URL")
             }
         }
     }
