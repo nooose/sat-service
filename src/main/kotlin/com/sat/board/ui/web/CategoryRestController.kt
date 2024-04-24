@@ -24,6 +24,11 @@ class CategoryRestController(
         return categoryQueryService.get(flatten)
     }
 
+    @GetMapping("/board/categories/{id}")
+    fun get(@PathVariable id: Long): CategoryQuery {
+        return categoryQueryService.get(id)
+    }
+
     @PutMapping("/board/category/{id}")
     fun update(
         @PathVariable id: Long,
