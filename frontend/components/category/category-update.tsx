@@ -4,30 +4,33 @@ import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
-import categoryUpdateStore from "@/store/category-update-store";
 import {put} from "@/utils/client";
+import {state} from "sucrase/dist/types/parser/traverser/base";
+import {useState} from "react";
+import {id} from "postcss-selector-parser";
+import CategoryResponse from "@/model/dto/response/CategoryResponse";
+
 
 function updateCategory(id: number, categoryUpdateRequest: CategoryUpdateRequest) {
     return put(`/board/category/${id}`, categoryUpdateRequest);
 }
 
-export default function CategoryUpdate({id}: { id: number }) {
-    // TODO: useSate 사용 Store 제거
-    const state = categoryUpdateStore((state: any) => state);
+export default function CategoryUpdate({category}: { category: CategoryResponse }) {
     const router = useRouter();
+    const [name, setName] = useState(category.name)
     return (
         <div>
             <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
-                   value={state.name}
-                   onChange={event => state.setName(event.target.value)}
+                   value={name}
+                   onChange={event => setName(event.target.value)}
             />
             <Button color="primary" onClick={
                 () => {
                     const request: CategoryUpdateRequest = {
-                        name: state.name,
-                        parentId: state.parentId,
+                        name: name,
+                        parentId: category.parentId,
                     }
-                    updateCategory(id, request)
+                    updateCategory(category.id, request)
                         .then(response => {
                             if (response.ok) {
                                 router.push('/category');

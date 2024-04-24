@@ -6,7 +6,8 @@ import CommentResponse from "@/model/dto/response/CommentResponse";
 import CommentWrite from "@/components/comment/comment-write";
 import styles from "@styles/comment.module.css";
 import CommentUpdate from "@/components/comment/comment-update";
-import {Comment} from "postcss";
+import {Textarea} from "@nextui-org/input";
+
 
 export default function Comment({articleId, comment, loginUserId}: {articleId: number, comment: CommentResponse, loginUserId: number | undefined | null}) {
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
@@ -38,26 +39,34 @@ export default function Comment({articleId, comment, loginUserId}: {articleId: n
                         </div>
                     </div>
                     <div>
-                        {loginUserId === comment.memberId ? <Button className={styles.commentButton} size={"sm"} color={"default"} onClick={updateToggleAccordion}>수정</Button> : ''}
-                        <Button className={styles.commentButton} size={"sm"} color={"primary"} onClick={replyToggleAccordion}>대댓글</Button>
+                        {loginUserId === comment.memberId ?
+                            <Button className={styles.commentButton} size={"sm"} color={"default"} onClick={updateToggleAccordion}>수정</Button>
+                                :
+                            ''
+                        }
+                        <Button className={styles.commentButton} size={"sm"} color={"primary"} onClick={replyToggleAccordion}>댓글</Button>
                     </div>
                 </CardHeader>
                 <Divider/>
                 <CardBody>
-                    <p className="flex gap-10 items-center">
-                        {comment.content}
-                    </p>
+                    {isUpdateOpen ?
+                        <CommentUpdate articleId={articleId} comment={comment} setIsUpdateOpen={setIsUpdateOpen}/>
+                            :
+                        <Textarea className="flex gap-10 items-center" value={comment.content} readOnly={true} variant="faded"/>
+                    }
+
                 </CardBody>
                 <Divider/>
             </Card>
-            {isUpdateOpen && <CommentUpdate articleId={articleId} commentId={comment.id}/>}
-            {isReplyOpen && <CommentWrite articleId={articleId} parentId={comment.id}/>}
+            {isReplyOpen && <CommentWrite articleId={articleId} parentId={comment.id} setIsReplyOpen={setIsReplyOpen}/>}
 
-            {comment.children?.map((comment: CommentResponse) => (
-                <div className={styles.childrenContainer}>
-                    <Comment articleId={articleId} comment={comment} loginUserId={loginUserId} key={comment.id}/>
+            {comment.children?.map(
+                (comment: CommentResponse) => (
+                <div key={comment.id} className={styles.childrenContainer}>
+                    <Comment articleId={articleId} comment={comment} loginUserId={loginUserId}/>
                 </div>
-            ))}
+                )
+            )}
         </div>
     );
 };

@@ -1,44 +1,44 @@
 "use client"
 
 import {Textarea} from "@nextui-org/input";
-import {Button, Card} from "@nextui-org/react";
-import React from "react";
+import {Button} from "@nextui-org/react";
+import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import {put} from "@/utils/client";
 import CommentUpdateRequest from "@/model/dto/request/CommentUpdateRequest";
-import commentUpdateStore from "@/store/comment-update-store";
 import styles from "@styles/comment.module.css";
+import CommentResponse from "@/model/dto/response/CommentResponse";
 
-export default ({commentId, articleId}: {
-    commentId: number,
+export default ({articleId, comment, setIsUpdateOpen}: {
     articleId: number,
+    comment: CommentResponse,
+    setIsUpdateOpen: (isUpdateOpen: boolean) => void
 }) => {
-    const state = commentUpdateStore((state: any) => state);
+    const [content, setContent] = useState(comment.content)
     const router = useRouter();
 
     function saveComment(commentUpdateRequest: CommentUpdateRequest) {
-        return put(`/board/comments/${commentId}`, commentUpdateRequest);
+        return put(`/board/comments/${comment.id}`, commentUpdateRequest);
     }
 
     return (
         <div className={styles.requestContainer}>
-            <Card className={styles.requestCardContainer}>
                 <Textarea
-                    variant="underlined"
-                    label="댓글 수정"
-                    labelPlacement="outside"
+                    variant="faded"
                     placeholder="내용을 입력해 주세요"
-                    onChange={event => state.setContent(event.target.value)}
+                    value={content}
+                    onChange={event => setContent(event.target.value)}
                 />
-                <Button className={styles.requestButtonContainer} color="primary" size="md"
+                <Button className={styles.updateButtonContainer} color="primary"
                         onClick={
                             () => {
                                 const request: CommentUpdateRequest = {
-                                    content: state.content,
+                                    content: content,
                                 }
                                 saveComment(request)
                                     .then(response => {
                                         if (response.ok) {
+                                            setIsUpdateOpen(false);
                                             router.push(`/articles/${articleId}`);
                                         }
                                     })
@@ -47,7 +47,6 @@ export default ({commentId, articleId}: {
                                     });
                         }
                 }>수정</Button>
-            </Card>
         </div>
     )
 };

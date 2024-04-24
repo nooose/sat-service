@@ -8,21 +8,30 @@
 }
 
 .requestContainer {
-    margin-top: 20px;
     width: 100%;
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
     max-width: 600px;
 }
 
 .requestCardContainer {
+    display: flex;
+    flex-direction: inherit;
     padding: 10px;
+    margin-top: 30px;
+    width: 100%;
 }
 
-.requestButtonContainer {
-    margin-top: 10px;
+.updateButtonContainer {
+    width: auto;
+    height: auto;
 }
+
+.createButtonContainer {
+    height: auto;
+    width: auto;
+    margin-top: 25px;
+}
+
 
 .childrenContainer {
     margin-top: 20px;

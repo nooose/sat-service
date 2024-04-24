@@ -1,11 +1,11 @@
-interface CategoryResponse {
+interface CommentResponse {
     memberId: number,
     memberName?: string,
     id: number,
     content: string,
-    children: CategoryResponse[],
+    children: CommentResponse[],
     parentId?: number,
     isDeleted: boolean,
 }
 
-export default CategoryResponse;
+export default CommentResponse;
