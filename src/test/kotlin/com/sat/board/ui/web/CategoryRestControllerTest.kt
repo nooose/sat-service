@@ -47,6 +47,7 @@ class CategoryRestControllerTest @Autowired constructor(
             tag = "게시판 > 카테고리"
             summary = "카테고리 생성"
             requestBody {
+                type = request::class
                 field("name", "카테고리 이름")
                 field("parentId", "카테고리 부모 ID", optional = true)
             }
@@ -66,6 +67,7 @@ class CategoryRestControllerTest @Autowired constructor(
             tag = "게시판 > 카테고리"
             summary = "카테고리 조회"
             responseBody {
+                type = response::class
                 field("[].id", "카테고리 ID")
                 field("[].name", "카테고리 이름")
                 field("[].children[].id", "자식 카테고리 ID")
@@ -94,6 +96,7 @@ class CategoryRestControllerTest @Autowired constructor(
                 param("id", "카테고리 ID")
             }
             requestBody {
+                type = request::class
                 field("name" , "카테고리 이름")
                 field("parentId" , "카테고리 부모 ID", optional = true)
             }

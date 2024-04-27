@@ -19,6 +19,10 @@ class HeaderSnippetDsl : AbstractSnippetDsl() {
         descriptors.add(descriptor)
     }
 
+    fun requestHeaderSnippet(): Snippet {
+        return HeaderDocumentation.requestHeaders(descriptors)
+    }
+
     fun responseHeaderSnippet(): Snippet {
         return HeaderDocumentation.responseHeaders(descriptors)
     }

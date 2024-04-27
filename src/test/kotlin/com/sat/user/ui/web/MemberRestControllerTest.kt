@@ -1,6 +1,7 @@
 package com.sat.user.ui.web
 
 import com.ninjasquad.springmockk.MockkBean
+import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.andDocument
@@ -30,6 +31,7 @@ class MemberRestControllerTest : Documentation() {
             tag = "사용자"
             summary = "사용자 목록 조회"
             responseBody {
+                type = AuthenticatedMember::class
                 field("id", "사용자 ID")
                 field("name", "이름")
                 field("nickname", "닉네임")
@@ -57,6 +59,7 @@ class MemberRestControllerTest : Documentation() {
             tag = "사용자"
             summary = "사용자 목록 조회"
             responseBody {
+                type = MemberSimpleQuery::class
                 field("[].id", "사용자 ID")
                 field("[].name", "이름")
                 field("[].email", "이메일")
