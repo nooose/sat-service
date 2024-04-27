@@ -1,29 +1,55 @@
+"use client"
+
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import styles from "@styles/category.module.css";
-import {ButtonGroup, Card, CardBody} from "@nextui-org/react";
-import React from "react";
-import CategoryCreateButton from "@/components/category/category-write-button";
-import CategoryUpdateButton from "@/components/category/category-update-button";
-import {CardFooter} from "@nextui-org/card";
+import {Button, Card, CardBody} from "@nextui-org/react";
+import React, {useState} from "react";
+import ChildCategoryWrite from "@/components/category/child-category-write";
+import CategoryEdit from "@/components/category/category-edit";
 
 export default function Category({category}: { category: CategoryResponse }) {
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [isEdit, setIsEdit] = useState(false)
+
+    const childCategoryToggleAccordion = () => {
+        setIsCreateOpen(!isCreateOpen);
+    }
+
+    const editAction = () => {
+        setIsEdit(!isEdit)
+    };
+
     return (
         <div className={styles.category}>
             <Card key={category.id}>
                 <CardBody>
-                    <p>{category.name}</p>
+                    <div style={{display: 'flex', alignItems: 'center'}}>
+                        {!isEdit ?
+                            <p>{category.name}</p>
+                            :
+                            <CategoryEdit category={category} setIsEdit={setIsEdit}/>
+                        }
+                        {!isEdit &&
+                            <div style={{display: 'flex', flexDirection: 'column', marginLeft: 'auto'}}>
+                                <Button className={styles.categoryButton} color={"primary"} size={"sm"} onClick={childCategoryToggleAccordion}>자식 등록</Button>
+                                <Button className={styles.categoryButton} color={"success"} size={"sm"} onClick={editAction}>수정</Button>
+                            </div>
+                        }
+                    </div>
                 </CardBody>
-                <CardFooter>
-                    <ButtonGroup>
-                        <CategoryCreateButton buttonName={"자식"} category={category}/>
-                        <CategoryUpdateButton category={category}/>
-                    </ButtonGroup>
-                </CardFooter>
             </Card>
+            {isCreateOpen &&
+                <Card style={{marginTop: "10px"}}>
+                    <CardBody>
+                        <ChildCategoryWrite parentCategory={category} setIsCreateOpen={setIsCreateOpen}/>
+                    </CardBody>
+                </Card>
+            }
             {category.children?.map((category) => (
                 <Category category={category} key={category.id}/>
             ))}
         </div>
+
     );
 
 };

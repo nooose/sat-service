@@ -7,7 +7,7 @@ export default function category() {
     return (
         <div>
             <div>
-                <CategoryCreateButton buttonName={"루트카테고리"}/>
+                <CategoryCreateButton/>
             </div>
             <Suspense>
                 <Categories/>

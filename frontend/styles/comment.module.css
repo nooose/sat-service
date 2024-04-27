@@ -7,7 +7,7 @@
     width: 600px;
 }
 
-.requestContainer {
+.editContainer {
     width: 100%;
     display: flex;
     max-width: 600px;
@@ -21,7 +21,7 @@
     width: 100%;
 }
 
-.updateButtonContainer {
+.editButtonContainer {
     width: auto;
     height: auto;
 }
