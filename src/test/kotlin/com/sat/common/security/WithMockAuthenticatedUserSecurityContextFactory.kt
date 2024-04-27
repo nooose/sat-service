@@ -1,6 +1,7 @@
 package com.sat.common.security
 
 import com.sat.common.config.security.AuthenticatedMember
+import com.sat.user.domain.Member
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
@@ -35,9 +36,10 @@ class WithMockAuthenticatedUserSecurityContextFactory : WithSecurityContextFacto
             .issuerUri("https://")
             .build()
         val oidcUserRequest = OidcUserRequest(clientRegistration, accessToken, oidcIdToken)
-        val principal = AuthenticatedMember.from(oidcUserRequest)
-        val authentication: Authentication = OAuth2AuthenticationToken(principal.copy(annotation.id), principal.authorities, registrationId)
 
+        val member = Member(annotation.name, annotation.nickname, annotation.email, annotation.id)
+        val principal = AuthenticatedMember.from(oidcUserRequest, member)
+        val authentication: Authentication = OAuth2AuthenticationToken(principal, principal.authorities, registrationId)
         context.authentication = authentication
         return context
     }

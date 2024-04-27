@@ -3,7 +3,7 @@ package com.sat.common.utils.event
 import org.springframework.context.ApplicationEventPublisher
 
 object Events {
-    private var publisher: ApplicationEventPublisher? = null
+    private lateinit var publisher: ApplicationEventPublisher
 
     fun initialize(publisher: ApplicationEventPublisher) {
         if (publisher == null) {
@@ -13,7 +13,7 @@ object Events {
 
     fun publish(event: Any) {
         if (publisher != null) {
-            publisher!!.publishEvent(event)
+            publisher.publishEvent(event)
         }
     }
 }

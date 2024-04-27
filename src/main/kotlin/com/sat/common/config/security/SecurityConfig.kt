@@ -51,9 +51,10 @@ class SecurityConfig {
     @Bean
     fun oAuth2UserService(memberLoginService: MemberLoginService): OAuth2UserService<OidcUserRequest, OidcUser> {
         return OAuth2UserService {
-            val principal = AuthenticatedMember.from(it)
-            val loginMember = memberLoginService.login(principal.name, principal.email)
-            principal.copy(id = loginMember.id!!)
+            val name = it.idToken.nickName as String
+            val email = it.idToken.email as String
+            val loginMember = memberLoginService.login(name, email)
+            AuthenticatedMember.from(it, loginMember)
         }
     }
 }

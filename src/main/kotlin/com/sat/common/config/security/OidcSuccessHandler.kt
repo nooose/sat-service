@@ -26,7 +26,7 @@ class OidcSuccessHandler(
     ) {
         val principal = authentication.principal as AuthenticatedMember
         response.status = HttpStatus.OK.value()
-        response.sendRedirect("http://localhost:3000")
+        response.sendRedirect(frontendUrl)
         Events.publish(LoginSuccessEvent(principal.id, LocalDateTime.now()))
     }
 }
