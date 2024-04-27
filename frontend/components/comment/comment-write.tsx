@@ -8,11 +8,10 @@ import {useRouter} from "next/navigation";
 import {post} from "@/utils/client";
 import styles from "@/styles/comment.module.css"
 
-export default ({articleId, parentId, setIsReplyOpen}: {
+export default function CommentWrite({articleId, parentId}: {
     articleId: number,
     parentId?: number | null | undefined,
-    setIsReplyOpen: (isOpen: boolean) => void,
-}) => {
+}) {
     const [content, setContent] = useState('')
     const router = useRouter();
 
@@ -39,7 +38,6 @@ export default ({articleId, parentId, setIsReplyOpen}: {
                             saveComment(request)
                                 .then(response => {
                                     if (response.ok) {
-                                        setIsReplyOpen(false);
                                         router.push(`/articles/${articleId}`);
                                     }
                                 })

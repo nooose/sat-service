@@ -58,7 +58,7 @@ export default function Comment({articleId, comment, loginUserId}: {articleId: n
                 </CardBody>
                 <Divider/>
             </Card>
-            {isReplyOpen && <CommentWrite articleId={articleId} parentId={comment.id} setIsReplyOpen={setIsReplyOpen}/>}
+            {isReplyOpen && <CommentWrite articleId={articleId} parentId={comment.id}/>}
 
             {comment.children?.map(
                 (comment: CommentResponse) => (
