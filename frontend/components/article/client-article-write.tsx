@@ -57,6 +57,7 @@ export default function ClientArticleWrite({categories}: { categories: CategoryR
                     .then(response => {
                         if (response.ok) {
                             router.push('/');
+                            router.refresh();
                         }
                     })
                     .catch(error => {

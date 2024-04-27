@@ -20,6 +20,7 @@ function createButtonClick(name: string, parentId: number|null|undefined, router
         .then(response => {
             if (response.ok) {
                 router.push('/category');
+                router.refresh();
             }
         })
         .catch(error => {

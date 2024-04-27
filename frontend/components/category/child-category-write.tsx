@@ -23,6 +23,7 @@ function createButtonClick(name: string, parentCategory: CategoryResponse, setIs
             if (response.ok) {
                 setIsCreateOpen(false)
                 router.push('/category');
+                router.refresh();
             }
         })
         .catch(error => {

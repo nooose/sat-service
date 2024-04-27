@@ -40,6 +40,7 @@ export default ({articleId, comment, setIsUpdateOpen}: {
                                         if (response.ok) {
                                             setIsUpdateOpen(false);
                                             router.push(`/articles/${articleId}`);
+                                            router.refresh();
                                         }
                                     })
                                     .catch(error => {

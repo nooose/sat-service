@@ -8,10 +8,10 @@ import {useRouter} from "next/navigation";
 import {post} from "@/utils/client";
 import styles from "@/styles/comment.module.css"
 
-export default function CommentWrite({articleId, parentId}: {
+export default ({articleId, parentId}: {
     articleId: number,
     parentId?: number | null | undefined,
-}) {
+}) => {
     const [content, setContent] = useState('')
     const router = useRouter();
 
@@ -39,6 +39,7 @@ export default function CommentWrite({articleId, parentId}: {
                                 .then(response => {
                                     if (response.ok) {
                                         router.push(`/articles/${articleId}`);
+                                        router.refresh();
                                     }
                                 })
                                 .catch(error => {

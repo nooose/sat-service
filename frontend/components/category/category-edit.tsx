@@ -24,6 +24,7 @@ function editButtonClick(name: string, category: CategoryResponse, setIsEdit: (i
             if (response.ok) {
                 setIsEdit(false);
                 router.push('/category');
+                router.refresh();
             }
         })
         .catch(error => {

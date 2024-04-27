@@ -43,6 +43,7 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
                         .then(response => {
                             if (response.ok) {
                                 router.push(`/articles/${article.id}`);
+                                router.refresh();
                             }
                         })
                         .catch(error => {
