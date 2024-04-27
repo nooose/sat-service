@@ -61,7 +61,7 @@ data class AuthenticatedMember(
         fun from(request: OidcUserRequest, loginMember: Member): AuthenticatedMember {
             return AuthenticatedMember(
                 id = loginMember.id!!,
-                name = request.idToken.fullName as String,
+                name = request.idToken.nickName as String,
                 nickname = request.idToken.nickName as String,
                 email = request.idToken.email as String,
                 avatar = request.idToken.claims["picture"] as String,
