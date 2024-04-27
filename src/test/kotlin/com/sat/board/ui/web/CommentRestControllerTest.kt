@@ -33,6 +33,7 @@ class CommentRestControllerTest @Autowired constructor(
     @MockkBean
     lateinit var commentQueryService: CommentQueryService
 
+
     @Test
     fun `댓글 생성`() {
         val request = CommentCreateCommand("이 게시글은 정말 유익합니다.", 2L)
@@ -52,7 +53,6 @@ class CommentRestControllerTest @Autowired constructor(
                 param("articleId", "게시글 ID")
             }
             requestBody {
-                type = CommentCreateCommand::class
                 field("content", "댓글 내용")
                 field("parentId", "댓글 부모 ID", optional = true)
             }
@@ -92,17 +92,16 @@ class CommentRestControllerTest @Autowired constructor(
             tag = "게시판 > 댓글"
             summary = "댓글 목록 조회"
             responseBody {
-                type = CommentQuery::class
                 field("[].memberId", "작성자 ID")
                 field("[].memberName", "작성자 닉네임")
                 field("[].id", "댓글 ID")
                 field("[].content", "댓글 내용")
-                field("[].isDeleted", "댓글 삭제 여부")
+                field("[].isDeleted", "삭제 여부")
                 field("[].children[].memberId", "작성자 ID")
                 field("[].children[].memberName", "작성자 닉네임")
                 field("[].children[].id", "자식 댓글 ID")
                 field("[].children[].content", "자식 댓글 내용")
-                field("[].children[].isDeleted", "댓글 삭제 여부")
+                field("[].children[].isDeleted", "삭제 여부")
             }
         }
     }
@@ -128,7 +127,6 @@ class CommentRestControllerTest @Autowired constructor(
                 param("id", "댓글 ID")
             }
             requestBody {
-                type = request::class
                 field("content", "댓글 내용")
             }
         }
