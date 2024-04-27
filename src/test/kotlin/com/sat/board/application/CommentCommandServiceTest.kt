@@ -1,5 +1,7 @@
 package com.sat.board.application
 
+import com.ninjasquad.springmockk.MockkBean
+import com.sat.KEY
 import com.sat.board.application.dto.command.CommentCreateCommand
 import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.domain.Article
@@ -12,31 +14,30 @@ import com.sat.board.domain.port.CommentRepository
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.domain.Member
 import com.sat.user.domain.port.MemberRepository
+import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
 
-@SpringBootTest
+@DisplayName(value = "서비스 - 댓글 기능 테스트")
+@SpringBootTest(properties = ["jwt.secret-key=$KEY"])
 class CommentCommandServiceTest @Autowired constructor(
     private val commentRepository: CommentRepository,
     private val commentCommandService: CommentCommandService,
     private val commentQueryService: CommentQueryService,
     private val articleRepository: ArticleRepository,
     private val categoryRepository: CategoryRepository,
-    private val memberRepository: MemberRepository,
 ) {
+
+    @MockkBean
+    lateinit var memberRepository: MemberRepository
 
     lateinit var 게시글: Article
 
     @BeforeEach
     fun setData() {
-        val member = Member("홍길동", "홍길동", "admin@sat.com", 1L)
-        memberRepository.save(member)
         val category = Category(CategoryName("IT"))
         categoryRepository.save(category)
 
@@ -52,6 +53,8 @@ class CommentCommandServiceTest @Autowired constructor(
     @WithAuthenticatedUser
     @Test
     fun `댓글 생성 테스트`() {
+        every { memberRepository.findAllById(any()) } returns listOf(Member("김영철", "김영철", "", 1L))
+
         val request = CommentCreateCommand("너무 재밌어요")
         val 게시글_ID = 게시글.id!!
         commentCommandService.create(게시글_ID, request)
@@ -62,10 +65,14 @@ class CommentCommandServiceTest @Autowired constructor(
 
     @WithAuthenticatedUser
     @Test
-    fun `게시글이 존재하지 않으면 댓글 생성이 실패한다`() {
+    fun `댓글 생성시 게시글이 존재하지 않으면 예외가 발생한다`() {
         val request = CommentCreateCommand("너무 재밌어요")
 
-        assertThrows<IllegalStateException> { commentCommandService.create(10L, request) }
+        val invalidArticleId = 10L
+        val message = assertThrows<IllegalStateException> {
+            commentCommandService.create(invalidArticleId, request)
+        }.message
+        println(message)
     }
 
     @WithAuthenticatedUser
@@ -74,9 +81,10 @@ class CommentCommandServiceTest @Autowired constructor(
         val 게시글_ID = 게시글.id!!
         val newComment = Comment(게시글_ID, "너무 재밌어요")
         commentRepository.save(newComment)
-
         val request = CommentCreateCommand("보고싶어요", newComment.id)
         commentCommandService.create(게시글_ID, request)
+
+        every { memberRepository.findAllById(any()) } returns listOf(Member("김영철", "김영철", "", 1L))
 
         val comments = commentQueryService.get(게시글_ID)
         assertThat(comments).hasSize(1)
@@ -86,11 +94,14 @@ class CommentCommandServiceTest @Autowired constructor(
 
     @WithAuthenticatedUser
     @Test
-    fun `존재하지 않는 부모아이디로 자식 댓글을 생성하면 에러가 발생한다`() {
+    fun `존재하지 않는 부모아이디로 자식 댓글을 생성하면 예외가 발생한다`() {
         val 게시글_ID = 게시글.id!!
         val request = CommentCreateCommand("보고싶어요", 10L)
 
-        assertThrows<IllegalArgumentException> { commentCommandService.create(게시글_ID, request) }
+        val message = assertThrows<IllegalArgumentException> {
+            commentCommandService.create(게시글_ID, request)
+        }.message
+        println(message)
     }
 
     @WithAuthenticatedUser
@@ -120,12 +131,15 @@ class CommentCommandServiceTest @Autowired constructor(
         commentCommandService.delete(newComment.id!!, 1L)
 
         val updateRequest = CommentUpdateCommand("너무 재미없어요")
-        assertThrows<IllegalStateException> { commentCommandService.update(comment.id!!, updateRequest, 1L) }
+        val message = assertThrows<IllegalStateException> {
+            commentCommandService.update(comment.id!!, updateRequest, 1L)
+        }.message
+        println(message)
     }
 
     @WithAuthenticatedUser
     @Test
-    fun `다른 사람의 댓글 수정하면 에러가 발생한다`() {
+    fun `다른 사용자의 댓글을 수정하면 예외가 발생한다`() {
         val 게시글_ID = 게시글.id!!
         val newComment = Comment(게시글_ID, "너무 재밌어요")
         commentRepository.save(newComment)
@@ -133,7 +147,10 @@ class CommentCommandServiceTest @Autowired constructor(
         val comment = commentRepository.findByIdOrNull(newComment.id)!!
         val updateRequest = CommentUpdateCommand("너무 재미없어요")
 
-        assertThrows<IllegalStateException> { commentCommandService.update(comment.id!!, updateRequest, 2L) }
+        val message = assertThrows<IllegalStateException> {
+            commentCommandService.update(comment.id!!, updateRequest, 2L)
+        }.message
+        println(message)
     }
 
     @WithAuthenticatedUser

@@ -12,15 +12,15 @@ export const metadata: Metadata = {
   description: "Stuff all techs",
 };
 
-export default function RootLayout({children}: { children: React.ReactNode }) {
+export default async function RootLayout({children}: { children: React.ReactNode }) {
   return (
     <html lang="ko">
       <body>
         <Providers>
-        <TopNavigation/>
-          <div className={styles.container}>
-            {children}
-          </div>
+          <TopNavigation/>
+            <div className={styles.container}>
+              {children}
+            </div>
         </Providers>
       </body>
     </html>

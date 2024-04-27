@@ -3,6 +3,7 @@ package com.sat.common.config.security
 import com.sat.user.application.MemberLoginService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
@@ -40,7 +41,8 @@ class SecurityConfig {
                 authenticationSuccessHandler = oidcSuccessHandler
             }
             authorizeHttpRequests {
-                authorize("/**", permitAll)
+                authorize(HttpMethod.GET, "/board/articles", permitAll)
+                authorize("/**", authenticated)
             }
         }
         return http.build()
@@ -49,9 +51,10 @@ class SecurityConfig {
     @Bean
     fun oAuth2UserService(memberLoginService: MemberLoginService): OAuth2UserService<OidcUserRequest, OidcUser> {
         return OAuth2UserService {
-            val principal = AuthenticatedMember.from(it)
-            val loginMember = memberLoginService.login(principal.name, principal.email)
-            principal.copy(id = loginMember.id!!)
+            val name = it.idToken.nickName as String
+            val email = it.idToken.email as String
+            val loginMember = memberLoginService.login(name, email)
+            AuthenticatedMember.from(it, loginMember)
         }
     }
 }

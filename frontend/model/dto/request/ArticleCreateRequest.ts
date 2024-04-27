@@ -3,3 +3,5 @@ interface ArticleCreateRequest {
     content: string,
     categoryId: number,
 }
+
+export default ArticleCreateRequest;

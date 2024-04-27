@@ -1,6 +1,6 @@
 package com.sat.board.domain
 
-import com.sat.board.domain.dto.ArticleDto
+import com.sat.board.domain.dto.ArticleWithoutCategoryDto
 import com.sat.common.domain.AuditingFields
 import jakarta.persistence.*
 
@@ -15,10 +15,9 @@ class Article(
 ) : AuditingFields() {
     private var isDeleted: Boolean = false
 
-    fun update(that: ArticleDto) {
+    fun update(that: ArticleWithoutCategoryDto) {
         this.title = that.title
         this.content = that.content
-        this.category = that.category
     }
 
     fun delete() {

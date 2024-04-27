@@ -7,6 +7,4 @@ data class ArticleUpdateCommand(
     val title: String,
     @field:NotBlank
     val content: String,
-    val categoryId: Long,
-) {
-}
+)

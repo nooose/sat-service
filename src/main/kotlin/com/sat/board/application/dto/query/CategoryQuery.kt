@@ -1,6 +1,5 @@
 package com.sat.board.application.dto.query
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.sat.board.domain.Category
 
@@ -9,7 +8,6 @@ data class CategoryQuery(
     val id: Long,
     val name: String,
     val children: MutableList<CategoryQuery> = mutableListOf(),
-    @JsonIgnore
     val parentId: Long? = null,
 ) {
 

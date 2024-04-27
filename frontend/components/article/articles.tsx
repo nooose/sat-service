@@ -1,9 +1,11 @@
-import ArticleSimpleResponse from "@/model/response/ArticleSimpleResponse";
-import Article from "@/components/article/article";
-import {httpClient} from "@/utils/client";
+import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
+import ClientArticle from "@/components/article/client-article";
+import {get} from "@/utils/client";
+import {cookies} from "next/headers";
 
 async function getArticles() {
-    const response = await httpClient("/board/articles");
+    const cookie = cookies().get("JSESSIONID")?.value
+    const response = await get("/board/articles", cookie);
     return await response.json();
 }
 
@@ -12,7 +14,7 @@ export default async function Articles() {
     return (
         <div>
             {articles.map((article: ArticleSimpleResponse) => (
-                <Article article={article}/>
+                <ClientArticle key={article.id} article={article}/>
             ))}
         </div>
     );

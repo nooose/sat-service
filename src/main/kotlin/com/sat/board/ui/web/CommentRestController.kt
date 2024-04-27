@@ -5,8 +5,9 @@ import com.sat.board.application.CommentQueryService
 import com.sat.board.application.dto.command.CommentCreateCommand
 import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.application.dto.query.CommentQuery
-import com.sat.user.domain.LoginMemberInfo
-import com.sat.user.ui.web.LoginMember
+import com.sat.common.config.security.AuthenticatedMember
+import com.sat.common.config.security.LoginMember
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodName
@@ -20,7 +21,7 @@ class CommentRestController(
     @PostMapping("/board/articles/{articleId}/comments")
     fun create(
         @PathVariable articleId: Long,
-        @RequestBody command: CommentCreateCommand,
+        @RequestBody @Valid command: CommentCreateCommand,
     ): ResponseEntity<Unit> {
         commentCommandService.create(articleId, command)
         val uri = fromMethodName(ArticleRestController::class.java, "article", articleId)
@@ -37,8 +38,8 @@ class CommentRestController(
     @PutMapping("/board/comments/{id}")
     fun update(
         @PathVariable id: Long,
-        @RequestBody command: CommentUpdateCommand,
-        @LoginMember loginMember: LoginMemberInfo,
+        @RequestBody @Valid command: CommentUpdateCommand,
+        @LoginMember loginMember: AuthenticatedMember,
     ) {
         commentCommandService.update(id, command, loginMember.id)
     }
@@ -46,7 +47,7 @@ class CommentRestController(
     @DeleteMapping("/board/comments/{id}")
     fun delete(
         @PathVariable id: Long,
-        @LoginMember loginMember: LoginMemberInfo,
+        @LoginMember loginMember: AuthenticatedMember,
     ) {
         commentCommandService.delete(id, loginMember.id)
     }

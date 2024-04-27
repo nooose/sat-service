@@ -2,6 +2,7 @@ package com.sat.common.documentation.dsl
 
 import org.springframework.restdocs.payload.FieldDescriptor
 import org.springframework.restdocs.payload.PayloadDocumentation.*
+import org.springframework.restdocs.snippet.Attributes.key
 import org.springframework.restdocs.snippet.Snippet
 import kotlin.reflect.KClass
 
@@ -9,9 +10,15 @@ import kotlin.reflect.KClass
 class BodySnippetDsl : AbstractSnippetDsl() {
     private val descriptors: MutableList<FieldDescriptor> = mutableListOf()
     var pageable: Boolean = false
+    var type: KClass<*>? = null
 
     fun <T : Enum<T>> field(fieldName: String, description: String = "", optional: Boolean = false, constraint: KClass<T>, ignored: Boolean = false) {
-        field(fieldName, description, optional, getConstraintsText(constraint), ignored)
+        val descriptor = fieldWithPath(fieldName).description(description)
+            .type("enum")
+            .attributes(key("enumValues").value(getConstraints(constraint)))
+            .attributes(key("itemsType").value("type"))
+        addOptions(descriptor, optional, getConstraintsText(constraint), ignored)
+        descriptors.add(descriptor)
     }
 
     fun field(fieldName: String, description: String = "", optional: Boolean = false, constraint: String = "", ignored: Boolean = false) {
@@ -51,7 +58,7 @@ class BodySnippetDsl : AbstractSnippetDsl() {
             fieldWithPath("sort.sorted").description("정렬 여부"),
             fieldWithPath("first").description("첫번째 페이지 여부"),
             fieldWithPath("numberOfElements").description("현재 페이지의 데이터 수"),
-            fieldWithPath("empty").description("현재 페이지가 비어있는지 여부")
+            fieldWithPath("empty").description("")
         )
     }
 }

@@ -6,9 +6,7 @@ import com.sat.board.application.dto.command.CategoryCreateCommand
 import com.sat.board.application.dto.command.CategoryUpdateCommand
 import com.sat.board.application.dto.query.CategoryQuery
 import jakarta.validation.Valid
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodName
 
 @RestController
 class CategoryRestController(
@@ -17,17 +15,18 @@ class CategoryRestController(
 ) {
 
     @PostMapping("/board/categories")
-    fun create(@RequestBody @Valid command: CategoryCreateCommand): ResponseEntity<Unit> {
+    fun create(@RequestBody @Valid command: CategoryCreateCommand) {
         categoryCommandService.create(command)
-        val uri = fromMethodName(CategoryRestController::class.java, "get")
-            .build()
-            .toUri()
-        return ResponseEntity.created(uri).build()
     }
 
     @GetMapping("/board/categories")
-    fun get(): List<CategoryQuery> {
-        return categoryQueryService.get()
+    fun get(@RequestParam flatten: Boolean? = false): List<CategoryQuery> {
+        return categoryQueryService.get(flatten)
+    }
+
+    @GetMapping("/board/categories/{id}")
+    fun get(@PathVariable id: Long): CategoryQuery {
+        return categoryQueryService.get(id)
     }
 
     @PutMapping("/board/category/{id}")

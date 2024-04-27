@@ -31,6 +31,4 @@ data class Comment(
         check(!isDeleted) { "삭제된 댓글은 수정하거나 삭제할 수 없습니다." }
         check(isOwner(loginId)) { "댓글 작성자만 수정하거나 삭제할 수 있습니다." }
     }
-
-    private fun isOwner(loginId: Long) = this.createdBy == loginId
 }

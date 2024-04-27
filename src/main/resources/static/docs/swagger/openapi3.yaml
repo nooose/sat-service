@@ -21,7 +21,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/board-articles-1499844002'
+                $ref: '#/components/schemas/ArticleSimpleQuery'
               examples:
                 article-rest-controller-test/게시글 목록 조회:
                   value: |-
@@ -48,7 +48,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/board-articles-1450587914'
+              $ref: '#/components/schemas/ArticleCreateCommand'
             examples:
               article-rest-controller-test/게시글 생성:
                 value: |-
@@ -78,7 +78,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/board-categories-1002833915'
+                $ref: '#/components/schemas/SingletonList'
               examples:
                 category-rest-controller-test/카테고리 조회:
                   value: |-
@@ -87,7 +87,8 @@ paths:
                       "name" : "컴퓨터",
                       "children" : [ {
                         "id" : 2,
-                        "name" : "맥북"
+                        "name" : "맥북",
+                        "parentId" : 1
                       } ]
                     } ]
     post:
@@ -100,7 +101,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/board-categories1661442423'
+              $ref: '#/components/schemas/CategoryCreateCommand'
             examples:
               category-rest-controller-test/카테고리 생성:
                 value: |-
@@ -109,8 +110,8 @@ paths:
                     "parentId" : 1
                   }
       responses:
-        "201":
-          description: "201"
+        "200":
+          description: "200"
   /board/articles/{articleId}:
     get:
       tags:
@@ -131,7 +132,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/board-articles-articleId1038093111'
+                $ref: '#/components/schemas/ArticleQuery'
               examples:
                 article-rest-controller-test/게시글 조회:
                   value: |-
@@ -158,14 +159,13 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/board-articles-1450587914'
+              $ref: '#/components/schemas/ArticleUpdateCommand'
             examples:
               article-rest-controller-test/게시글 수정:
                 value: |-
                   {
                     "title" : "수정 제목",
-                    "content" : "수정 내용",
-                    "categoryId" : 10
+                    "content" : "수정 내용"
                   }
       responses:
         "200":
@@ -204,7 +204,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/board-categories1661442423'
+              $ref: '#/components/schemas/CategoryUpdateCommand'
             examples:
               category-rest-controller-test/카테고리 수정:
                 value: |-
@@ -249,7 +249,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/board-comments-id-1563718501'
+              $ref: '#/components/schemas/CommentUpdateCommand'
             examples:
               comment-rest-controller-test/댓글 수정:
                 value: |-
@@ -279,9 +279,9 @@ paths:
     get:
       tags:
       - 게시판 > 댓글
-      summary: 댓글 조회
-      description: 댓글 조회
-      operationId: 'comment-rest-controller-test/댓글 '
+      summary: 댓글 목록 조회
+      description: 댓글 목록 조회
+      operationId: comment-rest-controller-test/댓글 목록 조회
       parameters:
       - name: articleId
         in: path
@@ -295,20 +295,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/board-articles-articleId-comments-1889567638'
+                $ref: '#/components/schemas/CommentQuery'
               examples:
-                comment-rest-controller-test/댓글 조회:
-                  value: |-
-                    [ {
-                      "articleId" : 1,
-                      "id" : 1,
-                      "content" : "유익한 게시글 입니다.",
-                      "children" : [ {
-                        "articleId" : 1,
-                        "id" : 2,
-                        "content" : "유익한 부모 댓글 입니다."
-                      } ]
-                    } ]
                 comment-rest-controller-test/댓글 목록 조회:
                   value: |-
                     [ {
@@ -320,8 +308,10 @@ paths:
                         "memberId" : 2,
                         "memberName" : "test2",
                         "id" : 2,
-                        "content" : "유익한 부모 댓글 입니다."
-                      } ]
+                        "content" : "유익한 부모 댓글 입니다.",
+                        "isDeleted" : false
+                      } ],
+                      "isDeleted" : false
                     } ]
     post:
       tags:
@@ -340,7 +330,7 @@ paths:
         content:
           application/json;charset=utf-8:
             schema:
-              $ref: '#/components/schemas/board-articles-articleId-comments-1938465350'
+              $ref: '#/components/schemas/CommentCreateCommand'
             examples:
               comment-rest-controller-test/댓글 생성:
                 value: |-
@@ -369,7 +359,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user-members-1036020352'
+                $ref: '#/components/schemas/MemberSimpleQuery'
               examples:
                 member-rest-controller-test/사용자 목록 조회:
                   value: |-
@@ -402,109 +392,47 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user-members-me-115117825'
+                $ref: '#/components/schemas/AuthenticatedMember'
               examples:
                 member-rest-controller-test/자신의 정보 조회:
                   value: |-
                     {
                       "id" : 1,
-                      "name" : "홍길동",
-                      "nickname" : "홍길동",
-                      "email" : "admin@sat.com"
+                      "name" : "김영철",
+                      "nickname" : "김영철",
+                      "email" : "",
+                      "avatar" : ""
                     }
 components:
   schemas:
-    board-comments-id-1563718501:
+    ArticleUpdateCommand:
+      title: ArticleUpdateCommand
+      required:
+      - content
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+          description: 게시글 제목
+        content:
+          type: string
+          description: 게시글 내용
+    CommentCreateCommand:
+      title: CommentCreateCommand
       required:
       - content
       type: object
       properties:
+        parentId:
+          type: number
+          description: 댓글 부모 ID
+          nullable: true
         content:
           type: string
           description: 댓글 내용
-    board-categories1661442423:
-      required:
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: 카테고리 이름
-        parentId:
-          type: number
-          description: 카테고리 부모 ID
-          nullable: true
-    board-articles-1499844002:
-      type: array
-      items:
-        required:
-        - category
-        - id
-        - title
-        type: object
-        properties:
-          id:
-            type: number
-            description: 게시글 ID
-          category:
-            type: string
-            description: 카테고리
-          title:
-            type: string
-            description: 게시글 제목
-    board-articles-articleId-comments-1889567638:
-      type: array
-      items:
-        required:
-        - articleId
-        - content
-        - id
-        - memberId
-        - memberName
-        type: object
-        properties:
-          children:
-            type: array
-            items:
-              required:
-              - articleId
-              - content
-              - id
-              - memberId
-              - memberName
-              type: object
-              properties:
-                articleId:
-                  type: number
-                  description: 자식 게시판 ID
-                memberName:
-                  type: string
-                  description: 작성자 닉네임
-                id:
-                  type: number
-                  description: 자식 댓글 ID
-                content:
-                  type: string
-                  description: 자식 댓글 내용
-                memberId:
-                  type: number
-                  description: 작성자 ID
-          articleId:
-            type: number
-            description: 게시판 ID
-          memberName:
-            type: string
-            description: 작성자 닉네임
-          id:
-            type: number
-            description: 댓글 ID
-          content:
-            type: string
-            description: 댓글 내용
-          memberId:
-            type: number
-            description: 작성자 ID
-    board-articles-articleId1038093111:
+    ArticleQuery:
+      title: ArticleQuery
       required:
       - category
       - content
@@ -524,7 +452,8 @@ components:
         content:
           type: string
           description: 게시글 내용
-    board-categories-1002833915:
+    SingletonList:
+      title: SingletonList
       type: array
       items:
         required:
@@ -538,6 +467,7 @@ components:
               required:
               - id
               - name
+              - parentId
               type: object
               properties:
                 name:
@@ -546,14 +476,113 @@ components:
                 id:
                   type: number
                   description: 자식 카테고리 ID
+                parentId:
+                  type: number
+                  description: 부모 카테고리 ID
           name:
             type: string
             description: 카테고리 이름
           id:
             type: number
             description: 카테고리 ID
-    user-members-me-115117825:
+    CategoryUpdateCommand:
+      title: CategoryUpdateCommand
       required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: 카테고리 이름
+        parentId:
+          type: number
+          description: 카테고리 부모 ID
+          nullable: true
+    CommentQuery:
+      title: CommentQuery
+      type: array
+      items:
+        required:
+        - content
+        - id
+        - isDeleted
+        - memberId
+        - memberName
+        type: object
+        properties:
+          isDeleted:
+            type: boolean
+            description: 댓글 삭제 여부
+          children:
+            type: array
+            items:
+              required:
+              - content
+              - id
+              - isDeleted
+              - memberId
+              - memberName
+              type: object
+              properties:
+                isDeleted:
+                  type: boolean
+                  description: 댓글 삭제 여부
+                memberName:
+                  type: string
+                  description: 작성자 닉네임
+                id:
+                  type: number
+                  description: 자식 댓글 ID
+                content:
+                  type: string
+                  description: 자식 댓글 내용
+                memberId:
+                  type: number
+                  description: 작성자 ID
+          memberName:
+            type: string
+            description: 작성자 닉네임
+          id:
+            type: number
+            description: 댓글 ID
+          content:
+            type: string
+            description: 댓글 내용
+          memberId:
+            type: number
+            description: 작성자 ID
+    ArticleSimpleQuery:
+      title: ArticleSimpleQuery
+      type: array
+      items:
+        required:
+        - category
+        - id
+        - title
+        type: object
+        properties:
+          id:
+            type: number
+            description: 게시글 ID
+          category:
+            type: string
+            description: 카테고리
+          title:
+            type: string
+            description: 게시글 제목
+    CommentUpdateCommand:
+      title: CommentUpdateCommand
+      required:
+      - content
+      type: object
+      properties:
+        content:
+          type: string
+          description: 댓글 내용
+    AuthenticatedMember:
+      title: AuthenticatedMember
+      required:
+      - avatar
       - email
       - id
       - name
@@ -566,13 +595,30 @@ components:
         name:
           type: string
           description: 이름
+        avatar:
+          type: string
+          description: Avatar 사진 URL
         id:
           type: number
           description: 사용자 ID
         email:
           type: string
           description: 이메일
-    board-articles-1450587914:
+    CategoryCreateCommand:
+      title: CategoryCreateCommand
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+          description: 카테고리 이름
+        parentId:
+          type: number
+          description: 카테고리 부모 ID
+          nullable: true
+    ArticleCreateCommand:
+      title: ArticleCreateCommand
       required:
       - categoryId
       - content
@@ -588,7 +634,8 @@ components:
         content:
           type: string
           description: 게시글 내용
-    user-members-1036020352:
+    MemberSimpleQuery:
+      title: MemberSimpleQuery
       type: array
       items:
         required:
@@ -610,15 +657,3 @@ components:
           email:
             type: string
             description: 이메일
-    board-articles-articleId-comments-1938465350:
-      required:
-      - content
-      type: object
-      properties:
-        parentId:
-          type: number
-          description: 댓글 부모 ID
-          nullable: true
-        content:
-          type: string
-          description: 댓글 내용

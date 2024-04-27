@@ -1,8 +1,9 @@
 package com.sat.user.ui.web
 
+import com.sat.common.config.security.AuthenticatedMember
+import com.sat.common.config.security.LoginMember
 import com.sat.user.application.MemberQueryService
 import com.sat.user.application.dto.query.MemberSimpleQuery
-import com.sat.user.domain.LoginMemberInfo
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -12,7 +13,7 @@ class MemberRestController(
 ) {
 
     @GetMapping("/user/members/me")
-    fun me(@LoginMember member: LoginMemberInfo): LoginMemberInfo {
+    fun me(@LoginMember member: AuthenticatedMember): AuthenticatedMember {
         return member
     }
 
