@@ -12,8 +12,6 @@ object Events {
     }
 
     fun publish(event: Any) {
-        if (publisher != null) {
-            publisher!!.publishEvent(event)
-        }
+        publisher?.publishEvent(event)
     }
 }
