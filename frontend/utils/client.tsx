@@ -31,5 +31,12 @@ export async function request(path: string, method: string, authenticationCookie
     return await fetch(url, {
         ...config,
         credentials: 'include',
+    }).then(response => {
+        if (!response.ok) {
+            response.json().then(data => {
+                alert(JSON.stringify(data));
+            });
+        }
+        return response
     });
 }
