@@ -1,13 +1,13 @@
 package com.sat.user.ui.message.internal
 
+import com.sat.common.config.security.AuthenticatedMember
 import com.sat.user.application.MemberLoginService
 import com.sat.user.application.PointService
-import com.sat.user.domain.event.LoginSuccessEvent
-import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
+import org.springframework.security.authentication.event.AuthenticationSuccessEvent
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 
 @Component
@@ -17,9 +17,11 @@ class LoginSuccessEventHandler(
 ) {
 
     @Transactional
-    @EventListener(LoginSuccessEvent::class)
-    fun handle(event: LoginSuccessEvent) {
-        pointService.dailyPointAward(event.id, LocalDate.now())
-        memberLoginService.createLoginHistory(event.id, event.dateTime)
+    @EventListener(AuthenticationSuccessEvent::class)
+    fun handle(event: AuthenticationSuccessEvent) {
+        val authenticatedMember = event.authentication.principal as AuthenticatedMember
+        val now = LocalDateTime.now()
+        pointService.dailyPointAward(authenticatedMember.id, now.toLocalDate())
+        memberLoginService.createLoginHistory(authenticatedMember.id, now)
     }
 }
