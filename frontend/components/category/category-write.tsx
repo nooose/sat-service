@@ -1,43 +1,45 @@
 "use client"
 
 import {Input} from "@nextui-org/input";
-import {Button} from "@nextui-org/react";
+import {Button, useDisclosure} from "@nextui-org/react";
 import CategoryCreateRequest from "@/model/dto/request/CategoryCreateRequest";
-import {post} from "@/utils/client";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useRouter} from "next/navigation";
-
-function saveCategory(categoryCreateRequest: CategoryCreateRequest) {
-    return post("/board/categories", categoryCreateRequest);
-}
-
-function createButtonClick(name: string, parentId: number|null|undefined, router: any) {
-    const request: CategoryCreateRequest = {
-        name: name,
-        parentId: parentId,
-    }
-    saveCategory(request)
-        .then(response => {
-            if (response.ok) {
-                router.push('/category');
-                router.refresh();
-            }
-        })
-        .catch(error => {
-            console.error('API 요청 중 오류가 발생하였습니다:', error);
-        });
-}
+import {RestClient} from "@/utils/restClient";
+import ErrorModal from "@/components/modal/error-modal";
 
 export default function CategoryWrite() {
     const [name, setName] = useState('');
     const [parentId, setParentId] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
+    const disclosure = useDisclosure();
     const router = useRouter();
+
+    const saveCategory = () => {
+        console.log("머야");
+        const request: CategoryCreateRequest = {
+            name: name,
+            parentId: parentId,
+        }
+        RestClient.post("/board/categories")
+            .requestBody(request)
+            .successHandler(() => {
+                router.push('/category');
+                router.refresh();
+            })
+            .errorHandler(message => {
+                setErrorMessage(message);
+                disclosure.onOpen();
+            }).fetch();
+    }
+
     return (
         <div>
             <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
                    onChange={event => setName(event.target.value)}
             />
-            <Button color="primary" onClick={() => {createButtonClick(name, parentId, router)}}>등록</Button>
+            <Button color="primary" onClick={saveCategory}>등록</Button>
+            <ErrorModal message={errorMessage} disclosure={disclosure}></ErrorModal>
         </div>
     );
 }

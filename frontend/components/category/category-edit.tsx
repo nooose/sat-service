@@ -4,37 +4,37 @@ import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import React, {useState} from "react";
 import {Input} from "@nextui-org/input";
 import {useRouter} from "next/navigation";
-import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
-import {Button} from "@nextui-org/react";
-import {put} from "@/utils/client";
+import {Button, useDisclosure} from "@nextui-org/react";
 import styles from "@styles/category.module.css";
-
-function updateCategory(id: number, categoryUpdateRequest: CategoryUpdateRequest) {
-    return put(`/board/category/${id}`, categoryUpdateRequest);
-}
-
-function editButtonClick(name: string, category: CategoryResponse, setIsEdit: (isEdit: boolean) => void, router: any) {
-    const request: CategoryUpdateRequest = {
-        name: name,
-        parentId: category.parentId,
-    }
-
-    updateCategory(category.id, request)
-        .then(response => {
-            if (response.ok) {
-                setIsEdit(false);
-                router.push('/category');
-                router.refresh();
-            }
-        })
-        .catch(error => {
-            console.error('API 요청 중 오류가 발생하였습니다:', error);
-        });
-}
+import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
+import {RestClient} from "@/utils/restClient";
+import ErrorModal from "@/components/modal/error-modal";
 
 export default function CategoryEdit({category, setIsEdit}: {category: CategoryResponse, setIsEdit: (isEdit: boolean) => void}) {
     const [name, setName] = useState(category.name);
-    const router = useRouter()
+    const router = useRouter();
+    const disclosure = useDisclosure();
+    const [errorMessage, setErrorMessage] = useState("")
+
+    const updateCategory = () => {
+        const request: CategoryUpdateRequest = {
+            name: name,
+            parentId: category.parentId,
+        }
+
+        RestClient.put(`/board/category/${category.id}`)
+            .requestBody(request)
+            .successHandler(() => {
+                setIsEdit(false);
+                router.push('/category');
+                router.refresh();
+            })
+            .errorHandler(message => {
+                setErrorMessage(message);
+                disclosure.onOpen();
+            })
+            .fetch();
+    }
 
     return (
         <div className={styles.editContainer}>
@@ -43,11 +43,12 @@ export default function CategoryEdit({category, setIsEdit}: {category: CategoryR
                           onChange={event => setName(event.target.value)}
             />
             <div className={styles.editContainer}>
-                <Button className={styles.editButtonContainer} color="primary" size={"md"} onClick={() => editButtonClick(name, category, setIsEdit, router)}>수정</Button>
+                <Button className={styles.editButtonContainer} color="primary" size={"md"} onClick={updateCategory}>수정</Button>
                 <Button className={styles.editButtonContainer} color="danger" size={"md"} onClick={() => setIsEdit(false)}>
                     취소
                 </Button>
             </div>
+            <ErrorModal message={errorMessage} disclosure={disclosure}></ErrorModal>
         </div>
     )
 };

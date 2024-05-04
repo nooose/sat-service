@@ -3,21 +3,32 @@
 import {Input, Textarea} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
-import {put} from "@/utils/client";
 import ArticleUpdateRequest from "@/model/dto/request/ArticleUpdateRequest";
 import articleResponse from "@/model/dto/response/ArticleResponse";
 import {useState} from "react";
 import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
-
-function updateArticle(id: number, request: ArticleUpdateRequest) {
-    return put(`/board/articles/${id}`, request);
-}
+import {RestClient} from "@/utils/restClient";
+import {id} from "postcss-selector-parser";
 
 export default function ClientArticleUpdate({article}: { article: articleResponse }) {
     const [title, setTitle] = useState(article.title);
     const [content, setContent] = useState(article.content);
-
     const router = useRouter();
+
+    const updateArticle = () => {
+        const request: ArticleUpdateRequest = {
+            title: title,
+            content: content,
+        }
+
+        RestClient.put(`/board/articles/${id}`)
+            .requestBody(request)
+            .successHandler(() => {
+                router.push(`/articles/${article.id}`);
+                router.refresh();
+            }).fetch();
+    };
+
     return (
         <div>
             <ClientArticleCategoryInfo category={article.category}/>
@@ -34,23 +45,7 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
                 defaultValue={article.content}
                 onValueChange={value => setContent(value)}
             />
-            <Button color="primary" onClick={() => {
-                    const request: ArticleUpdateRequest = {
-                        title: title,
-                        content: content,
-                    }
-                    updateArticle(article.id, request)
-                        .then(response => {
-                            if (response.ok) {
-                                router.push(`/articles/${article.id}`);
-                                router.refresh();
-                            }
-                        })
-                        .catch(error => {
-                            console.error('API 요청 중 오류가 발생하였습니다:', error);
-                        });
-                }
-            }>수정</Button>
+            <Button color="primary" onClick={updateArticle}>수정</Button>
         </div>
     );
 }
