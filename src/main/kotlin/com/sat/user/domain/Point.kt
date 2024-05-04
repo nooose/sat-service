@@ -14,8 +14,4 @@ class Point(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 ) {
-
-    fun loginAward() {
-        point += 10
-    }
 }

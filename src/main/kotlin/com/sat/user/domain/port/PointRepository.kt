@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface PointRepository : JpaRepository<Point, Long> {
 
-    fun findByMemberId(memberId: Long): Point?
+    fun findAllByMemberId(memberId: Long): List<Point>
 }
