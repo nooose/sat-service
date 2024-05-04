@@ -1,10 +1,7 @@
 package com.sat.board.domain.event
 
-import com.sat.user.domain.PointType
-
-class CommentCreateEvent(
+data class CommentCreateEvent(
     val articleId: Long,
+    val commentId: Long,
     val memberId: Long,
-    val pointType: PointType = PointType.COMMENT,
-) {
-}
+)

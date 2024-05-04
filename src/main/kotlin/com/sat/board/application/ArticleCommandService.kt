@@ -24,7 +24,7 @@ class ArticleCommandService(
         val article = Article(command.title, command.content, category)
         articleRepository.save(article)
 
-        Events.publish(ArticleCreateEvent(article.createdBy!!))
+        Events.publish(ArticleCreateEvent(article.id!!, article.createdBy!!))
         return article.id!!
     }
 
