@@ -1,15 +1,18 @@
 "use client"
 
 import {Input} from "@nextui-org/input";
-import {Button} from "@nextui-org/react";
+import {Button, useDisclosure} from "@nextui-org/react";
 import CategoryCreateRequest from "@/model/dto/request/CategoryCreateRequest";
-import {useState} from "react";
+import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import {RestClient} from "@/utils/restClient";
+import ErrorModal from "@/components/modal/error-modal";
 
 export default function CategoryWrite() {
     const [name, setName] = useState('');
     const [parentId, setParentId] = useState(null);
+    const [errorMessage, setErrorMessage] = useState("");
+    const disclosure = useDisclosure();
     const router = useRouter();
 
     const saveCategory = () => {
@@ -23,6 +26,10 @@ export default function CategoryWrite() {
             .successHandler(() => {
                 router.push('/category');
                 router.refresh();
+            })
+            .errorHandler(message => {
+                setErrorMessage(message);
+                disclosure.onOpen();
             }).fetch();
     }
 
@@ -32,6 +39,7 @@ export default function CategoryWrite() {
                    onChange={event => setName(event.target.value)}
             />
             <Button color="primary" onClick={saveCategory}>등록</Button>
+            <ErrorModal message={errorMessage} disclosure={disclosure}></ErrorModal>
         </div>
     );
 }

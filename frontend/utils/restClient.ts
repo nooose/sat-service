@@ -5,8 +5,8 @@ export class RestClient {
     private readonly headers: Record<string, string>;
     private method: string = "";
     private path: string = "";
-    private body: any | undefined | null;
-    private _successHandler: Function | undefined;
+    private body?: any;
+    private _successHandler?: Function;
     private _errorHandler: (message: string) => void;
 
     private constructor() {
@@ -53,7 +53,7 @@ export class RestClient {
         return this;
     }
 
-    public session(session: string | undefined) {
+    public session(session?: string) {
         if (session !== undefined) {
             this.headers['Cookie'] = `${this.headers["Cookie"]};JSESSIONID=${session}`;
         }

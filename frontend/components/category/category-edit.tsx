@@ -4,14 +4,17 @@ import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import React, {useState} from "react";
 import {Input} from "@nextui-org/input";
 import {useRouter} from "next/navigation";
-import {Button} from "@nextui-org/react";
+import {Button, useDisclosure} from "@nextui-org/react";
 import styles from "@styles/category.module.css";
 import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
 import {RestClient} from "@/utils/restClient";
+import ErrorModal from "@/components/modal/error-modal";
 
 export default function CategoryEdit({category, setIsEdit}: {category: CategoryResponse, setIsEdit: (isEdit: boolean) => void}) {
     const [name, setName] = useState(category.name);
     const router = useRouter();
+    const disclosure = useDisclosure();
+    const [errorMessage, setErrorMessage] = useState("")
 
     const updateCategory = () => {
         const request: CategoryUpdateRequest = {
@@ -25,6 +28,10 @@ export default function CategoryEdit({category, setIsEdit}: {category: CategoryR
                 setIsEdit(false);
                 router.push('/category');
                 router.refresh();
+            })
+            .errorHandler(message => {
+                setErrorMessage(message);
+                disclosure.onOpen();
             })
             .fetch();
     }
@@ -41,6 +48,7 @@ export default function CategoryEdit({category, setIsEdit}: {category: CategoryR
                     취소
                 </Button>
             </div>
+            <ErrorModal message={errorMessage} disclosure={disclosure}></ErrorModal>
         </div>
     )
 };
