@@ -13,13 +13,14 @@ export default function UserProfile({name, nickname, avatar, cookie}: {
     cookie: string
 }) {
     const router = useRouter();
-
-    function logout() {
+    const logout = () => {
         RestClient.get("/logout")
             .session(cookie)
             .successHandler(() => {
                 router.push("/");
-            });
+                router.refresh();
+            })
+            .fetch();
     }
 
     return (

@@ -16,7 +16,6 @@ export default function CategoryWrite() {
     const router = useRouter();
 
     const saveCategory = () => {
-        console.log("머야");
         const request: CategoryCreateRequest = {
             name: name,
             parentId: parentId,

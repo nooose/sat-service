@@ -6,12 +6,8 @@ import CategoryCreateButton from "@/components/category/category-write-button";
 export default function category() {
     return (
         <div>
-            <div>
-                <CategoryCreateButton/>
-            </div>
-            <Suspense>
-                <Categories/>
-            </Suspense>
+            <CategoryCreateButton/>
+            <Categories/>
         </div>
     );
 }
