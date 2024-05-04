@@ -5,7 +5,7 @@ plugins {
 	id("org.springframework.boot") version "3.2.5"
 	id("io.spring.dependency-management") version "1.1.4"
 	id("org.asciidoctor.jvm.convert") version "3.3.2"
-	id("com.epages.restdocs-api-spec") version "0.19.1"
+	id("com.epages.restdocs-api-spec") version "0.19.2"
 
 	kotlin("jvm") version "1.9.22"
 	kotlin("kapt") version "1.9.22"
@@ -38,10 +38,11 @@ configurations {
 	asciidoctorExt
 }
 
-val kotestVersion = "5.8.0"
+val kotestVersion = "5.8.1"
+val kotestSpringVersion = "1.1.3"
 val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
-val kotlinLoggingVersion = "6.0.3"
+val kotlinLoggingVersion = "6.0.9"
 val querydslVersion = dependencyManagement.importedProperties["querydsl.version"]
 val jjwtVersion = "0.12.5"
 
@@ -70,8 +71,10 @@ dependencies {
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+	testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
+
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
-	testImplementation("com.epages:restdocs-api-spec-mockmvc:0.19.1")
+	testImplementation("com.epages:restdocs-api-spec-mockmvc:0.19.2")
 	asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
 
 	testImplementation("io.mockk:mockk:$mockkVersion")
