@@ -1,12 +1,15 @@
 import {Link, NavbarItem} from "@nextui-org/react";
-import {get} from "@/utils/client";
 import {cookies} from "next/headers";
 import SatUser from "@/model/domain/SatUser";
 import React from "react";
 import UserProfile from "@/components/user-profile";
+import {RestClient} from "@/utils/restClient";
 
 export async function getUserInfo(cookie: string | undefined): Promise<SatUser> {
-    const response = await get("/user/members/me", cookie);
+    const response = await RestClient.get("/user/members/me")
+        .session(cookie)
+        .fetch();
+
     if (response.ok) {
         const json = await response.json();
         return new SatUser(

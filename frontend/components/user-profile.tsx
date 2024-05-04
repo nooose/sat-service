@@ -1,10 +1,10 @@
 "use client"
 
 import {DropdownItem, DropdownMenu, User} from "@nextui-org/react";
-import {get} from "@/utils/client";
 import React from "react";
 import {Dropdown, DropdownTrigger} from "@nextui-org/dropdown";
 import {useRouter} from "next/navigation";
+import {RestClient} from "@/utils/restClient";
 
 export default function UserProfile({name, nickname, avatar, cookie}: {
     name: string,
@@ -15,9 +15,10 @@ export default function UserProfile({name, nickname, avatar, cookie}: {
     const router = useRouter();
 
     function logout() {
-        get("/logout", cookie)
-            .then(response => {
-                router.push("/")
+        RestClient.get("/logout")
+            .session(cookie)
+            .successHandler(() => {
+                router.push("/");
             });
     }
 

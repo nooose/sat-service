@@ -1,11 +1,13 @@
 import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
 import ClientArticle from "@/components/article/client-article";
-import {get} from "@/utils/client";
 import {cookies} from "next/headers";
+import {RestClient} from "@/utils/restClient";
 
 async function getArticles() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await get("/board/articles", cookie);
+    const response = await RestClient.get("/board/articles")
+        .session(cookie)
+        .fetch();
     return await response.json();
 }
 

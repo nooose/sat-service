@@ -1,10 +1,12 @@
 import ClientArticleWrite from "@/components/article/client-article-write";
 import {cookies} from "next/headers";
-import {get} from "@/utils/client";
+import {RestClient} from "@/utils/restClient";
 
 async function getCategories() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await get("/board/categories?flatten=true", cookie);
+    const response = await RestClient.get("/board/categories?flatten=true")
+        .session(cookie)
+        .fetch();
     return await response.json();
 }
 

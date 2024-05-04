@@ -3,22 +3,34 @@
 import {Input, Textarea} from "@nextui-org/input";
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {useRouter} from "next/navigation";
-import {post} from "@/utils/client";
 import ArticleCreateRequest from "@/model/dto/request/ArticleCreateRequest";
 import React, {useState} from "react";
 import {Button} from "@nextui-org/react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
+import {RestClient} from "@/utils/restClient";
 
-function saveArticle(articleCreateRequest: ArticleCreateRequest) {
-    return post("/board/articles", articleCreateRequest);
-}
 
 export default function ClientArticleWrite({categories}: { categories: CategoryResponse[] }) {
-    const router = useRouter();
-
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [categoryId, setCategoryId] = useState(0);
+    const router = useRouter();
+
+    const saveArticle = () => {
+        const request: ArticleCreateRequest = {
+            title: title,
+            content: content,
+            categoryId: categoryId,
+        }
+
+        return RestClient.post("/board/articles")
+            .requestBody(request)
+            .successHandler(() => {
+                router.push('/');
+                router.refresh();
+            })
+            .fetch();
+    }
 
     return (
         <div>
@@ -47,23 +59,7 @@ export default function ClientArticleWrite({categories}: { categories: CategoryR
                 value={content}
                 onChange={event => setContent(event.target.value)}
             />
-            <Button color="primary" onClick={() => {
-                const request: ArticleCreateRequest = {
-                    title: title,
-                    content: content,
-                    categoryId: categoryId,
-                }
-                saveArticle(request)
-                    .then(response => {
-                        if (response.ok) {
-                            router.push('/');
-                            router.refresh();
-                        }
-                    })
-                    .catch(error => {
-                        console.error('API 요청 중 오류가 발생하였습니다:', error);
-                    });
-            }}>등록</Button>
+            <Button color="primary" onClick={saveArticle}>등록</Button>
         </div>
     );
 }
