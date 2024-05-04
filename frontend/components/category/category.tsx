@@ -49,7 +49,5 @@ export default function Category({category}: { category: CategoryResponse }) {
                 <Category category={category} key={category.id}/>
             ))}
         </div>
-
     );
-
 };

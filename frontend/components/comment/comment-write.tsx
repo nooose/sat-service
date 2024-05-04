@@ -5,8 +5,8 @@ import {Button, Card} from "@nextui-org/react";
 import React, {useState} from "react";
 import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
-import {post} from "@/utils/client";
 import styles from "@/styles/comment.module.css"
+import {RestClient} from "@/utils/restClient";
 
 export default ({articleId, parentId}: {
     articleId: number,
@@ -15,8 +15,18 @@ export default ({articleId, parentId}: {
     const [content, setContent] = useState('')
     const router = useRouter();
 
-    function saveComment(commentCreateRequest: CommentCreateRequest) {
-        return post(`/board/articles/${articleId}/comments`, commentCreateRequest);
+    const saveComment = () => {
+        const request: CommentCreateRequest = {
+            content: content,
+            parentId: parentId,
+        }
+        RestClient.post(`/board/articles/${articleId}/comments`)
+            .requestBody(request)
+            .successHandler(() => {
+                router.push(`/articles/${articleId}`);
+                router.refresh();
+            })
+            .fetch();
     }
 
     return (
@@ -30,22 +40,7 @@ export default ({articleId, parentId}: {
                     onChange={event => setContent(event.target.value)}
                 />
                 <Button className={styles.createButtonContainer} color="primary" size="md"
-                        onClick={() => {
-                            const request: CommentCreateRequest = {
-                                content: content,
-                                parentId: parentId,
-                            }
-                            saveComment(request)
-                                .then(response => {
-                                    if (response.ok) {
-                                        router.push(`/articles/${articleId}`);
-                                        router.refresh();
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('API 요청 중 오류가 발생하였습니다:', error);
-                                });
-                        }}>등록
+                        onClick={() => saveComment}>등록
                 </Button>
             </Card>
         </div>

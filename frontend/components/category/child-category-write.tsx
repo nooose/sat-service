@@ -4,36 +4,31 @@ import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import CategoryCreateRequest from "@/model/dto/request/CategoryCreateRequest";
-import {post} from "@/utils/client";
 import React, {useState} from "react";
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import styles from "@/styles/category.module.css"
+import {RestClient} from "@/utils/restClient";
 
-function saveCategory(categoryCreateRequest: CategoryCreateRequest) {
-    return post("/board/categories", categoryCreateRequest);
-}
+export default function ChildCategoryWrite({parentCategory, setIsCreateOpen}: {
+    parentCategory: CategoryResponse,
+    setIsCreateOpen: (isCreateOpen: boolean) => void
+}) {
+    const [name, setName] = useState('');
+    const router = useRouter();
 
-function createButtonClick(name: string, parentCategory: CategoryResponse, setIsCreateOpen: (isCreateOpen: boolean) => void, router: any) {
-    const request: CategoryCreateRequest = {
-        name: name,
-        parentId: parentCategory.id,
-    }
-    saveCategory(request)
-        .then(response => {
-            if (response.ok) {
+    const createButtonClick = () => {
+        const request: CategoryCreateRequest = {
+            name: name,
+            parentId: parentCategory.id,
+        }
+        RestClient.post("/board/categories")
+            .requestBody(request)
+            .successHandler(() => {
                 setIsCreateOpen(false)
                 router.push('/category');
                 router.refresh();
-            }
-        })
-        .catch(error => {
-            console.error('API 요청 중 오류가 발생하였습니다:', error);
-        });
-}
-
-export default function ChildCategoryWrite({ parentCategory, setIsCreateOpen }: { parentCategory: CategoryResponse, setIsCreateOpen: (isCreateOpen: boolean) => void }) {
-    const [name, setName] = useState('');
-    const router = useRouter();
+            }).fetch();
+    }
 
     return (
         <div>
@@ -43,8 +38,10 @@ export default function ChildCategoryWrite({ parentCategory, setIsCreateOpen }: 
                        onChange={event => setName(event.target.value)}
                 />
                 <div>
-                    <Button className={styles.childCreateButtonContainer} color="primary" size={"md"} onClick={() => createButtonClick(name, parentCategory, setIsCreateOpen, router)}>등록</Button>
-                    <Button className={styles.childCreateButtonContainer} color="danger" size={"md"} onClick={() => setIsCreateOpen(false)}>취소</Button>
+                    <Button className={styles.childCreateButtonContainer} color="primary" size={"md"}
+                            onClick={createButtonClick}>등록</Button>
+                    <Button className={styles.childCreateButtonContainer} color="danger" size={"md"}
+                            onClick={() => setIsCreateOpen(false)}>취소</Button>
                 </div>
             </div>
         </div>
