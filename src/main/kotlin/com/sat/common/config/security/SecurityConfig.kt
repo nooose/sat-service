@@ -26,6 +26,7 @@ class SecurityConfig {
             oidcService: OAuth2UserService<OidcUserRequest, OidcUser>,
             clientRegistrationRepository: ClientRegistrationRepository,
             oidcSuccessHandler: OidcSuccessHandler,
+            entryPoint: CustomAuthenticationEntryPoint,
     ): SecurityFilterChain {
         val resolver = DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)
         resolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce())
@@ -43,6 +44,9 @@ class SecurityConfig {
             authorizeHttpRequests {
                 authorize(HttpMethod.GET, "/board/articles", permitAll)
                 authorize("/**", authenticated)
+            }
+            exceptionHandling {
+                authenticationEntryPoint = entryPoint
             }
         }
         return http.build()
