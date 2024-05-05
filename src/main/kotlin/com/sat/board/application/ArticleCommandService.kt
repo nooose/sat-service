@@ -3,9 +3,11 @@ package com.sat.board.application
 import com.sat.board.application.dto.command.ArticleCreateCommand
 import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.domain.Article
+import com.sat.board.domain.Like
 import com.sat.board.domain.dto.ArticleWithoutCategoryDto
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CategoryRepository
+import com.sat.board.domain.port.LikeRepository
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class ArticleCommandService(
     private val articleRepository: ArticleRepository,
     private val categoryRepository: CategoryRepository,
+    private val likeRepository: LikeRepository,
 ) {
 
     fun create(command: ArticleCreateCommand): Long {
@@ -36,4 +39,14 @@ class ArticleCommandService(
     }
 
     private fun getArticle(id: Long) = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
+
+    fun like(articleId: Long, principalId: Long) {
+        if (likeRepository.existsByArticleIdAndMemberId(articleId, principalId)) {
+            likeRepository.deleteByArticleIdAndMemberId(articleId, principalId)
+            return
+        }
+
+        val like = Like(articleId, principalId)
+        likeRepository.save(like)
+    }
 }
