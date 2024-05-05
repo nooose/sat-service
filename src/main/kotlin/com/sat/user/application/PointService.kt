@@ -18,6 +18,14 @@ class PointService(
     private val articleRepository: ArticleRepository,
     private val memberLoginService: MemberLoginService,
 ) {
+    fun getPoint(memberId: Long): Int {
+        return pointRepository.findAllByMemberId(memberId)
+            .sumOf { it.point }
+    }
+
+    fun getPointHistory(memberId: Long): List<Point> {
+        return pointRepository.findAllByMemberId(memberId)
+    }
 
     fun dailyPointAward(memberId: Long, today: LocalDateTime) {
         if (!existsTodayLoginHistory(today)) {

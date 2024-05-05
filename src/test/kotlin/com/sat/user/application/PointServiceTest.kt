@@ -111,6 +111,36 @@ class PointServiceTest @Autowired constructor(
             }
         }
     }
+
+    Given("포인트를 쌓고") {
+        val point1 = Point(1L, PointType.LOGIN)
+        val point2 = Point(1L, PointType.ARTICLE)
+        val point3 = Point(1L, PointType.COMMENT)
+        val points = listOf(point1, point2, point3)
+        pointRepository.saveAll(points)
+        When("포인트를 조회하면") {
+            val myPoint = pointService.getPoint(1L)
+            Then("총 포인트의 값이 나온다") {
+                assertThat(myPoint).isEqualTo(23)
+            }
+        }
+    }
+
+    Given("포인트가 쌓였을때") {
+        val point1 = Point(1L, PointType.LOGIN)
+        val point2 = Point(1L, PointType.ARTICLE)
+        val point3 = Point(1L, PointType.COMMENT)
+        val points = listOf(point1, point2, point3)
+        pointRepository.saveAll(points)
+        When("포인트 내역을 조회하면") {
+            val pointHistory = pointService.getPointHistory(1L)
+            Then("포인트 내역이 나온다") {
+                assertThat(pointHistory).hasSize(3)
+            }
+        }
+    }
+
+
 })
 
 private fun List<Point>.total(): Int {
