@@ -16,6 +16,9 @@ export default function ChildCategoryWrite({parentCategory, setIsCreateOpen}: {
 }) {
     const [name, setName] = useState('');
     const [errorMessage, setErrorMessage] = useState("")
+    const [isNameError, setIsNameError] = useState(false);
+    const [nameErrorMessage, setNameErrorMessage] = useState("");
+
     const router = useRouter();
     const disclosure = useDisclosure();
 
@@ -31,9 +34,15 @@ export default function ChildCategoryWrite({parentCategory, setIsCreateOpen}: {
                 router.push('/category');
                 router.refresh();
             })
-            .errorHandler(message => {
-                setErrorMessage(message);
+            .errorHandler(data => {
+                if (data.isBindingError()) {
+                    const nameError = data.filedErrorMessage("name");
+                    setIsNameError(!!nameError);
+                    setNameErrorMessage(nameError);
+                    return;
+                }
                 disclosure.onOpen();
+                setErrorMessage(data.errorMessage());
             })
             .fetch();
     }
@@ -41,6 +50,8 @@ export default function ChildCategoryWrite({parentCategory, setIsCreateOpen}: {
     return (
         <div className={styles.childCreateContainer}>
             <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
+                   isInvalid={isNameError}
+                   errorMessage={nameErrorMessage}
                    onChange={event => setName(event.target.value)}
             />
             <div>

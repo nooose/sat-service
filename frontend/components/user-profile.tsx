@@ -19,7 +19,9 @@ export default function UserProfile({name, nickname, avatar, cookie}: {
             .session(cookie)
             .successHandler(() => {
                 router.push("/");
-            });
+                router.refresh();
+            })
+            .fetch();
     }
 
     return (

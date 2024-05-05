@@ -8,16 +8,16 @@ async function getCategories() {
     const cookie = cookies().get("JSESSIONID")?.value
     const response = await RestClient.get("/board/categories")
         .session(cookie)
-        .fetch();
+        .fetch()
     return await response.json();
 }
 
 export default async function Categories() {
+    // const router = useRouter();
     const categories = await getCategories();
-
     return (
         <div>
-            {categories.map((category: CategoryResponse) => (
+            {categories?.map((category: CategoryResponse) => (
                 <Category category={category}/>
             ))}
         </div>

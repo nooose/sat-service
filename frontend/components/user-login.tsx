@@ -10,17 +10,17 @@ export async function getUserInfo(cookie: string | undefined): Promise<SatUser> 
         .session(cookie)
         .fetch();
 
-    if (response.ok) {
-        const json = await response.json();
-        return new SatUser(
-            json.id,
-            json.name,
-            json.nickname,
-            json.email,
-            json.avatar,
-        );
+    if (!response.ok) {
+        return SatUser.unauthenticated();
     }
-    return SatUser.unauthenticated();
+    const json = await response.json();
+    return new SatUser(
+        json.id,
+        json.name,
+        json.nickname,
+        json.email,
+        json.avatar,
+    );
 }
 
 export default async function UserLogin() {

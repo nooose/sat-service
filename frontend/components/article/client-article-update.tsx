@@ -1,18 +1,25 @@
 "use client"
 
 import {Input, Textarea} from "@nextui-org/input";
-import {Button} from "@nextui-org/react";
+import {Button, useDisclosure} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import ArticleUpdateRequest from "@/model/dto/request/ArticleUpdateRequest";
 import articleResponse from "@/model/dto/response/ArticleResponse";
-import {useState} from "react";
+import React, {useState} from "react";
 import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
 import {RestClient} from "@/utils/restClient";
-import {id} from "postcss-selector-parser";
+import ErrorModal from "@/components/modal/error-modal";
 
 export default function ClientArticleUpdate({article}: { article: articleResponse }) {
     const [title, setTitle] = useState(article.title);
     const [content, setContent] = useState(article.content);
+    const [isTitleError, setIsTitleError] = useState(false);
+    const [titleErrorMessage, setTitleErrorMessage] = useState("");
+    const [isContentError, setIsContentError] = useState(false);
+    const [contentErrorMessage, setContentErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const disclosure = useDisclosure();
     const router = useRouter();
 
     const updateArticle = () => {
@@ -21,12 +28,27 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
             content: content,
         }
 
-        RestClient.put(`/board/articles/${id}`)
+        console.log(`/board/articles/${article.id}`);
+        RestClient.put(`/board/articles/${article.id}`)
             .requestBody(request)
             .successHandler(() => {
                 router.push(`/articles/${article.id}`);
                 router.refresh();
-            }).fetch();
+            })
+            .errorHandler(error => {
+                if (error.isBindingError()) {
+                    const titleError = error.filedErrorMessage("title");
+                    setIsTitleError(!!titleError);
+                    setTitleErrorMessage(titleError);
+                    const contentError = error.filedErrorMessage("content");
+                    setIsContentError(!!contentError);
+                    setContentErrorMessage(contentError);
+                    return;
+                }
+                disclosure.onOpen();
+                setErrorMessage(error.errorMessage());
+            })
+            .fetch();
     };
 
     return (
@@ -35,6 +57,8 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
             <Input type="text" label="제목" placeholder="제목을 입력해 주세요"
                    value={title}
                    defaultValue={title}
+                   isInvalid={isTitleError}
+                   errorMessage={titleErrorMessage}
                    onValueChange={value => setTitle(value)}
             />
             <Textarea
@@ -43,9 +67,12 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
                 className="max-w-xs"
                 value={content}
                 defaultValue={article.content}
+                isInvalid={isContentError}
+                errorMessage={contentErrorMessage}
                 onValueChange={value => setContent(value)}
             />
             <Button color="primary" onClick={updateArticle}>수정</Button>
+            <ErrorModal message={errorMessage} disclosure={disclosure}/>
         </div>
     );
 }

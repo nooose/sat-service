@@ -10,11 +10,17 @@ import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
 import {RestClient} from "@/utils/restClient";
 import ErrorModal from "@/components/modal/error-modal";
 
-export default function CategoryEdit({category, setIsEdit}: {category: CategoryResponse, setIsEdit: (isEdit: boolean) => void}) {
+export default function CategoryEdit({category, setIsEdit}: {
+    category: CategoryResponse,
+    setIsEdit: (isEdit: boolean) => void
+}) {
     const [name, setName] = useState(category.name);
+    const [errorMessage, setErrorMessage] = useState("")
+    const [isNameError, setIsNameError] = useState(false);
+    const [nameErrorMessage, setNameErrorMessage] = useState("");
+
     const router = useRouter();
     const disclosure = useDisclosure();
-    const [errorMessage, setErrorMessage] = useState("")
 
     const updateCategory = () => {
         const request: CategoryUpdateRequest = {
@@ -29,8 +35,14 @@ export default function CategoryEdit({category, setIsEdit}: {category: CategoryR
                 router.push('/category');
                 router.refresh();
             })
-            .errorHandler(message => {
-                setErrorMessage(message);
+            .errorHandler(error => {
+                if (error.isBindingError()) {
+                    const nameError = error.filedErrorMessage("name");
+                    setIsNameError(!!nameError);
+                    setNameErrorMessage(nameError);
+                    return;
+                }
+                setErrorMessage(error.errorMessage());
                 disclosure.onOpen();
             })
             .fetch();
@@ -39,12 +51,16 @@ export default function CategoryEdit({category, setIsEdit}: {category: CategoryR
     return (
         <div className={styles.editContainer}>
             <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
-                          value={name}
-                          onChange={event => setName(event.target.value)}
+                   value={name}
+                   isInvalid={isNameError}
+                   errorMessage={nameErrorMessage}
+                   onChange={event => setName(event.target.value)}
             />
             <div className={styles.editContainer}>
-                <Button className={styles.editButtonContainer} color="primary" size={"md"} onClick={updateCategory}>수정</Button>
-                <Button className={styles.editButtonContainer} color="danger" size={"md"} onClick={() => setIsEdit(false)}>
+                <Button className={styles.editButtonContainer} color="primary" size={"md"}
+                        onClick={updateCategory}>수정</Button>
+                <Button className={styles.editButtonContainer} color="danger" size={"md"}
+                        onClick={() => setIsEdit(false)}>
                     취소
                 </Button>
             </div>

@@ -13,6 +13,9 @@ export default ({articleId, parentId}: {
     parentId?: number | null | undefined,
 }) => {
     const [content, setContent] = useState('')
+    const [isContentError, setIsContentError] = useState(false);
+    const [contentErrorMessage, setContentErrorMessage] = useState("");
+
     const router = useRouter();
 
     const saveComment = () => {
@@ -26,6 +29,12 @@ export default ({articleId, parentId}: {
                 router.push(`/articles/${articleId}`);
                 router.refresh();
             })
+            .errorHandler(error => {
+                const contentError = error.filedErrorMessage("content");
+                setIsContentError(!!contentError);
+                setContentErrorMessage(contentError);
+                return;
+            })
             .fetch();
     }
 
@@ -37,10 +46,12 @@ export default ({articleId, parentId}: {
                     label="댓글 작성"
                     labelPlacement="outside"
                     placeholder="내용을 입력해 주세요"
+                    isInvalid={isContentError}
+                    errorMessage={contentErrorMessage}
                     onChange={event => setContent(event.target.value)}
                 />
                 <Button className={styles.createButtonContainer} color="primary" size="md"
-                        onClick={() => saveComment}>등록
+                        onClick={saveComment}>등록
                 </Button>
             </Card>
         </div>

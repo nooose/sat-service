@@ -17,6 +17,9 @@ export default ({articleId, comment, setIsUpdateOpen}: {
     const [content, setContent] = useState(comment.content)
     const router = useRouter();
 
+    const [isContentError, setIsContentError] = useState(false);
+    const [contentErrorMessage, setContentErrorMessage] = useState("");
+
     const saveComment = () => {
         const request: CommentUpdateRequest = {
             content: content,
@@ -29,6 +32,12 @@ export default ({articleId, comment, setIsUpdateOpen}: {
                 router.push(`/articles/${articleId}`);
                 router.refresh();
             })
+            .errorHandler(error => {
+                const contentError = error.filedErrorMessage("content");
+                setIsContentError(!!contentError);
+                setContentErrorMessage(contentError);
+                return;
+            })
             .fetch();
     }
 
@@ -38,6 +47,8 @@ export default ({articleId, comment, setIsUpdateOpen}: {
                 variant="faded"
                 placeholder="내용을 입력해 주세요"
                 value={content}
+                isInvalid={isContentError}
+                errorMessage={contentErrorMessage}
                 onChange={event => setContent(event.target.value)}
             />
             <Button
