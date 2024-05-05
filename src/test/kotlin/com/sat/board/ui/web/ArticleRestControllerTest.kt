@@ -8,8 +8,10 @@ import com.sat.board.application.dto.command.ArticleCreateCommand
 import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.application.dto.query.ArticleQuery
 import com.sat.board.application.dto.query.ArticleSimpleQuery
+import com.sat.board.domain.dto.ArticleWithCount
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
+import com.sat.common.security.WithAuthenticatedUser
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -59,9 +61,11 @@ class ArticleRestControllerTest @Autowired constructor(
         }
     }
 
+    @WithAuthenticatedUser
     @Test
     fun `게시글 조회`() {
-        every { articleQueryService.get(any()) } returns ArticleQuery(1L, "제목", "내용", "IT")
+        every { articleQueryService.get(any(), any()) } returns
+                ArticleQuery(1L, "제목", "내용", "IT", false)
 
         mockMvc.GET("/board/articles/{articleId}", 1L) {
         }.andExpect {
@@ -78,6 +82,7 @@ class ArticleRestControllerTest @Autowired constructor(
                 field("title", "게시글 제목")
                 field("content", "게시글 내용")
                 field("category", "카테고리")
+                field("hasLike", "좋아요 여부")
             }
         }
     }
@@ -85,9 +90,9 @@ class ArticleRestControllerTest @Autowired constructor(
     @Test
     fun `게시글 목록 조회`() {
         val response = listOf(
-            ArticleSimpleQuery(1L, "제목 A", "IT"),
-            ArticleSimpleQuery(2L, "제목 B", "IT"),
-            ArticleSimpleQuery(3L, "제목 C", "스포츠"),
+            ArticleWithCount(1L, "제목 A", "IT", 0 , 0),
+            ArticleWithCount(2L, "제목 B", "IT", 0, 0),
+            ArticleWithCount(3L, "제목 C", "스포츠", 0, 0),
         )
         every { articleQueryService.get() } returns response
 
@@ -102,6 +107,8 @@ class ArticleRestControllerTest @Autowired constructor(
                 field("[].id", "게시글 ID")
                 field("[].title", "게시글 제목")
                 field("[].category", "카테고리")
+                field("[].commentCount", "댓글 수")
+                field("[].likeCount", "좋아요 수")
             }
         }
     }
@@ -143,6 +150,24 @@ class ArticleRestControllerTest @Autowired constructor(
             tag = "게시판 > 게시글"
             summary = "게시글 삭제"
             description = "Soft delete 수행"
+            pathVariables {
+                param("articleId", "게시글 ID")
+            }
+        }
+    }
+
+    @WithAuthenticatedUser
+    @Test
+    fun `게시글 좋아요`() {
+        every { articleCommandService.like(any(), any()) } just runs
+
+        mockMvc.POST("/board/articles/{articleId}:like", 1L) {
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "게시판 > 게시글"
+            summary = "게시글 좋아요"
+            description = "게시글에 좋아요를 표시"
             pathVariables {
                 param("articleId", "게시글 ID")
             }

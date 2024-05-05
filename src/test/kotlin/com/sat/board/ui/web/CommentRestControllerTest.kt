@@ -96,10 +96,12 @@ class CommentRestControllerTest @Autowired constructor(
                 field("[].memberName", "작성자 닉네임")
                 field("[].id", "댓글 ID")
                 field("[].content", "댓글 내용")
+                field("[].isDeleted", "댓글 삭제 여부")
                 field("[].children[].memberId", "작성자 ID")
                 field("[].children[].memberName", "작성자 닉네임")
                 field("[].children[].id", "자식 댓글 ID")
                 field("[].children[].content", "자식 댓글 내용")
+                field("[].children[].isDeleted", "댓글 삭제 여부")
             }
         }
     }
