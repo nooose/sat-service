@@ -8,5 +8,4 @@ data class ArticleCreateCommand(
     @field:NotBlank
     val content: String,
     val categoryId: Long,
-) {
-}
+)
