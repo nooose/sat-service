@@ -4,6 +4,7 @@ import ClientArticleUpdateButton from "@/components/article/client-article-updat
 import {cookies} from "next/headers";
 import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
 import {RestClient} from "@/utils/restClient";
+import ArticleLikeButton from "@/components/article/client-article-like-button";
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
     const cookie = cookies().get("JSESSIONID")?.value
@@ -37,7 +38,10 @@ export default async function ArticleInfo({id}: any) {
                 defaultValue={article.content}
                 className="max-w-xs"
             />
-            <ClientArticleUpdateButton id={id}/>
+            <div className="flex gap-4 items-center">
+                <ClientArticleUpdateButton id={id}/>
+                <ArticleLikeButton id={id} hasLike={article.hasLike}/>
+            </div>
         </div>
     );
 }

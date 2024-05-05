@@ -1,8 +1,9 @@
 package com.sat.board.application
 
 import com.sat.board.application.dto.query.ArticleQuery
-import com.sat.board.application.dto.query.ArticleSimpleQuery
+import com.sat.board.domain.dto.ArticleWithCount
 import com.sat.board.domain.port.ArticleRepository
+import com.sat.board.domain.port.LikeRepository
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -11,15 +12,16 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ArticleQueryService(
     private val articleRepository: ArticleRepository,
+    private val likeRepository: LikeRepository,
 ) {
 
-    fun get(id: Long): ArticleQuery {
+    fun get(id: Long, principalId: Long): ArticleQuery {
         val article = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
-        return ArticleQuery.from(article)
+        val hasLike = likeRepository.existsByArticleIdAndMemberId(id, principalId)
+        return ArticleQuery.from(article, hasLike)
     }
 
-    fun get(): List<ArticleSimpleQuery> {
+    fun get(): List<ArticleWithCount> {
         return articleRepository.findAllWithCategory()
-            .map { ArticleSimpleQuery.from(it) }
     }
 }

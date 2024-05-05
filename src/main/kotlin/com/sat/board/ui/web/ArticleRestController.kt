@@ -5,12 +5,16 @@ import com.sat.board.application.ArticleQueryService
 import com.sat.board.application.dto.command.ArticleCreateCommand
 import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.application.dto.query.ArticleQuery
-import com.sat.board.application.dto.query.ArticleSimpleQuery
+import com.sat.board.domain.dto.ArticleWithCount
+import com.sat.common.config.security.AuthenticatedMember
+import com.sat.common.config.security.LoginMember
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodName
+import java.net.URI
 
+private val log = KotlinLogging.logger {}
 
 @RestController
 class ArticleRestController(
@@ -21,19 +25,27 @@ class ArticleRestController(
     @PostMapping("/board/articles")
     fun create(@RequestBody @Valid command: ArticleCreateCommand): ResponseEntity<Unit> {
         val articleId = articleCommandService.create(command)
-        val uri = fromMethodName(ArticleRestController::class.java, "article", articleId)
-            .build()
-            .toUri()
-        return ResponseEntity.created(uri).build()
+        return ResponseEntity.created(URI.create("/board/articles/$articleId")).build()
     }
 
     @GetMapping("/board/articles/{articleId}")
-    fun article(@PathVariable articleId: Long): ArticleQuery {
-        return articleQueryService.get(articleId)
+    fun article(
+        @PathVariable articleId: Long,
+        @LoginMember member: AuthenticatedMember,
+    ): ArticleQuery {
+        return articleQueryService.get(articleId, member.id)
+    }
+
+    @PostMapping("/board/articles/{articleId}:like")
+    fun likeArticle(
+        @PathVariable articleId: Long,
+        @LoginMember member: AuthenticatedMember,
+    ) {
+        articleCommandService.like(articleId, member.id)
     }
 
     @GetMapping("/board/articles")
-    fun articles(): List<ArticleSimpleQuery> {
+    fun articles(): List<ArticleWithCount> {
         return articleQueryService.get()
     }
 
