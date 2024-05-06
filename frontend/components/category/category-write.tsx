@@ -11,7 +11,10 @@ import ErrorModal from "@/components/modal/error-modal";
 export default function CategoryWrite() {
     const [name, setName] = useState('');
     const [parentId, setParentId] = useState(null);
+    const [isNameError, setIsNameError] = useState(false);
+    const [nameErrorMessage, setNameErrorMessage] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+
     const disclosure = useDisclosure();
     const router = useRouter();
 
@@ -26,15 +29,23 @@ export default function CategoryWrite() {
                 router.push('/category');
                 router.refresh();
             })
-            .errorHandler(message => {
-                setErrorMessage(message);
+            .errorHandler(data => {
+                if (data.isBindingError()) {
+                    const nameError = data.filedErrorMessage("name");
+                    setIsNameError(!!nameError);
+                    setNameErrorMessage(nameError);
+                    return;
+                }
                 disclosure.onOpen();
+                setErrorMessage(data.errorMessage());
             }).fetch();
     }
 
     return (
         <div>
             <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
+                   isInvalid={isNameError}
+                   errorMessage={nameErrorMessage}
                    onChange={event => setName(event.target.value)}
             />
             <Button color="primary" onClick={saveCategory}>등록</Button>

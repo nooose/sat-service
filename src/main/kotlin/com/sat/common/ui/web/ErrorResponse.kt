@@ -16,17 +16,17 @@ data class ErrorResponse <T> (
             val errors = e.bindingResult.fieldErrors.map {
                 BindErrorResponse(it.field, it.defaultMessage ?: "")
             }
-            return ErrorResponse(errors)
+            return ErrorResponse(errors, "BIND")
         }
 
         fun from(e: HttpMessageNotReadableException): ErrorResponse<List<BindErrorResponse>> {
             val errors = when (e.cause) {
                 is MismatchedInputException -> (e.cause as MismatchedInputException).path.map {
-                    BindErrorResponse(it.fieldName, "Non-nullable")
+                    BindErrorResponse(it.fieldName, "필수 값입니다.")
                 }
                 else -> listOf(BindErrorResponse("", "Json 규격이 올바르지 않습니다."))
             }
-            return ErrorResponse(errors)
+            return ErrorResponse(errors, "BIND")
         }
     }
 }

@@ -1,7 +1,7 @@
 interface CategoryCreateRequest {
     name: string,
-    parentId: number | null | undefined,
-    parentName?: string | null | undefined,
+    parentId?: number | null,
+    parentName?: string,
 }
 
 export default CategoryCreateRequest;

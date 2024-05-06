@@ -1,3 +1,5 @@
+import {CommonErrorResponse} from "@/model/dto/response/CommonErrorResponse";
+
 const API_HOST = process.env.API_HOST!;
 
 export class RestClient {
@@ -7,7 +9,7 @@ export class RestClient {
     private path: string = "";
     private body?: any;
     private _successHandler?: Function;
-    private _errorHandler: (message: string) => void;
+    private _errorHandler: (error: CommonErrorResponse) => void;
 
     private constructor() {
         this.baseUrl = API_HOST;
@@ -15,9 +17,7 @@ export class RestClient {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         };
-        this._errorHandler = (message: string) => {
-            alert(message);
-        };
+        this._errorHandler = (error: CommonErrorResponse) => { };
     }
 
     static get(path: string) {
@@ -65,7 +65,7 @@ export class RestClient {
         return this;
     }
 
-    public errorHandler(handler: (message: string) => void) {
+    public errorHandler(handler: (error: CommonErrorResponse) => void) {
         this._errorHandler = handler;
         return this;
     }
@@ -86,8 +86,8 @@ export class RestClient {
                 this._successHandler!();
             } else if (!response.ok) {
                 const json = response.json();
-                json.then(data => {
-                    this._errorHandler!(JSON.stringify(data.error));
+                json.then((data: any) => {
+                    this._errorHandler!(new CommonErrorResponse(data));
                 })
             }
             return response

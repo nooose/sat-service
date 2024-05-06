@@ -41,13 +41,11 @@ class CommonRestControllerAdvice {
 
     @ExceptionHandler(BindException::class)
     fun error(e: BindException): ResponseEntity<ErrorResponse<List<BindErrorResponse>>> {
-        log.error { e }
         return ResponseEntity.badRequest().body(ErrorResponse.from(e))
     }
 
     @ExceptionHandler(HttpMessageNotReadableException::class)
     fun error(e: HttpMessageNotReadableException): ResponseEntity<ErrorResponse<List<BindErrorResponse>>> {
-        log.error { e }
         return ResponseEntity.badRequest().body(ErrorResponse.from(e))
     }
 

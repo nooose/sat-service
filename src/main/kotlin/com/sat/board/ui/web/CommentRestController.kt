@@ -10,7 +10,7 @@ import com.sat.common.config.security.LoginMember
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.fromMethodName
+import java.net.URI
 
 @RestController
 class CommentRestController(
@@ -24,10 +24,7 @@ class CommentRestController(
         @RequestBody @Valid command: CommentCreateCommand,
     ): ResponseEntity<Unit> {
         commentCommandService.create(articleId, command)
-        val uri = fromMethodName(ArticleRestController::class.java, "article", articleId)
-            .build()
-            .toUri()
-        return ResponseEntity.created(uri).build()
+        return ResponseEntity.created(URI.create("/board/articles/${articleId}/comments")).build()
     }
 
     @GetMapping("/board/articles/{articleId}/comments")

@@ -9,14 +9,14 @@ import CategoryEdit from "@/components/category/category-edit";
 
 export default function Category({category}: { category: CategoryResponse }) {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [isEdit, setIsEdit] = useState(false)
+    const [isClikedEditButton, setIsClickedEditButton] = useState(false)
 
     const childCategoryToggleAccordion = () => {
         setIsCreateOpen(!isCreateOpen);
     }
 
     const editAction = () => {
-        setIsEdit(!isEdit)
+        setIsClickedEditButton(!isClikedEditButton)
     };
 
     return (
@@ -24,12 +24,12 @@ export default function Category({category}: { category: CategoryResponse }) {
             <Card key={category.id}>
                 <CardBody>
                     <div style={{display: 'flex', alignItems: 'center'}}>
-                        {!isEdit ?
+                        {!isClikedEditButton ?
                             <p>{category.name}</p>
                             :
-                            <CategoryEdit category={category} setIsEdit={setIsEdit}/>
+                            <CategoryEdit category={category} setIsEdit={setIsClickedEditButton}/>
                         }
-                        {!isEdit &&
+                        {!isClikedEditButton &&
                             <div style={{display: 'flex', flexDirection: 'column', marginLeft: 'auto'}}>
                                 <Button className={styles.categoryButton} color={"primary"} size={"sm"} onClick={childCategoryToggleAccordion}>자식 등록</Button>
                                 <Button className={styles.categoryButton} color={"success"} size={"sm"} onClick={editAction}>수정</Button>

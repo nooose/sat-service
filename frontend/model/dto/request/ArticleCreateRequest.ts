@@ -1,7 +1,7 @@
 interface ArticleCreateRequest {
     title: string,
     content: string,
-    categoryId: number,
+    categoryId?: number | null,
 }
 
 export default ArticleCreateRequest;
