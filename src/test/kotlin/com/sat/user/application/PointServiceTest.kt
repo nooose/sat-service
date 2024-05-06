@@ -26,7 +26,8 @@ import java.time.LocalDateTime
 @DisplayName("Point 테스트")
 @SpringBootTest(properties = ["jwt.secret-key=$KEY"])
 class PointServiceTest @Autowired constructor(
-    private val pointService: PointService,
+    private val pointCommandService: PointCommandService,
+    private val pointQueryService: PointQueryService,
     private val pointRepository: PointRepository,
     @MockkBean
     private val articleRepository: ArticleRepository,
@@ -49,7 +50,7 @@ class PointServiceTest @Autowired constructor(
         every { loginHistoryRepository.existsByLoginDateTimeAfter(any()) } returns false
 
         When("최초 로그인이면") {
-            pointService.dailyPointAward(loginMember.id!!, now)
+            pointCommandService.dailyPointAward(loginMember.id!!, now)
 
             Then("포인트가 적립된다.") {
                 val points = pointRepository.findAllByMemberId(loginMember.id!!)
@@ -60,7 +61,7 @@ class PointServiceTest @Autowired constructor(
         When("하루에 로그인을 두번 이상하면") {
             every { loginHistoryRepository.existsByLoginDateTimeAfter(any()) } returns true
 
-            pointService.dailyPointAward(loginMember.id!!, now)
+            pointCommandService.dailyPointAward(loginMember.id!!, now)
 
             Then("포인트가 중복 적립되지 않는다") {
                 val points = pointRepository.findAllByMemberId(loginMember.id!!)
@@ -73,7 +74,7 @@ class PointServiceTest @Autowired constructor(
         val loginMember = Member("김영철", "김영철", "aaa@google.com", 1L)
 
         When("게시글을 작성하면") {
-            pointService.articlePointAward(loginMember.id!!)
+            pointCommandService.articlePointAward(loginMember.id!!)
         }
 
         Then("포인트가 적립된다") {
@@ -93,7 +94,7 @@ class PointServiceTest @Autowired constructor(
         every { articleRepository.findByIdOrThrow(otherArticle.id!!) { "" } } returns otherArticle
 
         When("내가 작성한 게시글이 아니면") {
-            pointService.commentPointAward(otherArticle.id!!, me.id!!)
+            pointCommandService.commentPointAward(otherArticle.id!!, me.id!!)
 
             Then("포인트가 쌓인다") {
                 val points = pointRepository.findAllByMemberId(me.id!!)
@@ -103,7 +104,7 @@ class PointServiceTest @Autowired constructor(
         When("내가 작성한 게시글이면") {
             every { articleRepository.findByIdOrThrow(myArticle.id!!) { "" } } returns myArticle
 
-            pointService.commentPointAward(myArticle.id!!, me.id!!)
+            pointCommandService.commentPointAward(myArticle.id!!, me.id!!)
 
             Then("포인트가 쌓이지 않는다") {
                 val points = pointRepository.findAllByMemberId(me.id!!)
@@ -113,34 +114,21 @@ class PointServiceTest @Autowired constructor(
     }
 
     Given("포인트를 쌓고") {
-        val point1 = Point(1L, PointType.LOGIN)
-        val point2 = Point(1L, PointType.ARTICLE)
-        val point3 = Point(1L, PointType.COMMENT)
-        val points = listOf(point1, point2, point3)
+        val points = listOf(
+            Point.login(1L),
+            Point.article(1L),
+            Point.comment(1L),
+        )
         pointRepository.saveAll(points)
         When("포인트를 조회하면") {
-            val myPoint = pointService.getPoint(1L)
-            Then("총 포인트의 값이 나온다") {
-                assertThat(myPoint).isEqualTo(23)
+            val totalPoint = pointQueryService.getTotalPoint(1L)
+            val points = pointQueryService.getPoints(1L)
+            Then("포인트 정보를 확인할 수 있다.") {
+                assertThat(totalPoint).isEqualTo(points.sumOf { it.point })
+                assertThat(points).hasSize(3)
             }
         }
     }
-
-    Given("포인트가 쌓였을때") {
-        val point1 = Point(1L, PointType.LOGIN)
-        val point2 = Point(1L, PointType.ARTICLE)
-        val point3 = Point(1L, PointType.COMMENT)
-        val points = listOf(point1, point2, point3)
-        pointRepository.saveAll(points)
-        When("포인트 내역을 조회하면") {
-            val pointHistory = pointService.getPointHistory(1L)
-            Then("포인트 내역이 나온다") {
-                assertThat(pointHistory).hasSize(3)
-            }
-        }
-    }
-
-
 })
 
 private fun List<Point>.total(): Int {

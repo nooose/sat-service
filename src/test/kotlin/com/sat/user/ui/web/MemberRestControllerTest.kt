@@ -1,12 +1,13 @@
 package com.sat.user.ui.web
 
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.andDocument
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.application.MemberQueryService
+import com.sat.user.application.PointQueryService
+import com.sat.user.application.dto.query.MemberInformation
 import com.sat.user.application.dto.query.MemberSimpleQuery
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
@@ -20,10 +21,14 @@ class MemberRestControllerTest : Documentation() {
 
     @MockkBean
     lateinit var memberQueryService: MemberQueryService
+    @MockkBean
+    lateinit var pointQueryService: PointQueryService
 
     @WithAuthenticatedUser
     @Test
     fun `자신의 정보 조회`() {
+        every { pointQueryService.getTotalPoint(any()) } returns 100
+
         mockMvc.GET("/user/members/me") {
         }.andExpect {
             status { isOk() }
@@ -31,12 +36,13 @@ class MemberRestControllerTest : Documentation() {
             tag = "사용자"
             summary = "사용자 목록 조회"
             responseBody {
-                type = AuthenticatedMember::class
+                type = MemberInformation::class
                 field("id", "사용자 ID")
                 field("name", "이름")
                 field("nickname", "닉네임")
                 field("email", "이메일")
                 field("avatar", "Avatar 사진 URL")
+                field("point", "포인트")
             }
         }
     }

@@ -3,7 +3,7 @@ package com.sat.user.application.dto.query
 import com.sat.common.config.security.AuthenticatedMember
 
 
-data class MemberDetailInformation(
+data class MemberInformation(
     val id: Long,
     val name: String,
     val nickname: String,
@@ -12,8 +12,8 @@ data class MemberDetailInformation(
     val point: Int,
 ) {
     companion object {
-        fun of(member: AuthenticatedMember, point: Int): MemberDetailInformation {
-            return MemberDetailInformation(
+        fun of(member: AuthenticatedMember, point: Int): MemberInformation {
+            return MemberInformation(
                 id = member.id,
                 name = member.name,
                 nickname = member.nickname,

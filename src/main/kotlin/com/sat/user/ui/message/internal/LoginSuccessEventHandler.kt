@@ -1,7 +1,7 @@
 package com.sat.user.ui.message.internal
 
 import com.sat.common.config.security.AuthenticatedMember
-import com.sat.user.application.PointService
+import com.sat.user.application.PointCommandService
 import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent
 import org.springframework.stereotype.Component
@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 
 @Component
 class LoginSuccessEventHandler(
-    private val pointService: PointService,
+    private val pointCommandService: PointCommandService,
 ) {
 
     @Transactional
@@ -19,6 +19,6 @@ class LoginSuccessEventHandler(
     fun handle(event: AuthenticationSuccessEvent) {
         val authenticatedMember = event.authentication.principal as AuthenticatedMember
         val now = LocalDateTime.now()
-        pointService.dailyPointAward(authenticatedMember.id, now)
+        pointCommandService.dailyPointAward(authenticatedMember.id, now)
     }
 }

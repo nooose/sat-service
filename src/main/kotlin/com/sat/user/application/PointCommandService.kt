@@ -12,21 +12,12 @@ import java.time.LocalDateTime
 
 @Transactional
 @Service
-class PointService(
+class PointCommandService(
     private val pointRepository: PointRepository,
     private val loginHistoryRepository: LoginHistoryRepository,
     private val articleRepository: ArticleRepository,
     private val memberLoginService: MemberLoginService,
 ) {
-    fun getPoint(memberId: Long): Int {
-        return pointRepository.findAllByMemberId(memberId)
-            .sumOf { it.point }
-    }
-
-    fun getPointHistory(memberId: Long): List<Point> {
-        return pointRepository.findAllByMemberId(memberId)
-    }
-
     fun dailyPointAward(memberId: Long, today: LocalDateTime) {
         if (!existsTodayLoginHistory(today)) {
             val loginPoint = Point.login(memberId)

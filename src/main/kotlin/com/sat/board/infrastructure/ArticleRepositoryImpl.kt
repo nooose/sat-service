@@ -16,7 +16,7 @@ class ArticleRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : ArticleRepositoryCustom {
 
-    override fun findAllWithCategory(): List<ArticleWithCount> {
+    override fun getAll(): List<ArticleWithCount> {
         return queryFactory.select(
             Projections.constructor(
                 ArticleWithCount::class.java,
