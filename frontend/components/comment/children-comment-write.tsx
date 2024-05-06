@@ -7,15 +7,13 @@ import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
 import styles from "@/styles/comment.module.css"
 import {RestClient} from "@/utils/restClient";
-import {Simulate} from "react-dom/test-utils";
-import reset = Simulate.reset;
 
-export default function CommentWrite(
-    { articleId, parentId, }
+export default function ChildCommentWrite(
+    {articleId, parentId, setIsReplyOpen}
         :
-    { articleId: number, parentId?: number | null | undefined, }
+    {articleId: number, parentId?: number | null | undefined, setIsReplyOpen: (isReplyOpen: boolean) => void}
 ) {
-    const [content, setContent] = useState('')
+    const [childContent, setChildContent] = useState('')
     const [isContentError, setIsContentError] = useState(false);
     const [contentErrorMessage, setContentErrorMessage] = useState("");
 
@@ -23,13 +21,13 @@ export default function CommentWrite(
 
     const saveComment = () => {
         const request: CommentCreateRequest = {
-            content: content,
+            content: childContent,
             parentId: parentId,
         }
         RestClient.post(`/board/articles/${articleId}/comments`)
             .requestBody(request)
             .successHandler(() => {
-                setContent("");
+                setIsReplyOpen(false)
                 router.push(`/articles/${articleId}`);
                 router.refresh();
             })
@@ -52,8 +50,7 @@ export default function CommentWrite(
                     placeholder="내용을 입력해 주세요"
                     isInvalid={isContentError}
                     errorMessage={contentErrorMessage}
-                    value={content}
-                    onChange={event => setContent(event.target.value)}
+                    onChange={event => setChildContent(event.target.value)}
                 />
                 <Button className={styles.createButtonContainer} color="primary" size="md"
                         onClick={saveComment}>등록
