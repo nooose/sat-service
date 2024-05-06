@@ -1,6 +1,5 @@
 package com.sat.common.config.security
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.sat.user.domain.Member
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
@@ -9,18 +8,6 @@ import org.springframework.security.oauth2.core.oidc.OidcIdToken
 import org.springframework.security.oauth2.core.oidc.OidcUserInfo
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 
-@JsonIgnoreProperties(
-    value = [
-        "idToken", "userInfo", "attributes", "claims", "address",
-        "subject", "expiresAt", "issuer", "audience", "issuedAt",
-        "nonce", "authenticatedAt", "authorizedParty", "accessTokenHash",
-        "authenticationContextClass", "authenticationMethods", "authorizationCodeHash",
-        "locale", "zoneInfo", "familyName", "profile", "picture", "website", "gender",
-        "fullName", "givenName", "middleName", "authorities", "nickName",
-        "birthdate", "phoneNumber", "updatedAt", "preferredUsername",
-        "emailVerified", "phoneNumberVerified",
-    ]
-)
 data class AuthenticatedMember(
     val id: Long,
     private val name: String,

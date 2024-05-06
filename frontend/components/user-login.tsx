@@ -20,6 +20,7 @@ export async function getUserInfo(cookie: string | undefined): Promise<SatUser> 
         json.nickname,
         json.email,
         json.avatar,
+        json.point,
     );
 }
 
@@ -30,14 +31,16 @@ export default async function UserLogin() {
     return (
         <div>
             {isAuthenticated && (
-                <NavbarItem className="hidden lg:flex">
-                    <UserProfile
-                        name={userInfo.name}
-                        nickname={userInfo.nickname}
-                        avatar={userInfo.avatar}
-                        cookie={cookie!!}
-                    />
-                </NavbarItem>
+                <div  className="hidden lg:flex">
+                    <NavbarItem>
+                        <UserProfile
+                            name={userInfo.nickname}
+                            point={userInfo.point}
+                            avatar={userInfo.avatar}
+                            cookie={cookie!!}
+                        />
+                    </NavbarItem>
+                </div>
             )}
             {!isAuthenticated && (
                 <NavbarItem className="hidden lg:flex">

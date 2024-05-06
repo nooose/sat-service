@@ -6,15 +6,14 @@ import {Dropdown, DropdownTrigger} from "@nextui-org/dropdown";
 import {useRouter} from "next/navigation";
 import {RestClient} from "@/utils/restClient";
 
-export default function UserProfile({name, nickname, avatar, cookie}: {
+export default function UserProfile({name, point, avatar, cookie}: {
     name: string,
-    nickname: string,
+    point: number,
     avatar: string,
     cookie: string
 }) {
     const router = useRouter();
-
-    function logout() {
+    const logout = () => {
         RestClient.get("/logout")
             .session(cookie)
             .successHandler(() => {
@@ -34,7 +33,7 @@ export default function UserProfile({name, nickname, avatar, cookie}: {
                         src: avatar,
                     }}
                     className="transition-transform"
-                    description={nickname}
+                    description={`포인트: ${point}`}
                     name={name}
                 />
             </DropdownTrigger>

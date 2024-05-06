@@ -3,9 +3,11 @@ package com.sat.board.application
 import com.sat.board.application.dto.command.CommentCreateCommand
 import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.domain.Comment
+import com.sat.board.domain.event.CommentCreateEvent
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
 import com.sat.board.domain.port.existParent
+import com.sat.common.utils.event.Events
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,8 +22,11 @@ class CommentCommandService(
     fun create(articleId: Long, command: CommentCreateCommand) {
         check(articleRepository.existsById(articleId)) { "게시글이 존재하지 않습니다. - $articleId" }
         checkParentId(command.parentId, articleId)
+
         val comment = Comment(articleId, command.content, command.parentId)
         commentRepository.save(comment)
+
+        Events.publish(CommentCreateEvent(articleId, comment.id!!, comment.createdBy!!))
     }
 
     private fun checkParentId(parentId: Long?, articleId: Long) {

@@ -14,7 +14,6 @@ export default async function ArticlePage({params: {id}}: any) {
     return (
         <div>
             <ArticleInfo id={id}/>
-            <CommentWrite articleId={id}/>
             <Suspense>
                 <Comments articleId={id}/>
             </Suspense>

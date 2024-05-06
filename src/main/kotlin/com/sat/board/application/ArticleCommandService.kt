@@ -5,9 +5,11 @@ import com.sat.board.application.dto.command.ArticleUpdateCommand
 import com.sat.board.domain.Article
 import com.sat.board.domain.Like
 import com.sat.board.domain.dto.ArticleWithoutCategoryDto
+import com.sat.board.domain.event.ArticleCreateEvent
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CategoryRepository
 import com.sat.board.domain.port.LikeRepository
+import com.sat.common.utils.event.Events
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -24,6 +26,8 @@ class ArticleCommandService(
         val category = categoryRepository.getReferenceById(command.categoryId)
         val article = Article(command.title, command.content, category)
         articleRepository.save(article)
+
+        Events.publish(ArticleCreateEvent(article.id!!, article.createdBy!!))
         return article.id!!
     }
 

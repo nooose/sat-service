@@ -3,10 +3,10 @@
 import {Button, Card, CardBody, CardHeader, Divider, Image} from "@nextui-org/react";
 import React, {useState} from "react";
 import CommentResponse from "@/model/dto/response/CommentResponse";
-import CommentWrite from "@/components/comment/comment-write";
 import styles from "@styles/comment.module.css";
 import CommentUpdate from "@/components/comment/comment-update";
 import {Textarea} from "@nextui-org/input";
+import ChildCategoryWrite from "@/components/comment/children-comment-write";
 
 
 export default function Comment({articleId, comment, loginUserId}: {articleId: number, comment: CommentResponse, loginUserId: number | undefined | null}) {
@@ -54,11 +54,10 @@ export default function Comment({articleId, comment, loginUserId}: {articleId: n
                             :
                         <Textarea className="flex gap-10 items-center" value={comment.content} readOnly={true} variant="faded"/>
                     }
-
                 </CardBody>
                 <Divider/>
             </Card>
-            {isReplyOpen && <CommentWrite articleId={articleId} parentId={comment.id}/>}
+            {isReplyOpen && <ChildCategoryWrite articleId={articleId} parentId={comment.id} setIsReplyOpen={setIsReplyOpen}/>}
 
             {comment.children?.map(
                 (comment: CommentResponse) => (
