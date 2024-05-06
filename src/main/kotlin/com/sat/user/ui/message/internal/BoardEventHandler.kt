@@ -6,7 +6,6 @@ import com.sat.user.application.PointService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
-import org.springframework.transaction.event.TransactionalEventListener
 
 private val log = KotlinLogging.logger {}
 
@@ -23,8 +22,7 @@ class BoardEventHandler(
         }
     }
 
-//    @EventListener(ArticleCreateEvent::class)
-    @TransactionalEventListener(ArticleCreateEvent::class)
+    @EventListener(ArticleCreateEvent::class)
     fun handle(event: ArticleCreateEvent) {
         try {
             pointService.articlePointAward(event.memberId)
