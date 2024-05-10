@@ -34,6 +34,7 @@ export default async function UserLogin() {
                 <div  className="hidden lg:flex">
                     <NavbarItem>
                         <UserProfile
+                            id={userInfo.id}
                             name={userInfo.nickname}
                             point={userInfo.point}
                             avatar={userInfo.avatar}

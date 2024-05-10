@@ -1,6 +1,6 @@
 import {CommonErrorResponse} from "@/model/dto/response/CommonErrorResponse";
 
-const API_HOST = process.env.API_HOST!;
+export const API_HOST = process.env.API_HOST!;
 
 export class RestClient {
     private readonly baseUrl;

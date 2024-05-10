@@ -4,6 +4,8 @@ import "./globals.css";
 import styles from "../styles/layout.module.css"
 import TopNavigation from "@/components/top-navigation";
 import {Providers} from "./providers";
+import React from "react";
+import ClientNotification from "@/components/alarm/client-notification";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +20,7 @@ export default async function RootLayout({children}: { children: React.ReactNode
       <body>
         <Providers>
           <TopNavigation/>
+          <ClientNotification/>
             <div className={styles.container}>
               {children}
             </div>

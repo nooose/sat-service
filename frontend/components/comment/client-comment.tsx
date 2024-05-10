@@ -1,15 +1,15 @@
 "use client"
 
 import {Button, Card, CardBody, CardHeader, Divider, Image} from "@nextui-org/react";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import CommentResponse from "@/model/dto/response/CommentResponse";
 import styles from "@styles/comment.module.css";
-import CommentUpdate from "@/components/comment/comment-update";
+import CommentUpdate from "@/components/comment/client-comment-update";
 import {Textarea} from "@nextui-org/input";
-import ChildCategoryWrite from "@/components/comment/children-comment-write";
+import ChildCategoryWrite from "@/components/comment/client-children-comment-write";
 
 
-export default function Comment({articleId, comment, loginUserId}: {articleId: number, comment: CommentResponse, loginUserId: number | undefined | null}) {
+export default function ClientComment({articleId, comment, loginUserId}: {articleId: number, comment: CommentResponse, loginUserId: number | undefined | null}) {
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [isReplyOpen, setIsReplyOpen] = useState(false);
     const updateToggleAccordion = () => {
@@ -62,7 +62,7 @@ export default function Comment({articleId, comment, loginUserId}: {articleId: n
             {comment.children?.map(
                 (comment: CommentResponse) => (
                 <div key={comment.id} className={styles.childrenContainer}>
-                    <Comment articleId={articleId} comment={comment} loginUserId={loginUserId}/>
+                    <ClientComment articleId={articleId} comment={comment} loginUserId={loginUserId}/>
                 </div>
                 )
             )}

@@ -10,7 +10,7 @@ import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
 import {RestClient} from "@/utils/restClient";
 import ErrorModal from "@/components/modal/error-modal";
 
-export default function CategoryEdit({category, setIsEdit}: {
+export default function ClientCategoryEdit({category, setIsEdit}: {
     category: CategoryResponse,
     setIsEdit: (isEdit: boolean) => void
 }) {

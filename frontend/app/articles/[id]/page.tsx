@@ -1,7 +1,7 @@
 import ArticleInfo, {getArticle} from "@/components/article/article-info";
 import Comments from "@/components/comment/comments";
 import React, {Suspense} from "react";
-import CommentWrite from "@/components/comment/comment-write";
+import ClientCommentWrite from "@/components/comment/client-comment-write";
 
 export async function generateMetadata({params: {id}}: any) {
     const article = await getArticle(id)

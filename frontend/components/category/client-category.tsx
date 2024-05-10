@@ -4,19 +4,19 @@ import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import styles from "@styles/category.module.css";
 import {Button, Card, CardBody} from "@nextui-org/react";
 import React, {useState} from "react";
-import ChildCategoryWrite from "@/components/category/child-category-write";
-import CategoryEdit from "@/components/category/category-edit";
+import ClientChildCategoryWrite from "@/components/category/client-child-category-write";
+import ClientCategoryEdit from "@/components/category/client-category-edit";
 
-export default function Category({category}: { category: CategoryResponse }) {
+export default function ClientCategory({category}: { category: CategoryResponse }) {
     const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [isClikedEditButton, setIsClickedEditButton] = useState(false)
+    const [isClickedEditButton, setIsClickedEditButton] = useState(false)
 
     const childCategoryToggleAccordion = () => {
         setIsCreateOpen(!isCreateOpen);
     }
 
     const editAction = () => {
-        setIsClickedEditButton(!isClikedEditButton)
+        setIsClickedEditButton(!isClickedEditButton)
     };
 
     return (
@@ -24,12 +24,12 @@ export default function Category({category}: { category: CategoryResponse }) {
             <Card key={category.id}>
                 <CardBody>
                     <div style={{display: 'flex', alignItems: 'center'}}>
-                        {!isClikedEditButton ?
+                        {!isClickedEditButton ?
                             <p>{category.name}</p>
                             :
-                            <CategoryEdit category={category} setIsEdit={setIsClickedEditButton}/>
+                            <ClientCategoryEdit category={category} setIsEdit={setIsClickedEditButton}/>
                         }
-                        {!isClikedEditButton &&
+                        {!isClickedEditButton &&
                             <div style={{display: 'flex', flexDirection: 'column', marginLeft: 'auto'}}>
                                 <Button className={styles.categoryButton} color={"primary"} size={"sm"} onClick={childCategoryToggleAccordion}>자식 등록</Button>
                                 <Button className={styles.categoryButton} color={"success"} size={"sm"} onClick={editAction}>수정</Button>
@@ -41,12 +41,12 @@ export default function Category({category}: { category: CategoryResponse }) {
             {isCreateOpen &&
                 <Card style={{marginTop: "10px"}}>
                     <CardBody>
-                        <ChildCategoryWrite parentCategory={category} setIsCreateOpen={setIsCreateOpen}/>
+                        <ClientChildCategoryWrite parentCategory={category} setIsCreateOpen={setIsCreateOpen}/>
                     </CardBody>
                 </Card>
             }
             {category.children?.map((category) => (
-                <Category category={category} key={category.id}/>
+                <ClientCategory category={category} key={category.id}/>
             ))}
         </div>
     );
