@@ -1,9 +1,9 @@
 import CommentResponse from "@/model/dto/response/CommentResponse";
-import Comment from "@/components/comment/comment";
+import ClientComment from "@/components/comment/client-comment";
 import {cookies} from "next/headers";
 import {getUserInfo} from "@/components/user-login";
 import {RestClient} from "@/utils/restClient";
-import CommentWrite from "@/components/comment/comment-write";
+import ClientCommentWrite from "@/components/comment/client-comment-write";
 import React from "react";
 
 async function getComments(articleId: number) {
@@ -21,9 +21,9 @@ export default async function Comments({articleId}: {articleId: number}) {
 
     return (
         <div>
-            <CommentWrite articleId={articleId}/>
+            <ClientCommentWrite articleId={articleId}/>
             {comments?.map((comment: CommentResponse) => (
-                <Comment articleId={articleId} comment={comment} loginUserId={user.id}/>
+                <ClientComment articleId={articleId} comment={comment} loginUserId={user.id}/>
             ))}
         </div>
     )

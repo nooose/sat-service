@@ -83,7 +83,7 @@ class CategoryRestControllerTest @Autowired constructor(
 
         every { categoryCommandService.update(any(), any()) } just runs
 
-        mockMvc.PUT("/board/category/{id}", 2L) {
+        mockMvc.PUT("/board/categories/{id}", 2L) {
             content = objectMapper.writeValueAsString(request)
             contentType = MediaType.APPLICATION_JSON
             characterEncoding = "utf-8"
@@ -107,7 +107,7 @@ class CategoryRestControllerTest @Autowired constructor(
     fun `카테고리 삭제`() {
         every { categoryCommandService.delete(any()) } just runs
 
-        mockMvc.DELETE("/board/category/{id}", 1L) {
+        mockMvc.DELETE("/board/categories/{id}", 1L) {
         }.andExpect {
             status { isOk() }
         }.andDocument {

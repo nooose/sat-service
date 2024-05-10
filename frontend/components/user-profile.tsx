@@ -1,12 +1,13 @@
 "use client"
 
-import {DropdownItem, DropdownMenu, User} from "@nextui-org/react";
-import React from "react";
+import {DropdownItem, DropdownMenu, user, User} from "@nextui-org/react";
+import React, {useEffect} from "react";
 import {Dropdown, DropdownTrigger} from "@nextui-org/dropdown";
 import {useRouter} from "next/navigation";
 import {RestClient} from "@/utils/restClient";
 
-export default function UserProfile({name, point, avatar, cookie}: {
+export default function UserProfile({id, name, point, avatar, cookie}: {
+    id: number,
     name: string,
     point: number,
     avatar: string,

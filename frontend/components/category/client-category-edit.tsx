@@ -10,7 +10,7 @@ import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
 import {RestClient} from "@/utils/restClient";
 import ErrorModal from "@/components/modal/error-modal";
 
-export default function CategoryEdit({category, setIsEdit}: {
+export default function ClientCategoryEdit({category, setIsEdit}: {
     category: CategoryResponse,
     setIsEdit: (isEdit: boolean) => void
 }) {
@@ -28,7 +28,7 @@ export default function CategoryEdit({category, setIsEdit}: {
             parentId: category.parentId,
         }
 
-        RestClient.put(`/board/category/${category.id}`)
+        RestClient.put(`/board/categories/${category.id}`)
             .requestBody(request)
             .successHandler(() => {
                 setIsEdit(false);

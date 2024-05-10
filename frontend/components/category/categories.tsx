@@ -1,5 +1,5 @@
 import React from "react";
-import Category from "@/components/category/category";
+import ClientCategory from "@/components/category/client-category";
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {cookies} from "next/headers";
 import {RestClient} from "@/utils/restClient";
@@ -18,7 +18,7 @@ export default async function Categories() {
     return (
         <div>
             {categories?.map((category: CategoryResponse) => (
-                <Category category={category}/>
+                <ClientCategory category={category}/>
             ))}
         </div>
     )

@@ -8,9 +8,8 @@ import {useRouter} from "next/navigation";
 import styles from "@/styles/comment.module.css"
 import {RestClient} from "@/utils/restClient";
 import {Simulate} from "react-dom/test-utils";
-import reset = Simulate.reset;
 
-export default function CommentWrite(
+export default function ClientCommentWrite(
     { articleId, parentId, }
         :
     { articleId: number, parentId?: number | null | undefined, }

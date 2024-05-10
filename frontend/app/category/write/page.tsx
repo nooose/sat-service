@@ -1,9 +1,9 @@
 import React from "react";
-import CategoryWrite from "@/components/category/category-write";
+import ClientCategoryWrite from "@/components/category/client-category-write";
 
 
 export default async function CategoryWritePage() {
     return (
-        <CategoryWrite/>
+        <ClientCategoryWrite/>
     );
 }
