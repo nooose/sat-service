@@ -16,9 +16,9 @@ class BoardEventHandler(
     @EventListener(CommentCreateEvent::class)
     fun handle(event: CommentCreateEvent) {
         try {
-            pointCommandService.commentPointAward(event.articleId, event.memberId)
+            pointCommandService.commentPointAward(event.articleId, event.commentOwnerId)
         } catch (e: Exception) {
-            log.error { "[댓글 작성] 포인트 적립을 실패했습니다. 댓글 ID: ${event.commentId}, 사용자 ID: ${event.memberId} " }
+            log.error { "[댓글 작성] 포인트 적립을 실패했습니다. 댓글 ID: ${event.commentId}, 사용자 ID: ${event.commentOwnerId} " }
         }
     }
 
