@@ -29,7 +29,7 @@ class CategoryRestController(
         return categoryQueryService.get(id)
     }
 
-    @PutMapping("/board/category/{id}")
+    @PutMapping("/board/categories/{id}")
     fun update(
         @PathVariable id: Long,
         @RequestBody @Valid command: CategoryUpdateCommand,
@@ -37,7 +37,7 @@ class CategoryRestController(
         categoryCommandService.update(id, command)
     }
 
-    @DeleteMapping("/board/category/{id}")
+    @DeleteMapping("/board/categories/{id}")
     fun delete(@PathVariable id: Long) {
         categoryCommandService.delete(id)
     }

@@ -28,7 +28,7 @@ export default function ClientCategoryEdit({category, setIsEdit}: {
             parentId: category.parentId,
         }
 
-        RestClient.put(`/board/category/${category.id}`)
+        RestClient.put(`/board/categories/${category.id}`)
             .requestBody(request)
             .successHandler(() => {
                 setIsEdit(false);
