@@ -14,7 +14,7 @@ export default function ClientNotification() {
         const eventSource = new EventSource(
             `${API_HOST}/notification:subscribe`, {
                 withCredentials: true,
-                heartbeatTimeout: 864500000,
+                heartbeatTimeout: 3600000,
             }
         );
 
@@ -22,10 +22,12 @@ export default function ClientNotification() {
             const receivedConnectData = JSON.parse(event.data);
             if (receivedConnectData.title === 'SSE Connect') {
                 console.log('connected');
-                return;
             }
+        });
 
-            notify(`${receivedConnectData.title} ${receivedConnectData.body}`);
+        eventSource.addEventListener('comment-notification', (event: any) => {
+            const data = JSON.parse(event.data);
+            notify(`${data.title}`);
         });
 
 
