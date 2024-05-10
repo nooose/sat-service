@@ -25,7 +25,7 @@ export default function ClientNotification() {
                 return;
             }
 
-            notify(receivedConnectData.title)
+            notify(`${receivedConnectData.title} ${receivedConnectData.body}`);
         });
 
 
