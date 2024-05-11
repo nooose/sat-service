@@ -2,7 +2,7 @@ import React from "react";
 import ClientCategory from "@/components/category/client-category";
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {cookies} from "next/headers";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 
 async function getCategories() {
     const cookie = cookies().get("JSESSIONID")?.value

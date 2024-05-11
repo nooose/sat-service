@@ -3,7 +3,7 @@ import {cookies} from "next/headers";
 import SatUser from "@/model/domain/SatUser";
 import React from "react";
 import UserProfile from "@/components/user-profile";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 
 export async function getUserInfo(cookie: string | undefined): Promise<SatUser> {
     const response = await RestClient.get("/user/members/me")

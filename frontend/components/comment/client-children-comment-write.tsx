@@ -6,7 +6,7 @@ import React, {useState} from "react";
 import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
 import styles from "@/styles/comment.module.css"
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 
 export default function ChildCommentWrite(
     {articleId, parentId, setIsReplyOpen}

@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from "react";
 import {EventSourcePolyfill, NativeEventSource} from "event-source-polyfill";
-import {API_HOST} from "@/utils/restClient";
+import {API_HOST} from "@/utils/rest-client";
 import 'react-toastify/dist/ReactToastify.css';
 import {toast, ToastContainer} from "react-toastify";
 import {useRouter} from "next/navigation";
