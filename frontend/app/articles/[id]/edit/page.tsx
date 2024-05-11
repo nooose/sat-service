@@ -1,7 +1,9 @@
 import ArticleResponse from "@/model/dto/response/ArticleResponse";
 import {cookies} from "next/headers";
-import ClientArticleUpdate from "@/components/article/client-article-update";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
+import dynamic from "next/dynamic";
+import {Card} from "@nextui-org/react";
+import {Skeleton} from "@nextui-org/skeleton";
 
 export async function generateMetadata({params:{id}} : any) {
     const article = await getArticle(id)
@@ -20,9 +22,20 @@ export async function getArticle(id: number): Promise<ArticleResponse> {
 
 export default async function ArticleEditPage({params:{id}} : any) {
     const article = await getArticle(id)
+    const ClientDynamicArticleUpdate = dynamic(() => import("@/components/article/client-article-update"), {
+        ssr: false,
+        loading: () => <div>
+            <Card className="h-[calc(100vh - 380px)]" radius="lg">
+                <Skeleton className="rounded-lg h-full">
+                    <div className="h-24 rounded-lg bg-default-300"></div>
+                </Skeleton>
+            </Card>
+        </div>,
+    });
+
     return (
         <div>
-            <ClientArticleUpdate
+            <ClientDynamicArticleUpdate
                 article={article}
             />
         </div>

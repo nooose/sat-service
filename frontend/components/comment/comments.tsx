@@ -2,7 +2,7 @@ import CommentResponse from "@/model/dto/response/CommentResponse";
 import ClientComment from "@/components/comment/client-comment";
 import {cookies} from "next/headers";
 import {getUserInfo} from "@/components/user-login";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 import ClientCommentWrite from "@/components/comment/client-comment-write";
 import React from "react";
 

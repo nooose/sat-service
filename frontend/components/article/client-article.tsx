@@ -11,9 +11,6 @@ export default function ClientArticle({article}: { article: ArticleSimpleRespons
         router.push(`/articles/${article.id}`);
     }
 
-    const commentCount = Math.floor(Math.random() * 10) + 1;
-    const likeCount = Math.floor(Math.random() * 10) + 1;
-
     return (
         <div className={styles.article}>
             <Card key={article.id}>
