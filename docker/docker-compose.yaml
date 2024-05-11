@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: satdb
+      MYSQL_USER: sat
+      MYSQL_PASSWORD: sat123
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./mysql/:/docker-entrypoint-initdb.d/"
