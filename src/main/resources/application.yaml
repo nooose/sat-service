@@ -1,10 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:test
+    url: jdbc:mysql://localhost:3306/satdb
+    username: sat
+    password: sat123
   jpa:
     open-in-view: false
     show-sql: true
-    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
   h2:
     console:
       enabled: true
