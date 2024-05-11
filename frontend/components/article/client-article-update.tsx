@@ -1,28 +1,26 @@
 "use client"
 
-import {Input, Textarea} from "@nextui-org/input";
-import {Button, useDisclosure} from "@nextui-org/react";
+import {Input} from "@nextui-org/input";
+import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import ArticleUpdateRequest from "@/model/dto/request/ArticleUpdateRequest";
 import articleResponse from "@/model/dto/response/ArticleResponse";
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
 import {RestClient} from "@/utils/restClient";
-import ErrorModal from "@/components/modal/error-modal";
+import ClientEditor from "@/components/editor/client-editor";
+import {toast} from "react-toastify";
 
 export default function ClientArticleUpdate({article}: { article: articleResponse }) {
     const [title, setTitle] = useState(article.title);
-    const [content, setContent] = useState(article.content);
     const [isTitleError, setIsTitleError] = useState(false);
     const [titleErrorMessage, setTitleErrorMessage] = useState("");
-    const [isContentError, setIsContentError] = useState(false);
-    const [contentErrorMessage, setContentErrorMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
 
-    const disclosure = useDisclosure();
+    const editorRef = useRef<any>(null);
     const router = useRouter();
 
     const updateArticle = () => {
+        const content = editorRef.current.getInstance().getMarkdown()
         const request: ArticleUpdateRequest = {
             title: title,
             content: content,
@@ -41,12 +39,8 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
                     setIsTitleError(!!titleError);
                     setTitleErrorMessage(titleError);
                     const contentError = error.filedErrorMessage("content");
-                    setIsContentError(!!contentError);
-                    setContentErrorMessage(contentError);
-                    return;
+                    toast(contentError);
                 }
-                disclosure.onOpen();
-                setErrorMessage(error.errorMessage());
             })
             .fetch();
     };
@@ -61,18 +55,8 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
                    errorMessage={titleErrorMessage}
                    onValueChange={value => setTitle(value)}
             />
-            <Textarea
-                label="내용"
-                placeholder="내용을 입력해 주세요"
-                className="max-w-xs"
-                value={content}
-                defaultValue={article.content}
-                isInvalid={isContentError}
-                errorMessage={contentErrorMessage}
-                onValueChange={value => setContent(value)}
-            />
+            <ClientEditor initialValue={article.content} editorRef={editorRef}/>
             <Button color="primary" onClick={updateArticle}>수정</Button>
-            <ErrorModal message={errorMessage} disclosure={disclosure}/>
         </div>
     );
 }

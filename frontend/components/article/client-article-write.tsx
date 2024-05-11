@@ -1,32 +1,29 @@
 "use client"
 
-import {Input, Textarea} from "@nextui-org/input";
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import {useRouter} from "next/navigation";
 import ArticleCreateRequest from "@/model/dto/request/ArticleCreateRequest";
-import React, {useState} from "react";
-import {Button, useDisclosure} from "@nextui-org/react";
+import React, {useRef, useState} from "react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
 import {RestClient} from "@/utils/restClient";
 import {CommonErrorResponse} from "@/model/dto/response/CommonErrorResponse";
-import ErrorModal from "@/components/modal/error-modal";
+import ClientEditor from "@/components/editor/client-editor";
+import {Input} from "@nextui-org/input";
+import {Button} from "@nextui-org/button";
+import {toast} from "react-toastify";
 
 
 export default function ClientArticleWrite({categories}: { categories: CategoryResponse[] }) {
     const router = useRouter();
-    const disclosure = useDisclosure();
+    const editorRef = useRef<any>(null);
 
     const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
-    const [categoryId, setCategoryId] = useState(0);
-
     const [isTitleError, setIsTitleError] = useState(false);
     const [titleErrorMessage, setTitleErrorMessage] = useState("");
-    const [isContentError, setIsContentError] = useState(false);
-    const [contentErrorMessage, setContentErrorMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [categoryId, setCategoryId] = useState(0);
 
     const saveArticle = () => {
+        const content = editorRef.current.getInstance().getMarkdown()
         const request: ArticleCreateRequest = {
             title: title,
             content: content,
@@ -45,12 +42,8 @@ export default function ClientArticleWrite({categories}: { categories: CategoryR
                     setIsTitleError(!!titleError);
                     setTitleErrorMessage(titleError);
                     const contentError = error.filedErrorMessage("content");
-                    setIsContentError(!!contentError);
-                    setContentErrorMessage(contentError);
-                    return;
+                    toast(contentError);
                 }
-                disclosure.onOpen();
-                setErrorMessage(error.errorMessage());
             })
             .fetch();
     }
@@ -77,17 +70,8 @@ export default function ClientArticleWrite({categories}: { categories: CategoryR
                    errorMessage={titleErrorMessage}
                    onChange={event => setTitle(event.target.value)}
             />
-            <Textarea
-                label="내용"
-                placeholder="내용을 입력해 주세요"
-                className="max-w-xs"
-                value={content}
-                isInvalid={isContentError}
-                errorMessage={contentErrorMessage}
-                onChange={event => setContent(event.target.value)}
-            />
+            <ClientEditor initialValue={' '} editorRef={editorRef}/>
             <Button color="primary" onClick={saveArticle}>등록</Button>
-            <ErrorModal message={errorMessage} disclosure={disclosure}/>
         </div>
     );
 }
