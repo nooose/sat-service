@@ -5,12 +5,12 @@ import {useRouter} from "next/navigation";
 import ArticleCreateRequest from "@/model/dto/request/ArticleCreateRequest";
 import React, {useRef, useState} from "react";
 import {Autocomplete, AutocompleteItem} from "@nextui-org/autocomplete";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 import {CommonErrorResponse} from "@/model/dto/response/CommonErrorResponse";
 import ClientEditor from "@/components/editor/client-editor";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/button";
-import {toast} from "react-toastify";
+import {errorToast} from "@/utils/toast-utils";
 
 
 export default function ClientArticleWrite({categories}: { categories: CategoryResponse[] }) {
@@ -42,7 +42,7 @@ export default function ClientArticleWrite({categories}: { categories: CategoryR
                     setIsTitleError(!!titleError);
                     setTitleErrorMessage(titleError);
                     const contentError = error.filedErrorMessage("content");
-                    toast(contentError);
+                    errorToast(contentError);
                 }
             })
             .fetch();

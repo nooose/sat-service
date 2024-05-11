@@ -7,9 +7,9 @@ import ArticleUpdateRequest from "@/model/dto/request/ArticleUpdateRequest";
 import articleResponse from "@/model/dto/response/ArticleResponse";
 import React, {useRef, useState} from "react";
 import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 import ClientEditor from "@/components/editor/client-editor";
-import {toast} from "react-toastify";
+import {errorToast} from "@/utils/toast-utils";
 
 export default function ClientArticleUpdate({article}: { article: articleResponse }) {
     const [title, setTitle] = useState(article.title);
@@ -39,7 +39,7 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
                     setIsTitleError(!!titleError);
                     setTitleErrorMessage(titleError);
                     const contentError = error.filedErrorMessage("content");
-                    toast(contentError);
+                    errorToast(contentError);
                 }
             })
             .fetch();

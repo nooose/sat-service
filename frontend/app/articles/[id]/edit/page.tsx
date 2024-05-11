@@ -1,6 +1,6 @@
 import ArticleResponse from "@/model/dto/response/ArticleResponse";
 import {cookies} from "next/headers";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 import dynamic from "next/dynamic";
 import {Card} from "@nextui-org/react";
 import {Skeleton} from "@nextui-org/skeleton";

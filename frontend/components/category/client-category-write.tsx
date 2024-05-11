@@ -1,21 +1,19 @@
 "use client"
 
 import {Input} from "@nextui-org/input";
-import {Button, useDisclosure} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import CategoryCreateRequest from "@/model/dto/request/CategoryCreateRequest";
 import React, {useState} from "react";
 import {useRouter} from "next/navigation";
-import {RestClient} from "@/utils/restClient";
-import ErrorModal from "@/components/modal/error-modal";
+import {RestClient} from "@/utils/rest-client";
+import {errorToast} from "@/utils/toast-utils";
 
 export default function ClientCategoryWrite() {
     const [name, setName] = useState('');
     const [parentId, setParentId] = useState(null);
     const [isNameError, setIsNameError] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
 
-    const disclosure = useDisclosure();
     const router = useRouter();
 
     const saveCategory = () => {
@@ -36,8 +34,7 @@ export default function ClientCategoryWrite() {
                     setNameErrorMessage(nameError);
                     return;
                 }
-                disclosure.onOpen();
-                setErrorMessage(data.errorMessage());
+                errorToast(data.errorMessage());
             }).fetch();
     }
 
@@ -49,7 +46,6 @@ export default function ClientCategoryWrite() {
                    onChange={event => setName(event.target.value)}
             />
             <Button color="primary" onClick={saveCategory}>등록</Button>
-            <ErrorModal message={errorMessage} disclosure={disclosure}></ErrorModal>
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
 import ClientArticle from "@/components/article/client-article";
 import {cookies} from "next/headers";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 
 async function getArticles() {
     const cookie = cookies().get("JSESSIONID")?.value

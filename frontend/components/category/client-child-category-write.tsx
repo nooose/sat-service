@@ -1,26 +1,24 @@
 "use client"
 
 import {Input} from "@nextui-org/input";
-import {Button, useDisclosure} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import CategoryCreateRequest from "@/model/dto/request/CategoryCreateRequest";
 import React, {useState} from "react";
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
 import styles from "@/styles/category.module.css"
-import {RestClient} from "@/utils/restClient";
-import ErrorModal from "@/components/modal/error-modal";
+import {RestClient} from "@/utils/rest-client";
+import {errorToast} from "@/utils/toast-utils";
 
 export default function ClientChildCategoryWrite({parentCategory, setIsCreateOpen}: {
     parentCategory: CategoryResponse,
     setIsCreateOpen: (isCreateOpen: boolean) => void
 }) {
     const [name, setName] = useState('');
-    const [errorMessage, setErrorMessage] = useState("")
     const [isNameError, setIsNameError] = useState(false);
     const [nameErrorMessage, setNameErrorMessage] = useState("");
 
     const router = useRouter();
-    const disclosure = useDisclosure();
 
     const createButtonClick = () => {
         const request: CategoryCreateRequest = {
@@ -41,8 +39,7 @@ export default function ClientChildCategoryWrite({parentCategory, setIsCreateOpe
                     setNameErrorMessage(nameError);
                     return;
                 }
-                disclosure.onOpen();
-                setErrorMessage(data.errorMessage());
+                errorToast(data.errorMessage());
             })
             .fetch();
     }
@@ -60,7 +57,6 @@ export default function ClientChildCategoryWrite({parentCategory, setIsCreateOpe
                 <Button className={styles.childCreateButtonContainer} color="danger" size={"md"}
                         onClick={() => setIsCreateOpen(false)}>취소</Button>
             </div>
-            <ErrorModal message={errorMessage} disclosure={disclosure}></ErrorModal>
         </div>
     );
 }

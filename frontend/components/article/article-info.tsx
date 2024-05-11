@@ -3,7 +3,7 @@ import ArticleResponse from "@/model/dto/response/ArticleResponse";
 import ClientArticleUpdateButton from "@/components/article/client-article-update-button";
 import {cookies} from "next/headers";
 import ClientArticleCategoryInfo from "@/components/article/client-article-category-info";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 import ArticleLikeButton from "@/components/article/client-article-like-button";
 import React from "react";
 import dynamic from "next/dynamic";

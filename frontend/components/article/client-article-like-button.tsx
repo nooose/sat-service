@@ -2,7 +2,7 @@
 
 import {Button} from "@nextui-org/react";
 import {HeartIcon} from "@/components/article/heart-icon";
-import {RestClient} from "@/utils/restClient";
+import {RestClient} from "@/utils/rest-client";
 import {useState} from "react";
 
 export default function ArticleLikeButton({id, hasLike}: {id: number, hasLike: boolean}) {
