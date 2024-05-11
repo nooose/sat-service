@@ -42,7 +42,7 @@ class SecurityConfig {
                 authenticationSuccessHandler = oidcSuccessHandler
             }
             authorizeHttpRequests {
-                authorize(HttpMethod.GET, "/board/articles", permitAll)
+                authorize(HttpMethod.GET, "/board/articles/**", permitAll)
                 authorize("/**", authenticated)
             }
             exceptionHandling {
