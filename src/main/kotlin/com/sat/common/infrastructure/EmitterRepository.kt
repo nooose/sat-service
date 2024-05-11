@@ -9,9 +9,8 @@ class EmitterRepository(
     private val emitterMap: MutableMap<Long, SseEmitter> = ConcurrentHashMap()
 ) {
 
-    fun save(memberId: Long, sseEmitter: SseEmitter): SseEmitter {
+    fun save(memberId: Long, sseEmitter: SseEmitter) {
         emitterMap[memberId] = sseEmitter
-        return sseEmitter
     }
 
     fun findBy(memberId: Long): SseEmitter? {
