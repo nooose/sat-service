@@ -1,10 +1,12 @@
 export class CommonErrorResponse {
     code?: string | undefined | null = null;
     error: any;
+    status: number;
 
-    constructor(data: any) {
+    constructor(data: any, status: number) {
         this.code = data.code;
         this.error = data.error;
+        this.status = status;
     }
 
     public isBindingError() {

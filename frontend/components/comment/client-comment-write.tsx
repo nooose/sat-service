@@ -7,6 +7,7 @@ import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
 import styles from "@/styles/comment.module.css"
 import {RestClient} from "@/utils/rest-client";
+import {errorToast} from "@/utils/toast-utils";
 
 export default function ClientCommentWrite(
     { articleId, parentId, }
@@ -32,6 +33,11 @@ export default function ClientCommentWrite(
                 router.refresh();
             })
             .errorHandler(error => {
+                if (error.status == 401) {
+                    errorToast("로그인 후 이용해 주세요.");
+                    return;
+                }
+                
                 const contentError = error.filedErrorMessage("content");
                 setIsContentError(!!contentError);
                 setContentErrorMessage(contentError);

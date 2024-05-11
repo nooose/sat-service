@@ -9,6 +9,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import {Card, CardBody} from "@nextui-org/react";
 import {Skeleton} from "@nextui-org/skeleton";
+import {getUserInfo} from "@/components/user-login";
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
     const cookie = cookies().get("JSESSIONID")?.value
@@ -19,6 +20,8 @@ export async function getArticle(id: number): Promise<ArticleResponse> {
 }
 
 export default async function ArticleInfo({id}: any) {
+    const cookie = cookies().get("JSESSIONID")?.value
+    const userInfo = await getUserInfo(cookie);
     const article = await getArticle(id);
 
     const DynamicClientEditorViewer = dynamic(() => import("@/components/editor/client-editor-viewer"), {
@@ -31,6 +34,9 @@ export default async function ArticleInfo({id}: any) {
             </Card>
         </div>,
     });
+
+    console.log(userInfo.id);
+    console.log(article.createdBy);
 
     return (
         <div>
@@ -49,8 +55,12 @@ export default async function ArticleInfo({id}: any) {
                     <DynamicClientEditorViewer initialValue={article.content}/>
                 </CardBody>
             </Card>
+
             <div className="flex gap-4 items-center">
-                <ClientArticleUpdateButton id={id}/>
+                {
+                    userInfo.isSameId(article.createdBy) &&
+                    <ClientArticleUpdateButton id={id}/>
+                }
                 <ArticleLikeButton id={id} hasLike={article.hasLike}/>
             </div>
         </div>

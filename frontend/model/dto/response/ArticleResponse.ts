@@ -4,6 +4,7 @@ interface ArticleResponse {
     content: string;
     category: string;
     hasLike: boolean;
+    createdBy: number;
 }
 
 export default ArticleResponse;

@@ -19,8 +19,12 @@ class SatUser {
         return new SatUser(0, "", "", "", "", 0);
     }
 
-    isAuthenticated(): boolean {
+    public isAuthenticated(): boolean {
         return !!this.name;
+    }
+
+    public isSameId(id: number): boolean {
+        return this.id == id;
     }
 }
 

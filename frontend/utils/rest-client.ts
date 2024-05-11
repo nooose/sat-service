@@ -87,7 +87,7 @@ export class RestClient {
             } else if (!response.ok) {
                 const json = response.json();
                 json.then((data: any) => {
-                    this._errorHandler!(new CommonErrorResponse(data));
+                    this._errorHandler!(new CommonErrorResponse(data, response.status));
                 })
             }
             return response

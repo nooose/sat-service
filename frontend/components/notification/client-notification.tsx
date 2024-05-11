@@ -1,6 +1,6 @@
 "use client"
 
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import {EventSourcePolyfill, NativeEventSource} from "event-source-polyfill";
 import {API_HOST} from "@/utils/rest-client";
 import 'react-toastify/dist/ReactToastify.css';
@@ -15,7 +15,8 @@ export default function ClientNotification() {
         toast(message, {
             onClick: (event: React.MouseEvent) => {
                 router.push(`/articles/${articleId}`);
-            }
+            },
+            pauseOnHover: false,
         });
     }
 
