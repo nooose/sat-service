@@ -37,7 +37,6 @@ export default function ClientNotification() {
 
         eventSource.addEventListener('comment-notification', (event: any) => {
             const data = JSON.parse(event.data);
-            console.log(`갯색기: ${data.data}`);
             articleId = data.data;
             notify(`${data.title}`);
         });
