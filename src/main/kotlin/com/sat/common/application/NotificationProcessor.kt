@@ -15,18 +15,19 @@ class NotificationProcessor(
 
     fun connect(memberId: Long): SseEmitter {
         val sseEmitter = SseEmitter(DEFAULT_TIMEOUT)
+        sseEmitter.onCompletion { emitterRepository.delete(memberId) }
+        sseEmitter.onTimeout { sseEmitter.complete() }
+        sseEmitter.onError { sseEmitter.complete() }
         emitterRepository.save(memberId, sseEmitter)
 
+        val data = SseEmitter.event()
+            .name("notification")
+            .data(NotificationDto.connect())
         try {
-            val data = SseEmitter.event()
-                .name("notification")
-                .data(NotificationDto.connect())
             sseEmitter.send(data)
         } catch (exception: IOException) {
             throw IllegalStateException("이벤트 구독 실패: $exception")
         }
-        sseEmitter.onCompletion { emitterRepository.delete(memberId) }
-        sseEmitter.onTimeout { sseEmitter.complete() }
         return sseEmitter
     }
 
