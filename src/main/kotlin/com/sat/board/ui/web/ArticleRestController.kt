@@ -12,7 +12,7 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.net.URI
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 
 private val log = KotlinLogging.logger {}
 
@@ -25,15 +25,22 @@ class ArticleRestController(
     @PostMapping("/board/articles")
     fun create(@RequestBody @Valid command: ArticleCreateCommand): ResponseEntity<Unit> {
         val articleId = articleCommandService.create(command)
-        return ResponseEntity.created(URI.create("/board/articles/$articleId")).build()
+        val uri = ServletUriComponentsBuilder.fromCurrentRequest()
+            .path("/board/articles/$articleId")
+            .build()
+            .toUri()
+        return ResponseEntity.created(uri).build()
     }
 
     @GetMapping("/board/articles/{articleId}")
     fun article(
         @PathVariable articleId: Long,
-        @LoginMember member: AuthenticatedMember,
+        @LoginMember member: Any,
     ): ArticleQuery {
-        return articleQueryService.get(articleId, member.id)
+        return when (member) {
+            is AuthenticatedMember -> articleQueryService.get(articleId, member.id)
+            else -> articleQueryService.get(articleId)
+        }
     }
 
     @PostMapping("/board/articles/{articleId}:like")
