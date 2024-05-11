@@ -23,7 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.util.ReflectionTestUtils
 import java.time.LocalDateTime
 
-@DisplayName("Point 테스트")
+@DisplayName("서비스 - Point 테스트")
 @SpringBootTest(properties = ["jwt.secret-key=$KEY"])
 class PointServiceTest @Autowired constructor(
     private val pointCommandService: PointCommandService,

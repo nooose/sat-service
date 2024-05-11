@@ -65,7 +65,7 @@ class ArticleRestControllerTest @Autowired constructor(
     @Test
     fun `게시글 조회`() {
         every { articleQueryService.get(any(), any()) } returns
-                ArticleQuery(1L, "제목", "내용", "IT", false)
+                ArticleQuery(1L, "제목", "내용", "IT", false, 1L)
 
         mockMvc.GET("/board/articles/{articleId}", 1L) {
         }.andExpect {
@@ -83,6 +83,7 @@ class ArticleRestControllerTest @Autowired constructor(
                 field("content", "게시글 내용")
                 field("category", "카테고리")
                 field("hasLike", "좋아요 여부")
+                field("createdBy", "게시글 작성자 ID")
             }
         }
     }

@@ -16,8 +16,11 @@ class ArticleQueryService(
 ) {
 
     // TODO: 지금은 테이블 3개를 각각 조회하고 있음, Querydsl 로직으로 변경
-    fun get(id: Long, principalId: Long): ArticleQuery {
+    fun get(id: Long, principalId: Long? = null): ArticleQuery {
         val article = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
+        if (principalId == null) {
+            return ArticleQuery.from(article, false)
+        }
         val hasLike = likeRepository.existsByArticleIdAndMemberId(id, principalId)
         return ArticleQuery.from(article, hasLike)
     }
