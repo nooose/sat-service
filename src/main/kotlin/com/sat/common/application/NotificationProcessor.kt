@@ -30,10 +30,12 @@ class NotificationProcessor(
         return sseEmitter
     }
 
-    fun send(memberId: Long, eventName: String, data: NotificationDto) {
+    fun <T> send(memberId: Long, eventName: String, data: NotificationDto<T>) {
         val sseEmitter = emitterRepository.findBy(memberId) ?: return
-        sseEmitter.send(SseEmitter.event()
-            .name("comment-notification")
-            .data(data))
+        sseEmitter.send(
+            SseEmitter.event()
+            .name(eventName)
+            .data(data)
+        )
     }
 }

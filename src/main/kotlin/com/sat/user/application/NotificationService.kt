@@ -25,10 +25,15 @@ class NotificationService(
             return
         }
 
+        val notification = NotificationDto(
+            title = "${article.title} 게시글에 댓글이 달렸습니다",
+            data = articleId
+        )
+
         processor.send(
             article.createdBy!!,
             "comment-notification",
-            NotificationDto("${article.title} 게시글에 댓글이 달렸습니다")
+            notification,
         )
     }
 }
