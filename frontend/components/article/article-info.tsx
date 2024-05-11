@@ -35,9 +35,6 @@ export default async function ArticleInfo({id}: any) {
         </div>,
     });
 
-    console.log(userInfo.id);
-    console.log(article.createdBy);
-
     return (
         <div>
             <ClientArticleCategoryInfo category={article.category}/>

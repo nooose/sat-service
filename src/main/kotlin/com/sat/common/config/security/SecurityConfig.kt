@@ -1,9 +1,11 @@
 package com.sat.common.config.security
 
 import com.sat.user.application.MemberLoginService
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
@@ -14,10 +16,14 @@ import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequest
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter
 import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.web.SecurityFilterChain
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration(proxyBeanMethods = false)
-class SecurityConfig {
+class SecurityConfig(
+    @Value("\${external.frontend.url}")
+    private val frontendUrl: String,
+) {
 
     @Bean
     fun filterChain(
@@ -40,6 +46,11 @@ class SecurityConfig {
                 authorizationEndpoint { authorizationRequestResolver = resolver }
                 userInfoEndpoint { oidcUserService = oidcService }
                 authenticationSuccessHandler = oidcSuccessHandler
+            }
+            logout {
+                logoutSuccessHandler = LogoutSuccessHandler { _, response, _ ->
+                    response.status = HttpStatus.OK.value()
+                }
             }
             authorizeHttpRequests {
                 authorize(HttpMethod.GET, "/board/articles/**", permitAll)
