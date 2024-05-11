@@ -5,7 +5,7 @@ import styles from "../styles/layout.module.css"
 import TopNavigation from "@/components/top-navigation";
 import {Providers} from "./providers";
 import React from "react";
-import ClientNotification from "@/components/alarm/client-notification";
+import ClientNotification from "@/components/notification/client-notification";
 
 const inter = Inter({ subsets: ["latin"] });
 
