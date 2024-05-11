@@ -60,13 +60,14 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:${jjwtVersion}")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
 
-	runtimeOnly("com.h2database:h2")
+	runtimeOnly("com.mysql:mysql-connector-j")
 	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
 	annotationProcessor("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
 	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
 	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 	kapt("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
 
+	testRuntimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
