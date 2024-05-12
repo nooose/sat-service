@@ -1,7 +1,7 @@
 package com.sat.board.application
 
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.KEY
+import com.sat.SpringBootTestWithProfile
 import com.sat.board.application.dto.command.CommentCreateCommand
 import com.sat.board.application.dto.command.CommentUpdateCommand
 import com.sat.board.domain.Article
@@ -18,11 +18,10 @@ import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.repository.findByIdOrNull
 
 @DisplayName(value = "서비스 - 댓글 기능 테스트")
-@SpringBootTest(properties = ["jwt.secret-key=$KEY"])
+@SpringBootTestWithProfile
 class CommentCommandServiceTest @Autowired constructor(
     private val commentRepository: CommentRepository,
     private val commentCommandService: CommentCommandService,

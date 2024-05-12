@@ -1,7 +1,7 @@
 package com.sat.user.application
 
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.KEY
+import com.sat.SpringBootTestWithProfile
 import com.sat.board.domain.Article
 import com.sat.board.domain.Category
 import com.sat.board.domain.CategoryName
@@ -19,12 +19,11 @@ import io.mockk.just
 import io.mockk.runs
 import org.assertj.core.api.Assertions.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.util.ReflectionTestUtils
 import java.time.LocalDateTime
 
 @DisplayName("서비스 - Point 테스트")
-@SpringBootTest(properties = ["jwt.secret-key=$KEY"])
+@SpringBootTestWithProfile
 class PointServiceTest @Autowired constructor(
     private val pointCommandService: PointCommandService,
     private val pointQueryService: PointQueryService,
