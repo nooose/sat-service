@@ -21,7 +21,7 @@ class ArticleQueryService(
         if (principalId == null) {
             return ArticleQuery.from(article, false)
         }
-        val hasLike = likeRepository.existsByArticleIdAndMemberId(id, principalId)
+        val hasLike = likeRepository.existsByArticleIdAndCreatedBy(id, principalId)
         return ArticleQuery.from(article, hasLike)
     }
 

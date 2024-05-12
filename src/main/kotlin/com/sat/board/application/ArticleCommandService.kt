@@ -45,12 +45,12 @@ class ArticleCommandService(
     private fun getArticle(id: Long) = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
 
     fun like(articleId: Long, principalId: Long) {
-        if (likeRepository.existsByArticleIdAndMemberId(articleId, principalId)) {
-            likeRepository.deleteByArticleIdAndMemberId(articleId, principalId)
+        if (likeRepository.existsByArticleIdAndCreatedBy(articleId, principalId)) {
+            likeRepository.deleteByArticleIdAndCreatedBy(articleId, principalId)
             return
         }
 
-        val like = Like(articleId, principalId)
+        val like = Like(articleId)
         likeRepository.save(like)
     }
 }
