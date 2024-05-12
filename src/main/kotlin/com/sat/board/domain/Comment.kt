@@ -1,6 +1,6 @@
 package com.sat.board.domain
 
-import com.sat.board.application.dto.command.CommentUpdateCommand
+import com.sat.board.application.command.dto.CommentUpdateCommand
 import com.sat.common.domain.AuditingFields
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

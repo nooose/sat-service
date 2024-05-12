@@ -2,7 +2,7 @@ package com.sat.user.infrastructure.repository
 
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.sat.user.domain.QPoint.point1
-import com.sat.user.domain.port.PointRepositoryCustom
+import com.sat.user.domain.port.repository.PointRepositoryCustom
 import org.springframework.stereotype.Component
 
 @Component

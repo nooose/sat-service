@@ -7,7 +7,7 @@ import com.sat.board.domain.QArticle.article
 import com.sat.board.domain.QCategory.category
 import com.sat.board.domain.QComment.comment
 import com.sat.board.domain.QLike.like
-import com.sat.board.domain.dto.ArticleWithCount
+import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.board.domain.port.ArticleRepositoryCustom
 import org.springframework.stereotype.Component
 

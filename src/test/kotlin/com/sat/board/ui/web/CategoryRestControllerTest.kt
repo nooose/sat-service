@@ -2,11 +2,11 @@ package com.sat.board.ui.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.board.application.CategoryCommandService
-import com.sat.board.application.CategoryQueryService
-import com.sat.board.application.dto.command.CategoryCreateCommand
-import com.sat.board.application.dto.command.CategoryUpdateCommand
-import com.sat.board.application.dto.query.CategoryQuery
+import com.sat.board.application.command.CategoryCommandService
+import com.sat.board.application.query.CategoryQueryService
+import com.sat.board.application.command.dto.CategoryCreateCommand
+import com.sat.board.application.command.dto.CategoryUpdateCommand
+import com.sat.board.application.query.dto.CategoryQuery
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
 import io.mockk.every

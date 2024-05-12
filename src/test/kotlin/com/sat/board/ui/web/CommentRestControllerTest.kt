@@ -2,11 +2,11 @@ package com.sat.board.ui.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.board.application.CommentCommandService
-import com.sat.board.application.CommentQueryService
-import com.sat.board.application.dto.command.CommentCreateCommand
-import com.sat.board.application.dto.command.CommentUpdateCommand
-import com.sat.board.application.dto.query.CommentQuery
+import com.sat.board.application.command.CommentCommandService
+import com.sat.board.application.query.CommentQueryService
+import com.sat.board.application.command.dto.CommentCreateCommand
+import com.sat.board.application.command.dto.CommentUpdateCommand
+import com.sat.board.application.query.dto.CommentQuery
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
 import com.sat.common.security.WithAuthenticatedUser

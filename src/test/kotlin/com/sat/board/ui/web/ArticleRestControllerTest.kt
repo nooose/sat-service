@@ -2,13 +2,13 @@ package com.sat.board.ui.web
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.board.application.ArticleCommandService
-import com.sat.board.application.ArticleQueryService
-import com.sat.board.application.dto.command.ArticleCreateCommand
-import com.sat.board.application.dto.command.ArticleUpdateCommand
-import com.sat.board.application.dto.query.ArticleQuery
-import com.sat.board.application.dto.query.ArticleSimpleQuery
-import com.sat.board.domain.dto.ArticleWithCount
+import com.sat.board.application.command.ArticleCommandService
+import com.sat.board.application.query.ArticleQueryService
+import com.sat.board.application.command.dto.ArticleCreateCommand
+import com.sat.board.application.command.dto.ArticleUpdateCommand
+import com.sat.board.application.query.dto.ArticleQuery
+import com.sat.board.application.query.dto.ArticleSimpleQuery
+import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
 import com.sat.common.security.WithAuthenticatedUser

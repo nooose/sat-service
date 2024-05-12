@@ -2,10 +2,10 @@ package com.sat.user.ui.web
 
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
-import com.sat.user.application.MemberQueryService
-import com.sat.user.application.PointQueryService
-import com.sat.user.application.dto.query.MemberInformation
-import com.sat.user.application.dto.query.MemberSimpleQuery
+import com.sat.user.application.query.MemberQueryService
+import com.sat.user.application.query.PointQueryService
+import com.sat.user.application.query.dto.MemberInformation
+import com.sat.user.application.query.dto.MemberSimpleQuery
 import com.sat.user.domain.Point
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController

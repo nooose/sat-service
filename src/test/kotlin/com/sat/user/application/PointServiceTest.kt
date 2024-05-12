@@ -7,11 +7,14 @@ import com.sat.board.domain.Category
 import com.sat.board.domain.CategoryName
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.common.utils.findByIdOrThrow
+import com.sat.user.application.command.MemberLoginService
+import com.sat.user.application.command.PointCommandService
+import com.sat.user.application.query.PointQueryService
 import com.sat.user.domain.Member
 import com.sat.user.domain.Point
 import com.sat.user.domain.PointType
-import com.sat.user.domain.port.LoginHistoryRepository
-import com.sat.user.domain.port.PointRepository
+import com.sat.user.domain.port.repository.LoginHistoryRepository
+import com.sat.user.domain.port.repository.PointRepository
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every
