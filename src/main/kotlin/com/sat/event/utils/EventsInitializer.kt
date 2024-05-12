@@ -1,4 +1,4 @@
-package com.sat.common.utils.event
+package com.sat.event.utils
 
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.context.ApplicationContext

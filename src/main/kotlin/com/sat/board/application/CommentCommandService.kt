@@ -7,8 +7,8 @@ import com.sat.board.domain.event.CommentCreateEvent
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
 import com.sat.board.domain.port.existParent
-import com.sat.common.utils.event.Events
 import com.sat.common.utils.findByIdOrThrow
+import com.sat.event.utils.Events
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

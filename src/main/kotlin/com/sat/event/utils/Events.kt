@@ -1,4 +1,4 @@
-package com.sat.common.utils.event
+package com.sat.event.utils
 
 import org.springframework.context.ApplicationEventPublisher
 
@@ -6,8 +6,8 @@ object Events {
     private var publisher: ApplicationEventPublisher? = null
 
     fun initialize(publisher: ApplicationEventPublisher) {
-        if (this.publisher == null) {
-            this.publisher = publisher
+        if (Events.publisher == null) {
+            Events.publisher = publisher
         }
     }
 

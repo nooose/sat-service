@@ -1,6 +1,6 @@
 package com.sat.common.ui.web
 
-import com.sat.common.application.NotificationProcessor
+import com.sat.event.application.NotificationProcessor
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import org.springframework.http.MediaType

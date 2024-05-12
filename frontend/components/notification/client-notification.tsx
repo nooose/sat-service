@@ -29,16 +29,14 @@ export default function ClientNotification() {
             }
         );
 
-        eventSource.addEventListener('notification', (event: any) => {
-            const receivedConnectData = JSON.parse(event.data);
-            if (receivedConnectData.title === 'SSE Connect') {
-                console.log('connected');
-            }
+        eventSource.addEventListener('ConnectedNotification', (event: any) => {
+            const data = JSON.parse(event.data);
+            console.log(data.value);
         });
 
-        eventSource.addEventListener('comment-notification', (event: any) => {
+        eventSource.addEventListener('CommentNotification', (event: any) => {
             const data = JSON.parse(event.data);
-            articleId = data.data;
+            articleId = data.articleId;
             notify(`${data.title}`);
         });
 

@@ -9,8 +9,8 @@ import com.sat.board.domain.event.ArticleCreateEvent
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CategoryRepository
 import com.sat.board.domain.port.LikeRepository
-import com.sat.common.utils.event.Events
 import com.sat.common.utils.findByIdOrThrow
+import com.sat.event.utils.Events
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

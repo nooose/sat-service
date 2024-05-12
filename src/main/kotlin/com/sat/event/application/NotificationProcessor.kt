@@ -1,6 +1,7 @@
-package com.sat.common.application
+package com.sat.event.application
 
 import com.sat.common.infrastructure.EmitterRepository
+import com.sat.event.domain.ConnectedNotification
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.io.IOException
@@ -20,23 +21,29 @@ class NotificationProcessor(
         sseEmitter.onError { sseEmitter.complete() }
         emitterRepository.save(memberId, sseEmitter)
 
-        val data = SseEmitter.event()
-            .name("notification")
-            .data(NotificationDto.connect())
         try {
-            sseEmitter.send(data)
+            send(sseEmitter, ConnectedNotification())
         } catch (exception: IOException) {
             throw IllegalStateException("이벤트 구독 실패: $exception")
         }
         return sseEmitter
     }
 
-    fun <T> send(memberId: Long, eventName: String, data: NotificationDto<T>) {
+    /**
+     * - Event 이름: 알림 데이터 클래스 이름
+     * @param memberId 알림 받을 사용자 ID
+     * @param data 알림 데이터
+     */
+    fun <T : Any> send(memberId: Long, data: T) {
         val sseEmitter = emitterRepository.findBy(memberId) ?: return
+        send(sseEmitter, data)
+    }
+
+    private fun send(sseEmitter: SseEmitter, data: Any) {
         sseEmitter.send(
             SseEmitter.event()
-            .name(eventName)
-            .data(data)
+                .name(data::class.java.simpleName)
+                .data(data)
         )
     }
 }
