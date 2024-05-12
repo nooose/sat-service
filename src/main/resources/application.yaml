@@ -1,16 +1,15 @@
 spring:
+  profiles.active: local
+
   datasource:
-    url: jdbc:mysql://localhost:3306/satdb
-    username: sat
-    password: sat123
+    url: jdbc:mysql://${DB_HOST}:3306/satdb
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     open-in-view: false
     show-sql: true
     hibernate:
       ddl-auto: none
-  h2:
-    console:
-      enabled: true
 
   security:
     oauth2:
@@ -38,4 +37,4 @@ jwt:
 
 external:
   frontend:
-    url: http://localhost:3000
+    url: ${FE_HOST}

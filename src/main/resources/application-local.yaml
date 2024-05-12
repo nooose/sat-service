@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/satdb
+    username: sat
+    password: sat123
+
+external:
+  frontend:
+    url: http://localhost:3000
