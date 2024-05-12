@@ -5,10 +5,10 @@ import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.andDocument
 import com.sat.common.security.WithAuthenticatedUser
-import com.sat.user.application.MemberQueryService
-import com.sat.user.application.PointQueryService
-import com.sat.user.application.dto.query.MemberInformation
-import com.sat.user.application.dto.query.MemberSimpleQuery
+import com.sat.user.application.query.MemberQueryService
+import com.sat.user.application.query.PointQueryService
+import com.sat.user.application.query.dto.MemberInformation
+import com.sat.user.application.query.dto.MemberSimpleQuery
 import io.mockk.every
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

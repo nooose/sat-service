@@ -2,8 +2,10 @@ package com.sat.board.application
 
 import com.ninjasquad.springmockk.MockkBean
 import com.sat.SpringBootTestWithProfile
-import com.sat.board.application.dto.command.CommentCreateCommand
-import com.sat.board.application.dto.command.CommentUpdateCommand
+import com.sat.board.application.command.CommentCommandService
+import com.sat.board.application.command.dto.CommentCreateCommand
+import com.sat.board.application.command.dto.CommentUpdateCommand
+import com.sat.board.application.query.CommentQueryService
 import com.sat.board.domain.Article
 import com.sat.board.domain.Category
 import com.sat.board.domain.CategoryName
@@ -13,7 +15,7 @@ import com.sat.board.domain.port.CategoryRepository
 import com.sat.board.domain.port.CommentRepository
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.domain.Member
-import com.sat.user.domain.port.MemberRepository
+import com.sat.user.domain.port.repository.MemberRepository
 import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.*

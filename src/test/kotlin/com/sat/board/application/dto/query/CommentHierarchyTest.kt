@@ -1,5 +1,7 @@
 package com.sat.board.application.dto.query
 
+import com.sat.board.application.query.dto.CommentHierarchy
+import com.sat.board.application.query.dto.CommentQuery
 import com.sat.board.domain.*
 import com.sat.board.domain.dto.CommentWithMemberDto
 import io.kotest.core.spec.DisplayName

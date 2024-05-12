@@ -1,5 +1,7 @@
 package com.sat.board.application.dto.query
 
+import com.sat.board.application.query.dto.CategoryHierarchy
+import com.sat.board.application.query.dto.CategoryQuery
 import com.sat.board.domain.Category
 import com.sat.board.domain.CategoryName
 import io.kotest.core.spec.DisplayName
