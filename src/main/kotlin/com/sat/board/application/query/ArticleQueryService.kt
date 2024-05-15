@@ -25,7 +25,7 @@ class ArticleQueryService(
         return ArticleQuery.from(article, hasLike)
     }
 
-    fun get(): List<ArticleWithCount> {
-        return articleRepository.getAll()
+    fun getAll(memberId: Long? = null): List<ArticleWithCount> {
+        return articleRepository.getAll(memberId)
     }
 }

@@ -1,6 +1,8 @@
 package com.sat.user.ui.web
 
 import com.ninjasquad.springmockk.MockkBean
+import com.sat.board.application.query.ArticleQueryService
+import com.sat.board.application.query.CommentQueryService
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.andDocument
@@ -23,6 +25,10 @@ class MemberRestControllerTest : Documentation() {
     lateinit var memberQueryService: MemberQueryService
     @MockkBean
     lateinit var pointQueryService: PointQueryService
+    @MockkBean
+    lateinit var articleQueryService: ArticleQueryService
+    @MockkBean
+    lateinit var commentQueryService: CommentQueryService
 
     @WithAuthenticatedUser
     @Test

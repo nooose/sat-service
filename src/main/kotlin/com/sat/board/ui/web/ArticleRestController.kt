@@ -53,7 +53,7 @@ class ArticleRestController(
 
     @GetMapping("/board/articles")
     fun articles(): List<ArticleWithCount> {
-        return articleQueryService.get()
+        return articleQueryService.getAll()
     }
 
     @PutMapping("/board/articles/{articleId}")

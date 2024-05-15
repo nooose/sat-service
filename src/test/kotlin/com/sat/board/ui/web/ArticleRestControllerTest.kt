@@ -3,9 +3,9 @@ package com.sat.board.ui.web
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.command.ArticleCommandService
-import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.command.dto.ArticleCreateCommand
 import com.sat.board.application.command.dto.ArticleUpdateCommand
+import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.dto.ArticleQuery
 import com.sat.board.application.query.dto.ArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
@@ -95,7 +95,7 @@ class ArticleRestControllerTest @Autowired constructor(
             ArticleWithCount(2L, "제목 B", "IT", 0, 0),
             ArticleWithCount(3L, "제목 C", "스포츠", 0, 0),
         )
-        every { articleQueryService.get() } returns response
+        every { articleQueryService.getAll(any()) } returns response
 
         mockMvc.GET("/board/articles") {
         }.andExpect {

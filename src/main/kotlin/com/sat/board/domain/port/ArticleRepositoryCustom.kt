@@ -4,5 +4,5 @@ import com.sat.board.domain.dto.query.ArticleWithCount
 
 interface ArticleRepositoryCustom {
 
-    fun getAll(): List<ArticleWithCount>
+    fun getAll(principalId: Long?): List<ArticleWithCount>
 }

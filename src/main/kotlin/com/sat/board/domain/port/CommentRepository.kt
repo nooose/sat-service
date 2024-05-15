@@ -9,7 +9,7 @@ fun CommentRepository.existParent(commentId: Long, articleId: Long): Boolean {
     return existsByIdIsAndArticleIdIs(commentId, articleId)
 }
 
-interface CommentRepository : JpaRepository<Comment, Long>{
+interface CommentRepository : JpaRepository<Comment, Long>, CommentRepositoryCustom {
     @Query("""
         select c from Comment c
         where c.articleId = :articleId

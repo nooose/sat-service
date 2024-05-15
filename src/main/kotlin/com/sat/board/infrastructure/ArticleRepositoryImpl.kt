@@ -2,6 +2,7 @@ package com.sat.board.infrastructure
 
 import com.querydsl.core.types.ExpressionUtils.`as`
 import com.querydsl.core.types.Projections
+import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
 import com.sat.board.domain.QArticle.article
 import com.sat.board.domain.QCategory.category
@@ -16,7 +17,7 @@ class ArticleRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : ArticleRepositoryCustom {
 
-    override fun getAll(): List<ArticleWithCount> {
+    override fun getAll(principalId: Long?): List<ArticleWithCount> {
         return queryFactory.select(
             Projections.constructor(
                 ArticleWithCount::class.java,
@@ -30,7 +31,14 @@ class ArticleRepositoryImpl(
             .leftJoin(comment).on(article.id.eq(comment.articleId))
             .leftJoin(like).on(article.id.eq(like.articleId))
             .join(category).on(article.category.id.eq(category.id))
+            .where(
+                eqOwner(principalId)
+            )
             .groupBy(article.id)
             .fetch()
+    }
+
+    private fun eqOwner(id: Long?): BooleanExpression? {
+        return id?.let { article.createdBy.eq(it) }
     }
 }
