@@ -56,7 +56,6 @@ create table likes
 (
     id                 bigint not null AUTO_INCREMENT comment '좋아요 아이디',
     article_id         bigint not null comment '게시글 아이디',
-    member_id          bigint not null comment '좋아요 생성자 아이디',
     created_by          bigint not null comment '좋아요 생성자 아이디',
     created_date_time  datetime default now() comment '좋아요 생성 시간',
     modified_by        bigint comment '좋아요 수정자 아이디',

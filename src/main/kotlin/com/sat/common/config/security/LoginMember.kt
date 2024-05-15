@@ -2,7 +2,9 @@ package com.sat.common.config.security
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 
-
+/**
+ * @see AuthenticatedMember
+ */
 @Target(AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.TYPE)
 @Retention(AnnotationRetention.RUNTIME)
 @AuthenticationPrincipal
