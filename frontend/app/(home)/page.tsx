@@ -11,7 +11,7 @@ export default async function Home() {
     const userInfo = await getUserInfo(cookie);
 
     return (
-        <div className={styles.container}>
+        <div>
             {userInfo.isAuthenticated() &&
                 <div className={styles.writeButton}>
                     <ClientArticleWriteButton/>

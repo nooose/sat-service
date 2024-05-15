@@ -3,7 +3,7 @@ import SideMenu from "@/components/mypage/menu";
 
 export default function SideNavigation({children}: { children: React.ReactNode }) {
     return (
-        <div style={{ display: 'flex' }}>
+        <div>
             <div style={{float: 'left', width: '200px', height: '100vh'}}>
                 <SideMenu/>
             </div>

@@ -1,7 +1,5 @@
 .container {
     margin-bottom: 10px;
-    margin-left: 150px;
-    margin-right: 150px;
 }
 
 .requestComment {
@@ -14,7 +12,7 @@
     margin-top: 5px;
 }
 
-.comment {
+.container {
     margin-bottom: 5px;
 }
 
