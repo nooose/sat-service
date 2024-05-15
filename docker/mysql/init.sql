@@ -96,33 +96,33 @@ values (1, '성준혁', '성준혁', 'noose@kakao.com', 1, 1),
 
 insert into category (id, name, parent_id, created_by, modified_by)
 values
-(1, 'Century', null, 6, 6),
-(2, 'Terrain', null,  5, 5),
-(3, 'Aztek', null, 9, 9),
-(4, 'F350', null, 10, 10),
-(5, '280ZX', null, 2, 2),
-(6, 'Grand Cherokee', 1, 7, 7),
-(7, 'Evora', 2, 8, 8),
-(8, '911', 3, 1, 1),
-(9, 'M-Class', 8, 3, 3),
-(10, '3 Series', 9, 4, 4);
+(1, '쌍용아파트', null, 6, 6),
+(2, '현대아파트', null,  5, 5),
+(3, '맥북', null, 9, 9),
+(4, '갤럭시북', null, 10, 10),
+(5, 'LG그램', null, 2, 2),
+(6, '아이폰', 1, 7, 7),
+(7, '갤럭시폰', 2, 8, 8),
+(8, '갤럭시북', 3, 1, 1),
+(9, '아이패드', 8, 3, 3),
+(10, '에어팟', 9, 4, 4);
 
 insert into article (id, title, content, category_id, created_by, modified_by, is_deleted)
-values (1, 'Sales Associate', 'DQM', 1, 1, 1, false),
-(2, 'Office Assistant II', 'VCV', 2, 2, 2, false),
-(3, 'Sales Associate', 'LSF', 3, 3, 3, false),
-(4, 'Office Assistant IV', 'SIX', 4, 4, 4, false),
-(5, 'Chief Design Engineer', 'YDN', 5, 5, 5, false);
+values (1, '너무너무재밌어', '같이하자', 1, 1, 1, false),
+(2, '내이름은 코난', '탐정이죠', 2, 2, 2, false),
+(3, '자기의 일은 스스로하자', '우리는 척척척 스스로 어린이', 3, 3, 3, false),
+(4, '어디로 가야 하죠~', '아저씨', 4, 4, 4, false),
+(5, '이건아니자나이건아니자나', '이건아?', 5, 5, 5, false);
 
 insert into comment (id, parent_id, content, article_id, created_by, modified_by, is_deleted)
 values
-(1, null, 'CRL', 1, 1, 1, false),
-(2, null, 'FAM', 2, 2, 2, false),
-(3, null, 'AIP', 3, 3, 3, false),
-(4, null, '0', 4, 4, 4, false),
-(5, null, 'OHA', 5, 5, 5, false),
-(6, 1, 'SYW', 1, 1, 1, false),
-(7, 2, 'YVT', 2, 2, 2, false),
-(8, 3, 'TOP', 3, 3, 3, false),
-(9, 4, 'BYU', 4, 4, 4, false),
-(10, 5, 'CPS', 5, 5, 5, false);
+(1, null, '깔깔깔', 1, 1, 1, false),
+(2, null, '껄껄껄', 2, 2, 2, false),
+(3, null, '준혁입니다', 3, 3, 3, false),
+(4, null, '영철에서왔습니다', 4, 4, 4, false),
+(5, null, '영록다운영록다운', 5, 5, 5, false),
+(6, 1, '벼락맞아벼락맞아', 1, 1, 1, false),
+(7, 2, '영록업영록업', 2, 2, 2, false),
+(8, 3, '준혁다운준혁다운', 3, 3, 3, false),
+(9, 4, '벼락맞고', 4, 4, 4, false),
+(10, 5, '머리타', 5, 5, 5, false);
