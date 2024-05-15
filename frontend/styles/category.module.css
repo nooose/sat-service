@@ -1,36 +1,3 @@
 .category {
-    margin: 10px 10px 10px 30px;
-    width: 210px;
-    font-size: 13px;
+    margin: 10px 10px 10px 10px;
 }
-
-.categoryButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-.editContainer {
-    width: 100%;
-    max-width: 200px;
-    text-align: right;
-}
-
-.editButtonContainer {
-    width: auto;
-    height: auto;
-    margin: 10px 2px 2px 2px;
-}
-
-.childCreateContainer {
-    width: 100%;
-    max-width: 200px;
-    text-align: right;
-}
-
-.childCreateButtonContainer {
-    width: auto;
-    height: auto;
-    margin: 10px 2px 2px 2px;
-}
-
-

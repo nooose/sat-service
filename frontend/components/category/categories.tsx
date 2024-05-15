@@ -13,7 +13,6 @@ async function getCategories() {
 }
 
 export default async function Categories() {
-    // const router = useRouter();
     const categories = await getCategories();
     return (
         <div>

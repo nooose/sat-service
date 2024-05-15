@@ -4,17 +4,24 @@ import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
 import {Card, CardBody, CardFooter} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import styles from "@styles/article.module.css"
+import {PressEvent} from "@react-types/shared/src/events";
 
 export default function ClientArticle({article}: { article: ArticleSimpleResponse }) {
     const router = useRouter();
-    const onClick = () => {
+    const onClick = (e: PressEvent) => {
+        console.log("하이");
         router.push(`/articles/${article.id}`);
     }
 
     return (
         <div className={styles.article}>
-            <Card key={article.id}>
-                <CardBody onClick={onClick}>
+            <Card key={article.id}
+                  fullWidth={true}
+                  isPressable
+                  disableAnimation={true}
+                  onPress={onClick}
+            >
+                <CardBody>
                     <p>{article.title}</p>
                 </CardBody>
                 <CardFooter className="gap-3">

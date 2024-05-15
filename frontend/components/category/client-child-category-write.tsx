@@ -6,7 +6,6 @@ import {useRouter} from "next/navigation";
 import CategoryCreateRequest from "@/model/dto/request/CategoryCreateRequest";
 import React, {useState} from "react";
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
-import styles from "@/styles/category.module.css"
 import {RestClient} from "@/utils/rest-client";
 import {errorToast} from "@/utils/toast-utils";
 
@@ -45,17 +44,25 @@ export default function ClientChildCategoryWrite({parentCategory, setIsCreateOpe
     }
 
     return (
-        <div className={styles.childCreateContainer}>
-            <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
+        <div>
+            <Input type="text" label="카테고리 이름"
                    isInvalid={isNameError}
                    errorMessage={nameErrorMessage}
                    onChange={event => setName(event.target.value)}
             />
-            <div>
-                <Button className={styles.childCreateButtonContainer} color="primary" size={"md"}
-                        onClick={createButtonClick}>등록</Button>
-                <Button className={styles.childCreateButtonContainer} color="danger" size={"md"}
-                        onClick={() => setIsCreateOpen(false)}>취소</Button>
+            <div className="flex gap-1">
+                <Button
+                        color="primary"
+                        size={"sm"}
+                        onClick={createButtonClick}>
+                    등록
+                </Button>
+                <Button
+                        color="danger"
+                        size={"sm"}
+                        onClick={() => setIsCreateOpen(false)}>
+                    취소
+                </Button>
             </div>
         </div>
     );

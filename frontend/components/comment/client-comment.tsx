@@ -49,8 +49,10 @@ export default function ClientComment({articleId, comment, loginUserId}: {
                             comment={comment}
                             setIsUpdateOpen={setIsUpdateOpen}/>
                         :
-                        <Textarea value={comment.content}
-                                  readOnly={true}
+                        <Textarea
+                            variant="flat"
+                            value={comment.content}
+                            readOnly={true}
                         />
                     }
                 </CardBody>

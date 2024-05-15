@@ -1,8 +1,7 @@
 "use client"
 
 import CategoryResponse from "@/model/dto/response/CategoryResponse";
-import styles from "@styles/category.module.css";
-import {Button, Card, CardBody} from "@nextui-org/react";
+import {Button, Card, CardBody, CardFooter} from "@nextui-org/react";
 import React, {useState} from "react";
 import ClientChildCategoryWrite from "@/components/category/client-child-category-write";
 import ClientCategoryEdit from "@/components/category/client-category-edit";
@@ -20,34 +19,45 @@ export default function ClientCategory({category}: { category: CategoryResponse 
     };
 
     return (
-        <div className={styles.category}>
+        <div>
             <Card key={category.id}>
                 <CardBody>
-                    <div style={{display: 'flex', alignItems: 'center'}}>
+                    <div>
                         {!isClickedEditButton ?
                             <p>{category.name}</p>
                             :
                             <ClientCategoryEdit category={category} setIsEdit={setIsClickedEditButton}/>
                         }
-                        {!isClickedEditButton &&
-                            <div style={{display: 'flex', flexDirection: 'column', marginLeft: 'auto'}}>
-                                <Button className={styles.categoryButton} color={"primary"} size={"sm"} onClick={childCategoryToggleAccordion}>자식 등록</Button>
-                                <Button className={styles.categoryButton} color={"success"} size={"sm"} onClick={editAction}>수정</Button>
-                            </div>
-                        }
                     </div>
                 </CardBody>
+                {!isClickedEditButton &&
+                    <CardFooter className="flex justify-between">
+                        <Button
+                            color={"primary"}
+                            size={"sm"} onClick={childCategoryToggleAccordion}>
+                            자식 등록
+                        </Button>
+                        <Button
+                            color={"danger"}
+                            size={"sm"}
+                            onClick={editAction}>
+                            수정
+                        </Button>
+                    </CardFooter>
+                }
             </Card>
             {isCreateOpen &&
-                <Card style={{marginTop: "10px"}}>
+                <Card>
                     <CardBody>
                         <ClientChildCategoryWrite parentCategory={category} setIsCreateOpen={setIsCreateOpen}/>
                     </CardBody>
                 </Card>
             }
-            {category.children?.map((category) => (
-                <ClientCategory category={category} key={category.id}/>
-            ))}
+            <div style={{paddingLeft: 30}}>
+                {category.children?.map((category) => (
+                    <ClientCategory category={category} key={category.id}/>
+                ))}
+            </div>
         </div>
     );
 };
