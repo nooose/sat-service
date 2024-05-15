@@ -52,9 +52,11 @@ export default ({articleId, comment, setIsUpdateOpen}: {
                 onChange={event => setContent(event.target.value)}
             />
             <Button
-                className={styles.updateButtonContainer} color="primary"
-                onClick={saveComment}
-            >수정</Button>
+                className={styles.requestCommentButton} color="primary"
+                size="sm"
+                onClick={saveComment}>
+                수정
+            </Button>
         </div>
     )
 };

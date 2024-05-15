@@ -7,12 +7,27 @@ import {usePathname} from "next/navigation";
 export default function SideMenu() {
     const path = usePathname();
 
+    const menus = [
+        { href: "/mypage/info", text: "정보" },
+        { href: "/mypage/articles", text: "게시글" },
+        { href: "/mypage/comments", text: "댓글" },
+        { href: "/mypage/point", text: "포인트" }
+    ];
+
     return (
         <div className="flex flex-col gap-2">
-            <Link href="/mypage/info" color="foreground" underline={path === "/mypage/info" ? "always" : "none"}>정보</Link>
-            <Link href="/mypage/articles" color="foreground" underline={path === "/mypage/articles" ? "always" : "none"}>내가 쓴 게시글 목록</Link>
-            <Link href="/mypage/comments" color="foreground" underline={path === "/mypage/comments" ? "always" : "none"}>내가 쓴 댓글 목록</Link>
-            <Link href="/mypage/point" color="foreground" underline={path === "/mypage/point" ? "always" : "none"}>포인트</Link>
+            {menus.map((link, index) => (
+                <Link
+                    key={index}
+                    href={link.href}
+                    color={path === link.href ? "primary" : "foreground"}
+                    style={{
+                        fontWeight: path === link.href ? "bold" : "normal",
+                    }}
+                >
+                    {link.text}
+                </Link>
+            ))}
         </div>
     );
 }

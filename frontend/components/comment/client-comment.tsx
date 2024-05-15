@@ -1,15 +1,18 @@
 "use client"
 
-import {Button, Card, CardBody, CardHeader, Divider, Image} from "@nextui-org/react";
-import React, {useEffect, useState} from "react";
+import {Button, Card, CardBody, CardFooter, CardHeader, Image} from "@nextui-org/react";
+import React, {useState} from "react";
 import CommentResponse from "@/model/dto/response/CommentResponse";
-import styles from "@styles/comment.module.css";
 import CommentUpdate from "@/components/comment/client-comment-update";
 import {Textarea} from "@nextui-org/input";
 import ChildCategoryWrite from "@/components/comment/client-children-comment-write";
+import styles from "@styles/comment.module.css"
 
-
-export default function ClientComment({articleId, comment, loginUserId}: {articleId: number, comment: CommentResponse, loginUserId: number | undefined | null}) {
+export default function ClientComment({articleId, comment, loginUserId}: {
+    articleId: number,
+    comment: CommentResponse,
+    loginUserId: number | undefined | null
+}) {
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [isReplyOpen, setIsReplyOpen] = useState(false);
     const updateToggleAccordion = () => {
@@ -17,55 +20,79 @@ export default function ClientComment({articleId, comment, loginUserId}: {articl
         setIsUpdateOpen(!isUpdateOpen);
     }
 
-    const replyToggleAccordion = () => {
+    const toggleReply = () => {
         setIsUpdateOpen(false);
         setIsReplyOpen(!isReplyOpen);
     }
 
     return (
-        <div className={styles.container}>
-            <Card className={styles.cardContainer} key={comment.id}>
+        <div className={styles.comment}>
+            <Card key={comment.id}>
                 <CardHeader className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Image
-                            alt="nextui logo"
-                            height={40}
+                            alt="avatar"
+                            height={30}
                             radius="sm"
                             src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                            width={40}
+                            width={30}
                         />
                         <div className="flex flex-col">
                             <p>{comment.memberName}</p>
                         </div>
                     </div>
-                    <div>
-                        {loginUserId === comment.memberId ?
-                            <Button className={styles.commentButton} size={"sm"} color={"default"} onClick={updateToggleAccordion}>수정</Button>
-                                :
-                            ''
-                        }
-                        <Button className={styles.commentButton} size={"sm"} color={"primary"} onClick={replyToggleAccordion}>댓글</Button>
-                    </div>
                 </CardHeader>
-                <Divider/>
                 <CardBody>
                     {isUpdateOpen ?
-                        <CommentUpdate articleId={articleId} comment={comment} setIsUpdateOpen={setIsUpdateOpen}/>
-                            :
-                        <Textarea className="flex gap-10 items-center" value={comment.content} readOnly={true} variant="faded"/>
+                        <CommentUpdate
+                            articleId={articleId}
+                            comment={comment}
+                            setIsUpdateOpen={setIsUpdateOpen}/>
+                        :
+                        <Textarea value={comment.content}
+                                  readOnly={true}
+                        />
                     }
                 </CardBody>
-                <Divider/>
+                <CardFooter>
+                    <div className="flex items-center gap-1">
+                        {loginUserId === comment.memberId ?
+                            <Button size={"sm"}
+                                    color={"danger"}
+                                    onClick={updateToggleAccordion}>
+                                수정
+                            </Button>
+                            :
+                            <div/>
+                        }
+                        <Button size={"sm"}
+                                color={"primary"}
+                                onClick={toggleReply}>
+                            댓글
+                        </Button>
+                    </div>
+                </CardFooter>
             </Card>
-            {isReplyOpen && <ChildCategoryWrite articleId={articleId} parentId={comment.id} setIsReplyOpen={setIsReplyOpen}/>}
 
-            {comment.children?.map(
-                (comment: CommentResponse) => (
-                <div key={comment.id} className={styles.childrenContainer}>
-                    <ClientComment articleId={articleId} comment={comment} loginUserId={loginUserId}/>
-                </div>
-                )
-            )}
+            {isReplyOpen &&
+                <ChildCategoryWrite
+                    articleId={articleId}
+                    parentId={comment.id}
+                    setIsReplyOpen={setIsReplyOpen}
+                />
+            }
+
+            <div className={styles.children}>
+                {comment.children?.map(
+                    (comment: CommentResponse) => (
+                        <ClientComment articleId={articleId}
+                                       key={comment.id}
+                                       comment={comment}
+                                       loginUserId={loginUserId}
+                        />
+                    )
+                )}
+            </div>
         </div>
     );
 };

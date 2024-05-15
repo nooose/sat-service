@@ -1,7 +1,7 @@
 "use client"
 
 import {Textarea} from "@nextui-org/input";
-import {Button, Card} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import React, {useState} from "react";
 import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
@@ -11,7 +11,7 @@ import {RestClient} from "@/utils/rest-client";
 export default function ChildCommentWrite(
     {articleId, parentId, setIsReplyOpen}
         :
-    {articleId: number, parentId?: number | null | undefined, setIsReplyOpen: (isReplyOpen: boolean) => void}
+        { articleId: number, parentId?: number | null | undefined, setIsReplyOpen: (isReplyOpen: boolean) => void }
 ) {
     const [childContent, setChildContent] = useState('')
     const [isContentError, setIsContentError] = useState(false);
@@ -41,21 +41,19 @@ export default function ChildCommentWrite(
     }
 
     return (
-        <div className={styles.requestContainer}>
-            <Card className={styles.requestCardContainer}>
-                <Textarea
-                    variant="faded"
-                    label="댓글 작성"
-                    labelPlacement="outside"
-                    placeholder="내용을 입력해 주세요"
-                    isInvalid={isContentError}
-                    errorMessage={contentErrorMessage}
-                    onChange={event => setChildContent(event.target.value)}
-                />
-                <Button className={styles.createButtonContainer} color="primary" size="md"
-                        onClick={saveComment}>등록
-                </Button>
-            </Card>
+        <div className={styles.requestComment}>
+            <Textarea
+                variant="faded"
+                placeholder="댓글 내용"
+                isInvalid={isContentError}
+                errorMessage={contentErrorMessage}
+                onChange={event => setChildContent(event.target.value)}
+            />
+            <Button className={styles.requestCommentButton}
+                    color="primary"
+                    size="sm"
+                    onClick={saveComment}>등록
+            </Button>
         </div>
     )
 };

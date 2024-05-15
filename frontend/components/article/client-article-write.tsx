@@ -11,7 +11,7 @@ import ClientEditor from "@/components/editor/client-editor";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/button";
 import {errorToast} from "@/utils/toast-utils";
-
+import styles from "@/styles/article.article-view.module.css"
 
 export default function ClientArticleWrite({categories}: { categories: CategoryResponse[] }) {
     const router = useRouter();
@@ -49,7 +49,7 @@ export default function ClientArticleWrite({categories}: { categories: CategoryR
     }
 
     return (
-        <div>
+        <div className={styles.articleViewContainer}>
             <Autocomplete
                 label="카테고리 선택"
                 className="max-w-xs"

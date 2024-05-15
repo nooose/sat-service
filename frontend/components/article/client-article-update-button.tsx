@@ -14,7 +14,7 @@ export default function ClientArticleUpdateButton({id}: { id: number }) {
             <Button
                 color="primary"
                 onClick={onClick}
-            >수정하기</Button>
+            >게시글 수정</Button>
         </div>
     );
 }
