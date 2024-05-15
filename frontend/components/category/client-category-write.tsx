@@ -40,7 +40,7 @@ export default function ClientCategoryWrite() {
 
     return (
         <div>
-            <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
+            <Input type="text" label="카테고리 이름"
                    isInvalid={isNameError}
                    errorMessage={nameErrorMessage}
                    onChange={event => setName(event.target.value)}

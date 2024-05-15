@@ -11,6 +11,12 @@ export default function CategoryCreateButton() {
     }
 
     return (
-        <Button color={"primary"} size={"sm"} onClick={onClick}>루트 카테고리 등록</Button>
+        <Button
+            color={"primary"}
+            size={"sm"}
+            onClick={onClick}
+        >
+            루트 카테고리 등록
+        </Button>
     );
 }
