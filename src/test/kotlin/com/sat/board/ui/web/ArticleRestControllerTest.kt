@@ -7,7 +7,6 @@ import com.sat.board.application.command.dto.ArticleCreateCommand
 import com.sat.board.application.command.dto.ArticleUpdateCommand
 import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.dto.ArticleQuery
-import com.sat.board.application.query.dto.ArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
@@ -105,7 +104,7 @@ class ArticleRestControllerTest @Autowired constructor(
             tag = "게시판 > 게시글"
             summary = "게시글 목록 조회"
             responseBody {
-                type = ArticleSimpleQuery::class
+                type = ArticleWithCount::class
                 field("[].id", "게시글 ID")
                 field("[].title", "게시글 제목")
                 field("[].category", "카테고리")

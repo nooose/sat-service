@@ -13,7 +13,7 @@ export default async function MyPageMenu({params: {menu}}: any) {
     return (
         <div>
             {menu === "info" && <MyPageInfo/>}
-            {menu === "point" && <MyPagePoints/>}
+            {menu === "points" && <MyPagePoints/>}
             {menu === "articles" && <MyPageArticles/>}
             {menu === "comments" && <MyPageComments/>}
         </div>

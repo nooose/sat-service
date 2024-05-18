@@ -4,6 +4,7 @@ import com.querydsl.core.types.ExpressionUtils.`as`
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
+import com.sat.board.domain.Article
 import com.sat.board.domain.QArticle.article
 import com.sat.board.domain.QCategory.category
 import com.sat.board.domain.QComment.comment
@@ -33,7 +34,8 @@ class ArticleRepositoryImpl(
             .leftJoin(like).on(article.id.eq(like.articleId))
             .join(category).on(article.category.id.eq(category.id))
             .where(
-                eqOwner(principalId)
+                eqOwner(principalId),
+                article.isDeleted.eq(false)
             )
             .groupBy(article.id)
             .fetch()
@@ -42,4 +44,20 @@ class ArticleRepositoryImpl(
     private fun eqOwner(id: Long?): BooleanExpression? {
         return id?.let { article.createdBy.eq(it) }
     }
+
+    override fun getLikedArticles(principalId: Long): List<Article> {
+        // TODO: 인덱스 추가
+        val articleIds = queryFactory.select(like.articleId)
+            .from(like)
+            .where(like.createdBy.eq(principalId))
+            .fetch()
+
+        return queryFactory.selectFrom(article)
+            .where(
+                article.id.`in`(articleIds),
+                article.isDeleted.eq(false)
+            )
+            .fetch()
+    }
+
 }

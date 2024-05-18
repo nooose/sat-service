@@ -2,6 +2,7 @@ package com.sat.user.ui.web
 
 import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.CommentQueryService
+import com.sat.board.application.query.dto.ArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
@@ -41,7 +42,6 @@ class MemberRestController(
         memberCommandService.update(member.id, command)
     }
 
-
     @GetMapping("/user/members")
     fun members(): List<MemberSimpleQuery> {
         return memberQueryService.get()
@@ -55,7 +55,7 @@ class MemberRestController(
 
     // TODO: 테스트코드 작성
     @GetMapping("/user/comments")
-    fun getMyComments(@LoginMember member: AuthenticatedMember): List<CommentDto>{
+    fun getMyComments(@LoginMember member: AuthenticatedMember): List<CommentDto> {
         return commentQueryService.getComments(member.id)
     }
 
@@ -63,5 +63,11 @@ class MemberRestController(
     @GetMapping("/user/points")
     fun points(@LoginMember member: AuthenticatedMember): List<MyPointQuery> {
         return pointQueryService.getPoints(member.id)
+    }
+
+    // TODO: 테스트코드 작성
+    @GetMapping("/user/likes")
+    fun likes(@LoginMember member: AuthenticatedMember): List<ArticleSimpleQuery> {
+        return articleQueryService.getLikedArticles(member.id)
     }
 }

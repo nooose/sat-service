@@ -1,6 +1,7 @@
 package com.sat.board.application.query
 
 import com.sat.board.application.query.dto.ArticleQuery
+import com.sat.board.application.query.dto.ArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.LikeRepository
@@ -27,5 +28,10 @@ class ArticleQueryService(
 
     fun getAll(memberId: Long? = null): List<ArticleWithCount> {
         return articleRepository.getAll(memberId)
+    }
+
+    fun getLikedArticles(memberId: Long): List<ArticleSimpleQuery> {
+        return articleRepository.getLikedArticles(memberId)
+            .map { ArticleSimpleQuery.from(it) }
     }
 }

@@ -20,7 +20,7 @@ export default async function MyPagePoints() {
     const points = await getPoints(member.id);
     return (
         <div className={styles.container}>
-            <div className={styles.containerName}>게시글</div>
+            <div className={styles.containerName}>포인트</div>
             {points.map((point: MyPointResponse) => (
                 <MypagePoint key={point.id} point={point}/>
             ))}

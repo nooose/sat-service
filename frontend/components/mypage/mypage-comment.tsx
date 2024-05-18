@@ -3,10 +3,10 @@ import MyPageCommentResponse from "@/model/dto/response/MyPageCommentResponse";
 import {format} from "date-fns/format";
 
 export default function MypageComment({comment}: { comment: MyPageCommentResponse, }) {
-    const formattedTime = format(comment.createdDateTime, `yyyy-MM-dd HH:mm:ss a`)
+    const formattedTime = format(comment.createdDateTime, `yyyy-MM-dd h:mm a`)
     return (
-        <div >
-            <Card key={comment.id}>
+        <div>
+            <Card key={comment.id} style={{width: "200%"}}>
                 <CardBody>
                     <div className="flex justify-between">
                         <div>
@@ -20,8 +20,8 @@ export default function MypageComment({comment}: { comment: MyPageCommentRespons
                 <CardFooter>
                     <Link
                         size={"sm"}
-                          color={"primary"}
-                          href={`/articles/${comment.articleId}`}
+                        color={"primary"}
+                        href={`/articles/${comment.articleId}`}
                     >
                         {comment.articleTitle}
                     </Link>
