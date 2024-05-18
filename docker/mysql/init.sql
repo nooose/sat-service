@@ -5,7 +5,7 @@ create table member
     nickname           varchar(30) not null comment '사용자 닉네임',
     email              varchar(50) not null comment '사용자 이메일',
     created_by         bigint not null comment '사용자 생성자 아이디',
-    created_date_time  datetime default now() comment '사용자 생성 시간',
+    created_date_time  datetime not null default now() comment '사용자 생성 시간',
     modified_by        bigint comment '사용자 수정자 아이디',
     modified_date_time datetime default now() comment '사용자 수정 시간',
     primary key (id)
@@ -17,7 +17,7 @@ create table category
     parent_id          bigint comment '카테고리 부모 아이디',
     name               varchar(24) comment '카테고리 이름',
     created_by         bigint not null comment '카테고리 생성자 아이디',
-    created_date_time  datetime default now() comment '카테고리 생성 시간',
+    created_date_time  datetime not null default now() comment '카테고리 생성 시간',
     modified_by        bigint comment '카테고리 수정자 아이디',
     modified_date_time datetime default now() comment '카테고리 수정 시간',
     primary key (id)
@@ -30,7 +30,7 @@ create table article
     content            varchar(3000) not null comment '게시글 내용',
     category_id        bigint not null comment '카테고리 아이디',
     created_by         bigint not null comment '게시글 생성자 아이디',
-    created_date_time  datetime default now() comment '게시글 생성 시간',
+    created_date_time  datetime not null default now() comment '게시글 생성 시간',
     modified_by        bigint comment '게시글 수정자 아이디',
     modified_date_time datetime default now() comment '게시글 수정 시간',
     is_deleted         boolean default false comment '게시글 삭제 유무',
@@ -45,7 +45,7 @@ create table comment
     content            varchar(1000) not null comment '댓글 내용',
     article_id         bigint not null comment '게시글 아이디',
     created_by         bigint not null comment '댓글 작성자 아이디',
-    created_date_time  datetime default now() comment '댓글 작성 시간',
+    created_date_time  datetime not null default now() comment '댓글 작성 시간',
     modified_by        bigint comment '댓글 수정자 아이디',
     modified_date_time datetime default now() comment '댓글 수정 시간',
     is_deleted         boolean not null comment '댓글 삭제 유무',
@@ -57,7 +57,7 @@ create table likes
     id                 bigint not null AUTO_INCREMENT comment '좋아요 아이디',
     article_id         bigint not null comment '게시글 아이디',
     created_by          bigint not null comment '좋아요 생성자 아이디',
-    created_date_time  datetime default now() comment '좋아요 생성 시간',
+    created_date_time  datetime not null default now() comment '좋아요 생성 시간',
     modified_by        bigint comment '좋아요 수정자 아이디',
     modified_date_time datetime default now() comment '좋아요 수정 시간',
     primary key (id),
@@ -68,7 +68,7 @@ create table login_history
 (
     id              bigint not null AUTO_INCREMENT comment '로그인 이력 아이디',
     member_id       bigint not null comment '사용자 아이디',
-    login_date_time datetime default now() comment '로그인 시간',
+    login_date_time datetime not null default now() comment '로그인 시간',
     primary key (id)
 );
 
@@ -78,6 +78,7 @@ create table point
     member_id bigint  not null comment '사용자 아이디',
     point     integer not null comment '포인트',
     type      varchar(20) not null comment '포인트 유형',
+    created_date_time datetime not null default now() comment '생성 및 사용 시간',
     primary key (id)
 );
 
