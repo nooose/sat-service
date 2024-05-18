@@ -52,6 +52,10 @@ class ArticleRepositoryImpl(
             .where(like.createdBy.eq(principalId))
             .fetch()
 
+        if (articleIds.isEmpty()) {
+            return emptyList()
+        }
+
         return queryFactory.selectFrom(article)
             .where(
                 article.id.`in`(articleIds),
