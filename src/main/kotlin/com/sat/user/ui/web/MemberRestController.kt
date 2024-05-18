@@ -2,7 +2,7 @@ package com.sat.user.ui.web
 
 import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.CommentQueryService
-import com.sat.board.application.query.dto.ArticleSimpleQuery
+import com.sat.board.application.query.dto.LikedArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
@@ -67,7 +67,7 @@ class MemberRestController(
 
     // TODO: 테스트코드 작성
     @GetMapping("/user/likes")
-    fun likes(@LoginMember member: AuthenticatedMember): List<ArticleSimpleQuery> {
+    fun likes(@LoginMember member: AuthenticatedMember): List<LikedArticleSimpleQuery> {
         return articleQueryService.getLikedArticles(member.id)
     }
 }

@@ -12,7 +12,8 @@ export default function SideMenu() {
         { href: "/mypage/info", text: "정보" },
         { href: "/mypage/articles", text: "게시글" },
         { href: "/mypage/comments", text: "댓글" },
-        { href: "/mypage/points", text: "포인트" }
+        { href: "/mypage/points", text: "포인트" },
+        { href: "/mypage/likes", text: "좋아요" }
     ];
 
     return (

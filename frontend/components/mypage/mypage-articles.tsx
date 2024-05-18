@@ -2,11 +2,10 @@ import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
 import {cookies} from "next/headers";
 import {RestClient} from "@/utils/rest-client";
 import MypageArticle from "@/components/mypage/mypage-article";
-import {getUserInfo} from "@/components/user-login";
 import React from "react";
 import styles from "@styles/mypage.module.css";
 
-async function getArticles(memberId: number) {
+async function getArticles() {
     const cookie = cookies().get("JSESSIONID")?.value
     const response = await RestClient.get("/user/articles")
         .session(cookie)
@@ -15,9 +14,7 @@ async function getArticles(memberId: number) {
 }
 
 export default async function MyPageArticles() {
-    const cookie = cookies().get("JSESSIONID")?.value
-    const member = await getUserInfo(cookie);
-    const articles = await getArticles(member.id);
+    const articles = await getArticles();
     return (
         <div className={styles.container}>
             <div className={styles.containerName}>게시글</div>
