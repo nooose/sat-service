@@ -20,15 +20,16 @@ class CommentRepositoryImpl(
                 CommentWithArticle::class.java,
                 `as`(comment.id, "id"),
                 `as`(comment.content, "content"),
-                `as`(comment.parentId, "parentId"),
-                `as`(comment.isDeleted, "isDeleted"),
                 `as`(article.id, "articleId"),
                 `as`(article.title, "articleTitle"),
                 `as`(comment.createdDateTime, "createdDateTime"),
             ))
             .from(comment)
-            .leftJoin(article).on(comment.articleId.eq(article.id))
-            .where(comment.createdBy.eq(memberId))
+            .join(article).on(comment.articleId.eq(article.id))
+            .where(
+                comment.createdBy.eq(memberId),
+                comment.isDeleted.eq(false),
+            )
             .fetch()
     }
 }

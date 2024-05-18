@@ -5,8 +5,6 @@ import java.time.LocalDateTime
 data class CommentWithArticle(
     val id: Long,
     var content: String,
-    var parentId: Long,
-    val isDeleted: Boolean,
     val articleId: Long,
     val articleTitle: String,
     val createdDateTime: LocalDateTime,

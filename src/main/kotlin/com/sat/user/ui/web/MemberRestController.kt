@@ -2,6 +2,7 @@ package com.sat.user.ui.web
 
 import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.CommentQueryService
+import com.sat.board.application.query.dto.CommentWithArticle
 import com.sat.board.application.query.dto.LikedArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.config.security.AuthenticatedMember
@@ -13,7 +14,6 @@ import com.sat.user.application.query.PointQueryService
 import com.sat.user.application.query.dto.MemberInformation
 import com.sat.user.application.query.dto.MemberSimpleQuery
 import com.sat.user.application.query.dto.MyPointQuery
-import com.sat.user.domain.dto.CommentDto
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -47,15 +47,13 @@ class MemberRestController(
         return memberQueryService.get()
     }
 
-    // TODO: 테스트코드 작성
     @GetMapping("/user/articles")
     fun articles(@LoginMember member: AuthenticatedMember): List<ArticleWithCount> {
         return articleQueryService.getAll(member.id)
     }
 
-    // TODO: 테스트코드 작성
     @GetMapping("/user/comments")
-    fun getMyComments(@LoginMember member: AuthenticatedMember): List<CommentDto> {
+    fun getMyComments(@LoginMember member: AuthenticatedMember): List<CommentWithArticle> {
         return commentQueryService.getComments(member.id)
     }
 

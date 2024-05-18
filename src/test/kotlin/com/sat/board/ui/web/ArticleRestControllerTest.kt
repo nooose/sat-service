@@ -110,6 +110,7 @@ class ArticleRestControllerTest @Autowired constructor(
                 field("[].category", "카테고리")
                 field("[].commentCount", "댓글 수")
                 field("[].likeCount", "좋아요 수")
+                field("[].createdDateTime", "게시글 작성 시간")
             }
         }
     }

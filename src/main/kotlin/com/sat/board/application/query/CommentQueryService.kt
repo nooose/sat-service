@@ -2,11 +2,11 @@ package com.sat.board.application.query
 
 import com.sat.board.application.query.dto.CommentHierarchy
 import com.sat.board.application.query.dto.CommentQuery
+import com.sat.board.application.query.dto.CommentWithArticle
 import com.sat.board.domain.dto.CommentWithMemberDto
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
 import com.sat.common.domain.exception.NotFoundException
-import com.sat.user.domain.dto.CommentDto
 import com.sat.user.domain.port.repository.MemberRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -36,8 +36,7 @@ class CommentQueryService(
         return hierarchy.comments
     }
 
-    fun getComments(memberId: Long): List<CommentDto> {
-        val commentWitArticle = commentRepository.findByCreatedBy(memberId)
-        return commentWitArticle.map { CommentDto.from(it) }
+    fun getComments(memberId: Long): List<CommentWithArticle> {
+        return commentRepository.findByCreatedBy(memberId)
     }
 }
