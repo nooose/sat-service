@@ -1,7 +1,7 @@
 "use client"
 
 import {Textarea} from "@nextui-org/input";
-import {Button, Card} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 import React, {useState} from "react";
 import CommentCreateRequest from "@/model/dto/request/CommentCreateRequest";
 import {useRouter} from "next/navigation";
@@ -10,9 +10,9 @@ import {RestClient} from "@/utils/rest-client";
 import {errorToast} from "@/utils/toast-utils";
 
 export default function ClientCommentWrite(
-    { articleId, parentId, }
+    {articleId, parentId,}
         :
-    { articleId: number, parentId?: number | null | undefined, }
+        { articleId: number, parentId?: number | null | undefined, }
 ) {
     const [content, setContent] = useState('')
     const [isContentError, setIsContentError] = useState(false);
@@ -37,7 +37,7 @@ export default function ClientCommentWrite(
                     errorToast("로그인 후 이용해 주세요.");
                     return;
                 }
-                
+
                 const contentError = error.filedErrorMessage("content");
                 setIsContentError(!!contentError);
                 setContentErrorMessage(contentError);
@@ -47,22 +47,20 @@ export default function ClientCommentWrite(
     }
 
     return (
-        <div className={styles.requestContainer}>
-            <Card className={styles.requestCardContainer}>
-                <Textarea
-                    variant="faded"
-                    label="댓글 작성"
-                    labelPlacement="outside"
-                    placeholder="내용을 입력해 주세요"
-                    isInvalid={isContentError}
-                    errorMessage={contentErrorMessage}
-                    value={content}
-                    onChange={event => setContent(event.target.value)}
-                />
-                <Button className={styles.createButtonContainer} color="primary" size="md"
-                        onClick={saveComment}>등록
-                </Button>
-            </Card>
+        <div className={styles.requestComment}>
+            <Textarea
+                variant="faded"
+                placeholder="댓글 내용"
+                isInvalid={isContentError}
+                errorMessage={contentErrorMessage}
+                value={content}
+                onChange={event => setContent(event.target.value)}
+            />
+            <Button className={styles.requestCommentButton}
+                    color="primary"
+                    size="sm"
+                    onClick={saveComment}>등록
+            </Button>
         </div>
     )
 };

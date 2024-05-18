@@ -2,7 +2,9 @@ package com.sat.board.infrastructure
 
 import com.querydsl.core.types.ExpressionUtils.`as`
 import com.querydsl.core.types.Projections
+import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
+import com.sat.board.domain.Article
 import com.sat.board.domain.QArticle.article
 import com.sat.board.domain.QCategory.category
 import com.sat.board.domain.QComment.comment
@@ -16,7 +18,7 @@ class ArticleRepositoryImpl(
     private val queryFactory: JPAQueryFactory,
 ) : ArticleRepositoryCustom {
 
-    override fun getAll(): List<ArticleWithCount> {
+    override fun getAll(principalId: Long?): List<ArticleWithCount> {
         return queryFactory.select(
             Projections.constructor(
                 ArticleWithCount::class.java,
@@ -25,12 +27,41 @@ class ArticleRepositoryImpl(
                 `as`(category.name.value, "category"),
                 `as`(comment.countDistinct(), "commentCount"),
                 `as`(like.countDistinct(), "likeCount"),
+                `as`(article.createdDateTime, "createdDateTime"),
             ))
             .from(article)
             .leftJoin(comment).on(article.id.eq(comment.articleId))
             .leftJoin(like).on(article.id.eq(like.articleId))
             .join(category).on(article.category.id.eq(category.id))
+            .where(
+                eqOwner(principalId),
+                article.isDeleted.eq(false)
+            )
             .groupBy(article.id)
             .fetch()
     }
+
+    private fun eqOwner(id: Long?): BooleanExpression? {
+        return id?.let { article.createdBy.eq(it) }
+    }
+
+    override fun getLikedArticles(principalId: Long): List<Article> {
+        // TODO: 인덱스 추가
+        val articleIds = queryFactory.select(like.articleId)
+            .from(like)
+            .where(like.createdBy.eq(principalId))
+            .fetch()
+
+        if (articleIds.isEmpty()) {
+            return emptyList()
+        }
+
+        return queryFactory.selectFrom(article)
+            .where(
+                article.id.`in`(articleIds),
+                article.isDeleted.eq(false)
+            )
+            .fetch()
+    }
+
 }

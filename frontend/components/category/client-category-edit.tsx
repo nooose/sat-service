@@ -5,7 +5,6 @@ import React, {useState} from "react";
 import {Input} from "@nextui-org/input";
 import {useRouter} from "next/navigation";
 import {Button} from "@nextui-org/react";
-import styles from "@styles/category.module.css";
 import CategoryUpdateRequest from "@/model/dto/request/CategoryUpdateRequest";
 import {RestClient} from "@/utils/rest-client";
 import {errorToast} from "@/utils/toast-utils";
@@ -46,17 +45,23 @@ export default function ClientCategoryEdit({category, setIsEdit}: {
     }
 
     return (
-        <div className={styles.editContainer}>
-            <Input type="text" label="카테고리 명" placeholder="카테고리 명을 입력해 주세요"
+        <div>
+            <Input type="text" placeholder="카테고리 이름"
                    value={name}
                    isInvalid={isNameError}
                    errorMessage={nameErrorMessage}
                    onChange={event => setName(event.target.value)}
             />
-            <div className={styles.editContainer}>
-                <Button className={styles.editButtonContainer} color="primary" size={"md"}
-                        onClick={updateCategory}>수정</Button>
-                <Button className={styles.editButtonContainer} color="danger" size={"md"}
+            <div>
+                <Button
+                    color="primary"
+                    size={"sm"}
+                    onClick={updateCategory}>
+                    수정
+                </Button>
+                <Button
+                        color="danger"
+                        size={"sm"}
                         onClick={() => setIsEdit(false)}>
                     취소
                 </Button>

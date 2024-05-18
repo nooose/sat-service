@@ -4,6 +4,7 @@ interface ArticleSimpleResponse {
     category: string;
     commentCount: number;
     likeCount: number;
+    createdDateTime: string,
 }
 
 export default ArticleSimpleResponse;

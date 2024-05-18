@@ -1,7 +1,7 @@
 "use client"
 
 import {Button} from "@nextui-org/react";
-import {HeartIcon} from "@/components/article/heart-icon";
+import {HeartIcon} from "@/components/editor/heart-icon";
 import {RestClient} from "@/utils/rest-client";
 import {useState} from "react";
 import {errorToast} from "@/utils/toast-utils";

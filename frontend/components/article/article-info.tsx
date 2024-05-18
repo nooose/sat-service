@@ -10,6 +10,8 @@ import dynamic from "next/dynamic";
 import {Card, CardBody} from "@nextui-org/react";
 import {Skeleton} from "@nextui-org/skeleton";
 import {getUserInfo} from "@/components/user-login";
+import styles from "@styles/article.article-view.module.css"
+
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
     const cookie = cookies().get("JSESSIONID")?.value
@@ -36,30 +38,28 @@ export default async function ArticleInfo({id}: any) {
     });
 
     return (
-        <div>
+        <div className={styles.articleViewContainer}>
             <ClientArticleCategoryInfo category={article.category}/>
-            <Input
-                isReadOnly
-                type="text"
-                label="제목"
-                labelPlacement={"outside"}
-                variant="bordered"
-                defaultValue={article.title}
-                className="max-w-xs"
-            />
+            <div className="flex gap-4 items-center">
+                <Input
+                    isReadOnly
+                    type="text"
+                    label="제목"
+                    variant="bordered"
+                    defaultValue={article.title}
+                    className="max-w-xs"
+                />
+                {
+                    userInfo.isSameId(article.createdBy) &&
+                    <ClientArticleUpdateButton id={id}/>
+                }
+            </div>
             <Card>
                 <CardBody>
                     <DynamicClientEditorViewer initialValue={article.content}/>
                 </CardBody>
             </Card>
-
-            <div className="flex gap-4 items-center">
-                {
-                    userInfo.isSameId(article.createdBy) &&
-                    <ClientArticleUpdateButton id={id}/>
-                }
-                <ArticleLikeButton id={id} hasLike={article.hasLike}/>
-            </div>
+            <ArticleLikeButton id={id} hasLike={article.hasLike}/>
         </div>
     );
 }

@@ -14,11 +14,6 @@ export default function Navigation() {
                         카테고리
                     </Link>
                 </NavbarItem>
-                <NavbarItem>
-                    <Link href="/menu2">
-                        메뉴2
-                    </Link>
-                </NavbarItem>
             </NavbarContent>
             <NavbarContent justify="end">
                 <UserLogin/>

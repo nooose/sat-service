@@ -41,15 +41,15 @@ data class AuthenticatedMember(
     }
 
     override fun getEmail(): String {
-        return avatar
+        return email
     }
 
     companion object {
         fun from(request: OidcUserRequest, loginMember: Member): AuthenticatedMember {
             return AuthenticatedMember(
                 id = loginMember.id!!,
-                name = request.idToken.nickName as String,
-                nickname = request.idToken.nickName as String,
+                name = loginMember.name,
+                nickname = loginMember.nickname,
                 email = request.idToken.email as String,
                 avatar = request.idToken.claims["picture"] as String,
                 request.idToken

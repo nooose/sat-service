@@ -10,6 +10,7 @@ import ClientArticleCategoryInfo from "@/components/article/client-article-categ
 import {RestClient} from "@/utils/rest-client";
 import ClientEditor from "@/components/editor/client-editor";
 import {errorToast} from "@/utils/toast-utils";
+import styles from "@styles/article.article-view.module.css";
 
 export default function ClientArticleUpdate({article}: { article: articleResponse }) {
     const [title, setTitle] = useState(article.title);
@@ -46,7 +47,7 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
     };
 
     return (
-        <div>
+        <div className={styles.articleViewContainer}>
             <ClientArticleCategoryInfo category={article.category}/>
             <Input type="text" label="제목" placeholder="제목을 입력해 주세요"
                    value={title}

@@ -491,7 +491,7 @@ Content-Length: 88
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: /board/articles/1</code></pre>
+Location: http://localhost:8080/board/articles/board/articles/1</code></pre>
 </div>
 </div>
 </div>
@@ -579,14 +579,15 @@ Location: /board/articles/1</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 102
+Content-Length: 121
 
 {
   "id" : 1,
   "title" : "제목",
   "content" : "내용",
   "category" : "IT",
-  "hasLike" : false
+  "hasLike" : false,
+  "createdBy" : 1
 }</code></pre>
 </div>
 </div>
@@ -654,6 +655,11 @@ Content-Length: 102
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 여부</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>createdBy</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성자 ID</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -676,26 +682,29 @@ Content-Length: 102
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 315
+Content-Length: 470
 
 [ {
   "id" : 1,
   "title" : "제목 A",
   "category" : "IT",
   "commentCount" : 0,
-  "likeCount" : 0
+  "likeCount" : 0,
+  "createdDateTime" : "2024-05-19T02:14:26.52066"
 }, {
   "id" : 2,
   "title" : "제목 B",
   "category" : "IT",
   "commentCount" : 0,
-  "likeCount" : 0
+  "likeCount" : 0,
+  "createdDateTime" : "2024-05-19T02:14:26.520679"
 }, {
   "id" : 3,
   "title" : "제목 C",
   "category" : "스포츠",
   "commentCount" : 0,
-  "likeCount" : 0
+  "likeCount" : 0,
+  "createdDateTime" : "2024-05-19T02:14:26.520683"
 } ]</code></pre>
 </div>
 </div>
@@ -740,6 +749,11 @@ Content-Length: 315
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].likeCount</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">좋아요 수</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].createdDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">게시글 작성 시간</p></td>
 </tr>
 </tbody>
 </table>
@@ -894,13 +908,13 @@ Content-Length: 62
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json
-Content-Length: 116
+Content-Length: 129
 
 {
   "id" : 1,
   "name" : "김영철",
   "nickname" : "김영철",
-  "email" : "",
+  "email" : "admin@sat.com",
   "avatar" : "",
   "point" : 100
 }</code></pre>
@@ -1041,7 +1055,7 @@ Content-Length: 347
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1<br>
-Last updated 2024-03-05 22:41:26 +0900
+Last updated 2024-03-10 18:35:45 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

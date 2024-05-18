@@ -1,43 +1,23 @@
 .container {
-    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
-.cardContainer {
-    max-width: 600px;
-    width: 600px;
-}
-
-.editContainer {
-    width: 100%;
-    display: flex;
-    max-width: 600px;
-}
-
-.requestCardContainer {
-    display: flex;
-    flex-direction: inherit;
-    padding: 10px;
+.requestComment {
     margin-top: 30px;
-    width: 100%;
+    margin-bottom: 50px;
 }
 
-.editButtonContainer {
-    width: auto;
-    height: auto;
+.requestCommentButton {
+    float: right;
+    margin-top: 5px;
 }
 
-.createButtonContainer {
-    height: auto;
-    width: auto;
-    margin-top: 25px;
+.container {
+    margin-bottom: 5px;
 }
 
-
-.childrenContainer {
-    margin-top: 20px;
-    margin-left: 50px;
-}
-
-.commentButton {
-    margin-right: 5px;
+.children {
+    padding-left: 50px;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }

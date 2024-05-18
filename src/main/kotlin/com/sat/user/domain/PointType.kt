@@ -8,4 +8,5 @@ enum class PointType(
     ARTICLE(10, "게시글 생성"),
     COMMENT(3, "댓글 작성"),
     HART(3, "좋아요"),
+    REDEEM(0, "포인트 사용"),
 }

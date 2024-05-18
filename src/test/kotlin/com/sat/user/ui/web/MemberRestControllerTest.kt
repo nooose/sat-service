@@ -1,28 +1,51 @@
 package com.sat.user.ui.web
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
+import com.sat.board.application.query.ArticleQueryService
+import com.sat.board.application.query.CommentQueryService
+import com.sat.board.application.query.dto.CommentWithArticle
+import com.sat.board.application.query.dto.LikedArticleSimpleQuery
+import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
+import com.sat.common.documentation.dsl.PUT
 import com.sat.common.documentation.dsl.andDocument
 import com.sat.common.security.WithAuthenticatedUser
+import com.sat.user.application.command.MemberCommandService
+import com.sat.user.application.command.dto.MemberUpdateCommand
 import com.sat.user.application.query.MemberQueryService
 import com.sat.user.application.query.PointQueryService
 import com.sat.user.application.query.dto.MemberInformation
 import com.sat.user.application.query.dto.MemberSimpleQuery
+import com.sat.user.application.query.dto.MyPointQuery
+import com.sat.user.domain.PointType
 import io.mockk.every
+import io.mockk.just
+import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.http.MediaType
 import java.time.LocalDateTime
 
 @DisplayName(value = "API 문서화 - 사용자")
 @WebMvcTest(MemberRestController::class)
-class MemberRestControllerTest : Documentation() {
+class MemberRestControllerTest @Autowired constructor(
+    private val objectMapper: ObjectMapper,
+) : Documentation() {
 
+    @MockkBean
+    lateinit var memberCommandService: MemberCommandService
     @MockkBean
     lateinit var memberQueryService: MemberQueryService
     @MockkBean
     lateinit var pointQueryService: PointQueryService
+    @MockkBean
+    lateinit var articleQueryService: ArticleQueryService
+    @MockkBean
+    lateinit var commentQueryService: CommentQueryService
 
     @WithAuthenticatedUser
     @Test
@@ -70,6 +93,134 @@ class MemberRestControllerTest : Documentation() {
                 field("[].name", "이름")
                 field("[].email", "이메일")
                 field("[].createdDateTime", "가입 시간")
+            }
+        }
+    }
+
+    @WithAuthenticatedUser
+    @Test
+    fun `자신의 정보 수정`() {
+        val command = MemberUpdateCommand("닉네임")
+
+        every { memberCommandService.update(any(), any()) } just runs
+
+        mockMvc.PUT("/user/members/me") {
+            content = objectMapper.writeValueAsString(command)
+            contentType = MediaType.APPLICATION_JSON
+            characterEncoding = "utf-8"
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "사용자"
+            summary = "사용자 정보 수정"
+            requestBody {
+                type = MemberUpdateCommand::class
+                field("nickname", "변경할 닉네임")
+            }
+        }
+    }
+
+    @WithAuthenticatedUser
+    @Test
+    fun `자신이 작성한 게시글 목록 조회`() {
+        val responses = listOf(
+            ArticleWithCount(1, "테스트 A", "IT", 10, 15, LocalDateTime.now()),
+            ArticleWithCount(2, "테스트 B", "IT", 3, 5, LocalDateTime.now())
+        )
+
+        every { articleQueryService.getAll(any()) } returns responses
+
+        mockMvc.GET("/user/articles") {
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "사용자"
+            summary = "자신이 작성한 게시글 목록 조회"
+            responseBody {
+                type = ArticleWithCount::class
+                field("[].id", "게시글 ID")
+                field("[].title", "게시글 제목")
+                field("[].category", "게시글 카테고리")
+                field("[].commentCount", "게시글에 달린 댓글 수")
+                field("[].likeCount", "게시글에 달린 좋아요 수")
+                field("[].createdDateTime", "게시글 작성 시간")
+            }
+        }
+    }
+
+    @WithAuthenticatedUser
+    @Test
+    fun `자신이 작성한 댓글 목록 조회`() {
+        val responses = listOf(
+            CommentWithArticle(1, "테스트 A", 1L, "제목 A", LocalDateTime.now()),
+            CommentWithArticle(2, "테스트 B", 2L, "제목 B", LocalDateTime.now()),
+        )
+
+        every { commentQueryService.getComments(any()) } returns responses
+
+        mockMvc.GET("/user/comments") {
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "사용자"
+            summary = "자신이 작성한 댓글 목록 조회"
+            responseBody {
+                type = CommentWithArticle::class
+                field("[].id", "댓글 ID")
+                field("[].content", "댓글 내용")
+                field("[].articleId", "게시글 ID")
+                field("[].articleTitle", "게시글 제목")
+                field("[].createdDateTime", "댓글 작성 시간")
+            }
+        }
+    }
+
+    @WithAuthenticatedUser
+    @Test
+    fun `포인트 이력 조회`() {
+        val responses = listOf(
+            MyPointQuery(1, 10, PointType.LOGIN.title, LocalDateTime.now()),
+            MyPointQuery(2, 10, PointType.LOGIN.title, LocalDateTime.now().plusDays(1)),
+        )
+
+        every { pointQueryService.getPoints(any()) } returns responses
+
+        mockMvc.GET("/user/points") {
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "사용자"
+            summary = "포인트 적립/사용 이력 조회"
+            responseBody {
+                type = MyPointQuery::class
+                field("[].id", "포인트 ID")
+                field("[].point", "포인트 적립/사용 값")
+                field("[].type", "포인트 적립/사용 타입")
+                field("[].createdDateTime", "포인트 적립/사용 시간")
+            }
+        }
+    }
+
+    @WithAuthenticatedUser
+    @Test
+    fun `좋아요 누른 게시글 목록 조회`() {
+        val responses = listOf(
+            LikedArticleSimpleQuery(1, "좋아요 A"),
+            LikedArticleSimpleQuery(2, "좋아요 B"),
+        )
+
+        every { articleQueryService.getLikedArticles(any()) } returns responses
+
+        mockMvc.GET("/user/likes") {
+        }.andExpect {
+            status { isOk() }
+        }.andDocument {
+            tag = "사용자"
+            summary = "좋아요 누른 게시글 목록 조회"
+            responseBody {
+                type = LikedArticleSimpleQuery::class
+                field("[].articleId", "게시글 ID")
+                field("[].title", "게시글 제목")
             }
         }
     }

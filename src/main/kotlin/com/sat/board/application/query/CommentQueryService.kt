@@ -2,6 +2,7 @@ package com.sat.board.application.query
 
 import com.sat.board.application.query.dto.CommentHierarchy
 import com.sat.board.application.query.dto.CommentQuery
+import com.sat.board.application.query.dto.CommentWithArticle
 import com.sat.board.domain.dto.CommentWithMemberDto
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
@@ -33,5 +34,9 @@ class CommentQueryService(
         }
         val hierarchy = CommentHierarchy(commentWithMember)
         return hierarchy.comments
+    }
+
+    fun getComments(memberId: Long): List<CommentWithArticle> {
+        return commentRepository.findByCreatedBy(memberId)
     }
 }

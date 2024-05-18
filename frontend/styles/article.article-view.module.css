@@ -1,0 +1,7 @@
+.articleViewContainer {
+    margin-bottom: 50px;
+}
+
+.articleViewContainer > * {
+    margin-bottom: 20px;
+}
