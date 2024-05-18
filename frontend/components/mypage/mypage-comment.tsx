@@ -6,7 +6,7 @@ export default function MypageComment({comment}: { comment: MyPageCommentRespons
     const formattedTime = format(comment.createdDateTime, `yyyy-MM-dd h:mm a`)
     return (
         <div>
-            <Card key={comment.id} style={{width: "200%"}}>
+            <Card key={comment.id}>
                 <CardBody>
                     <div className="flex justify-between">
                         <div>
