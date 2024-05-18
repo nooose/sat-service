@@ -29,7 +29,7 @@ class MemberLoginService(
     }
 
     private fun saveMember(name: String, email: String): Member {
-        val newMember = Member(name = name, nickname = name, email = email)
+        val newMember = Member.new(name = name, email = email)
         memberRepository.save(newMember)
         return newMember
     }

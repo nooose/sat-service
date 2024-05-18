@@ -9,5 +9,5 @@ data class CommentWithArticle(
     val isDeleted: Boolean,
     val articleId: Long,
     val articleTitle: String,
-    val createdAt: LocalDateTime,
+    val createdDateTime: LocalDateTime,
 )

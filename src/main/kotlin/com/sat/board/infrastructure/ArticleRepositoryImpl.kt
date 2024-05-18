@@ -26,6 +26,7 @@ class ArticleRepositoryImpl(
                 `as`(category.name.value, "category"),
                 `as`(comment.countDistinct(), "commentCount"),
                 `as`(like.countDistinct(), "likeCount"),
+                `as`(article.createdDateTime, "createdDateTime"),
             ))
             .from(article)
             .leftJoin(comment).on(article.id.eq(comment.articleId))

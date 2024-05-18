@@ -24,7 +24,7 @@ class CommentRepositoryImpl(
                 `as`(comment.isDeleted, "isDeleted"),
                 `as`(article.id, "articleId"),
                 `as`(article.title, "articleTitle"),
-                `as`(comment.createdDateTime, "createdAt"),
+                `as`(comment.createdDateTime, "createdDateTime"),
             ))
             .from(comment)
             .leftJoin(article).on(comment.articleId.eq(article.id))

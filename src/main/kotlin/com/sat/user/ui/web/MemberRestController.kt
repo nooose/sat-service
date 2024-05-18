@@ -5,17 +5,22 @@ import com.sat.board.application.query.CommentQueryService
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
+import com.sat.user.application.command.MemberCommandService
+import com.sat.user.application.command.dto.MemberUpdateCommand
 import com.sat.user.application.query.MemberQueryService
 import com.sat.user.application.query.PointQueryService
 import com.sat.user.application.query.dto.MemberInformation
 import com.sat.user.application.query.dto.MemberSimpleQuery
-import com.sat.user.domain.Point
+import com.sat.user.application.query.dto.MyPointQuery
 import com.sat.user.domain.dto.CommentDto
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class MemberRestController(
+    private val memberCommandService: MemberCommandService,
     private val memberQueryService: MemberQueryService,
     private val pointQueryService: PointQueryService,
     private val articleQueryService: ArticleQueryService,
@@ -27,6 +32,15 @@ class MemberRestController(
         val point = pointQueryService.getTotalPoint(member.id)
         return MemberInformation.of(member, point)
     }
+
+    @PutMapping("/user/members/me")
+    fun update(
+        @LoginMember member: AuthenticatedMember,
+        @RequestBody command: MemberUpdateCommand,
+    ) {
+        memberCommandService.update(member.id, command)
+    }
+
 
     @GetMapping("/user/members")
     fun members(): List<MemberSimpleQuery> {
@@ -45,9 +59,9 @@ class MemberRestController(
         return commentQueryService.getComments(member.id)
     }
 
-    // TODO: 화면 기획 나온 후 API 변경 예정
-    @GetMapping("/user/members/me/points")
-    fun points(@LoginMember member: AuthenticatedMember): List<Point> {
+    // TODO: 테스트코드 작성
+    @GetMapping("/user/points")
+    fun points(@LoginMember member: AuthenticatedMember): List<MyPointQuery> {
         return pointQueryService.getPoints(member.id)
     }
 }

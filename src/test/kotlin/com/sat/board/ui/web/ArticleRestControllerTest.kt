@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import java.time.LocalDateTime
 
 @DisplayName(value = "API 문서화 - 게시글")
 @WebMvcTest(ArticleRestController::class)
@@ -91,9 +92,9 @@ class ArticleRestControllerTest @Autowired constructor(
     @Test
     fun `게시글 목록 조회`() {
         val response = listOf(
-            ArticleWithCount(1L, "제목 A", "IT", 0 , 0),
-            ArticleWithCount(2L, "제목 B", "IT", 0, 0),
-            ArticleWithCount(3L, "제목 C", "스포츠", 0, 0),
+            ArticleWithCount(1L, "제목 A", "IT", 0 , 0, LocalDateTime.now()),
+            ArticleWithCount(2L, "제목 B", "IT", 0, 0, LocalDateTime.now()),
+            ArticleWithCount(3L, "제목 C", "스포츠", 0, 0, LocalDateTime.now()),
         )
         every { articleQueryService.getAll(any()) } returns response
 

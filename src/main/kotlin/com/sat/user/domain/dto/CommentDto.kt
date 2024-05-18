@@ -1,7 +1,7 @@
 package com.sat.user.domain.dto
 
 import com.sat.board.application.query.dto.CommentWithArticle
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class CommentDto(
     val id: Long,
@@ -10,7 +10,7 @@ data class CommentDto(
     val isDeleted: Boolean,
     val articleId: Long,
     val articleTitle: String,
-    val createdAt: LocalDate,
+    val createdDateTime: LocalDateTime,
 ) {
     companion object {
         fun from(commentWithArticle: CommentWithArticle): CommentDto {
@@ -21,7 +21,7 @@ data class CommentDto(
                 isDeleted = commentWithArticle.isDeleted,
                 articleId = commentWithArticle.articleId,
                 articleTitle = commentWithArticle.articleTitle,
-                createdAt = commentWithArticle.createdAt.toLocalDate(),
+                createdDateTime = commentWithArticle.createdDateTime,
             )
         }
     }
