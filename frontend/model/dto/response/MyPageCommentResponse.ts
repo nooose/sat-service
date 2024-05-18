@@ -1,5 +1,3 @@
-import CommentResponse from "@/model/dto/response/CommentResponse";
-
 interface MyPageCommentResponse {
     id: number,
     content: string,
@@ -7,7 +5,7 @@ interface MyPageCommentResponse {
     isDeleted: boolean,
     articleId: number,
     articleTitle: string,
-    createdAt: string,
+    createdDateTime: string,
 }
 
 export default MyPageCommentResponse;

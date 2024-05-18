@@ -1,5 +1,7 @@
 import MyPageArticles from "@/components/mypage/mypage-articles";
 import MyPageComments from "@/components/mypage/mypage-comments";
+import MyPagePoints from "@/components/mypage/mypage-points";
+import MyPageInfo from "@/components/mypage/mypage-info";
 
 export async function generateMetadata({params: {menu}}: any) {
     return {
@@ -10,8 +12,8 @@ export async function generateMetadata({params: {menu}}: any) {
 export default async function MyPageMenu({params: {menu}}: any) {
     return (
         <div>
-            {menu === "info" && <h1>mypage</h1>}
-            {menu === "point" && <h1>point</h1>}
+            {menu === "info" && <MyPageInfo/>}
+            {menu === "point" && <MyPagePoints/>}
             {menu === "articles" && <MyPageArticles/>}
             {menu === "comments" && <MyPageComments/>}
         </div>

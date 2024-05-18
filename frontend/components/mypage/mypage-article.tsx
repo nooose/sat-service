@@ -1,21 +1,16 @@
-"use client"
-
 import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
-import {Card, CardBody, CardFooter} from "@nextui-org/react";
-import {useRouter} from "next/navigation";
-import styles from "@styles/mypage.module.css"
+import {Card, CardBody, CardFooter, Link} from "@nextui-org/react";
 
-export default function ClientMyPageArticle({article}: { article: ArticleSimpleResponse }) {
-    const router = useRouter();
-    const onClick = () => {
-        router.push(`/articles/${article.id}`);
-    }
-
+export default function MypageArticle({article}: { article: ArticleSimpleResponse }) {
     return (
         <div>
-            <Card key={article.id} className={styles.articleHistory}>
-                <CardBody onClick={onClick}>
-                    <p>{article.title}</p>
+            <Card key={article.id}>
+                <CardBody>
+                    <Link
+                        href={`/articles/${article.id}`}
+                    >
+                        {article.title}
+                    </Link>
                 </CardBody>
                 <CardFooter className="gap-3">
                     <div className="flex gap-1">

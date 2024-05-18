@@ -1,10 +1,14 @@
-import ClientEditor from "@/components/editor/client-editor";
+"use client"
+
 import React from "react";
+import {Button} from "@nextui-org/react";
 
 export default function ClientReadonlyEditor({initialValue}: {initialValue: string}) {
     return (
-        <div>
-            <ClientEditor initialValue={initialValue} editorRef={null}/>
-        </div>
+        <Button
+            color={"warning"}
+        >
+            닉네임 변경
+        </Button>
     );
 }

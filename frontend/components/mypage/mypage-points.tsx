@@ -1,28 +1,28 @@
-import ArticleSimpleResponse from "@/model/dto/response/ArticleSimpleResponse";
 import {cookies} from "next/headers";
 import {RestClient} from "@/utils/rest-client";
-import MypageArticle from "@/components/mypage/mypage-article";
 import {getUserInfo} from "@/components/user-login";
 import React from "react";
 import styles from "@styles/mypage.module.css";
+import MypagePoint from "@/components/mypage/mypage-point";
+import MyPointResponse from "@/model/dto/response/MyPointResponse";
 
-async function getArticles(memberId: number) {
+async function getPoints(memberId: number) {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await RestClient.get("/user/articles")
+    const response = await RestClient.get("/user/points")
         .session(cookie)
         .fetch();
     return await response.json();
 }
 
-export default async function MyPageArticles() {
+export default async function MyPagePoints() {
     const cookie = cookies().get("JSESSIONID")?.value
     const member = await getUserInfo(cookie);
-    const articles = await getArticles(member.id);
+    const points = await getPoints(member.id);
     return (
         <div className={styles.container}>
             <div className={styles.containerName}>게시글</div>
-            {articles.map((article: ArticleSimpleResponse) => (
-                <MypageArticle key={article.id} article={article}/>
+            {points.map((point: MyPointResponse) => (
+                <MypagePoint key={point.id} point={point}/>
             ))}
         </div>
     );

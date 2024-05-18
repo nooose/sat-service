@@ -1,7 +1,7 @@
 import {cookies} from "next/headers";
 import {RestClient} from "@/utils/rest-client";
 import React from "react";
-import MyPageClientComment from "@/components/mypage/client-mypage-comment";
+import MypageComment from "@/components/mypage/mypage-comment";
 import MyPageCommentResponse from "@/model/dto/response/MyPageCommentResponse";
 import styles from "@styles/mypage.module.css";
 
@@ -20,7 +20,7 @@ export default async function MyPageComments() {
         <div className={styles.container}>
             <div className={styles.containerName}>댓글</div>
             {comments?.map((comment: MyPageCommentResponse) => (
-                <MyPageClientComment comment={comment}/>
+                <MypageComment comment={comment}/>
             ))}
         </div>
     )
