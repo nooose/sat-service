@@ -25,8 +25,8 @@ class ArticleRepositoryImpl(
                 `as`(article.id, "id"),
                 `as`(article.title, "title"),
                 `as`(category.name.value, "category"),
-                `as`(comment.countDistinct(), "commentCount"),
-                `as`(like.countDistinct(), "likeCount"),
+                `as`(comment.countDistinct().intValue(), "commentCount"),
+                `as`(like.countDistinct().intValue(), "likeCount"),
                 `as`(article.createdDateTime, "createdDateTime"),
             ))
             .from(article)
