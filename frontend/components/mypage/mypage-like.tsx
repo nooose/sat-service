@@ -7,7 +7,7 @@ export default function MypageLike({like}: { like: LikedArticleResponse }) {
 
     return (
         <div>
-            <Card key={like.articleId} style={{width: "200%"}}>
+            <Card key={like.articleId}>
                 <CardBody>
                     <div className="flex justify-between">
                         <Link

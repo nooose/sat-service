@@ -6,7 +6,7 @@ export default function MypagePoint({point}: { point: MyPointResponse }) {
     const formattedTime = format(point.createdDateTime, `yyyy-MM-dd h:mm a`)
     return (
         <div>
-            <Card key={point.id} style={{width: "200%"}}>
+            <Card key={point.id}>
                 <CardBody>
                     <div className="flex justify-between">
                         <div>

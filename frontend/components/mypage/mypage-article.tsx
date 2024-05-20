@@ -4,7 +4,7 @@ import {Card, CardBody, CardFooter, Link} from "@nextui-org/react";
 export default function MypageArticle({article}: { article: ArticleSimpleResponse }) {
     return (
         <div>
-            <Card key={article.id} style={{width: "200%"}}>
+            <Card key={article.id}>
                 <CardBody>
                     <Link
                         href={`/articles/${article.id}`}
