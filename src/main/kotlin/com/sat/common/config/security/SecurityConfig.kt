@@ -17,6 +17,7 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import java.util.*
 
 @Configuration(proxyBeanMethods = false)
 class SecurityConfig{
@@ -62,7 +63,7 @@ class SecurityConfig{
     @Bean
     fun oAuth2UserService(memberLoginService: MemberLoginService): OAuth2UserService<OidcUserRequest, OidcUser> {
         return OAuth2UserService {
-            val name = it.idToken.nickName as String
+            val name = it.idToken.nickName ?: UUID.randomUUID().toString().substring(9)
             val email = it.idToken.email as String
             val loginMember = memberLoginService.login(name, email)
             AuthenticatedMember.from(it, loginMember)
