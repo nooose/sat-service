@@ -9,7 +9,7 @@ create table member
     modified_by        bigint comment '사용자 수정자 아이디',
     modified_date_time datetime default now() comment '사용자 수정 시간',
     primary key (id)
-);
+) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 create table category
 (
@@ -21,7 +21,7 @@ create table category
     modified_by        bigint comment '카테고리 수정자 아이디',
     modified_date_time datetime default now() comment '카테고리 수정 시간',
     primary key (id)
-);
+) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 create table article
 (
@@ -36,7 +36,7 @@ create table article
     is_deleted         boolean default false comment '게시글 삭제 유무',
     primary key (id),
     foreign key (category_id) references category (id)
-);
+) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 create table comment
 (
@@ -50,19 +50,19 @@ create table comment
     modified_date_time datetime default now() comment '댓글 수정 시간',
     is_deleted         boolean not null comment '댓글 삭제 유무',
     primary key (id)
-);
+) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 create table likes
 (
     id                 bigint not null AUTO_INCREMENT comment '좋아요 아이디',
     article_id         bigint not null comment '게시글 아이디',
-    created_by          bigint not null comment '좋아요 생성자 아이디',
+    created_by         bigint not null comment '좋아요 생성자 아이디',
     created_date_time  datetime not null default now() comment '좋아요 생성 시간',
     modified_by        bigint comment '좋아요 수정자 아이디',
     modified_date_time datetime default now() comment '좋아요 수정 시간',
     primary key (id),
     foreign key (article_id) references article (id)
-);
+) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 create table login_history
 (
@@ -70,7 +70,7 @@ create table login_history
     member_id       bigint not null comment '사용자 아이디',
     login_date_time datetime not null default now() comment '로그인 시간',
     primary key (id)
-);
+) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 create table point
 (
@@ -80,7 +80,7 @@ create table point
     type      varchar(20) not null comment '포인트 유형',
     created_date_time datetime not null default now() comment '생성 및 사용 시간',
     primary key (id)
-);
+) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 insert into member (id, name, nickname, email, created_by, modified_by)
 values (1, '성준혁', '성준혁', 'noose@kakao.com', 1, 1),
