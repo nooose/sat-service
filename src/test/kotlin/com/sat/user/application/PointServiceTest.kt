@@ -55,7 +55,7 @@ class PointServiceTest @Autowired constructor(
             pointCommandService.dailyPointAward(loginMember.id!!, now)
 
             Then("포인트가 적립된다.") {
-                val points = pointRepository.findAllByMemberId(loginMember.id!!)
+                val points = pointRepository.findAllByMemberIdOrderByIdDesc(loginMember.id!!)
                 assertThat(points.total()).isEqualTo(PointType.LOGIN.score)
             }
         }
@@ -66,7 +66,7 @@ class PointServiceTest @Autowired constructor(
             pointCommandService.dailyPointAward(loginMember.id!!, now)
 
             Then("포인트가 중복 적립되지 않는다") {
-                val points = pointRepository.findAllByMemberId(loginMember.id!!)
+                val points = pointRepository.findAllByMemberIdOrderByIdDesc(loginMember.id!!)
                 assertThat(points.total()).isEqualTo(0)
             }
         }
@@ -80,7 +80,7 @@ class PointServiceTest @Autowired constructor(
         }
 
         Then("포인트가 적립된다") {
-            val memberPoint = pointRepository.findAllByMemberId(loginMember.id!!)
+            val memberPoint = pointRepository.findAllByMemberIdOrderByIdDesc(loginMember.id!!)
             assertThat(memberPoint.sumOf { it.point }).isEqualTo(PointType.ARTICLE.score)
         }
     }
@@ -99,7 +99,7 @@ class PointServiceTest @Autowired constructor(
             pointCommandService.commentPointAward(otherArticle.id!!, me.id!!)
 
             Then("포인트가 쌓인다") {
-                val points = pointRepository.findAllByMemberId(me.id!!)
+                val points = pointRepository.findAllByMemberIdOrderByIdDesc(me.id!!)
                 assertThat(points.total()).isEqualTo(PointType.COMMENT.score)
             }
         }
@@ -109,7 +109,7 @@ class PointServiceTest @Autowired constructor(
             pointCommandService.commentPointAward(myArticle.id!!, me.id!!)
 
             Then("포인트가 쌓이지 않는다") {
-                val points = pointRepository.findAllByMemberId(me.id!!)
+                val points = pointRepository.findAllByMemberIdOrderByIdDesc(me.id!!)
                 assertThat(points.total()).isEqualTo(0)
             }
         }
