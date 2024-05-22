@@ -15,7 +15,7 @@ class PointQueryService(
     }
 
     fun getPoints(memberId: Long): List<MyPointQuery> {
-        return pointRepository.findAllByMemberId(memberId)
+        return pointRepository.findAllByMemberIdOrderByIdDesc(memberId)
             .map { MyPointQuery.from(it) }
     }
 }
