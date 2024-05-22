@@ -4,7 +4,7 @@ import com.querydsl.core.types.ExpressionUtils.`as`
 import com.querydsl.core.types.Projections
 import com.querydsl.core.types.dsl.BooleanExpression
 import com.querydsl.jpa.impl.JPAQueryFactory
-import com.sat.board.domain.Article
+import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
 import com.sat.board.domain.QArticle.article
 import com.sat.board.domain.QCategory.category
 import com.sat.board.domain.QComment.comment
@@ -38,6 +38,7 @@ class ArticleRepositoryImpl(
                 article.isDeleted.eq(false)
             )
             .groupBy(article.id)
+            .orderBy(article.id.desc())
             .fetch()
     }
 
@@ -45,22 +46,19 @@ class ArticleRepositoryImpl(
         return id?.let { article.createdBy.eq(it) }
     }
 
-    override fun getLikedArticles(principalId: Long): List<Article> {
+    override fun getLikedArticles(principalId: Long): List<LikedArticleSimpleQuery> {
         // TODO: 인덱스 추가
-        val articleIds = queryFactory.select(like.articleId)
+        return queryFactory.select(
+            Projections.constructor(
+                LikedArticleSimpleQuery::class.java,
+                `as`(like.articleId,"articleId"),
+                `as`(article.title,"title"),
+                `as`(article.createdDateTime,"createDateTime")
+            ))
             .from(like)
+            .join(article).on(like.articleId.eq(article.id))
             .where(like.createdBy.eq(principalId))
-            .fetch()
-
-        if (articleIds.isEmpty()) {
-            return emptyList()
-        }
-
-        return queryFactory.selectFrom(article)
-            .where(
-                article.id.`in`(articleIds),
-                article.isDeleted.eq(false)
-            )
+            .orderBy(like.id.desc())
             .fetch()
     }
 

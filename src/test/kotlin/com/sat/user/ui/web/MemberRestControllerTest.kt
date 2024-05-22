@@ -5,7 +5,7 @@ import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.CommentQueryService
 import com.sat.board.application.query.dto.CommentWithArticle
-import com.sat.board.application.query.dto.LikedArticleSimpleQuery
+import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET

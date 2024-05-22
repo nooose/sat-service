@@ -30,6 +30,7 @@ class CommentRepositoryImpl(
                 comment.createdBy.eq(memberId),
                 comment.isDeleted.eq(false),
             )
+            .orderBy(comment.id.desc())
             .fetch()
     }
 }
