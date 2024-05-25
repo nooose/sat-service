@@ -5,12 +5,14 @@ import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.CommentQueryService
 import com.sat.board.application.query.dto.CommentWithArticle
-import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
 import com.sat.board.domain.dto.query.ArticleWithCount
+import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.PUT
 import com.sat.common.documentation.dsl.andDocument
+import com.sat.common.domain.CursorRequest
+import com.sat.common.domain.PageCursor
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.application.command.MemberCommandService
 import com.sat.user.application.command.dto.MemberUpdateCommand
@@ -183,7 +185,7 @@ class MemberRestControllerTest @Autowired constructor(
             MyPointQuery(2, 10, PointType.LOGIN.title, LocalDateTime.now().plusDays(1)),
         )
 
-        every { pointQueryService.getPoints(any()) } returns responses
+        every { pointQueryService.getPoints(any(), any()) } returns PageCursor(CursorRequest(2), responses)
 
         mockMvc.GET("/user/points") {
         }.andExpect {
@@ -191,12 +193,18 @@ class MemberRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "사용자"
             summary = "포인트 적립/사용 이력 조회"
+            queryParams {
+                param("id", "커서 ID", optional = true)
+                param("size", "페이지 사이즈", optional = true)
+            }
             responseBody {
-                type = MyPointQuery::class
-                field("[].id", "포인트 ID")
-                field("[].point", "포인트 적립/사용 값")
-                field("[].type", "포인트 적립/사용 타입")
-                field("[].createdDateTime", "포인트 적립/사용 시간")
+                type = PageCursor::class
+                field("nextCursor.id", "다음 커서 ID")
+                field("nextCursor.size", "다음 페이지 사이즈")
+                field("data[].id", "포인트 ID")
+                field("data[].point", "포인트 적립/사용 값")
+                field("data[].type", "포인트 적립/사용 타입")
+                field("data[].createdDateTime", "포인트 적립/사용 시간")
             }
         }
     }
@@ -205,8 +213,8 @@ class MemberRestControllerTest @Autowired constructor(
     @Test
     fun `좋아요 누른 게시글 목록 조회`() {
         val responses = listOf(
-            LikedArticleSimpleQuery(1, "좋아요 A"),
-            LikedArticleSimpleQuery(2, "좋아요 B"),
+            LikedArticleSimpleQuery(1, "좋아요 A", LocalDateTime.now()),
+            LikedArticleSimpleQuery(2, "좋아요 B", LocalDateTime.now()),
         )
 
         every { articleQueryService.getLikedArticles(any()) } returns responses
@@ -221,6 +229,7 @@ class MemberRestControllerTest @Autowired constructor(
                 type = LikedArticleSimpleQuery::class
                 field("[].articleId", "게시글 ID")
                 field("[].title", "게시글 제목")
+                field("[].createdDateTime", "게시글 작성일")
             }
         }
     }

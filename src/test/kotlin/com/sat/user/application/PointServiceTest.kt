@@ -6,6 +6,7 @@ import com.sat.board.domain.Article
 import com.sat.board.domain.Category
 import com.sat.board.domain.CategoryName
 import com.sat.board.domain.port.ArticleRepository
+import com.sat.common.domain.CursorRequest
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.user.application.command.MemberLoginService
 import com.sat.user.application.command.PointCommandService
@@ -124,10 +125,10 @@ class PointServiceTest @Autowired constructor(
         pointRepository.saveAll(points)
         When("포인트를 조회하면") {
             val totalPoint = pointQueryService.getTotalPoint(1L)
-            val points = pointQueryService.getPoints(1L)
+            val cursorResponse = pointQueryService.getPoints(1L, CursorRequest.default())
             Then("포인트 정보를 확인할 수 있다.") {
                 assertThat(totalPoint).isEqualTo(points.sumOf { it.point })
-                assertThat(points).hasSize(3)
+                assertThat(cursorResponse.data).hasSize(3)
             }
         }
     }

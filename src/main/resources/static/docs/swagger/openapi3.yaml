@@ -31,21 +31,21 @@ paths:
                       "category" : "IT",
                       "commentCount" : 0,
                       "likeCount" : 0,
-                      "createdDateTime" : "2024-05-19T02:14:26.52066"
+                      "createdDateTime" : "2024-05-26T01:16:48.216451"
                     }, {
                       "id" : 2,
                       "title" : "제목 B",
                       "category" : "IT",
                       "commentCount" : 0,
                       "likeCount" : 0,
-                      "createdDateTime" : "2024-05-19T02:14:26.520679"
+                      "createdDateTime" : "2024-05-26T01:16:48.216467"
                     }, {
                       "id" : 3,
                       "title" : "제목 C",
                       "category" : "스포츠",
                       "commentCount" : 0,
                       "likeCount" : 0,
-                      "createdDateTime" : "2024-05-19T02:14:26.520683"
+                      "createdDateTime" : "2024-05-26T01:16:48.21647"
                     } ]
     post:
       tags:
@@ -397,14 +397,14 @@ paths:
                       "category" : "IT",
                       "commentCount" : 10,
                       "likeCount" : 15,
-                      "createdDateTime" : "2024-05-19T02:14:27.088823"
+                      "createdDateTime" : "2024-05-26T01:16:49.424487"
                     }, {
                       "id" : 2,
                       "title" : "테스트 B",
                       "category" : "IT",
                       "commentCount" : 3,
                       "likeCount" : 5,
-                      "createdDateTime" : "2024-05-19T02:14:27.088832"
+                      "createdDateTime" : "2024-05-26T01:16:49.424497"
                     } ]
   /user/comments:
     get:
@@ -428,13 +428,13 @@ paths:
                       "content" : "테스트 A",
                       "articleId" : 1,
                       "articleTitle" : "제목 A",
-                      "createdDateTime" : "2024-05-19T02:14:27.145697"
+                      "createdDateTime" : "2024-05-26T01:16:49.473149"
                     }, {
                       "id" : 2,
                       "content" : "테스트 B",
                       "articleId" : 2,
                       "articleTitle" : "제목 B",
-                      "createdDateTime" : "2024-05-19T02:14:27.145711"
+                      "createdDateTime" : "2024-05-26T01:16:49.473167"
                     } ]
   /user/likes:
     get:
@@ -455,10 +455,12 @@ paths:
                   value: |-
                     [ {
                       "articleId" : 1,
-                      "title" : "좋아요 A"
+                      "title" : "좋아요 A",
+                      "createdDateTime" : "2024-05-26T01:16:49.397136"
                     }, {
                       "articleId" : 2,
-                      "title" : "좋아요 B"
+                      "title" : "좋아요 B",
+                      "createdDateTime" : "2024-05-26T01:16:49.39715"
                     } ]
   /user/members:
     get:
@@ -500,27 +502,46 @@ paths:
       summary: 포인트 적립/사용 이력 조회
       description: 포인트 적립/사용 이력 조회
       operationId: member-rest-controller-test/포인트 이력 조회
+      parameters:
+      - name: id
+        in: query
+        description: 커서 ID
+        required: false
+        schema:
+          type: string
+      - name: size
+        in: query
+        description: 페이지 사이즈
+        required: false
+        schema:
+          type: string
       responses:
         "200":
           description: "200"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MyPointQuery'
+                $ref: '#/components/schemas/PageCursor'
               examples:
                 member-rest-controller-test/포인트 이력 조회:
                   value: |-
-                    [ {
-                      "id" : 1,
-                      "point" : 10,
-                      "type" : "로그인 적립",
-                      "createdDateTime" : "2024-05-19T02:14:27.178095"
-                    }, {
-                      "id" : 2,
-                      "point" : 10,
-                      "type" : "로그인 적립",
-                      "createdDateTime" : "2024-05-20T02:14:27.178101"
-                    } ]
+                    {
+                      "nextCursor" : {
+                        "id" : 2,
+                        "size" : 15
+                      },
+                      "data" : [ {
+                        "id" : 1,
+                        "point" : 10,
+                        "type" : "로그인 적립",
+                        "createdDateTime" : "2024-05-26T01:16:49.505576"
+                      }, {
+                        "id" : 2,
+                        "point" : 10,
+                        "type" : "로그인 적립",
+                        "createdDateTime" : "2024-05-27T01:16:49.505585"
+                      } ]
+                    }
   /user/members/me:
     get:
       tags:
@@ -581,6 +602,25 @@ components:
         content:
           type: string
           description: 게시글 내용
+    LikedArticleSimpleQuery:
+      title: LikedArticleSimpleQuery
+      type: array
+      items:
+        required:
+        - articleId
+        - createdDateTime
+        - title
+        type: object
+        properties:
+          articleId:
+            type: number
+            description: 게시글 ID
+          createdDateTime:
+            type: string
+            description: 게시글 작성일
+          title:
+            type: string
+            description: 게시글 제목
     SingletonList:
       title: SingletonList
       type: array
@@ -670,6 +710,44 @@ components:
         content:
           type: string
           description: 게시글 내용
+    PageCursor:
+      title: PageCursor
+      type: object
+      properties:
+        nextCursor:
+          required:
+          - id
+          - size
+          type: object
+          properties:
+            size:
+              type: number
+              description: 다음 페이지 사이즈
+            id:
+              type: number
+              description: 다음 커서 ID
+        data:
+          type: array
+          items:
+            required:
+            - createdDateTime
+            - id
+            - point
+            - type
+            type: object
+            properties:
+              createdDateTime:
+                type: string
+                description: 포인트 적립/사용 시간
+              id:
+                type: number
+                description: 포인트 ID
+              type:
+                type: string
+                description: 포인트 적립/사용 타입
+              point:
+                type: number
+                description: 포인트 적립/사용 값
     ArticleCreateCommand:
       title: ArticleCreateCommand
       required:
@@ -730,29 +808,6 @@ components:
         content:
           type: string
           description: 댓글 내용
-    MyPointQuery:
-      title: MyPointQuery
-      type: array
-      items:
-        required:
-        - createdDateTime
-        - id
-        - point
-        - type
-        type: object
-        properties:
-          createdDateTime:
-            type: string
-            description: 포인트 적립/사용 시간
-          id:
-            type: number
-            description: 포인트 ID
-          type:
-            type: string
-            description: 포인트 적립/사용 타입
-          point:
-            type: number
-            description: 포인트 적립/사용 값
     CategoryUpdateCommand:
       title: CategoryUpdateCommand
       required:
@@ -766,21 +821,6 @@ components:
           type: number
           description: 카테고리 부모 ID
           nullable: true
-    LikedArticleSimpleQuery:
-      title: LikedArticleSimpleQuery
-      type: array
-      items:
-        required:
-        - articleId
-        - title
-        type: object
-        properties:
-          articleId:
-            type: number
-            description: 게시글 ID
-          title:
-            type: string
-            description: 게시글 제목
     ArticleWithCount:
       title: ArticleWithCount
       type: array

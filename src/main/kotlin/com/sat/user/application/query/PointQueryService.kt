@@ -1,5 +1,7 @@
 package com.sat.user.application.query
 
+import com.sat.common.domain.CursorRequest
+import com.sat.common.domain.PageCursor
 import com.sat.user.application.query.dto.MyPointQuery
 import com.sat.user.domain.port.repository.PointRepository
 import org.springframework.stereotype.Service
@@ -14,8 +16,7 @@ class PointQueryService(
         return pointRepository.getTotalPoint(memberId)
     }
 
-    fun getPoints(memberId: Long): List<MyPointQuery> {
-        return pointRepository.findAllByMemberIdOrderByIdDesc(memberId)
-            .map { MyPointQuery.from(it) }
+    fun getPoints(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<MyPointQuery>> {
+        return pointRepository.findByCursor(memberId, cursorRequest)
     }
 }
