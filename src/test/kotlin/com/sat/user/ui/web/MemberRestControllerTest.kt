@@ -213,11 +213,11 @@ class MemberRestControllerTest @Autowired constructor(
     @Test
     fun `좋아요 누른 게시글 목록 조회`() {
         val responses = listOf(
-            LikedArticleSimpleQuery(1, "좋아요 A", LocalDateTime.now()),
-            LikedArticleSimpleQuery(2, "좋아요 B", LocalDateTime.now()),
+            LikedArticleSimpleQuery(1, 1, "좋아요 A", LocalDateTime.now()),
+            LikedArticleSimpleQuery(1, 2, "좋아요 B", LocalDateTime.now()),
         )
 
-        every { articleQueryService.getLikedArticles(any()) } returns responses
+        every { articleQueryService.getLikedArticles(any(), any()) } returns PageCursor(CursorRequest(2), responses)
 
         mockMvc.GET("/user/likes") {
         }.andExpect {
@@ -227,9 +227,12 @@ class MemberRestControllerTest @Autowired constructor(
             summary = "좋아요 누른 게시글 목록 조회"
             responseBody {
                 type = LikedArticleSimpleQuery::class
-                field("[].articleId", "게시글 ID")
-                field("[].title", "게시글 제목")
-                field("[].createdDateTime", "게시글 작성일")
+                field("nextCursor.id", "다음 커서 ID")
+                field("nextCursor.size", "다음 페이지 사이즈")
+                field("data[].id", "좋아요 ID")
+                field("data[].articleId", "게시글 ID")
+                field("data[].articleTitle", "게시글 제목")
+                field("data[].createdDateTime", "게시글 작성일")
             }
         }
     }

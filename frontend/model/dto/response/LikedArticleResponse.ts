@@ -1,6 +1,7 @@
 interface LikedArticleResponse {
+    id: number
     articleId: number,
-    title: string,
+    articleTitle: string,
     createdDateTime: string,
 }
 

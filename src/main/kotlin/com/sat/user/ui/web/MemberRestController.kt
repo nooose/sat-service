@@ -74,7 +74,7 @@ class MemberRestController(
     fun likes(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
-    ): List<LikedArticleSimpleQuery> {
-        return articleQueryService.getLikedArticles(member.id)
+    ): PageCursor<List<LikedArticleSimpleQuery>> {
+        return articleQueryService.getLikedArticles(member.id, cursorRequest)
     }
 }

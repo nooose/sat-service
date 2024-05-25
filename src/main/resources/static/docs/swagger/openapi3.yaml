@@ -31,21 +31,21 @@ paths:
                       "category" : "IT",
                       "commentCount" : 0,
                       "likeCount" : 0,
-                      "createdDateTime" : "2024-05-26T01:16:48.216451"
+                      "createdDateTime" : "2024-05-26T01:57:14.054074"
                     }, {
                       "id" : 2,
                       "title" : "제목 B",
                       "category" : "IT",
                       "commentCount" : 0,
                       "likeCount" : 0,
-                      "createdDateTime" : "2024-05-26T01:16:48.216467"
+                      "createdDateTime" : "2024-05-26T01:57:14.054097"
                     }, {
                       "id" : 3,
                       "title" : "제목 C",
                       "category" : "스포츠",
                       "commentCount" : 0,
                       "likeCount" : 0,
-                      "createdDateTime" : "2024-05-26T01:16:48.21647"
+                      "createdDateTime" : "2024-05-26T01:57:14.0541"
                     } ]
     post:
       tags:
@@ -397,14 +397,14 @@ paths:
                       "category" : "IT",
                       "commentCount" : 10,
                       "likeCount" : 15,
-                      "createdDateTime" : "2024-05-26T01:16:49.424487"
+                      "createdDateTime" : "2024-05-26T01:57:15.24956"
                     }, {
                       "id" : 2,
                       "title" : "테스트 B",
                       "category" : "IT",
                       "commentCount" : 3,
                       "likeCount" : 5,
-                      "createdDateTime" : "2024-05-26T01:16:49.424497"
+                      "createdDateTime" : "2024-05-26T01:57:15.249566"
                     } ]
   /user/comments:
     get:
@@ -428,13 +428,13 @@ paths:
                       "content" : "테스트 A",
                       "articleId" : 1,
                       "articleTitle" : "제목 A",
-                      "createdDateTime" : "2024-05-26T01:16:49.473149"
+                      "createdDateTime" : "2024-05-26T01:57:15.297079"
                     }, {
                       "id" : 2,
                       "content" : "테스트 B",
                       "articleId" : 2,
                       "articleTitle" : "제목 B",
-                      "createdDateTime" : "2024-05-26T01:16:49.473167"
+                      "createdDateTime" : "2024-05-26T01:57:15.297102"
                     } ]
   /user/likes:
     get:
@@ -453,15 +453,23 @@ paths:
               examples:
                 member-rest-controller-test/좋아요 누른 게시글 목록 조회:
                   value: |-
-                    [ {
-                      "articleId" : 1,
-                      "title" : "좋아요 A",
-                      "createdDateTime" : "2024-05-26T01:16:49.397136"
-                    }, {
-                      "articleId" : 2,
-                      "title" : "좋아요 B",
-                      "createdDateTime" : "2024-05-26T01:16:49.39715"
-                    } ]
+                    {
+                      "nextCursor" : {
+                        "id" : 2,
+                        "size" : 15
+                      },
+                      "data" : [ {
+                        "id" : 1,
+                        "articleId" : 1,
+                        "articleTitle" : "좋아요 A",
+                        "createdDateTime" : "2024-05-26T01:57:15.190089"
+                      }, {
+                        "id" : 1,
+                        "articleId" : 2,
+                        "articleTitle" : "좋아요 B",
+                        "createdDateTime" : "2024-05-26T01:57:15.190102"
+                      } ]
+                    }
   /user/members:
     get:
       tags:
@@ -534,12 +542,12 @@ paths:
                         "id" : 1,
                         "point" : 10,
                         "type" : "로그인 적립",
-                        "createdDateTime" : "2024-05-26T01:16:49.505576"
+                        "createdDateTime" : "2024-05-26T01:57:15.327836"
                       }, {
                         "id" : 2,
                         "point" : 10,
                         "type" : "로그인 적립",
-                        "createdDateTime" : "2024-05-27T01:16:49.505585"
+                        "createdDateTime" : "2024-05-27T01:57:15.327846"
                       } ]
                     }
   /user/members/me:
@@ -602,25 +610,6 @@ components:
         content:
           type: string
           description: 게시글 내용
-    LikedArticleSimpleQuery:
-      title: LikedArticleSimpleQuery
-      type: array
-      items:
-        required:
-        - articleId
-        - createdDateTime
-        - title
-        type: object
-        properties:
-          articleId:
-            type: number
-            description: 게시글 ID
-          createdDateTime:
-            type: string
-            description: 게시글 작성일
-          title:
-            type: string
-            description: 게시글 제목
     SingletonList:
       title: SingletonList
       type: array
@@ -890,6 +879,44 @@ components:
         nickname:
           type: string
           description: 변경할 닉네임
+    LikedArticleSimpleQuery:
+      title: LikedArticleSimpleQuery
+      type: object
+      properties:
+        nextCursor:
+          required:
+          - id
+          - size
+          type: object
+          properties:
+            size:
+              type: number
+              description: 다음 페이지 사이즈
+            id:
+              type: number
+              description: 다음 커서 ID
+        data:
+          type: array
+          items:
+            required:
+            - articleId
+            - articleTitle
+            - createdDateTime
+            - id
+            type: object
+            properties:
+              articleTitle:
+                type: string
+                description: 게시글 제목
+              articleId:
+                type: number
+                description: 게시글 ID
+              createdDateTime:
+                type: string
+                description: 게시글 작성일
+              id:
+                type: number
+                description: 좋아요 ID
     CategoryCreateCommand:
       title: CategoryCreateCommand
       required:

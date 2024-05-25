@@ -7,13 +7,13 @@ export default function MypageLike({like}: { like: LikedArticleResponse }) {
 
     return (
         <div>
-            <Card key={like.articleId}>
+            <Card key={like.id}>
                 <CardBody>
                     <div className="flex justify-between">
                         <Link
                             href={`/articles/${like.articleId}`}
                         >
-                            {like.title}
+                            {like.articleTitle}
                         </Link>
                         <div className="font-semibold text-default-400 text-xs">
                             {formattedTime}

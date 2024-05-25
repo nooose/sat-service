@@ -45,5 +45,4 @@ class PointRepositoryImpl(
         }
         return points.minOf { it.id!! }
     }
-
 }
