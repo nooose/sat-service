@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    reactStrictMode: false,
     env: {
         API_HOST: process.env.API_HOST,
         LOGIN_REQUEST_URL: process.env.LOGIN_REQUEST_URL,
