@@ -23,6 +23,7 @@ class CommentQueryService(
             throw NotFoundException("게시글이 존재하지 않습니다. - $articleId")
         }
 
+        // TODO: 조인해서 가져오기
         val comments = commentRepository.findAll(articleId)
         val memberIds = comments.map { it.createdBy!! }
         val members = memberRepository.findAllById(memberIds)

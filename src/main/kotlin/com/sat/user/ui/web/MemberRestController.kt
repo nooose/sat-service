@@ -51,6 +51,7 @@ class MemberRestController(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
     ): List<ArticleWithCount> {
+        // TODO: 커서 기능 추가
         return articleQueryService.getAll(member.id)
     }
 
@@ -59,6 +60,7 @@ class MemberRestController(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
     ): List<CommentWithArticle> {
+        // TODO: 커서 기능 추가
         return commentQueryService.getComments(member.id)
     }
 

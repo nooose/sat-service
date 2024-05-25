@@ -10,7 +10,7 @@ export default async function MyPageInfo() {
     const cookie = cookies().get("JSESSIONID")?.value
     const member = await getUserInfo(cookie);
     return (
-        <div>
+        <div className={styles.container}>
             <h1>내 정보</h1>
             <ClientMypageInfoUpdate nickname={member.nickname}/>
             <Input type="text"
