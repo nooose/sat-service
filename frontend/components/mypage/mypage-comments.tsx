@@ -1,27 +1,20 @@
 import {cookies} from "next/headers";
 import {RestClient} from "@/utils/rest-client";
 import React from "react";
-import MypageComment from "@/components/mypage/mypage-comment";
-import MyPageCommentResponse from "@/model/dto/response/MyPageCommentResponse";
 import styles from "@styles/mypage.module.css";
-
-async function getComments() {
-    const cookie = cookies().get("JSESSIONID")?.value
-    const response = await RestClient.get(`/user/comments`)
-        .session(cookie)
-        .fetch();
-    return await response.json();
-}
+import ClientMyPageComments from "@/components/mypage/client-mypage-comments";
 
 export default async function MyPageComments() {
-    const comments = await getComments();
+    const cookie = cookies().get("JSESSIONID")?.value
+    const response = await RestClient.get(`/user/comments?size=10`)
+        .session(cookie)
+        .fetch();
+    const pageCursor = await response.json();
 
     return (
         <div className={styles.container}>
             <div className={styles.containerName}>댓글</div>
-            {comments?.map((comment: MyPageCommentResponse) => (
-                <MypageComment comment={comment}/>
-            ))}
+            <ClientMyPageComments pageCursor={pageCursor}/>
         </div>
     )
 };

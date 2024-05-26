@@ -6,6 +6,7 @@ import {Button} from "@nextui-org/react";
 import PageCursor from "@/model/dto/response/PageCursor";
 import LikedArticleResponse from "@/model/dto/response/LikedArticleResponse";
 import MypageLike from "@/components/mypage/mypage-like";
+import styles from "@styles/mypage.module.css"
 
 export default function ClientMyPageLikes({pageCursor}: { pageCursor: PageCursor<LikedArticleResponse[]> }) {
     const [likes, setLikes] = useState<LikedArticleResponse[]>(pageCursor.data)
@@ -23,7 +24,8 @@ export default function ClientMyPageLikes({pageCursor}: { pageCursor: PageCursor
             {likes.map((like) => (
                 <MypageLike key={like.id} like={like}/>
             ))}
-            <Button
+            <Button className={styles.moreButton}
+                color={"success"}
                 onClick={event => fetchLikes()}
             >더 보기</Button>
         </>

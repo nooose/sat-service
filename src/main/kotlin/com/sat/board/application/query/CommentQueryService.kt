@@ -6,6 +6,8 @@ import com.sat.board.application.query.dto.CommentWithArticle
 import com.sat.board.domain.dto.CommentWithMemberDto
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CommentRepository
+import com.sat.common.domain.CursorRequest
+import com.sat.common.domain.PageCursor
 import com.sat.common.domain.exception.NotFoundException
 import com.sat.user.domain.port.repository.MemberRepository
 import org.springframework.stereotype.Service
@@ -37,7 +39,7 @@ class CommentQueryService(
         return hierarchy.comments
     }
 
-    fun getComments(memberId: Long): List<CommentWithArticle> {
-        return commentRepository.findByCreatedBy(memberId)
+    fun getComments(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<CommentWithArticle>> {
+        return commentRepository.findByCreatedBy(memberId, cursorRequest)
     }
 }

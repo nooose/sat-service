@@ -158,7 +158,7 @@ class MemberRestControllerTest @Autowired constructor(
             CommentWithArticle(2, "테스트 B", 2L, "제목 B", LocalDateTime.now()),
         )
 
-        every { commentQueryService.getComments(any()) } returns responses
+        every { commentQueryService.getComments(any(), any()) } returns PageCursor(CursorRequest(2), responses)
 
         mockMvc.GET("/user/comments") {
         }.andExpect {
@@ -166,13 +166,19 @@ class MemberRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "사용자"
             summary = "자신이 작성한 댓글 목록 조회"
+            queryParams {
+                param("id", "커서 ID", optional = true)
+                param("size", "페이지 사이즈", optional = true)
+            }
             responseBody {
                 type = CommentWithArticle::class
-                field("[].id", "댓글 ID")
-                field("[].content", "댓글 내용")
-                field("[].articleId", "게시글 ID")
-                field("[].articleTitle", "게시글 제목")
-                field("[].createdDateTime", "댓글 작성 시간")
+                field("nextCursor.id", "다음 커서 ID")
+                field("nextCursor.size", "다음 페이지 사이즈")
+                field("data[].id", "댓글 ID")
+                field("data[].content", "댓글 내용")
+                field("data[].articleId", "게시글 ID")
+                field("data[].articleTitle", "게시글 제목")
+                field("data[].createdDateTime", "댓글 작성 시간")
             }
         }
     }

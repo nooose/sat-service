@@ -6,6 +6,7 @@ import MypagePoint from "@/components/mypage/mypage-point";
 import MyPointResponse from "@/model/dto/response/MyPointResponse";
 import {Button} from "@nextui-org/react";
 import PageCursor from "@/model/dto/response/PageCursor";
+import styles from "@styles/mypage.module.css";
 
 export default function ClientMyPagePoints({pageCursor}: { pageCursor: PageCursor<MyPointResponse[]> }) {
     const [points, setPoints] = useState<MyPointResponse[]>(pageCursor.data)
@@ -23,7 +24,8 @@ export default function ClientMyPagePoints({pageCursor}: { pageCursor: PageCurso
             {points.map((point: MyPointResponse) => (
                 <MypagePoint key={point.id} point={point}/>
             ))}
-            <Button
+            <Button className={styles.moreButton}
+                color={"success"}
                 onClick={event => fetchPoints()}
             >더 보기</Button>
         </>

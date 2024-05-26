@@ -59,9 +59,8 @@ class MemberRestController(
     fun getMyComments(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
-    ): List<CommentWithArticle> {
-        // TODO: 커서 기능 추가
-        return commentQueryService.getComments(member.id)
+    ): PageCursor<List<CommentWithArticle>> {
+        return commentQueryService.getComments(member.id, cursorRequest)
     }
 
     @GetMapping("/user/points")
