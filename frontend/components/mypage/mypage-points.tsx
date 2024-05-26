@@ -6,7 +6,7 @@ import {cookies} from "next/headers";
 
 export default async function MyPagePoints(){
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await RestClient.get(`/user/points?size=10`)
+    const response = await RestClient.get(`/user/points?size=5`)
         .session(cookie)
         .fetch();
     const pageCursor = await response.json();

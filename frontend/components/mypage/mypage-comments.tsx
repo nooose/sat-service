@@ -6,7 +6,7 @@ import ClientMyPageComments from "@/components/mypage/client-mypage-comments";
 
 export default async function MyPageComments() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await RestClient.get(`/user/comments?size=10`)
+    const response = await RestClient.get(`/user/comments?size=5`)
         .session(cookie)
         .fetch();
     const pageCursor = await response.json();

@@ -6,7 +6,7 @@ import ClientMyPageLikes from "@/components/mypage/client-mypage-likes";
 
 export default async function MyPageLikes() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await RestClient.get(`/user/likes?size=10`)
+    const response = await RestClient.get(`/user/likes?size=5`)
         .session(cookie)
         .fetch();
     const pageCursor = await response.json();
