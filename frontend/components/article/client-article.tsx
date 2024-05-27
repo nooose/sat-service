@@ -9,7 +9,6 @@ import {PressEvent} from "@react-types/shared/src/events";
 export default function ClientArticle({article}: { article: ArticleSimpleResponse }) {
     const router = useRouter();
     const onClick = (e: PressEvent) => {
-        console.log("하이");
         router.push(`/articles/${article.id}`);
     }
 

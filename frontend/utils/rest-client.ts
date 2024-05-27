@@ -41,6 +41,13 @@ export class RestClient {
         return client;
     }
 
+    static delete(path: string) {
+        const client = new RestClient();
+        client.method = "DELETE";
+        client.path = path;
+        return client;
+    }
+
     static patch(path: string) {
         const client = new RestClient();
         client.method = "PATCH";
