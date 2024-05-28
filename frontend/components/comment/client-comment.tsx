@@ -1,12 +1,25 @@
 "use client"
 
-import {Button, Card, CardBody, CardFooter, CardHeader, Image} from "@nextui-org/react";
+import {
+    Button,
+    Card,
+    CardBody,
+    CardFooter,
+    CardHeader,
+    Image,
+    useDisclosure
+} from "@nextui-org/react";
 import React, {useState} from "react";
 import CommentResponse from "@/model/dto/response/CommentResponse";
 import CommentUpdate from "@/components/comment/client-comment-update";
 import {Textarea} from "@nextui-org/input";
 import ChildCategoryWrite from "@/components/comment/client-children-comment-write";
 import styles from "@styles/comment.module.css"
+import deleteStyles from "@styles/delete-button.module.css";
+import {RestClient} from "@/utils/rest-client";
+import {useRouter} from "next/navigation";
+import {errorToast} from "@/utils/toast-utils";
+import DeleteModal from "@/components/modal/delete-modal";
 
 export default function ClientComment({articleId, comment, loginUserId}: {
     articleId: number,
@@ -15,6 +28,8 @@ export default function ClientComment({articleId, comment, loginUserId}: {
 }) {
     const [isUpdateOpen, setIsUpdateOpen] = useState(false);
     const [isReplyOpen, setIsReplyOpen] = useState(false);
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
+
     const updateToggleAccordion = () => {
         setIsReplyOpen(false);
         setIsUpdateOpen(!isUpdateOpen);
@@ -23,6 +38,46 @@ export default function ClientComment({articleId, comment, loginUserId}: {
     const toggleReply = () => {
         setIsUpdateOpen(false);
         setIsReplyOpen(!isReplyOpen);
+    }
+
+    const router = useRouter();
+    const deleteEvent = () => {
+        console.log('dddd');
+        RestClient.delete(`/board/comments/${comment.id}`)
+            .successHandler(() => {
+                router.push(`/articles/${articleId}`);
+                router.refresh();
+            })
+            .errorHandler(error => {
+                if (error.status == 404) {
+                    errorToast("삭제에 실패하였습니다. (존재하지 않는 게시글)");
+                }
+            })
+            .fetch();
+    }
+
+    if (comment.isDeleted) {
+        return (
+            <div className={styles.comment}>
+                <Card key={comment.id}>
+                    <CardBody>
+                        삭제된 댓글입니다.
+                    </CardBody>
+                </Card>
+
+                <div className={styles.children}>
+                    {comment.children?.map(
+                        (comment: CommentResponse) => (
+                            <ClientComment articleId={articleId}
+                                           key={comment.id}
+                                           comment={comment}
+                                           loginUserId={loginUserId}
+                            />
+                        )
+                    )}
+                </div>
+            </div>
+        )
     }
 
     return (
@@ -41,6 +96,15 @@ export default function ClientComment({articleId, comment, loginUserId}: {
                             <p>{comment.memberName}</p>
                         </div>
                     </div>
+                    {loginUserId === comment.memberId ?
+                        <div>
+                            <button className={deleteStyles.deleteButton} onClick={onOpen}>
+                                <Image src={"/x-button.svg"} alt="Delete"/>
+                            </button>
+                        </div>
+                        :
+                        ''
+                    }
                 </CardHeader>
                 <CardBody>
                     {isUpdateOpen ?
@@ -95,6 +159,11 @@ export default function ClientComment({articleId, comment, loginUserId}: {
                     )
                 )}
             </div>
+            <DeleteModal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                deleteEvent={deleteEvent}
+            />
         </div>
     );
 };
