@@ -1,18 +1,21 @@
 "use client"
 
-import {Button, Image} from "@nextui-org/react";
+import {Button, Image, useDisclosure} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import deleteStyles from "@styles/delete-button.module.css";
 import React from "react";
 import {RestClient} from "@/utils/rest-client";
 import {errorToast} from "@/utils/toast-utils";
+import DeleteModal from "@/components/modal/delete-modal";
 
 export default function ClientArticleDeleteButton({id}: { id: number }) {
+    const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const router = useRouter();
     const deleteEvent = () => {
         RestClient.delete(`/board/articles/${id}`)
             .successHandler(() => {
-                router.push('/')
+                router.push('/');
+                router.refresh();
             })
             .errorHandler(error => {
                 if (error.status == 404) {
@@ -22,11 +25,17 @@ export default function ClientArticleDeleteButton({id}: { id: number }) {
             .fetch();
     }
 
+
     return (
         <div>
-            <button className={deleteStyles.deleteButton} onClick={deleteEvent}>
+            <button className={deleteStyles.deleteButton} onClick={onOpen}>
                 <Image src={"/x-button.svg"} alt="Delete"/>
             </button>
+            <DeleteModal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                deleteEvent={deleteEvent}
+            />
         </div>
     );
 }

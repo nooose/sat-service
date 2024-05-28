@@ -7,7 +7,7 @@ import {RestClient} from "@/utils/rest-client";
 import ArticleLikeButton from "@/components/article/client-article-like-button";
 import React from "react";
 import dynamic from "next/dynamic";
-import {Card, CardBody, Image} from "@nextui-org/react";
+import {Card, CardBody} from "@nextui-org/react";
 import {Skeleton} from "@nextui-org/skeleton";
 import {getUserInfo} from "@/components/user-login";
 import styles from "@styles/article.article-view.module.css"
