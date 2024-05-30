@@ -18,13 +18,9 @@ class CommentQueryService(
     private val commentRepository: CommentRepository,
 ) {
     fun get(articleId: Long): List<CommentQuery> {
-        val article =
-            articleRepository.findByIdOrNull(articleId)
-                ?: throw IllegalStateException("게시글이 존재하지 않습니다. - $articleId")
-
-        if (article.isDeleted) {
-            throw IllegalStateException("삭제된 게시글 입니다")
-        }
+        val article = articleRepository.findByIdOrNull(articleId)
+            ?: throw IllegalStateException("게시글이 존재하지 않습니다. - $articleId")
+        check(!article.isDeleted) { "삭제된 게시글 입니다" }
 
         val commentWithMember = commentRepository.findAll(articleId)
         val hierarchy = CommentHierarchy(commentWithMember)

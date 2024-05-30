@@ -42,16 +42,13 @@ export default function ClientComment({articleId, comment, loginUserId}: {
 
     const router = useRouter();
     const deleteEvent = () => {
-        console.log('dddd');
         RestClient.delete(`/board/comments/${comment.id}`)
             .successHandler(() => {
                 router.push(`/articles/${articleId}`);
                 router.refresh();
             })
             .errorHandler(error => {
-                if (error.status == 404) {
-                    errorToast("삭제에 실패하였습니다. (존재하지 않는 게시글)");
-                }
+                errorToast("존재하지 않는 게시글이므로 삭제에 실패했습니다.");
             })
             .fetch();
     }
