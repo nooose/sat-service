@@ -42,7 +42,7 @@ export default function UserProfile({id, name, point, avatar, cookie}: {
                 />
             </DropdownTrigger>
             <DropdownMenu aria-label="User Actions" variant="flat">
-                <DropdownItem key="logout" onClick={mypage}>
+                <DropdownItem key="mypage" onClick={mypage}>
                     마이페이지
                 </DropdownItem>
                 <DropdownItem key="logout" color="danger" onClick={logout}>

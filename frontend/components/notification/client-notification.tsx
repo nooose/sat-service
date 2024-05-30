@@ -31,7 +31,6 @@ export default function ClientNotification() {
 
         eventSource.addEventListener('ConnectedNotification', (event: any) => {
             const data = JSON.parse(event.data);
-            console.log(data.value);
         });
 
         eventSource.addEventListener('CommentNotification', (event: any) => {

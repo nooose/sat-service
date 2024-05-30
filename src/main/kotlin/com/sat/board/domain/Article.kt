@@ -13,7 +13,7 @@ class Article(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
 ) : AuditingFields() {
-    private var isDeleted: Boolean = false
+    var isDeleted: Boolean = false
 
     fun update(that: ArticleWithoutCategoryDto) {
         this.title = that.title
