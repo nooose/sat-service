@@ -11,6 +11,7 @@ import {Card, CardBody} from "@nextui-org/react";
 import {Skeleton} from "@nextui-org/skeleton";
 import {getUserInfo} from "@/components/user-login";
 import styles from "@styles/article.article-view.module.css"
+import ClientArticleDeleteButton from "@/components/article/client-article-delete-button";
 
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
@@ -52,6 +53,10 @@ export default async function ArticleInfo({id}: any) {
                 {
                     userInfo.isSameId(article.createdBy) &&
                     <ClientArticleUpdateButton id={id}/>
+                }
+                {
+                    userInfo.isSameId(article.createdBy) &&
+                    <ClientArticleDeleteButton id={id}/>
                 }
             </div>
             <Card>

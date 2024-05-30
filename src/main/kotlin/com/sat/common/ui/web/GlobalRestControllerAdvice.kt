@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 val log = KotlinLogging.logger { }
 
 @RestControllerAdvice
-class CommonRestControllerAdvice {
+class GlobalRestControllerAdvice {
 
     @InitBinder
     fun initBinder(binder: WebDataBinder) {

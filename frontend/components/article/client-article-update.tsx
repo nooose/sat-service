@@ -27,7 +27,6 @@ export default function ClientArticleUpdate({article}: { article: articleRespons
             content: content,
         }
 
-        console.log(`/board/articles/${article.id}`);
         RestClient.put(`/board/articles/${article.id}`)
             .requestBody(request)
             .successHandler(() => {
