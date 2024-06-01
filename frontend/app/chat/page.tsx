@@ -1,48 +1,29 @@
-"use client"
+import React from "react";
+import ClientCreateChatRoomButton from "@/components/chat/waiting-rooms/client-create-chat-room-button";
+import {RestClient} from "@/utils/rest-client";
+import ChatRoomResponse from "@/model/dto/response/ChatRoomResponse";
+import ClientWaitingChatRoom from "@/components/chat/client-waiting-chat-room";
+import {cookies} from "next/headers";
 
-import {useEffect, useState} from "react";
-import {Client} from "@stomp/stompjs";
-import ChatRoom from "@/app/chat/chat-room";
-import {API_HOST} from "@/utils/rest-client";
+async function getChatRooms() {
+    const cookie = cookies().get("JSESSIONID")?.value
+    const response = await RestClient.get('/chat/rooms')
+        .session(cookie)
+        .fetch();
+    return await response.json();
+}
 
-export default function Chat() {
-    const [client, setClient] = useState<Client>();
-    const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
-
-    useEffect(() => {
-        const chatRoomId = "1000";
-        const stompClient = new Client({
-            brokerURL: `ws://${API_HOST}/chat`,
-            reconnectDelay: 5000,
-            debug: (str) => {
-                console.log(new Date(), str);
-            },
-            onConnect: () => {
-                console.log('Connected to server');
-                stompClient.subscribe(`/topic/rooms/${chatRoomId}`, (message) => {
-                    const body: ChatMessageResponse = JSON.parse(message.body)
-                    setMessages(prevMessages => [...prevMessages, body]);
-                });
-            },
-            onStompError: (frame) => {
-                console.error('error: ' + frame.headers['message']);
-                console.error('error details: ' + frame.body);
-            },
-        });
-
-        stompClient.activate();
-        setClient(stompClient);
-
-        return () => {
-            stompClient.deactivate()
-                .then();
-        };
-    }, []);
-
+export default async function WaitingRooms() {
+    const chatRooms = await getChatRooms();
+    console.log(chatRooms);
     return (
-        <ChatRoom
-            messages={messages}
-            client={client}
-        />
+        <div>
+            <ClientCreateChatRoomButton/>
+            {chatRooms.map((chatRoom: ChatRoomResponse) => (
+                <ClientWaitingChatRoom
+                    key={chatRoom.id}
+                    chatRoom={chatRoom}/>
+            ))}
+        </div>
     );
 }

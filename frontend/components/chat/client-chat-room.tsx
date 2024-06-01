@@ -5,16 +5,15 @@ import {Client} from "@stomp/stompjs";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
 import {v4 as uuidv4} from "uuid";
-import ChatMessage from "@/app/chat/chat-message";
+import ChatMessage from "@/components/chat/chat-message";
 import {ScrollShadow} from "@nextui-org/scroll-shadow";
 
-export default function ChatRoom(
-    {client, messages}: { client: Client | undefined, messages: ChatMessageResponse[] }
+export default function ClientChatRoom(
+    {client, chatRoomId, messages}: { client: Client | undefined, chatRoomId: string, messages: ChatMessageResponse[] }
 ) {
     const [input, setInput] = useState("");
     const [userId, setUserId] = useState("")
     const scrollRef = useRef<HTMLDivElement>(null);
-    const chatRoomId = 1000 // FIXME: 임시 채팅방 아이디 할당
 
     useEffect(() => {
         if (scrollRef.current) {

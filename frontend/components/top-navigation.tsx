@@ -4,7 +4,7 @@ import UserLogin from "@/components/user-login";
 
 const links = [
     { href: "/category", label: "카테고리" },
-    { href: "/chat", label: "채팅" }
+    { href: "/chat", label: "채팅" },
 ];
 
 export default function Navigation() {
