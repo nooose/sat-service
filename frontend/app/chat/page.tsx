@@ -2,13 +2,12 @@
 
 import {useEffect, useState} from "react";
 import {Client} from "@stomp/stompjs";
-import ChatMessage from "@/model/dto/request/ChatMessage";
-import ChatRoom from "@/app/chat/chatRoom";
+import ChatRoom from "@/app/chat/chat-room";
 import {API_HOST} from "@/utils/rest-client";
 
 export default function Chat() {
     const [client, setClient] = useState<Client>();
-    const [messages, setMessages] = useState<ChatMessage[]>([]);
+    const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
 
     useEffect(() => {
         const chatRoomId = "1000";
@@ -21,7 +20,7 @@ export default function Chat() {
             onConnect: () => {
                 console.log('Connected to server');
                 stompClient.subscribe(`/topic/rooms/${chatRoomId}`, (message) => {
-                    const body: ChatMessage = JSON.parse(message.body)
+                    const body: ChatMessageResponse = JSON.parse(message.body)
                     setMessages(prevMessages => [...prevMessages, body]);
                 });
             },

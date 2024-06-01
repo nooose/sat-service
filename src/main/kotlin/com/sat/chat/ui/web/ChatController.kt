@@ -6,6 +6,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Controller
+import java.time.LocalDateTime
 
 private val log = KotlinLogging.logger { }
 
@@ -17,9 +18,12 @@ class ChatController(
     @MessageMapping("/rooms/{chatRoomId}")
     fun message(
         @DestinationVariable("chatRoomId") chatRoomId: String,
-        @Payload message: ChatMessage
+        @Payload message: ChatMessageRequest
     ) {
         log.info { "[${chatRoomId}] 수신: $message" }
-        messagingTemplate.convertAndSend("/topic/rooms/${chatRoomId}", message)
+        messagingTemplate.convertAndSend(
+            "/topic/rooms/${chatRoomId}",
+            ChatMessageResponse(message.senderId, message.text, LocalDateTime.now()),
+        )
     }
 }

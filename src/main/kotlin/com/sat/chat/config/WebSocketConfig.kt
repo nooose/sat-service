@@ -1,4 +1,4 @@
-package com.sat.chat.ui.web
+package com.sat.chat.config
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.MessageBrokerRegistry
@@ -7,7 +7,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer
 
 
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @EnableWebSocketMessageBroker
 class WebSocketConfig: WebSocketMessageBrokerConfigurer {
 
