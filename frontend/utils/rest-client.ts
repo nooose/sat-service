@@ -1,6 +1,7 @@
 import {CommonErrorResponse} from "@/model/dto/response/CommonErrorResponse";
 
 export const API_HOST = process.env.API_HOST!;
+export const HTTP_API_HOST = `http://${API_HOST}`;
 
 export class RestClient {
     private readonly baseUrl;
@@ -12,7 +13,7 @@ export class RestClient {
     private _errorHandler: (error: CommonErrorResponse) => void;
 
     private constructor() {
-        this.baseUrl = API_HOST;
+        this.baseUrl = HTTP_API_HOST;
         this.headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

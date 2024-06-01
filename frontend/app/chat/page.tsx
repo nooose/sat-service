@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import ChatMessage from "@/model/dto/request/ChatMessage";
 import ChatRoom from "@/app/chat/chatRoom";
+import {API_HOST} from "@/utils/rest-client";
 
 export default function Chat() {
     const [client, setClient] = useState<Client>();
@@ -12,7 +13,7 @@ export default function Chat() {
     useEffect(() => {
         const chatRoomId = "1000";
         const stompClient = new Client({
-            brokerURL: 'ws://www.sat.com:8080/chat',
+            brokerURL: `ws://${API_HOST}/chat`,
             reconnectDelay: 5000,
             debug: (str) => {
                 console.log(new Date(), str);
