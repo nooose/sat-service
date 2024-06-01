@@ -14,9 +14,12 @@ class ChatController(
     private val messagingTemplate: SimpMessagingTemplate,
 ) {
 
-    @MessageMapping("/message/{chatRoomId}")
-    fun message(@DestinationVariable("chatRoomId") chatRoomId: String, @Payload message: ChatMessage) {
+    @MessageMapping("/rooms/{chatRoomId}")
+    fun message(
+        @DestinationVariable("chatRoomId") chatRoomId: String,
+        @Payload message: ChatMessage
+    ) {
         log.info { "[${chatRoomId}] 수신: $message" }
-        messagingTemplate.convertAndSend("/topic/${chatRoomId}", message)
+        messagingTemplate.convertAndSend("/topic/rooms/${chatRoomId}", message)
     }
 }

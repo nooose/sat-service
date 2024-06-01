@@ -29,7 +29,7 @@ export default function ChatRoom(
         };
         setInput('');
         client!!.publish({
-            destination: '/app/message/1000',
+            destination: '/chat/rooms/1000',
             body: JSON.stringify(requestMessage),
         });
     };

@@ -20,8 +20,8 @@ export default function Chat() {
             },
             onConnect: () => {
                 console.log('Connected to server');
-                stompClient.subscribe(`/topic/${chatRoomId}`, (message) => {
-                    const body = JSON.parse(message.body)
+                stompClient.subscribe(`/topic/rooms/${chatRoomId}`, (message) => {
+                    const body: ChatMessage = JSON.parse(message.body)
                     setMessages(prevMessages => [...prevMessages, body]);
                 });
             },
