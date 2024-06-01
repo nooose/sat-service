@@ -10,4 +10,4 @@ spring:
 
 external:
   frontend:
-    url: http://localhost:3000
+    url: http://localhost:3000, http://www.sat.com:3000

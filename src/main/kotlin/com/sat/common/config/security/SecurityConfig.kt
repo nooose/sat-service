@@ -51,6 +51,7 @@ class SecurityConfig{
             }
             authorizeHttpRequests {
                 authorize(HttpMethod.GET, "/board/articles/**", permitAll)
+                authorize("/chat", permitAll)
                 authorize("/**", authenticated)
             }
             exceptionHandling {

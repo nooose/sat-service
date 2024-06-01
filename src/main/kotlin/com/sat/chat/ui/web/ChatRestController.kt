@@ -7,15 +7,18 @@ import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
+import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
 
+
 @RestController
 class ChatRestController(
     private val chatService: ChatService,
+    private val template: SimpMessagingTemplate,
 ) {
 
     @PostMapping("/chat/rooms")
