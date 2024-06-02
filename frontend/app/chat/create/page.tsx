@@ -7,14 +7,15 @@ import {RestClient} from "@/utils/rest-client";
 import {useRouter} from "next/navigation";
 import ChatCreateRequest from "@/model/dto/request/ChatCreateRequest";
 
-const MIN = 1;
-const MAX = 21;
+const MIN_TITLE_LENGTH = 2;
+const MAX_TITLE_LENGTH = 20;
 
 export default function CreateChatRoomPage() {
     const router = useRouter();
     const [title, setTitle] = useState("");
-    const validate = () => {
-        return title.length > MIN && title.length < MAX;
+
+    const isValidateTitle = () => {
+        return title.length < MIN_TITLE_LENGTH || title.length > MAX_TITLE_LENGTH;
     }
 
     const createChatRoom = () => {
@@ -41,8 +42,8 @@ export default function CreateChatRoomPage() {
                 onChange={event => setTitle(event.target.value)}
             />
             <Button
-                color={validate() ? 'primary' : "default"}
-                disabled={!validate()}
+                color={isValidateTitle() ? 'primary' : "default"}
+                disabled={!isValidateTitle()}
                 onClick={createChatRoom}>
                 생성
             </Button>

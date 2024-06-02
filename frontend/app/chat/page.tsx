@@ -15,7 +15,6 @@ async function getChatRooms() {
 
 export default async function WaitingRooms() {
     const chatRooms = await getChatRooms();
-    console.log(chatRooms);
     return (
         <div>
             <ClientCreateChatRoomButton/>

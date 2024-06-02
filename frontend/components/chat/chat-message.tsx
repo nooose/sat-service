@@ -20,7 +20,7 @@ export default function ChatMessage(
             <Card className="max-w-[350px]" shadow="none" style={{background: ownerColor}}>
                 {!isOwner && (
                     <CardHeader className="flex gap-1.5" style={{fontSize: '10px'}}>
-                        <p style={{fontWeight: "bold"}}>{chatMessage.senderId}</p>
+                        <p style={{fontWeight: "bold"}}>{chatMessage.senderName}</p>
                         <p>{formattedTime}</p>
                     </CardHeader>
                 )}

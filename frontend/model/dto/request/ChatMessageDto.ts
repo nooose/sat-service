@@ -1,10 +1,15 @@
 interface ChatMessageRequest {
-    senderId: string,
     text: string,
 }
 
 interface ChatMessageResponse {
-    senderId: string,
+    senderId: number,
+    senderName: string,
     text: string,
     createdDateTime: string,
+}
+
+interface ChatUser {
+    sessionId: string,
+    name: string,
 }

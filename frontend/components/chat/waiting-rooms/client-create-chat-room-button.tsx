@@ -8,7 +8,7 @@ export default function ClientCreateChatRoomButton() {
     const router = useRouter();
 
     const createChatRoom = () => {
-        router.push('/chat/create-chat-room');
+        router.push('/chat/create');
     }
 
     return (

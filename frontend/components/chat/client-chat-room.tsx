@@ -4,16 +4,27 @@ import React, {useEffect, useRef, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import {Input} from "@nextui-org/input";
 import {Button} from "@nextui-org/react";
-import {v4 as uuidv4} from "uuid";
 import ChatMessage from "@/components/chat/chat-message";
 import {ScrollShadow} from "@nextui-org/scroll-shadow";
+import {RestClient} from "@/utils/rest-client";
+import SatUser from "@/model/domain/SatUser";
 
 export default function ClientChatRoom(
     {client, chatRoomId, messages}: { client: Client | undefined, chatRoomId: string, messages: ChatMessageResponse[] }
 ) {
     const [input, setInput] = useState("");
-    const [userId, setUserId] = useState("")
+    const [memberId, setMemberId] = useState(0);
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    const setUserId = async () => {
+        const response = await RestClient.get(`/user/members/me`).fetch();
+        const satUser: SatUser = await response.json();
+        setMemberId(satUser.id)
+    }
+
+    useEffect(() => {
+        setUserId();
+    }, []);
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -21,33 +32,27 @@ export default function ClientChatRoom(
         }
     }, [messages]);
 
-    // FIXME: 임시 아이디 할당
-    useEffect(() => {
-        setUserId(uuidv4().substring(0, 4));
-    }, []);
-
     const sendMessage = () => {
         const inputMessage = input.trim();
         if (inputMessage.length == 0) {
             return
         }
         const requestMessage: ChatMessageRequest = {
-            senderId: userId,
             text: inputMessage,
         };
-        setInput('');
         client!!.publish({
             destination: `/chat/rooms/${chatRoomId}`,
             body: JSON.stringify(requestMessage),
         });
+        setInput('');
     };
 
     return (
-        <>
+        <div>
             <ScrollShadow ref={scrollRef} className="h-[500px]">
                 {messages.map((message, index) => (
                     <ChatMessage
-                        isOwner={message.senderId === userId}
+                        isOwner={message.senderId === memberId}
                         chatMessage={message}>
                     </ChatMessage>
                 ))}
@@ -64,6 +69,6 @@ export default function ClientChatRoom(
                 onClick={sendMessage}>
                 전송
             </Button>
-        </>
+        </div>
     );
 }
