@@ -1,7 +1,7 @@
 package com.sat.chat.ui.web
 
-import com.sat.chat.application.command.ChatMember
 import com.sat.chat.application.command.OnlineRecorder
+import com.sat.chat.domain.ChatMember
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.messaging.handler.annotation.DestinationVariable

@@ -15,7 +15,6 @@ class WebSocketEventHandler(
 
     @EventListener
     fun handleWebSocketDisconnectListener(event: SessionDisconnectEvent) {
-        log.info { "퇴장: ${event.user?.name}" }
         onlineRecorder.exit(event.sessionId)
     }
 }

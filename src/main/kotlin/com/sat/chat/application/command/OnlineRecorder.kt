@@ -1,5 +1,6 @@
 package com.sat.chat.application.command
 
+import com.sat.chat.domain.ChatMember
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
