@@ -1,6 +1,5 @@
 package com.sat.chat.ui.web
 
-import com.sat.chat.application.command.ChatUser
 import com.sat.chat.application.command.OnlineRecorder
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -21,6 +20,9 @@ class ChatController(
     private val onlineRecorder: OnlineRecorder,
 ) {
 
+    /**
+     * 채팅방 메시지 전송 처리
+     */
     @MessageMapping("/chat/rooms/{chatRoomId}")
     @SendTo("/topic/rooms/{chatRoomId}")
     fun message(
@@ -29,12 +31,11 @@ class ChatController(
         principal: OAuth2AuthenticationToken,
     ): ChatMessageResponse {
         val member = principal.principal as AuthenticatedMember
-        log.info { "[${chatRoomId}] 수신: $message" }
         return ChatMessageResponse(member.id, member.name, message.text, LocalDateTime.now())
     }
 
     /**
-     * 채팅방 구독 이벤트
+     * 채팅방 구독 이벤트 처리
      */
     @SubscribeMapping("/topic/rooms/{roomId}/active-users")
     @SendTo("/topic/rooms/{roomId}/active-users")
@@ -42,9 +43,8 @@ class ChatController(
         @DestinationVariable roomId: String,
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
-    ): Set<ChatUser> {
-        onlineRecorder.add(accessor.destination!!, ChatUser(accessor.sessionId!!, principal.name))
-        log.info { "[$roomId] 입장: ${principal.name}" }
-        return onlineRecorder.getOnlineUsers(accessor.destination!!)
+    ): Set<ChatMember> {
+        onlineRecorder.add(accessor.destination!!, ChatMember(accessor.sessionId!!, principal.name))
+        return onlineRecorder.getOnlineMembers(accessor.destination!!)
     }
 }
