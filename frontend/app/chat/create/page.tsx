@@ -15,7 +15,7 @@ export default function CreateChatRoomPage() {
     const [title, setTitle] = useState("");
 
     const isValidateTitle = () => {
-        return title.length < MIN_TITLE_LENGTH || title.length > MAX_TITLE_LENGTH;
+        return title.length >= MIN_TITLE_LENGTH || title.length <= MAX_TITLE_LENGTH;
     }
 
     const createChatRoom = () => {
