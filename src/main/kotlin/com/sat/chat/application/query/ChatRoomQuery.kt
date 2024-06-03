@@ -5,6 +5,7 @@ import com.sat.chat.domain.ChatRoom
 data class ChatRoomQuery(
     val id: String,
     val name: String,
+    val maximumCapacity: Int,
     val ownerId: Long,
 ) {
     companion object {
@@ -12,6 +13,7 @@ data class ChatRoomQuery(
             return ChatRoomQuery(
                 id = chatRoom.id!!,
                 name = chatRoom.name,
+                maximumCapacity = chatRoom.maximumCapacity,
                 ownerId = chatRoom.ownerId,
             )
         }

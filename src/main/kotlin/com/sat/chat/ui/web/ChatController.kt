@@ -2,6 +2,7 @@ package com.sat.chat.ui.web
 
 import com.sat.chat.application.command.OnlineRecorder
 import com.sat.chat.domain.ChatMember
+import com.sat.chat.domain.dto.query.ChatRoomOccupancyQuery
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.messaging.handler.annotation.DestinationVariable
@@ -46,5 +47,17 @@ class ChatController(
         accessor: StompHeaderAccessor,
     ): Set<ChatMember> {
         return onlineRecorder.add(accessor.destination!!, ChatMember(accessor.sessionId!!, principal.name))
+    }
+
+    /**
+     * 채팅 대기방 구독 이벤트 처리
+     */
+    @SubscribeMapping("/topic/rooms")
+    @SendTo("/topic/rooms")
+    fun handleWaitingSubscription(
+        principal: OAuth2AuthenticationToken,
+        accessor: StompHeaderAccessor,
+    ): List<ChatRoomOccupancyQuery> {
+        return onlineRecorder.getChatRoomOccupancy()
     }
 }

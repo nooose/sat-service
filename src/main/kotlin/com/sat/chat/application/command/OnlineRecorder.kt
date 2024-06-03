@@ -1,6 +1,7 @@
 package com.sat.chat.application.command
 
 import com.sat.chat.domain.ChatMember
+import com.sat.chat.domain.dto.query.ChatRoomOccupancyQuery
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.messaging.simp.stomp.StompCommand
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
@@ -51,5 +52,9 @@ class OnlineRecorder(
         accessor.sessionId = sessionId
         accessor.setLeaveMutable(true)
         return accessor
+    }
+
+    fun getChatRoomOccupancy(): List<ChatRoomOccupancyQuery> {
+        return topicMap.map { (key, value) -> ChatRoomOccupancyQuery(key, value.size) }
     }
 }

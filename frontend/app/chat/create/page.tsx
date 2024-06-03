@@ -9,18 +9,28 @@ import ChatCreateRequest from "@/model/dto/request/ChatCreateRequest";
 
 const MIN_TITLE_LENGTH = 2;
 const MAX_TITLE_LENGTH = 20;
+const MIN_HEADCOUNT = 2;
+const MAX_HEADCOUNT = 20;
+
 
 export default function CreateChatRoomPage() {
     const router = useRouter();
-    const [title, setTitle] = useState("");
+    const [name, setName] = useState("");
+    const [maximumCapacity, setHeadcount] = useState("")
 
     const isValidateTitle = () => {
-        return title.length >= MIN_TITLE_LENGTH || title.length <= MAX_TITLE_LENGTH;
+        return name.length >= MIN_TITLE_LENGTH && name.length <= MAX_TITLE_LENGTH;
     }
+
+    const isValidateHeadcount = () => {
+        const headcountNumber = parseInt(maximumCapacity, 10);
+        return !isNaN(headcountNumber) && headcountNumber >= MIN_HEADCOUNT && headcountNumber <= MAX_HEADCOUNT;
+    };
 
     const createChatRoom = () => {
         const request: ChatCreateRequest = {
-            name: title,
+            name: name,
+            maximumCapacity: parseInt(maximumCapacity, 10),
         }
 
         RestClient.post('/chat/rooms')
@@ -37,13 +47,18 @@ export default function CreateChatRoomPage() {
                 채팅방 생성
             </h1>
             <Input
-                value={title}
-                placeholder={'채팅방 이름'}
-                onChange={event => setTitle(event.target.value)}
+                value={name}
+                placeholder={'채팅방 이름(2글자 이상 20글자 이하)'}
+                onChange={event => setName(event.target.value)}
+            />
+            <Input
+                value={maximumCapacity}
+                placeholder={'채팅방 인원수(2~20명)'}
+                onChange={event => setHeadcount(event.target.value)}
             />
             <Button
-                color={isValidateTitle() ? 'primary' : "default"}
-                disabled={!isValidateTitle()}
+                color={isValidateTitle() && isValidateHeadcount() ? 'primary' : "default"}
+                disabled={!(isValidateTitle() && isValidateHeadcount())}
                 onClick={createChatRoom}>
                 생성
             </Button>

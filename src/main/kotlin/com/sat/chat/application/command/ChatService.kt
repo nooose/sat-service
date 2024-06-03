@@ -13,7 +13,7 @@ class ChatService(
 ) {
 
     fun createRoom(command: ChatRoomCreateCommand, principalId: Long): ChatRoom {
-        return chatRoomRepository.save(ChatRoom(command.name, principalId))
+        return chatRoomRepository.save(ChatRoom(command.name, command.maximumCapacity, principalId))
     }
 
     fun saveMessage(roomId: String, command: ChatMessageCommand, principalId: Long) {
