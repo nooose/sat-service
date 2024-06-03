@@ -2,8 +2,11 @@ package com.sat.chat.application.command
 
 import com.sat.chat.domain.ChatMember
 import org.springframework.messaging.simp.SimpMessagingTemplate
+import org.springframework.messaging.simp.stomp.StompCommand
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
+
 
 @Service
 class OnlineRecorder(
@@ -29,7 +32,24 @@ class OnlineRecorder(
         return sessionMap.remove(sessionId)!!
     }
 
-    fun getOnlineMembers(topicId: String): Set<ChatMember> {
+    fun deleteChatRoom(chatRoomId: String) {
+        val topicId = "/topic/rooms/${chatRoomId}/active-users"
+        getOnlineMembers(topicId).map { disconnectedCommand(it.sessionId) }
+                .forEach {
+                    messageSendingTemplate.convertAndSend(topicId, it)
+                    sessionMap.remove(it.sessionId)
+                }
+        topicMap.remove(topicId)
+    }
+
+    private fun getOnlineMembers(topicId: String): Set<ChatMember> {
         return topicMap[topicId] ?: emptySet()
+    }
+
+    private fun disconnectedCommand(sessionId: String): StompHeaderAccessor {
+        val accessor = StompHeaderAccessor.create(StompCommand.DISCONNECT)
+        accessor.sessionId = sessionId
+        accessor.setLeaveMutable(true)
+        return accessor
     }
 }

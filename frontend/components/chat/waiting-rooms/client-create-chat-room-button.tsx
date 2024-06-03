@@ -13,7 +13,9 @@ export default function ClientCreateChatRoomButton() {
 
     return (
         <div>
-            <Button onClick={createChatRoom}>
+            <Button
+                color="primary"
+                onClick={createChatRoom}>
                 채팅방 생성
             </Button>
         </div>

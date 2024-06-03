@@ -1,9 +1,7 @@
 package com.sat.chat.application.command
 
-import com.sat.chat.domain.ChatMessage
-import com.sat.chat.domain.ChatMessageRepository
-import com.sat.chat.domain.ChatRoom
-import com.sat.chat.domain.ChatRoomRepository
+import com.sat.chat.domain.*
+import com.sat.event.utils.Events
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -22,5 +20,10 @@ class ChatService(
         val chatRoom = chatRoomRepository.findByIdOrNull(roomId) ?: throw IllegalStateException("채팅방을 찾을 수 없습니다. - $roomId")
         val chatMessage = ChatMessage(principalId, command.message, LocalDateTime.now(), chatRoom)
         chatMessageRepository.save(chatMessage)
+    }
+
+    fun deleteRoom(roomId: String) {
+        chatRoomRepository.deleteById(roomId)
+        Events.publish(ChatRoomDeletedEvent(roomId))
     }
 }

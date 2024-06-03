@@ -4,12 +4,14 @@ import React, {useEffect, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import ClientChatRoom from "@/components/chat/client-chat-room";
 import {API_HOST} from "@/utils/rest-client";
-import {Listbox, ListboxItem} from "@nextui-org/react";
+import {Button, Listbox, ListboxItem} from "@nextui-org/react";
+import {useRouter} from "next/navigation";
 
 export default function Chat({params: {id}}: any) {
     const [client, setClient] = useState<Client>();
     const [messages, setMessages] = useState<ChatMessageResponse[]>([]);
     const [activeUsers, setActiveUsers] = useState<ChatUser[]>([]);
+    const router = useRouter();
 
     useEffect(() => {
         const stompClient = new Client({
@@ -48,36 +50,49 @@ export default function Chat({params: {id}}: any) {
     }, []);
 
     return (
-        <div className="flex justify-between">
-            <ClientChatRoom
-                chatRoomId={id}
-                messages={messages}
-                client={client}
-            />
-            <aside>
-                <h1>참여인원</h1>
-                <div className="w-full max-w-[260px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
-                    <Listbox
-                        classNames={{
-                            base: "max-w-xs",
-                            list: "max-h-[300px] overflow-scroll",
-                        }}
-                        items={activeUsers}
-                        emptyContent={""}
-                        variant="flat"
-                    >
-                        {(user) => (
-                            <ListboxItem key={user.sessionId} textValue={user.name}>
-                                <div className="flex gap-2 items-center">
-                                    <div className="flex flex-col">
-                                        <span className="text-small">{user.name}</span>
+        <div>
+            <div className="flex justify-between">
+                <ClientChatRoom
+                    chatRoomId={id}
+                    messages={messages}
+                    client={client}
+                />
+                <aside>
+                    <h1>참여인원</h1>
+                    <div
+                        className="w-full max-w-[260px] border-small px-1 py-2 rounded-small border-default-200 dark:border-default-100">
+                        <Listbox
+                            classNames={{
+                                base: "max-w-xs",
+                                list: "max-h-[300px] overflow-scroll",
+                            }}
+                            items={activeUsers}
+                            emptyContent={""}
+                            variant="flat"
+                        >
+                            {(user) => (
+                                <ListboxItem key={user.sessionId} textValue={user.name}>
+                                    <div className="flex gap-2 items-center">
+                                        <div className="flex flex-col">
+                                            <span className="text-small">{user.name}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </ListboxItem>
-                        )}
-                    </Listbox>
-                </div>
-            </aside>
+                                </ListboxItem>
+                            )}
+                        </Listbox>
+                    </div>
+                </aside>
+            </div>
+            <div>
+                <Button color="danger"
+                        onClick={event => {
+                            router.push("/chat");
+                            router.refresh();
+                        }}
+                >
+                    나가기
+                </Button>
+            </div>
         </div>
     );
 }

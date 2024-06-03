@@ -1,6 +1,7 @@
 package com.sat.chat.ui.message.internal
 
 import com.sat.chat.application.command.OnlineRecorder
+import com.sat.chat.domain.ChatRoomDeletedEvent
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -16,5 +17,10 @@ class WebSocketEventHandler(
     @EventListener
     fun handleWebSocketDisconnectListener(event: SessionDisconnectEvent) {
         onlineRecorder.exit(event.sessionId)
+    }
+
+    @EventListener
+    fun deleteRoom(event: ChatRoomDeletedEvent) {
+        onlineRecorder.deleteChatRoom(event.chatRoomId)
     }
 }

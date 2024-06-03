@@ -1,6 +1,6 @@
 "use client"
 
-import {Button, Image, useDisclosure} from "@nextui-org/react";
+import {Image, useDisclosure} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import deleteStyles from "@styles/delete-button.module.css";
 import React from "react";
@@ -22,7 +22,6 @@ export default function ClientArticleDeleteButton({id}: { id: number }) {
             })
             .fetch();
     }
-
 
     return (
         <div>

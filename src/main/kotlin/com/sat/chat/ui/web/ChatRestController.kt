@@ -8,10 +8,7 @@ import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
 
 
@@ -37,6 +34,11 @@ class ChatRestController(
     @GetMapping("/chat/rooms")
     fun findChatRooms(): List<ChatRoomQuery> {
         return chatQueryService.findChatRooms()
+    }
+
+    @DeleteMapping("/chat/rooms/{roomId}")
+    fun deleteRoom(@PathVariable roomId: String) {
+        return chatService.deleteRoom(roomId)
     }
 }
 
