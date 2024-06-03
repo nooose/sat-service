@@ -1,4 +1,4 @@
-package com.sat.chat.ui.web
+package com.sat.chat.application.command
 
 data class ChatMember(
     val sessionId: String,

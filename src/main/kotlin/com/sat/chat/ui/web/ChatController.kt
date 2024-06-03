@@ -1,5 +1,6 @@
 package com.sat.chat.ui.web
 
+import com.sat.chat.application.command.ChatMember
 import com.sat.chat.application.command.OnlineRecorder
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -44,7 +45,6 @@ class ChatController(
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
     ): Set<ChatMember> {
-        onlineRecorder.add(accessor.destination!!, ChatMember(accessor.sessionId!!, principal.name))
-        return onlineRecorder.getOnlineMembers(accessor.destination!!)
+        return onlineRecorder.add(accessor.destination!!, ChatMember(accessor.sessionId!!, principal.name))
     }
 }
