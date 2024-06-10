@@ -33,8 +33,7 @@ class OnlineRecorder(
         return sessionMap.remove(sessionId)!!
     }
 
-    fun deleteChatRoom(chatRoomId: String) {
-        val topicId = "/topic/rooms/${chatRoomId}/active-users"
+    fun deleteChatRoom(topicId: String) {
         getOnlineMembers(topicId).map { disconnectedCommand(it.sessionId) }
                 .forEach {
                     messageSendingTemplate.convertAndSend(topicId, it)

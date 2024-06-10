@@ -21,6 +21,7 @@ class WebSocketEventHandler(
 
     @EventListener
     fun deleteRoom(event: ChatRoomDeletedEvent) {
-        onlineRecorder.deleteChatRoom(event.chatRoomId)
+        val chatTopicId = "/topic/rooms/${event.chatRoomId}/active-users"
+        onlineRecorder.deleteChatRoom(chatTopicId)
     }
 }
