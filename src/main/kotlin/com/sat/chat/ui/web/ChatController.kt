@@ -1,10 +1,13 @@
 package com.sat.chat.ui.web
 
+import com.sat.chat.application.command.ChatMessageCommand
+import com.sat.chat.application.command.ChatService
 import com.sat.chat.application.command.OnlineRecorder
 import com.sat.chat.domain.ChatMember
 import com.sat.chat.domain.dto.query.ChatRoomOccupancyQuery
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
+import jakarta.validation.Valid
 import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
@@ -19,6 +22,7 @@ private val log = KotlinLogging.logger { }
 
 @Controller
 class ChatController(
+    private val chatService: ChatService,
     private val onlineRecorder: OnlineRecorder,
 ) {
 
@@ -29,10 +33,11 @@ class ChatController(
     @SendTo("/topic/rooms/{chatRoomId}")
     fun message(
         @DestinationVariable chatRoomId: String,
-        @Payload message: ChatMessageRequest,
+        @Valid @Payload message: ChatMessageRequest,
         principal: OAuth2AuthenticationToken,
     ): ChatMessageResponse {
         val member = principal.principal as AuthenticatedMember
+        chatService.saveMessage(chatRoomId, ChatMessageCommand(member.id, message.text))
         return ChatMessageResponse(member.id, member.name, message.text, LocalDateTime.now())
     }
 
