@@ -1,10 +1,12 @@
 package com.sat.board.application.query
 
 import com.sat.board.application.query.dto.ArticleQuery
+import com.sat.board.domain.*
 import com.sat.board.domain.dto.query.ArticleWithCount
 import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.LikeRepository
+import com.sat.common.config.jpa.limit
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
 import com.sat.common.utils.findByIdOrThrow
@@ -14,11 +16,10 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 @Service
 class ArticleQueryService(
-    private val articleRepository: ArticleRepository,
-    private val likeRepository: LikeRepository,
+        private val articleRepository: ArticleRepository,
+        private val likeRepository: LikeRepository,
 ) {
 
-    // TODO: 지금은 테이블 3개를 각각 조회하고 있음, Querydsl 로직으로 변경
     fun get(id: Long, principalId: Long? = null): ArticleQuery {
         val article = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
         if (article.isDeleted) {
@@ -33,10 +34,56 @@ class ArticleQueryService(
     }
 
     fun getAll(memberId: Long? = null): List<ArticleWithCount> {
-        return articleRepository.getAll(memberId)
+        return articleRepository.findAll {
+            selectNew<ArticleWithCount>(
+                path(Article::id),
+                path(Article::title),
+                path(Article::category)(Category::name)(CategoryName::value),
+                countDistinct(entity(Comment::class)),
+                countDistinct(entity(Like::class)),
+                path(Article::createdDateTime)
+            ).from(
+                entity(Article::class),
+                leftJoin(Comment::class).on(path(Article::id).equal(path(Comment::articleId))),
+                leftJoin(Like::class).on(path(Article::id).equal(path(Like::articleId))),
+                join(Article::category)
+            ).whereAnd(
+                memberId?.let { path(Article::createdBy).equal(it) },
+                path(Article::isDeleted).equal(false)
+            ).groupBy(
+                path(Article::id)
+            ).orderBy(
+                path(Article::id).desc()
+            )
+        }.filterNotNull()
     }
 
+    // TODO: 인덱스 추가
     fun getLikedArticles(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<LikedArticleSimpleQuery>> {
-        return articleRepository.getLikedArticles(memberId, cursorRequest)
+        val likedArticles = articleRepository.findAll {
+            selectNew<LikedArticleSimpleQuery>(
+                path(Like::id),
+                path(Like::articleId),
+                path(Article::title),
+                path(Article::createdDateTime),
+            ).from(
+                entity(Like::class),
+                join(Article::class).on(path(Like::articleId).equal(path(Article::id)))
+            ).whereAnd(
+                cursorRequest.id?.let { path(Like::id).lessThan(it) },
+                path(Like::createdBy).equal(memberId)
+            ).orderBy(
+                path(Like::id).desc()
+            ).limit(cursorRequest.size)
+        }.filterNotNull()
+
+        return PageCursor(cursorRequest.next(getNextId(likedArticles)), likedArticles)
+    }
+
+    private fun getNextId(likes: List<LikedArticleSimpleQuery>): Long {
+        if (likes.isEmpty()) {
+            return 0
+        }
+        return likes.minOf { it.id }
     }
 }
