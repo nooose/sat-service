@@ -43,8 +43,8 @@ val kotestSpringVersion = "1.1.3"
 val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
 val kotlinLoggingVersion = "6.0.9"
-val querydslVersion = dependencyManagement.importedProperties["querydsl.version"]
 val jjwtVersion = "0.12.5"
+val jdslVersion = "3.4.2"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -63,11 +63,9 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
 
 	runtimeOnly("com.mysql:mysql-connector-j")
-	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
-	annotationProcessor("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
-	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
-	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
-	kapt("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
+	implementation("com.linecorp.kotlin-jdsl:jpql-dsl:${jdslVersion}")
+	implementation("com.linecorp.kotlin-jdsl:jpql-render:${jdslVersion}")
+	implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:${jdslVersion}")
 
 	testRuntimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

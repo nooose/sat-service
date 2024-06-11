@@ -1,23 +1,13 @@
 package com.sat.user.application.query.dto
 
-import com.sat.user.domain.Point
+import com.sat.user.domain.PointType
 import java.time.LocalDateTime
 
-data class MyPointQuery(
+class MyPointQuery(
     val id: Long,
     val point: Int,
-    val type: String,
+    type: PointType,
     val createdDateTime: LocalDateTime,
 ) {
-
-    companion object {
-        fun from(entity: Point): MyPointQuery {
-            return MyPointQuery(
-                id = entity.id!!,
-                point = entity.point,
-                type = entity.type.title,
-                createdDateTime = entity.createdDateTime!!
-            )
-        }
-    }
+    val type = type.title
 }
