@@ -4,9 +4,12 @@
 ## 기술 스택
 - Kotlin / Java 21
 - Gradle
-- Spring Boot 3.2.X
+- Spring Boot 3.3.0
   - Web
-  - Data JPA / Querydsl
+  - Security
+  - Data JPA
+    - ~~Querydsl~~
+    - Kotlin JDSL
 
 - 테스트
   - JUnit / Kotest / Mockk
