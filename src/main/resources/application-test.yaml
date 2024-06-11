@@ -8,6 +8,11 @@ spring:
     hibernate:
       ddl-auto: create
 
+  data:
+    mongodb:
+      uri: mongodb://sat:sat123@localhost:27017/sat?authSource=admin
+
+
 external:
   frontend:
     url: http://localhost:3000

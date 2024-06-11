@@ -23,9 +23,9 @@ class ChatRestController(
         @LoginMember member: AuthenticatedMember,
         @Valid @RequestBody command: ChatRoomCreateCommand,
     ): ResponseEntity<Unit> {
-        val room = chatService.createRoom(command, member.id)
+        val roomId = chatService.createRoom(command, member.id)
         val uri = fromCurrentRequest()
-            .path("/chat/rooms/${room.id}")
+            .path("/chat/rooms/${roomId}")
             .build()
             .toUri()
         return ResponseEntity.created(uri).build()
@@ -37,8 +37,11 @@ class ChatRestController(
     }
 
     @DeleteMapping("/chat/rooms/{roomId}")
-    fun deleteRoom(@PathVariable roomId: String) {
-        return chatService.deleteRoom(roomId)
+    fun deleteRoom(
+        @PathVariable roomId: String,
+        @LoginMember member: AuthenticatedMember,
+    ) {
+        return chatService.deleteRoom(roomId, member.id)
     }
 }
 

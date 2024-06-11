@@ -17,4 +17,8 @@ class ChatRoom(
     init {
         require(maximumCapacity in MIN..MAX) { "최대 인원수는 $MIN ~ $MAX 명 입니다" }
     }
+
+    fun isOwner(principalId: Long): Boolean {
+        return ownerId == principalId
+    }
 }

@@ -1,6 +1,7 @@
 package com.sat.chat.application.command
 
 import com.sat.chat.domain.*
+import com.sat.common.domain.exception.NotFoundException
 import com.sat.event.utils.Events
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.scheduling.annotation.Async
@@ -13,8 +14,13 @@ class ChatService(
     private val chatMessageRepository: ChatMessageRepository,
 ) {
 
-    fun createRoom(command: ChatRoomCreateCommand, principalId: Long): ChatRoom {
-        return chatRoomRepository.save(ChatRoom(command.name, command.maximumCapacity, principalId))
+    /**
+     * @return 채팅방 ID
+     */
+    fun createRoom(command: ChatRoomCreateCommand, principalId: Long): String {
+        val chatRoom = ChatRoom(command.name, command.maximumCapacity, principalId)
+        chatRoomRepository.save(chatRoom)
+        return chatRoom.id!!
     }
 
     @Async
@@ -24,7 +30,9 @@ class ChatService(
         chatMessageRepository.save(chatMessage)
     }
 
-    fun deleteRoom(roomId: String) {
+    fun deleteRoom(roomId: String, principalId: Long) {
+        val chatRoom = chatRoomRepository.findByIdOrNull(roomId) ?: throw NotFoundException("채팅방을 찾을 수 없습니다. - $roomId")
+        check(chatRoom.isOwner(principalId))
         chatRoomRepository.deleteById(roomId)
         Events.publish(ChatRoomDeletedEvent(roomId))
     }
