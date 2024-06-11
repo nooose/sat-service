@@ -2,16 +2,16 @@ import io.swagger.v3.oas.models.servers.Server
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "3.2.5"
-	id("io.spring.dependency-management") version "1.1.4"
+	id("org.springframework.boot") version "3.3.0"
+	id("io.spring.dependency-management") version "1.1.5"
 	id("org.asciidoctor.jvm.convert") version "3.3.2"
 	id("com.epages.restdocs-api-spec") version "0.19.2"
 
-	kotlin("jvm") version "1.9.22"
-	kotlin("kapt") version "1.9.22"
-	kotlin("plugin.spring") version "1.9.22"
-	kotlin("plugin.jpa") version "1.9.22"
-	kotlin("plugin.allopen") version "1.9.22"
+	kotlin("jvm") version "1.9.24"
+	kotlin("kapt") version "1.9.24"
+	kotlin("plugin.spring") version "1.9.24"
+	kotlin("plugin.jpa") version "1.9.24"
+	kotlin("plugin.allopen") version "1.9.24"
 }
 
 val satVersion = "0.0.1"
@@ -45,6 +45,7 @@ val springMockkVersion = "4.0.2"
 val kotlinLoggingVersion = "6.0.9"
 val querydslVersion = dependencyManagement.importedProperties["querydsl.version"]
 val jjwtVersion = "0.12.5"
+val jdslVersion = "3.4.2"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -61,6 +62,9 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jjwtVersion}")
 
 	runtimeOnly("com.mysql:mysql-connector-j")
+	implementation("com.linecorp.kotlin-jdsl:jpql-dsl:${jdslVersion}")
+	implementation("com.linecorp.kotlin-jdsl:jpql-render:${jdslVersion}")
+	implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:${jdslVersion}")
 	implementation("com.querydsl:querydsl-jpa:$querydslVersion:jakarta")
 	annotationProcessor("com.querydsl:querydsl-apt:$querydslVersion:jakarta")
 	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
