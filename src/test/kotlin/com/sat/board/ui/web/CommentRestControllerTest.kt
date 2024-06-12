@@ -52,7 +52,7 @@ class CommentRestControllerTest @Autowired constructor(
             pathVariables {
                 param("articleId", "게시글 ID")
             }
-            requestBody {
+            requestBody<CommentCreateCommand> {
                 field("content", "댓글 내용")
                 field("parentId", "댓글 부모 ID", optional = true)
             }
@@ -91,7 +91,7 @@ class CommentRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "게시판 > 댓글"
             summary = "댓글 목록 조회"
-            responseBody {
+            responseBody<List<CommentQuery>> {
                 field("[].memberId", "작성자 ID")
                 field("[].memberName", "작성자 닉네임")
                 field("[].id", "댓글 ID")
@@ -126,7 +126,7 @@ class CommentRestControllerTest @Autowired constructor(
             pathVariables {
                 param("id", "댓글 ID")
             }
-            requestBody {
+            requestBody<CommentUpdateCommand> {
                 field("content", "댓글 내용")
             }
         }

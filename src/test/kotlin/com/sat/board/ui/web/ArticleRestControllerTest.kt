@@ -49,8 +49,7 @@ class ArticleRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "게시판 > 게시글"
             summary = "게시글 생성"
-            requestBody {
-                type = request::class
+            requestBody<ArticleCreateCommand> {
                 field("title", "게시글 제목")
                 field("content", "게시글 내용")
                 field("categoryId", "카테고리 ID")
@@ -76,8 +75,7 @@ class ArticleRestControllerTest @Autowired constructor(
             pathVariables {
                 param("articleId", "게시글 ID")
             }
-            responseBody {
-                type = ArticleQuery::class
+            responseBody<ArticleQuery> {
                 field("id", "게시글 ID")
                 field("title", "게시글 제목")
                 field("content", "게시글 내용")
@@ -103,8 +101,7 @@ class ArticleRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "게시판 > 게시글"
             summary = "게시글 목록 조회"
-            responseBody {
-                type = ArticleWithCount::class
+            responseBody<List<ArticleWithCount>> {
                 field("[].id", "게시글 ID")
                 field("[].title", "게시글 제목")
                 field("[].category", "카테고리")
@@ -133,8 +130,7 @@ class ArticleRestControllerTest @Autowired constructor(
             pathVariables {
                 param("articleId", "게시글 ID")
             }
-            requestBody {
-                type = request::class
+            requestBody<ArticleUpdateCommand> {
                 field("title", "게시글 제목")
                 field("content", "게시글 내용")
             }
