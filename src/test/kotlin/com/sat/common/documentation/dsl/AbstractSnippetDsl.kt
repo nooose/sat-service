@@ -38,7 +38,7 @@ abstract class AbstractSnippetDsl {
         return getConstraints(enumClass).joinToString(separator = "\n\n")
     }
 
-    fun <T : Enum<T>> getConstraints(enumClass: KClass<T>): List<String> {
+    protected fun <T : Enum<T>> getConstraints(enumClass: KClass<T>): List<String> {
         return enumClass.java.enumConstants.map { getDescription(it) }
     }
 

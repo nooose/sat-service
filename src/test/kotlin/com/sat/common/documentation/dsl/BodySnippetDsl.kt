@@ -10,6 +10,7 @@ import kotlin.reflect.KClass
 class BodySnippetDsl : AbstractSnippetDsl() {
     private val descriptors: MutableList<FieldDescriptor> = mutableListOf()
     var pageable: Boolean = false
+    @Deprecated("타입 명시 제네릭 사용", replaceWith = ReplaceWith("requestBodyWith"))
     var type: KClass<*>? = null
 
     fun <T : Enum<T>> field(fieldName: String, description: String = "", optional: Boolean = false, constraint: KClass<T>, ignored: Boolean = false) {

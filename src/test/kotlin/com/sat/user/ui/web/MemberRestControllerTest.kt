@@ -60,8 +60,7 @@ class MemberRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "사용자"
             summary = "사용자 목록 조회"
-            responseBody {
-                type = MemberInformation::class
+            responseBody<MemberInformation> {
                 field("id", "사용자 ID")
                 field("name", "이름")
                 field("nickname", "닉네임")
@@ -89,8 +88,7 @@ class MemberRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "사용자"
             summary = "사용자 목록 조회"
-            responseBody {
-                type = MemberSimpleQuery::class
+            responseBody<List<MemberSimpleQuery>> {
                 field("[].id", "사용자 ID")
                 field("[].name", "이름")
                 field("[].email", "이메일")
@@ -115,8 +113,7 @@ class MemberRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "사용자"
             summary = "사용자 정보 수정"
-            requestBody {
-                type = MemberUpdateCommand::class
+            requestBody<MemberUpdateCommand> {
                 field("nickname", "변경할 닉네임")
             }
         }
@@ -138,8 +135,7 @@ class MemberRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "사용자"
             summary = "자신이 작성한 게시글 목록 조회"
-            responseBody {
-                type = ArticleWithCount::class
+            responseBody<List<ArticleWithCount>> {
                 field("[].id", "게시글 ID")
                 field("[].title", "게시글 제목")
                 field("[].category", "게시글 카테고리")
@@ -170,8 +166,7 @@ class MemberRestControllerTest @Autowired constructor(
                 param("id", "커서 ID", optional = true)
                 param("size", "페이지 사이즈", optional = true)
             }
-            responseBody {
-                type = CommentWithArticle::class
+            responseBody<PageCursor<CommentWithArticle>> {
                 field("nextCursor.id", "다음 커서 ID")
                 field("nextCursor.size", "다음 페이지 사이즈")
                 field("data[].id", "댓글 ID")
@@ -187,8 +182,8 @@ class MemberRestControllerTest @Autowired constructor(
     @Test
     fun `포인트 이력 조회`() {
         val responses = listOf(
-            MyPointQuery(1, 10, PointType.LOGIN.title, LocalDateTime.now()),
-            MyPointQuery(2, 10, PointType.LOGIN.title, LocalDateTime.now().plusDays(1)),
+            MyPointQuery(1, 10, PointType.LOGIN, LocalDateTime.now()),
+            MyPointQuery(2, 10, PointType.LOGIN, LocalDateTime.now().plusDays(1)),
         )
 
         every { pointQueryService.getPoints(any(), any()) } returns PageCursor(CursorRequest(2), responses)
@@ -203,8 +198,7 @@ class MemberRestControllerTest @Autowired constructor(
                 param("id", "커서 ID", optional = true)
                 param("size", "페이지 사이즈", optional = true)
             }
-            responseBody {
-                type = PageCursor::class
+            responseBody<PageCursor<MyPointQuery>> {
                 field("nextCursor.id", "다음 커서 ID")
                 field("nextCursor.size", "다음 페이지 사이즈")
                 field("data[].id", "포인트 ID")
@@ -231,8 +225,7 @@ class MemberRestControllerTest @Autowired constructor(
         }.andDocument {
             tag = "사용자"
             summary = "좋아요 누른 게시글 목록 조회"
-            responseBody {
-                type = LikedArticleSimpleQuery::class
+            responseBody<PageCursor<LikedArticleSimpleQuery>> {
                 field("nextCursor.id", "다음 커서 ID")
                 field("nextCursor.size", "다음 페이지 사이즈")
                 field("data[].id", "좋아요 ID")

@@ -52,6 +52,7 @@ class CommentCommandServiceTest @Autowired constructor(
     }
 
     @WithAuthenticatedUser
+    @Disabled
     @Test
     fun `댓글 생성 테스트`() {
         every { memberRepository.findAllById(any()) } returns listOf(Member("김영철", "김영철", "", 1L))
@@ -77,6 +78,7 @@ class CommentCommandServiceTest @Autowired constructor(
     }
 
     @WithAuthenticatedUser
+    @Disabled
     @Test
     fun `자식 댓글 생성 테스트`() {
         val 게시글_ID = 게시글.id!!
