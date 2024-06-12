@@ -1,6 +1,7 @@
 package com.sat.chat.ui.web
 
 import com.sat.chat.application.command.ChatMessageCommand
+import com.sat.chat.application.command.ChatRoomTopic
 import com.sat.chat.application.command.ChatService
 import com.sat.chat.application.command.OnlineRecorder
 import com.sat.chat.domain.ChatMember
@@ -51,7 +52,8 @@ class ChatController(
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
     ): Set<ChatMember> {
-        return onlineRecorder.add(accessor.destination!!, ChatMember(accessor.sessionId!!, principal.name))
+        val topic = ChatRoomTopic(roomId, accessor.destination!!)
+        return onlineRecorder.add(topic, ChatMember(accessor.sessionId!!, principal.name))
     }
 
     /**

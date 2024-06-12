@@ -5,6 +5,7 @@ import ChatRoomResponse from "@/model/dto/response/ChatRoomResponse";
 import ClientWaitingChatRoom from "@/components/chat/client-waiting-chat-room";
 import {cookies} from "next/headers";
 import {getUserInfo} from "@/components/user-login";
+import ClientWaitingRooms from "@/components/chat/waiting-rooms/client-waiting-rooms";
 
 async function getChatRooms(cookie: string | undefined) {
     const response = await RestClient.get('/chat/rooms')
@@ -15,19 +16,15 @@ async function getChatRooms(cookie: string | undefined) {
 
 export default async function WaitingRooms() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const chatRooms = await getChatRooms(cookie);
+    const chatRooms: ChatRoomResponse[] = await getChatRooms(cookie);
     const userInfo = await getUserInfo(cookie);
 
     return (
         <div>
-            <ClientCreateChatRoomButton/>
-            {chatRooms.map((chatRoom: ChatRoomResponse) => (
-                <ClientWaitingChatRoom
-                    key={chatRoom.id}
-                    chatRoom={chatRoom}
-                    isOwner={userInfo.id == chatRoom.ownerId}
-                />
-            ))}
+            <ClientWaitingRooms
+                chatRooms={chatRooms}
+                memberId={userInfo.id}
+            />
         </div>
     );
 }

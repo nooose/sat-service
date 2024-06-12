@@ -1,5 +1,6 @@
 package com.sat.chat.ui.message.internal
 
+import com.sat.chat.application.command.ChatRoomTopic
 import com.sat.chat.application.command.OnlineRecorder
 import com.sat.chat.domain.ChatRoomDeletedEvent
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -22,6 +23,7 @@ class WebSocketEventHandler(
     @EventListener
     fun deleteRoom(event: ChatRoomDeletedEvent) {
         val chatTopicId = "/topic/rooms/${event.chatRoomId}/active-users"
-        onlineRecorder.deleteChatRoom(chatTopicId)
+        val topic = ChatRoomTopic(event.chatRoomId, chatTopicId)
+        onlineRecorder.deleteChatRoom(topic)
     }
 }

@@ -1,53 +1,22 @@
 "use client"
 
-import ChatRoomResponse from "@/model/dto/response/ChatRoomResponse";
 import {Card, CardBody, CardHeader, Image, useDisclosure} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 import deleteStyles from "@styles/delete-button.module.css";
 import DeleteModal from "@/components/modal/delete-modal";
-import React from "react";
+import React, {useState} from "react";
 import {RestClient} from "@/utils/rest-client";
 import {errorToast} from "@/utils/toast-utils";
-import {useEffect, useState} from "react";
-import {Client} from "@stomp/stompjs";
-import {API_HOST} from "@/utils/rest-client";
 
-export default function ClientWaitingChatRoom({chatRoom, isOwner}: { chatRoom: ChatRoomResponse, isOwner: boolean }) {
+export default function ClientWaitingChatRoom({chatRoom, isOwner}: {
+    chatRoom: ChatRoomResponse,
+    isOwner: boolean,
+}) {
     const router = useRouter();
     const goChatRoom = () => {
         router.push(`/chat/${chatRoom.id}`);
         router.refresh();
     }
-
-    const [roomOccupancy, setRoomOccupancy] = useState<Map<string, number>>();
-
-    useEffect(() => {
-        const stompClient = new Client({
-            brokerURL: `ws://${API_HOST}/chat`,
-            reconnectDelay: 5000,
-            debug: (str) => {
-                console.log(new Date(), str);
-            },
-            onConnect: () => {
-                console.log('Connected to server');
-                stompClient.subscribe(`/topic/rooms`, (message) => {
-                    console.log(`모야1: ${message.body}`);
-                    console.log(JSON.parse(message.body));
-                });
-
-            },
-            onStompError: (frame) => {
-                console.error('error: ' + frame.headers['message']);
-                console.error('error details: ' + frame.body);
-            },
-        });
-
-        stompClient.activate();
-        return () => {
-            stompClient.deactivate()
-                .then();
-        };
-    }, []);
 
     // TODO: 삭제 버튼 Wrapping
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -78,7 +47,7 @@ export default function ClientWaitingChatRoom({chatRoom, isOwner}: { chatRoom: C
             <CardBody onClick={goChatRoom}>
                 <div style={{display: "flex", justifyContent: "space-between"}}>
                     <div>{chatRoom.name}</div>
-                    <div>현재참여인원 / {chatRoom.maximumCapacity}</div>
+                    <div>{chatRoom.memberCount ?? 0} / {chatRoom.maximumCapacity}</div>
                 </div>
             </CardBody>
         </Card>

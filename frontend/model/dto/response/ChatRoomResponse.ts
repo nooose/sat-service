@@ -2,7 +2,11 @@ interface ChatRoomResponse {
     id: string,
     name: string,
     maximumCapacity: number,
+    memberCount?: number,
     ownerId: number,
 }
 
-export default ChatRoomResponse;
+interface ChatRoomOccupancyQuery {
+    id: string,
+    onlineMemberCount: number,
+}

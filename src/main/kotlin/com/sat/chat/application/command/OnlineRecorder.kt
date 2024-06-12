@@ -8,42 +8,45 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Service
 import java.util.concurrent.ConcurrentHashMap
 
+data class ChatRoomTopic(
+    val chatRoomId: String,
+    val topicId: String,
+)
 
 @Service
 class OnlineRecorder(
     private val messageSendingTemplate: SimpMessagingTemplate,
 ) {
-    private val topicMap: ConcurrentHashMap<String, MutableSet<ChatMember>> = ConcurrentHashMap()
-    private val sessionMap: ConcurrentHashMap<String, String> = ConcurrentHashMap()
+    private val topicMap: ConcurrentHashMap<ChatRoomTopic, MutableSet<ChatMember>> = ConcurrentHashMap()
+    private val sessionMap: ConcurrentHashMap<String, ChatRoomTopic> = ConcurrentHashMap()
 
-    fun add(topicId: String, user: ChatMember): Set<ChatMember> {
-        sessionMap[user.sessionId] = topicId
-        return topicMap.getOrPut(topicId) { mutableSetOf(user) }
-                .apply { this.add(user) }
+    fun add(topic: ChatRoomTopic, user: ChatMember): Set<ChatMember> {
+        sessionMap[user.sessionId] = topic
+        val members = topicMap.getOrPut(topic) { mutableSetOf(user) }
+            .apply { this.add(user) }
+        messageSendingTemplate.convertAndSend("/topic/rooms", getChatRoomOccupancy())
+        return members
     }
 
     fun exit(sessionId: String) {
-        val topicId = remove(sessionId)
-        messageSendingTemplate.convertAndSend(topicId, getOnlineMembers(topicId))
+        val topic = sessionMap[sessionId] ?: return
+        topicMap[topic]!!.removeIf { it.sessionId == sessionId }
+        sessionMap.remove(sessionId)!!
+        messageSendingTemplate.convertAndSend(topic.topicId, getOnlineMembers(topic))
+        messageSendingTemplate.convertAndSend("/topic/rooms", getChatRoomOccupancy())
     }
 
-    private fun remove(sessionId: String): String {
-        val topicId = sessionMap[sessionId]!!
-        topicMap[topicId]!!.removeIf { it.sessionId == sessionId }
-        return sessionMap.remove(sessionId)!!
-    }
-
-    fun deleteChatRoom(topicId: String) {
-        getOnlineMembers(topicId).map { disconnectedCommand(it.sessionId) }
+    fun deleteChatRoom(topic: ChatRoomTopic) {
+        getOnlineMembers(topic).map { disconnectedCommand(it.sessionId) }
                 .forEach {
-                    messageSendingTemplate.convertAndSend(topicId, it)
+                    messageSendingTemplate.convertAndSend(topic.topicId, it)
                     sessionMap.remove(it.sessionId)
                 }
-        topicMap.remove(topicId)
+        topicMap.remove(topic)
     }
 
-    private fun getOnlineMembers(topicId: String): Set<ChatMember> {
-        return topicMap[topicId] ?: emptySet()
+    private fun getOnlineMembers(topic: ChatRoomTopic): Set<ChatMember> {
+        return topicMap[topic] ?: emptySet()
     }
 
     private fun disconnectedCommand(sessionId: String): StompHeaderAccessor {
@@ -54,6 +57,6 @@ class OnlineRecorder(
     }
 
     fun getChatRoomOccupancy(): List<ChatRoomOccupancyQuery> {
-        return topicMap.map { (key, value) -> ChatRoomOccupancyQuery(key, value.size) }
+        return topicMap.map { (key, value) -> ChatRoomOccupancyQuery(key.chatRoomId, value.size) }
     }
 }

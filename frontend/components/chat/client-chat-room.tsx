@@ -52,6 +52,7 @@ export default function ClientChatRoom(
             <ScrollShadow ref={scrollRef} className="h-[500px]">
                 {messages.map((message, index) => (
                     <ChatMessage
+                        key={index}
                         isOwner={message.senderId === memberId}
                         chatMessage={message}>
                     </ChatMessage>
