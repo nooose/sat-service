@@ -7,13 +7,15 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
+import java.time.ZoneOffset
+
+const val SEARCH_CONDITION_MINUTE: Long = 30
 
 @Service
 class ChatService(
     private val chatRoomRepository: ChatRoomRepository,
     private val chatMessageRepository: ChatMessageRepository,
 ) {
-
     /**
      * @return 채팅방 ID
      */
@@ -38,7 +40,9 @@ class ChatService(
     }
 
     fun getMessages(roomId: String): List<ChatMessage> {
-        val chatRoom = chatMessageRepository.getMessages(roomId)
+        val now = LocalDateTime.now(ZoneOffset.UTC)
+        val timeCondition = now.minusMinutes(SEARCH_CONDITION_MINUTE)
+        val chatRoom = chatMessageRepository.getMessages(timeCondition, roomId)
         return chatRoom
     }
 }
