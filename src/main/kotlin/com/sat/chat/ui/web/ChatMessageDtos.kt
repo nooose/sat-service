@@ -7,12 +7,12 @@ import java.time.LocalDateTime
 data class ChatMessageRequest(
     @field:Size(max = 1000)
     @field:NotBlank
-    val text: String,
+    val content: String,
 )
 
 data class ChatMessageResponse(
     val senderId: Long,
     val senderName: String,
-    val text: String,
+    val content: String,
     val createdDateTime: LocalDateTime,
 )

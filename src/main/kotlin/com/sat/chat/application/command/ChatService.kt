@@ -36,4 +36,9 @@ class ChatService(
         chatRoomRepository.deleteById(roomId)
         Events.publish(ChatRoomDeletedEvent(roomId))
     }
+
+    fun getMessages(roomId: String): List<ChatMessage> {
+        val chatRoom = chatMessageRepository.getMessages(roomId)
+        return chatRoom
+    }
 }

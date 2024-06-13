@@ -4,6 +4,7 @@ import com.sat.chat.application.command.ChatRoomCreateCommand
 import com.sat.chat.application.command.ChatService
 import com.sat.chat.application.query.ChatQueryService
 import com.sat.chat.application.query.ChatRoomQuery
+import com.sat.chat.domain.ChatMessage
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import jakarta.validation.Valid
@@ -34,6 +35,11 @@ class ChatRestController(
     @GetMapping("/chat/rooms")
     fun findChatRooms(): List<ChatRoomQuery> {
         return chatQueryService.findChatRooms()
+    }
+
+    @GetMapping("/chat/rooms/{roomId}/messages")
+    fun getMessages(@PathVariable roomId: String): List<ChatMessage> {
+        return chatService.getMessages(roomId)
     }
 
     @DeleteMapping("/chat/rooms/{roomId}")

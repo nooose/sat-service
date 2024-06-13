@@ -1,11 +1,11 @@
 interface ChatMessageRequest {
-    text: string,
+    content: string,
 }
 
 interface ChatMessageResponse {
     senderId: number,
     senderName: string,
-    text: string,
+    content: string,
     createdDateTime: string,
 }
 

@@ -25,7 +25,7 @@ export default function ChatMessage(
                     </CardHeader>
                 )}
                 <CardBody className="pt-1">
-                    <p>{chatMessage.text}</p>
+                    <p>{chatMessage.content}</p>
                 </CardBody>
             </Card>
         </div>

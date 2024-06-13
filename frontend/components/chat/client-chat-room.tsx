@@ -38,7 +38,7 @@ export default function ClientChatRoom(
             return
         }
         const requestMessage: ChatMessageRequest = {
-            text: inputMessage,
+            content: inputMessage,
         };
         client!!.publish({
             destination: `/chat/rooms/${chatRoomId}`,

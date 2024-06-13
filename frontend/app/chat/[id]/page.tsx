@@ -3,7 +3,7 @@
 import React, {useEffect, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import ClientChatRoom from "@/components/chat/client-chat-room";
-import {API_HOST} from "@/utils/rest-client";
+import {API_HOST, RestClient} from "@/utils/rest-client";
 import {Button, Listbox, ListboxItem} from "@nextui-org/react";
 import {useRouter} from "next/navigation";
 
@@ -38,6 +38,14 @@ export default function Chat({params: {id}}: any) {
                 console.error('error: ' + frame.headers['message']);
                 console.error('error details: ' + frame.body);
             },
+        });
+
+        const response= RestClient.get(`/chat/rooms/${id}/messages`).fetch();
+        const messages: Promise<ChatMessageResponse[]> = response.then(response => response.json());
+        messages.then(messages => {
+            console.log('><><><><><><><><>');
+            console.log(messages);
+            setMessages(messages);
         });
 
         stompClient.activate();

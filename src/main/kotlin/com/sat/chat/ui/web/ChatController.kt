@@ -38,8 +38,8 @@ class ChatController(
         principal: OAuth2AuthenticationToken,
     ): ChatMessageResponse {
         val member = principal.principal as AuthenticatedMember
-        chatService.saveMessage(chatRoomId, ChatMessageCommand(member.id, message.text))
-        return ChatMessageResponse(member.id, member.name, message.text, LocalDateTime.now())
+        chatService.saveMessage(chatRoomId, ChatMessageCommand(member.id, message.content))
+        return ChatMessageResponse(member.id, member.name, message.content, LocalDateTime.now())
     }
 
     /**
