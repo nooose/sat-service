@@ -32,7 +32,7 @@ class CommentCommandService(
     private fun checkParentId(parentId: Long?, articleId: Long) {
         if (parentId != null) {
             val exist = commentRepository.existParent(parentId, articleId)
-            require(exist) { "상위 댓글이 존재하지 않습니다. - $parentId" }
+            check(exist) { "상위 댓글이 존재하지 않습니다. - $parentId" }
         }
     }
 

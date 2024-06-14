@@ -1,11 +1,10 @@
 package com.sat.board.ui.web
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.command.CommentCommandService
-import com.sat.board.application.query.CommentQueryService
 import com.sat.board.application.command.dto.CommentCreateCommand
 import com.sat.board.application.command.dto.CommentUpdateCommand
+import com.sat.board.application.query.CommentQueryService
 import com.sat.board.application.query.dto.CommentQuery
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
@@ -15,17 +14,13 @@ import io.mockk.just
 import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 
 
 @DisplayName(value = "API 문서화 - 댓글")
 @WebMvcTest(CommentRestController::class)
-class CommentRestControllerTest @Autowired constructor(
-    private val objectMapper: ObjectMapper,
-) : Documentation(){
+class CommentRestControllerTest : Documentation(){
 
     @MockkBean
     lateinit var commentCommandService: CommentCommandService
@@ -41,9 +36,7 @@ class CommentRestControllerTest @Autowired constructor(
         every { commentCommandService.create(any(), any()) } just runs
 
         mockMvc.POST("/board/articles/{articleId}/comments", 1L) {
-            content = objectMapper.writeValueAsString(request)
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "utf-8"
+            jsonContent(request)
         }.andExpect {
             status { isCreated() }
         }.andDocument {
@@ -114,9 +107,7 @@ class CommentRestControllerTest @Autowired constructor(
         every { commentCommandService.update(any(), any(), any()) } just runs
 
         mockMvc.PUT("/board/comments/{id}", 2L) {
-            content = objectMapper.writeValueAsString(request)
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "utf-8"
+            jsonContent(request)
         }.andExpect {
             status { isOk() }
         }.andDocument {

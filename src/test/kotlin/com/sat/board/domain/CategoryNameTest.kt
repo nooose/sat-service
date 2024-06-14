@@ -4,7 +4,6 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.inspectors.forAll
-import io.kotest.matchers.shouldNotBe
 
 @DisplayName("도메인 - 카테고리 이름")
 class CategoryNameTest : BehaviorSpec({
@@ -23,9 +22,9 @@ class CategoryNameTest : BehaviorSpec({
         ).forAll { name ->
             When("$name 카테고리 이름을 생성하면") {
                 Then("예외가 발생한다") {
-                    val exception = shouldThrow<IllegalArgumentException> { CategoryName(name) }.message
-                    exception shouldNotBe null
-                    println(exception)
+                    shouldThrow<IllegalArgumentException> { CategoryName(name) }.apply {
+                        println(this.message)
+                    }
                 }
             }
         }

@@ -38,8 +38,8 @@ configurations {
 	asciidoctorExt
 }
 
-val kotestVersion = "5.8.1"
-val kotestSpringVersion = "1.1.3"
+val kotestVersion = "5.9.1"
+val kotestSpringVersion = "1.3.0"
 val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
 val kotlinLoggingVersion = "6.0.9"

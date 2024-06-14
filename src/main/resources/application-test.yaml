@@ -16,3 +16,6 @@ spring:
 external:
   frontend:
     url: http://localhost:3000
+
+jwt:
+  secret-key: 16c9799aaf5b0b3e94524c8ebf3d53f6e63b2117946576c3eb6a1e1d1dd80333
