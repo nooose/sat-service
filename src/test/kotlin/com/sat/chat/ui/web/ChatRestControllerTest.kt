@@ -13,14 +13,13 @@ import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.POST
 import com.sat.common.documentation.dsl.andDocument
 import com.sat.common.security.WithAuthenticatedUser
-import com.sat.user.domain.port.repository.MemberRepository
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
+import org.bson.types.ObjectId
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -35,9 +34,6 @@ class ChatRestControllerTest : Documentation() {
 
     @MockkBean
     private lateinit var chatQueryService: ChatQueryService
-
-    @MockBean
-    private lateinit var memberRepository: MemberRepository
 
     @WithAuthenticatedUser
     @Test
@@ -87,13 +83,13 @@ class ChatRestControllerTest : Documentation() {
 
     @Test
     fun `채팅방 메시지 조회`() {
-        every { chatQueryService.getMessages(any()) } returns
+        every { chatQueryService.getMessages(any(), any()) } returns
                 listOf(
                     ChatMessageQuery(1, "정순이", "멍멍", LocalDateTime.now(ZoneOffset.UTC)),
                     ChatMessageQuery(1, "정순이", "왈왈", LocalDateTime.now(ZoneOffset.UTC))
                 )
 
-        mockMvc.GET("/chat/rooms/{roomId}/messages", "1") {
+        mockMvc.GET("/chat/rooms/{roomId}/messages", ObjectId().toString()) {
         }.andExpect {
             status { isOk() }
         }.andDocument {

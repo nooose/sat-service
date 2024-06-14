@@ -8,5 +8,5 @@ import java.time.LocalDateTime
 
 interface ChatMessageRepository : MongoRepository<ChatMessage, String> {
     @Query("{'createdDateTime': { '\$gte': ?0 }, 'chatRoom.id': ?1 }")
-    fun getMessages(date: LocalDateTime, roomId: ObjectId): List<ChatMessage>
+    fun getMessages(beforeTime: LocalDateTime, roomId: ObjectId): List<ChatMessage>
 }

@@ -1,10 +1,12 @@
 package com.sat.chat.domain
 
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.core.annotation.DisplayName
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.nulls.shouldNotBeNull
 import org.bson.types.ObjectId
 
+@DisplayName("도메인 - 채팅방")
 class ChatRoomTest : StringSpec({
 
     "ObjectId를 생성하면 문자열로 변환할 수 있다" {

@@ -11,6 +11,8 @@ import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 
 @RestController
@@ -39,7 +41,8 @@ class ChatRestController(
 
     @GetMapping("/chat/rooms/{roomId}/messages")
     fun getMessages(@PathVariable roomId: String): List<ChatMessageQuery> {
-        return chatQueryService.getMessages(roomId)
+        val now = LocalDateTime.now(ZoneOffset.UTC)
+        return chatQueryService.getMessages(roomId, now)
     }
 
     @DeleteMapping("/chat/rooms/{roomId}")

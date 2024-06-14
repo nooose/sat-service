@@ -17,21 +17,26 @@ data class ChatRoomTopic(
 class OnlineRecorder(
     private val messageSendingTemplate: SimpMessagingTemplate,
 ) {
-    private val topicMap: ConcurrentHashMap<ChatRoomTopic, MutableSet<ChatMember>> = ConcurrentHashMap()
-    private val sessionMap: ConcurrentHashMap<String, ChatRoomTopic> = ConcurrentHashMap()
+    private val _topicMap: MutableMap<ChatRoomTopic, MutableSet<ChatMember>> = ConcurrentHashMap()
+    private val _sessionMap: MutableMap<String, ChatRoomTopic> = ConcurrentHashMap()
+
+    val topicMap
+        get() = _topicMap.toMap()
+    val sessionMap
+        get() = _sessionMap.toMap()
 
     fun add(topic: ChatRoomTopic, user: ChatMember): Set<ChatMember> {
-        sessionMap[user.sessionId] = topic
-        val members = topicMap.getOrPut(topic) { mutableSetOf(user) }
+        _sessionMap[user.sessionId] = topic
+        val members = _topicMap.getOrPut(topic) { mutableSetOf(user) }
             .apply { this.add(user) }
         messageSendingTemplate.convertAndSend("/topic/rooms", getChatRoomOccupancy())
         return members
     }
 
     fun exit(sessionId: String) {
-        val topic = sessionMap[sessionId] ?: return
-        topicMap[topic]!!.removeIf { it.sessionId == sessionId }
-        sessionMap.remove(sessionId)!!
+        val topic = _sessionMap[sessionId] ?: return
+        _topicMap[topic]!!.removeIf { it.sessionId == sessionId }
+        _sessionMap.remove(sessionId)!!
         messageSendingTemplate.convertAndSend(topic.topicId, getOnlineMembers(topic))
         messageSendingTemplate.convertAndSend("/topic/rooms", getChatRoomOccupancy())
     }
@@ -40,13 +45,13 @@ class OnlineRecorder(
         getOnlineMembers(topic).map { disconnectedCommand(it.sessionId) }
                 .forEach {
                     messageSendingTemplate.convertAndSend(topic.topicId, it)
-                    sessionMap.remove(it.sessionId)
+                    _sessionMap.remove(it.sessionId)
                 }
-        topicMap.remove(topic)
+        _topicMap.remove(topic)
     }
 
     private fun getOnlineMembers(topic: ChatRoomTopic): Set<ChatMember> {
-        return topicMap[topic] ?: emptySet()
+        return _topicMap[topic] ?: emptySet()
     }
 
     private fun disconnectedCommand(sessionId: String): StompHeaderAccessor {
@@ -57,6 +62,6 @@ class OnlineRecorder(
     }
 
     fun getChatRoomOccupancy(): List<ChatRoomOccupancyQuery> {
-        return topicMap.map { (key, value) -> ChatRoomOccupancyQuery(key.chatRoomId, value.size) }
+        return _topicMap.map { (key, value) -> ChatRoomOccupancyQuery(key.chatRoomId, value.size) }
     }
 }
