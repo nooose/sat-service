@@ -43,8 +43,6 @@ export default function Chat({params: {id}}: any) {
         const response= RestClient.get(`/chat/rooms/${id}/messages`).fetch();
         const messages: Promise<ChatMessageResponse[]> = response.then(response => response.json());
         messages.then(messages => {
-            console.log('><><><><><><><><>');
-            console.log(messages);
             setMessages(messages);
         });
 
@@ -59,7 +57,7 @@ export default function Chat({params: {id}}: any) {
 
     return (
         <div>
-            <div className="flex justify-between">
+            <div className="flex justify-center">
                 <ClientChatRoom
                     chatRoomId={id}
                     messages={messages}

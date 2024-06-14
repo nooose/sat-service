@@ -48,7 +48,7 @@ export default function ClientChatRoom(
     };
 
     return (
-        <div>
+        <div className="w-3/4">
             <ScrollShadow ref={scrollRef} className="h-[500px]">
                 {messages.map((message, index) => (
                     <ChatMessage
@@ -58,18 +58,20 @@ export default function ClientChatRoom(
                     </ChatMessage>
                 ))}
             </ScrollShadow>
-            <Input
-                type="text"
-                placeholder="보낼 메시지를 입력하세요."
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyUp={(e) => e.key === "Enter" && sendMessage()}
-            />
-            <Button
-                color={"primary"}
-                onClick={sendMessage}>
-                전송
-            </Button>
+            <div className="flex">
+                <Input
+                    type="text"
+                    placeholder="보낼 메시지를 입력하세요."
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyUp={(e) => e.key === "Enter" && sendMessage()}
+                />
+                <Button
+                    color={"primary"}
+                    onClick={sendMessage}>
+                    전송
+                </Button>
+            </div>
         </div>
     );
 }
