@@ -10,6 +10,7 @@ spring:
 
   data:
     mongodb:
+      # TODO: embedded mongodb 추가
       uri: mongodb://sat:sat123@localhost:27017/sat?authSource=admin
 
 
