@@ -11,7 +11,7 @@ data class ChatRoomQuery(
     companion object {
         fun from(chatRoom: ChatRoom): ChatRoomQuery {
             return ChatRoomQuery(
-                id = chatRoom.id!!,
+                id = chatRoom.id.toString(),
                 name = chatRoom.name,
                 maximumCapacity = chatRoom.maximumCapacity,
                 ownerId = chatRoom.ownerId,

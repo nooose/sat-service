@@ -11,7 +11,7 @@ class Article(
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "category_id")
     var category: Category,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 ) : AuditingFields() {
     var isDeleted: Boolean = false
 

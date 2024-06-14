@@ -39,7 +39,7 @@ class CommentCommandServiceTest(
     val loginMember = memberLoginService.login("김영철", "test@test.com")
 
     beforeEach {
-        setAuthentication(loginMember.id!!)
+        setAuthentication(loginMember.id)
     }
 
     Given("게시글이 있고") {
@@ -48,7 +48,7 @@ class CommentCommandServiceTest(
         val article = articleRepository.save(Article("클린코드", "너무 유익해요", category))
 
         When("댓글을 작성하면") {
-            commentCommandService.create(article.id!!, CommentCreateCommand("댓글 A"))
+            commentCommandService.create(article.id, CommentCreateCommand("댓글 A"))
             Then("조회할 수 있다.") {
                 val comments = commentRepository.findAll()
                 assertSoftly {
@@ -62,7 +62,7 @@ class CommentCommandServiceTest(
             val request = CommentCreateCommand("보고싶어요", Long.MAX_VALUE)
             Then("예외를 던진다.") {
                 shouldThrow<IllegalStateException> {
-                    commentCommandService.create(article.id!!, request)
+                    commentCommandService.create(article.id, request)
                 }.apply { println(this.message) }
             }
         }
@@ -81,11 +81,11 @@ class CommentCommandServiceTest(
     Given("게시글에 댓글이 있고") {
         val category = categoryRepository.save(Category(CategoryName("IT")))
         val article = articleRepository.save(Article("클린코드", "너무 유익해요", category))
-        val commentA = commentRepository.save(Comment(article.id!!, "댓글 A"))
+        val commentA = commentRepository.save(Comment(article.id, "댓글 A"))
         When("대댓글을 작성하면") {
-            commentCommandService.create(article.id!!, CommentCreateCommand("댓글 B", commentA.id))
+            commentCommandService.create(article.id, CommentCreateCommand("댓글 B", commentA.id))
             Then("조회할 수 있다.") {
-                val comments = commentQueryService.get(article.id!!)
+                val comments = commentQueryService.get(article.id)
                 comments shouldHaveSize 1
 
                 assertSoftly {
@@ -99,17 +99,17 @@ class CommentCommandServiceTest(
 
         When("댓글을 수정하면") {
             val command = CommentUpdateCommand("댓글 수정됨")
-            commentCommandService.update(commentA.id!!, command, loginMember.id!!)
+            commentCommandService.update(commentA.id, command, loginMember.id)
             Then("댓글이 수정된다.") {
-                val comment = commentRepository.findByIdOrNull(commentA.id!!)!!
+                val comment = commentRepository.findByIdOrNull(commentA.id)!!
                 comment.content shouldBe "댓글 수정됨"
             }
         }
 
         When("댓글을 삭제하면") {
-            commentCommandService.delete(commentA.id!!, loginMember.id!!)
+            commentCommandService.delete(commentA.id, loginMember.id)
             Then("삭제처리 된다.") {
-                val comment = commentRepository.findByIdOrNull(commentA.id!!)!!
+                val comment = commentRepository.findByIdOrNull(commentA.id)!!
                 comment.isDeleted.shouldBeTrue()
             }
         }
@@ -117,7 +117,7 @@ class CommentCommandServiceTest(
         When("댓글 주인이 아닌 제3자가 삭제를 수정하면") {
             Then("삭제되지 않는다.") {
                 shouldThrow<IllegalStateException> {
-                    commentCommandService.delete(commentA.id!!, loginMember.id!! + 1L)
+                    commentCommandService.delete(commentA.id, loginMember.id + 1L)
                 }.apply { println(this.message) }
             }
         }
@@ -126,16 +126,16 @@ class CommentCommandServiceTest(
     Given("삭제처리된 댓글에") {
         val category = categoryRepository.save(Category(CategoryName("IT")))
         val article = articleRepository.save(Article("클린코드", "너무 유익해요", category))
-        val commentA = commentRepository.save(Comment(article.id!!, "댓글 A"))
-        println("${loginMember.id!!} - ${commentA.createdBy}")
+        val commentA = commentRepository.save(Comment(article.id, "댓글 A"))
 
-        commentCommandService.delete(commentA.id!!, loginMember.id!!)
+        commentCommandService.delete(commentA.id, loginMember.id)
 
         When("수정 요청을 하면") {
             val command = CommentUpdateCommand("댓글 수정됨")
             Then("수정되지 않는다.") {
                 shouldThrow<IllegalStateException> {
-                    commentCommandService.update(commentA.id!!, CommentUpdateCommand("수정요청"), loginMember.id!!)
+                    val request = CommentUpdateCommand("수정요청")
+                    commentCommandService.update(commentA.id, request, loginMember.id)
                 }.apply { println(this.message) }
             }
         }

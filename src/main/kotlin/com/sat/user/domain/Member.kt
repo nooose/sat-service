@@ -12,7 +12,7 @@ class Member(
     var nickname: String,
     val email: String,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 ) : AuditingFields() {
 
     fun updateNickname(nickname: String) {

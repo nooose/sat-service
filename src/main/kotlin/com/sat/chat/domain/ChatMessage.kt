@@ -1,6 +1,7 @@
 package com.sat.chat.domain
 
 import jakarta.persistence.Id
+import org.bson.types.ObjectId
 import org.springframework.data.mongodb.core.mapping.DBRef
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
@@ -14,5 +15,5 @@ class ChatMessage(
     @DBRef
     val chatRoom: ChatRoom,
     @Id
-    val id: String? = null,
+    val id: ObjectId = ObjectId(),
 )

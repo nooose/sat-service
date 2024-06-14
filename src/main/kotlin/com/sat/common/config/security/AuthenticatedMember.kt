@@ -47,7 +47,7 @@ data class AuthenticatedMember(
     companion object {
         fun from(request: OidcUserRequest, loginMember: Member): AuthenticatedMember {
             return AuthenticatedMember(
-                id = loginMember.id!!,
+                id = loginMember.id,
                 name = loginMember.name,
                 nickname = loginMember.nickname,
                 email = request.idToken.email as String,

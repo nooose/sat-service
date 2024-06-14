@@ -43,22 +43,22 @@ class PointServiceIntegrationTest (
         val loginMember = memberLoginService.login("김영철", "aaa@google.com")
 
         When("최초 로그인이면") {
-            pointCommandService.dailyPointAward(loginMember.id!!, now)
+            pointCommandService.dailyPointAward(loginMember.id, now)
 
             Then("포인트가 적립된다.") {
-                val point = pointQueryService.getTotalPoint(loginMember.id!!)
+                val point = pointQueryService.getTotalPoint(loginMember.id)
                 point shouldBe PointType.LOGIN.score
             }
         }
 
         When("하루에 로그인을 두번 이상해도") {
             val loginTime = LocalDateTime.of(2024, 1, 1, 12, 0)
-            pointCommandService.dailyPointAward(loginMember.id!!, loginTime)
-            pointCommandService.dailyPointAward(loginMember.id!!, loginTime.plusHours(5))
-            pointCommandService.dailyPointAward(loginMember.id!!, loginTime.plusHours(10))
+            pointCommandService.dailyPointAward(loginMember.id, loginTime)
+            pointCommandService.dailyPointAward(loginMember.id, loginTime.plusHours(5))
+            pointCommandService.dailyPointAward(loginMember.id, loginTime.plusHours(10))
 
             Then("포인트가 중복 적립되지 않는다") {
-                val point = pointQueryService.getTotalPoint(loginMember.id!!)
+                val point = pointQueryService.getTotalPoint(loginMember.id)
                 point shouldBe PointType.LOGIN.score
             }
         }
@@ -68,10 +68,10 @@ class PointServiceIntegrationTest (
         val loginMember = memberLoginService.login("김영철", "aaa@google.com")
 
         When("게시글을 작성하면") {
-            pointCommandService.articlePointAward(loginMember.id!!)
+            pointCommandService.articlePointAward(loginMember.id)
 
             Then("포인트가 적립된다") {
-                val memberPoint = pointQueryService.getTotalPoint(loginMember.id!!)
+                val memberPoint = pointQueryService.getTotalPoint(loginMember.id)
                 memberPoint shouldBe PointType.ARTICLE.score
             }
         }
@@ -80,9 +80,9 @@ class PointServiceIntegrationTest (
     Given("게시글과 댓글을 작성하고") {
         val category = categoryRepository.save(Category(CategoryName("컴퓨터")))
         setAuthentication(1L)
-        val myArticleId = articleCommandService.create(ArticleCreateCommand("내 게시글", "내용 없음", category.id!!))
+        val myArticleId = articleCommandService.create(ArticleCreateCommand("내 게시글", "내용 없음", category.id))
         setAuthentication(5L)
-        val otherArticleId = articleCommandService.create(ArticleCreateCommand("다른 게시글", "내용 없음", category.id!!))
+        val otherArticleId = articleCommandService.create(ArticleCreateCommand("다른 게시글", "내용 없음", category.id))
         When("내가 작성한 게시글이 아니면") {
             pointCommandService.commentPointAward(otherArticleId, 1L)
 
@@ -105,11 +105,11 @@ class PointServiceIntegrationTest (
     Given("포인트를 쌓고") {
         val loginMember = memberLoginService.login("김영철", "aaa@google.com")
         val now = LocalDateTime.now()
-        pointCommandService.dailyPointAward(loginMember.id!!, now)
-        pointCommandService.dailyPointAward(loginMember.id!!, now.plusDays(7))
+        pointCommandService.dailyPointAward(loginMember.id, now)
+        pointCommandService.dailyPointAward(loginMember.id, now.plusDays(7))
         When("포인트를 조회하면") {
-            val totalPoint = pointQueryService.getTotalPoint(1L)
-            val cursorResponse = pointQueryService.getPoints(1L, CursorRequest.default())
+            val totalPoint = pointQueryService.getTotalPoint(loginMember.id)
+            val cursorResponse = pointQueryService.getPoints(loginMember.id, CursorRequest.default())
             Then("포인트 정보를 확인할 수 있다.") {
                 assertSoftly {
                     totalPoint shouldBe 20

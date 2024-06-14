@@ -22,7 +22,7 @@ class ChatService(
     fun createRoom(command: ChatRoomCreateCommand, principalId: Long): String {
         val chatRoom = ChatRoom(command.name, command.maximumCapacity, principalId)
         chatRoomRepository.save(chatRoom)
-        return chatRoom.id!!
+        return chatRoom.id.toString()
     }
 
     @Async
