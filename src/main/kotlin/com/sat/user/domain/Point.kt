@@ -12,7 +12,7 @@ class Point(
     @Enumerated(EnumType.STRING)
     val type: PointType,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 ) {
     val point = type.score
 

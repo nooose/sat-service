@@ -11,5 +11,5 @@ class LoginHistory(
     val memberId: Long,
     val loginDateTime: LocalDateTime,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 )

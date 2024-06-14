@@ -2,14 +2,22 @@ spring:
   profiles.active: local
 
   datasource:
-    url: jdbc:mysql://${DB_HOST}:3306/satdb
+    url: jdbc:mysql://${DB_HOST}:3306/sat
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:
     open-in-view: false
     show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin
 
   security:
     oauth2:

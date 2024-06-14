@@ -10,7 +10,7 @@ class Category(
     var name: CategoryName,
     var parentId: Long? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 ) : AuditingFields() {
 
     fun update(that: CategoryDto) {

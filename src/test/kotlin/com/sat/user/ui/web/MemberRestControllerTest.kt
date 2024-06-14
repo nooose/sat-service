@@ -1,6 +1,5 @@
 package com.sat.user.ui.web
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.query.ArticleQueryService
 import com.sat.board.application.query.CommentQueryService
@@ -27,16 +26,12 @@ import io.mockk.just
 import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.http.MediaType
 import java.time.LocalDateTime
 
 @DisplayName(value = "API 문서화 - 사용자")
 @WebMvcTest(MemberRestController::class)
-class MemberRestControllerTest @Autowired constructor(
-    private val objectMapper: ObjectMapper,
-) : Documentation() {
+class MemberRestControllerTest : Documentation() {
 
     @MockkBean
     lateinit var memberCommandService: MemberCommandService
@@ -100,14 +95,12 @@ class MemberRestControllerTest @Autowired constructor(
     @WithAuthenticatedUser
     @Test
     fun `자신의 정보 수정`() {
-        val command = MemberUpdateCommand("닉네임")
+        val request = MemberUpdateCommand("닉네임")
 
         every { memberCommandService.update(any(), any()) } just runs
 
         mockMvc.PUT("/user/members/me") {
-            content = objectMapper.writeValueAsString(command)
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "utf-8"
+            jsonContent(request)
         }.andExpect {
             status { isOk() }
         }.andDocument {

@@ -51,7 +51,7 @@ class GlobalRestControllerAdvice {
 
     @ExceptionHandler(Exception::class)
     fun error(e: Exception): ResponseEntity<ErrorResponse<String>> {
-        log.error { e }
+        log.error { e.stackTraceToString() }
         return ResponseEntity.internalServerError().body(ErrorResponse("알 수 없는 에러가 발생했습니다."))
     }
 }

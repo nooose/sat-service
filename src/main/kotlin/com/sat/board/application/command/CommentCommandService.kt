@@ -26,13 +26,13 @@ class CommentCommandService(
         val comment = Comment(articleId, command.content, command.parentId)
         commentRepository.save(comment)
 
-        Events.publish(CommentCreateEvent(articleId, comment.id!!, comment.createdBy!!))
+        Events.publish(CommentCreateEvent(articleId, comment.id, comment.createdBy!!))
     }
 
     private fun checkParentId(parentId: Long?, articleId: Long) {
         if (parentId != null) {
             val exist = commentRepository.existParent(parentId, articleId)
-            require(exist) { "상위 댓글이 존재하지 않습니다. - $parentId" }
+            check(exist) { "상위 댓글이 존재하지 않습니다. - $parentId" }
         }
     }
 

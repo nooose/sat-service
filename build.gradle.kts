@@ -38,8 +38,8 @@ configurations {
 	asciidoctorExt
 }
 
-val kotestVersion = "5.8.1"
-val kotestSpringVersion = "1.1.3"
+val kotestVersion = "5.9.1"
+val kotestSpringVersion = "1.3.0"
 val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
 val kotlinLoggingVersion = "6.0.9"
@@ -48,8 +48,10 @@ val jdslVersion = "3.4.2"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-websocket")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
 

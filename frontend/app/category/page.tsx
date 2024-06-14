@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import Categories from "@/components/category/categories";
 import CategoryCreateButton from "@/components/category/client-category-write-button";
 

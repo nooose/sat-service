@@ -31,7 +31,7 @@ export default async function UserLogin() {
     return (
         <div>
             {isAuthenticated && (
-                <div  className="hidden lg:flex">
+                <div className="flex">
                     <NavbarItem>
                         <UserProfile
                             id={userInfo.id}
@@ -44,7 +44,7 @@ export default async function UserLogin() {
                 </div>
             )}
             {!isAuthenticated && (
-                <NavbarItem className="hidden lg:flex">
+                <NavbarItem className="flex">
                     <Link href={process.env.LOGIN_REQUEST_URL}>로그인</Link>
                 </NavbarItem>
             )}

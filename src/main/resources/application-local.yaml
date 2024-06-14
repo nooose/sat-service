@@ -1,9 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/satdb
+    url: jdbc:mysql://localhost:3306/sat
     username: sat
     password: sat123
 
+  data:
+    mongodb:
+      uri: mongodb://sat:sat123@localhost:27017/sat?authSource=admin
+
 external:
   frontend:
-    url: http://localhost:3000
+    url: http://www.sat.com:3000

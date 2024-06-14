@@ -2,7 +2,7 @@
 
 import React, {useEffect} from "react";
 import {EventSourcePolyfill, NativeEventSource} from "event-source-polyfill";
-import {API_HOST} from "@/utils/rest-client";
+import {HTTP_API_HOST} from "@/utils/rest-client";
 import 'react-toastify/dist/ReactToastify.css';
 import {toast, ToastContainer} from "react-toastify";
 import {useRouter} from "next/navigation";
@@ -23,7 +23,7 @@ export default function ClientNotification() {
     useEffect(() => {
         const EventSource = EventSourcePolyfill || NativeEventSource;
         const eventSource = new EventSource(
-            `${API_HOST}/notification:subscribe`, {
+            `${HTTP_API_HOST}/notification:subscribe`, {
                 withCredentials: true,
                 heartbeatTimeout: 3600000,
             }

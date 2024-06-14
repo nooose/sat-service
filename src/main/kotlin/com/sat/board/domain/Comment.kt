@@ -13,7 +13,7 @@ data class Comment(
     var content: String,
     var parentId: Long? = null,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 ) : AuditingFields() {
     var isDeleted: Boolean = false
 

@@ -8,5 +8,5 @@ import jakarta.persistence.*
 data class Like(
     val articleId: Long,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 ) : AuditingFields()

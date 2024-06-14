@@ -1,11 +1,10 @@
 package com.sat.board.ui.web
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.command.CategoryCommandService
-import com.sat.board.application.query.CategoryQueryService
 import com.sat.board.application.command.dto.CategoryCreateCommand
 import com.sat.board.application.command.dto.CategoryUpdateCommand
+import com.sat.board.application.query.CategoryQueryService
 import com.sat.board.application.query.dto.CategoryQuery
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
@@ -14,16 +13,12 @@ import io.mockk.just
 import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.http.MediaType
 
 
 @DisplayName(value = "API 문서화 - 카테고리")
 @WebMvcTest(CategoryRestController::class)
-class CategoryRestControllerTest @Autowired constructor(
-    private val objectMapper: ObjectMapper,
-) : Documentation() {
+class CategoryRestControllerTest : Documentation() {
 
     @MockkBean
     lateinit var categoryCommandService : CategoryCommandService
@@ -38,9 +33,7 @@ class CategoryRestControllerTest @Autowired constructor(
         every { categoryCommandService.create(any()) } just runs
 
         mockMvc.POST("/board/categories") {
-            content = objectMapper.writeValueAsString(request)
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "utf-8"
+            jsonContent(request)
         }.andExpect {
             status { isOk() }
         }.andDocument {
@@ -82,9 +75,7 @@ class CategoryRestControllerTest @Autowired constructor(
         every { categoryCommandService.update(any(), any()) } just runs
 
         mockMvc.PUT("/board/categories/{id}", 2L) {
-            content = objectMapper.writeValueAsString(request)
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "utf-8"
+            jsonContent(request)
         }.andExpect {
             status { isOk()}
         }.andDocument {

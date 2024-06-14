@@ -1,8 +1,8 @@
 package com.sat.common.security
 
 import com.sat.common.config.security.AuthenticatedMember
+import com.sat.common.security.TestAuthUtils.authentication
 import com.sat.user.domain.Member
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
@@ -16,14 +16,36 @@ import org.springframework.security.test.context.support.WithSecurityContextFact
 class WithMockAuthenticatedUserSecurityContextFactory : WithSecurityContextFactory<WithAuthenticatedUser> {
     override fun createSecurityContext(annotation: WithAuthenticatedUser): SecurityContext {
         val context = SecurityContextHolder.createEmptyContext()
+        val authentication = authentication(annotation.id, annotation.name, annotation.nickname, annotation.email)
+        context.authentication = authentication
+        return context
+    }
+}
 
+object TestAuthUtils {
+    fun setAuthentication(
+        id: Long = 1L,
+        name: String = "테스트",
+        nickName: String = "테스트",
+        email: String = "test@test.com"
+    ) {
+        SecurityContextHolder.getContext().authentication = authentication(id, name, nickName, email)
+    }
+
+    fun authentication(
+        id: Long = 1L,
+        name: String = "테스트",
+        nickName: String = "테스트",
+        email: String = "test@test.com"
+    ): OAuth2AuthenticationToken {
         val claims = mapOf(
-            "id" to annotation.id,
-            "name" to annotation.name,
-            "nickname" to annotation.nickname,
-            "email" to annotation.email,
+            "id" to id,
+            "name" to name,
+            "nickname" to nickName,
+            "email" to email,
             "picture" to "",
         )
+
         val accessToken = OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "token", null, null)
         val oidcIdToken = OidcIdToken("token", null, null, claims)
         val registrationId = "test"
@@ -37,10 +59,9 @@ class WithMockAuthenticatedUserSecurityContextFactory : WithSecurityContextFacto
             .build()
         val oidcUserRequest = OidcUserRequest(clientRegistration, accessToken, oidcIdToken)
 
-        val member = Member(annotation.name, annotation.nickname, annotation.email, annotation.id)
+        val member = Member(name, name, "test@test.com", id)
         val principal = AuthenticatedMember.from(oidcUserRequest, member)
-        val authentication: Authentication = OAuth2AuthenticationToken(principal, principal.authorities, registrationId)
-        context.authentication = authentication
-        return context
+        return OAuth2AuthenticationToken(principal, principal.authorities, registrationId)
     }
 }
+

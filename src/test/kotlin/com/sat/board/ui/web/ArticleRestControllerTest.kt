@@ -1,6 +1,5 @@
 package com.sat.board.ui.web
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import com.sat.board.application.command.ArticleCommandService
 import com.sat.board.application.command.dto.ArticleCreateCommand
@@ -16,17 +15,13 @@ import io.mockk.just
 import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.http.HttpHeaders
-import org.springframework.http.MediaType
 import java.time.LocalDateTime
 
 @DisplayName(value = "API 문서화 - 게시글")
 @WebMvcTest(ArticleRestController::class)
-class ArticleRestControllerTest @Autowired constructor(
-    private val objectMapper: ObjectMapper,
-) : Documentation() {
+class ArticleRestControllerTest : Documentation() {
 
     @MockkBean
     lateinit var articleCommandService: ArticleCommandService
@@ -41,9 +36,7 @@ class ArticleRestControllerTest @Autowired constructor(
         every { articleCommandService.create(any()) } returns 1L
 
         mockMvc.POST("/board/articles") {
-            content = objectMapper.writeValueAsString(request)
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "utf-8"
+            jsonContent(request)
         }.andExpect {
             status { isCreated() }
         }.andDocument {
@@ -119,9 +112,7 @@ class ArticleRestControllerTest @Autowired constructor(
         every { articleCommandService.update(any(), any()) } just runs
 
         mockMvc.PUT("/board/articles/{articleId}", 1L) {
-            content = objectMapper.writeValueAsString(request)
-            contentType = MediaType.APPLICATION_JSON
-            characterEncoding = "utf-8"
+            jsonContent(request)
         }.andExpect {
             status { isOk() }
         }.andDocument {

@@ -3,7 +3,7 @@ services:
     image: mysql:8.4
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: satdb
+      MYSQL_DATABASE: sat
       MYSQL_USER: sat
       MYSQL_PASSWORD: sat123
     command:
@@ -14,3 +14,12 @@ services:
     volumes:
       - "./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql"
       - "./mysql/conf.cnf:/etc/mysql/conf.d/conf.cnf"
+
+  mongodb:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sat
+      MONGO_INITDB_ROOT_PASSWORD: sat123
+      MONGO_INITDB_DATABASE: sat
+    ports:
+      - 27017:27017
