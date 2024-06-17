@@ -5,12 +5,14 @@ import ClientCreateChatRoomButton from "@/components/chat/waiting-rooms/client-c
 import ClientWaitingChatRoom from "@/components/chat/client-waiting-chat-room";
 import {Client} from "@stomp/stompjs";
 import {API_HOST} from "@/utils/rest-client";
+import {useRouter} from "next/navigation";
 
 export default function ClientWaitingRooms({chatRooms, memberId} : {
     chatRooms: ChatRoomResponse[],
     memberId: number
 }) {
     const [chatRoomsState, setChatRoomsState] = useState<ChatRoomResponse[]>(chatRooms);
+    const router = useRouter()
 
     useEffect(() => {
         const stompClient = new Client({
@@ -37,7 +39,7 @@ export default function ClientWaitingRooms({chatRooms, memberId} : {
                             ownerId: room.ownerId,
                         }
                         return newChatRoom
-                    })
+                    });
                     setChatRoomsState(rooms)
                 });
 

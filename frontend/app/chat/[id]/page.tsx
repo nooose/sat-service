@@ -36,6 +36,9 @@ export default function Chat({params: {id}}: any) {
             onStompError: (frame) => {
                 console.error('error: ' + frame.headers['message']);
                 console.error('error details: ' + frame.body);
+                alert('채팅방이 꽉 찼습니다.');
+                router.push("/chat");
+                router.refresh();
             },
         });
 

@@ -4,7 +4,6 @@ import com.sat.chat.application.command.ChatMessageCommand
 import com.sat.chat.application.command.ChatOnlineService
 import com.sat.chat.application.command.ChatService
 import com.sat.chat.domain.ChatMember
-import com.sat.chat.domain.dto.query.ChatRoomOccupancyQuery
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
@@ -12,7 +11,6 @@ import org.springframework.messaging.handler.annotation.DestinationVariable
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo
-import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.messaging.simp.annotation.SubscribeMapping
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
@@ -25,7 +23,6 @@ private val log = KotlinLogging.logger { }
 class ChatController(
     private val chatService: ChatService,
     private val chatOnlineService: ChatOnlineService,
-    private val messagingTemplate: SimpMessagingTemplate,
 ) {
 
     /**
@@ -52,32 +49,30 @@ class ChatController(
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
     ) {
-        messagingTemplate.convertAndSend("/topic/rooms/${roomId}/active-users", chatOnlineService.findOnline("/topic/rooms/${roomId}"))
-        messagingTemplate.convertAndSend("/topic/rooms",  chatOnlineService.findOnlineCounts())
+        val member = principal.principal as AuthenticatedMember
+        chatOnlineService.record(roomId, ChatMember(accessor.sessionId!!, member.name))
     }
 
     /**
      * 채팅방 구독 이벤트 처리
      */
     @SubscribeMapping("/topic/rooms/{roomId}/active-users")
-    @SendTo("/topic/rooms/{roomId}/active-users")
     fun handleSubscription(
         @DestinationVariable roomId: String,
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
-    ): List<ChatMember> {
-        return chatOnlineService.findOnline("/topic/rooms/${roomId}")
+    ) {
+        chatOnlineService.sendActiveUsers(roomId)
     }
 
     /**
      * 채팅 대기방 구독 이벤트 처리
      */
     @SubscribeMapping("/topic/rooms")
-    @SendTo("/topic/rooms")
     fun handleWaitingSubscription(
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
-    ): List<ChatRoomOccupancyQuery> {
-        return chatOnlineService.findOnlineCounts()
+    ) {
+        chatOnlineService.sendOnlineCounts()
     }
 }
