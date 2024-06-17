@@ -21,6 +21,8 @@ export default function ClientWaitingRooms({chatRooms, memberId} : {
             },
             onConnect: () => {
                 stompClient.subscribe(`/topic/rooms`, (message) => {
+                    console.log('>>>> 대기방 인원 수');
+                    console.log(message.body);
                     const waitingRoomInformation: ChatRoomOccupancyQuery[] = JSON.parse(message.body);
                     const map = new Map<string, number>();
                     waitingRoomInformation.forEach((room: ChatRoomOccupancyQuery) => {

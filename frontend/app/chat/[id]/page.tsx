@@ -28,7 +28,6 @@ export default function Chat({params: {id}}: any) {
                 });
 
                 stompClient.subscribe(`/topic/rooms/${id}/active-users`, (message) => {
-                    console.log("입장/퇴장 메시지");
                     console.log(message.body);
                     const body: ChatUser[] = JSON.parse(message.body);
                     setActiveUsers(body);
