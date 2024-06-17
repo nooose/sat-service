@@ -7,11 +7,13 @@ import {RestClient} from "@/utils/rest-client";
 import ArticleLikeButton from "@/components/article/client-article-like-button";
 import React from "react";
 import dynamic from "next/dynamic";
-import {Card, CardBody} from "@nextui-org/react";
+import {BreadcrumbItem, Breadcrumbs, Card, CardBody, Image} from "@nextui-org/react";
 import {Skeleton} from "@nextui-org/skeleton";
 import {getUserInfo} from "@/components/user-login";
 import styles from "@styles/article.article-view.module.css"
 import ClientArticleDeleteButton from "@/components/article/client-article-delete-button";
+import category from "@/app/category/page";
+import ClientMember from "@/components/member/client-member";
 
 
 export async function getArticle(id: number): Promise<ArticleResponse> {
@@ -41,6 +43,8 @@ export default async function ArticleInfo({id}: any) {
     return (
         <div className={styles.articleViewContainer}>
             <ClientArticleCategoryInfo category={article.category}/>
+            <ClientMember memberId={article.createdBy} memberName={article.createdName}/>
+
             <div className="flex gap-4 items-center">
                 <Input
                     isReadOnly

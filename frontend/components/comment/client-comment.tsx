@@ -20,6 +20,7 @@ import {RestClient} from "@/utils/rest-client";
 import {useRouter} from "next/navigation";
 import {errorToast} from "@/utils/toast-utils";
 import DeleteModal from "@/components/modal/delete-modal";
+import ClientMember from "@/components/member/client-member";
 
 export default function ClientComment({articleId, comment, loginUserId}: {
     articleId: number,
@@ -81,18 +82,7 @@ export default function ClientComment({articleId, comment, loginUserId}: {
         <div className={styles.comment}>
             <Card key={comment.id}>
                 <CardHeader className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Image
-                            alt="avatar"
-                            height={30}
-                            radius="sm"
-                            src="https://avatars.githubusercontent.com/u/86160567?s=200&v=4"
-                            width={30}
-                        />
-                        <div className="flex flex-col">
-                            <p>{comment.memberName}</p>
-                        </div>
-                    </div>
+                    <ClientMember memberId={comment.memberId} memberName={comment.memberName}/>
                     {loginUserId === comment.memberId ?
                         <div>
                             <button className={deleteStyles.deleteButton} onClick={onOpen}>
