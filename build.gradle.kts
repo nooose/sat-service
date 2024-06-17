@@ -68,18 +68,20 @@ dependencies {
 	implementation("com.linecorp.kotlin-jdsl:spring-data-jpa-support:${jdslVersion}")
 
 	testRuntimeOnly("com.h2database:h2")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.springframework.boot:spring-boot-starter-test") {
+		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+		exclude(group = "org.mockito")
+	}
 	testImplementation("org.springframework.security:spring-security-test")
 	testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 	testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 	testImplementation("io.kotest.extensions:kotest-extensions-spring:$kotestSpringVersion")
+	testImplementation("io.mockk:mockk:$mockkVersion")
+	testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 
 	testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
 	testImplementation("com.epages:restdocs-api-spec-mockmvc:0.19.2")
 	asciidoctorExt("org.springframework.restdocs:spring-restdocs-asciidoctor")
-
-	testImplementation("io.mockk:mockk:$mockkVersion")
-	testImplementation("com.ninja-squad:springmockk:$springMockkVersion")
 }
 
 allOpen {
