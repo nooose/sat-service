@@ -9,15 +9,18 @@ import com.sat.board.domain.port.LikeRepository
 import com.sat.common.config.jpa.limit
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
+import com.sat.common.domain.exception.NotFoundException
 import com.sat.common.utils.findByIdOrThrow
+import com.sat.user.domain.port.repository.MemberRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional(readOnly = true)
 @Service
 class ArticleQueryService(
-        private val articleRepository: ArticleRepository,
-        private val likeRepository: LikeRepository,
+    private val articleRepository: ArticleRepository,
+    private val likeRepository: LikeRepository,
+    private val memberRepository: MemberRepository,
 ) {
 
     fun get(id: Long, principalId: Long? = null): ArticleQuery {
@@ -26,11 +29,14 @@ class ArticleQueryService(
             throw IllegalStateException("삭제된 게시글 입니다.")
         }
 
+        val member = memberRepository.findByIdOrThrow(article.createdBy!!)
+            { throw NotFoundException("존재하지 않는 유저입니다. - ${article.createdBy}") }
+
         if (principalId == null) {
-            return ArticleQuery.from(article, false)
+            return ArticleQuery.from(article, member.name, false)
         }
         val hasLike = likeRepository.existsByArticleIdAndCreatedBy(id, principalId)
-        return ArticleQuery.from(article, hasLike)
+        return ArticleQuery.from(article, member.name, hasLike)
     }
 
     fun getAll(memberId: Long? = null): List<ArticleWithCount> {

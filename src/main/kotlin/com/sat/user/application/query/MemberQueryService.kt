@@ -1,5 +1,7 @@
 package com.sat.user.application.query
 
+import com.sat.common.domain.exception.NotFoundException
+import com.sat.common.utils.findByIdOrThrow
 import com.sat.user.application.query.dto.MemberSimpleQuery
 import com.sat.user.domain.port.repository.MemberRepository
 import org.springframework.stereotype.Service
@@ -13,5 +15,11 @@ class MemberQueryService(
 
     fun get(): List<MemberSimpleQuery> {
         return memberRepository.findAll().map { MemberSimpleQuery.from(it) }
+    }
+
+    fun you(memberId: Long): MemberSimpleQuery {
+        val member = memberRepository.findByIdOrThrow(memberId)
+        { throw NotFoundException("존재하지 않는 회원입니다 - $memberId") }
+        return MemberSimpleQuery.from(member)
     }
 }
