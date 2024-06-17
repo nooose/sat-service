@@ -5,12 +5,14 @@ import ClientCreateChatRoomButton from "@/components/chat/waiting-rooms/client-c
 import ClientWaitingChatRoom from "@/components/chat/client-waiting-chat-room";
 import {Client} from "@stomp/stompjs";
 import {API_HOST} from "@/utils/rest-client";
+import {useRouter} from "next/navigation";
 
 export default function ClientWaitingRooms({chatRooms, memberId} : {
     chatRooms: ChatRoomResponse[],
     memberId: number
 }) {
     const [chatRoomsState, setChatRoomsState] = useState<ChatRoomResponse[]>(chatRooms);
+    const router = useRouter()
 
     useEffect(() => {
         const stompClient = new Client({
@@ -21,6 +23,8 @@ export default function ClientWaitingRooms({chatRooms, memberId} : {
             },
             onConnect: () => {
                 stompClient.subscribe(`/topic/rooms`, (message) => {
+                    console.log('>>>> 대기방 인원 수');
+                    console.log(message.body);
                     const waitingRoomInformation: ChatRoomOccupancyQuery[] = JSON.parse(message.body);
                     const map = new Map<string, number>();
                     waitingRoomInformation.forEach((room: ChatRoomOccupancyQuery) => {
@@ -35,7 +39,7 @@ export default function ClientWaitingRooms({chatRooms, memberId} : {
                             ownerId: room.ownerId,
                         }
                         return newChatRoom
-                    })
+                    });
                     setChatRoomsState(rooms)
                 });
 

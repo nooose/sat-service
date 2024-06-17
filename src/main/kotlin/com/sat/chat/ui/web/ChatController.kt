@@ -1,11 +1,9 @@
 package com.sat.chat.ui.web
 
 import com.sat.chat.application.command.ChatMessageCommand
-import com.sat.chat.application.command.ChatRoomTopic
+import com.sat.chat.application.command.ChatOnlineService
 import com.sat.chat.application.command.ChatService
-import com.sat.chat.application.command.OnlineRecorder
 import com.sat.chat.domain.ChatMember
-import com.sat.chat.domain.dto.query.ChatRoomOccupancyQuery
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
@@ -24,7 +22,7 @@ private val log = KotlinLogging.logger { }
 @Controller
 class ChatController(
     private val chatService: ChatService,
-    private val onlineRecorder: OnlineRecorder,
+    private val chatOnlineService: ChatOnlineService,
 ) {
 
     /**
@@ -45,26 +43,36 @@ class ChatController(
     /**
      * 채팅방 구독 이벤트 처리
      */
+    @SubscribeMapping("/topic/rooms/{roomId}")
+    fun handleChatRoomSubscription(
+        @DestinationVariable roomId: String,
+        principal: OAuth2AuthenticationToken,
+        accessor: StompHeaderAccessor,
+    ) {
+        val member = principal.principal as AuthenticatedMember
+        chatOnlineService.record(roomId, ChatMember(accessor.sessionId!!, member.name))
+    }
+
+    /**
+     * 채팅방 구독 이벤트 처리
+     */
     @SubscribeMapping("/topic/rooms/{roomId}/active-users")
-    @SendTo("/topic/rooms/{roomId}/active-users")
     fun handleSubscription(
         @DestinationVariable roomId: String,
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
-    ): Set<ChatMember> {
-        val topic = ChatRoomTopic(roomId, accessor.destination!!)
-        return onlineRecorder.add(topic, ChatMember(accessor.sessionId!!, principal.name))
+    ) {
+        chatOnlineService.sendActiveUsers(roomId)
     }
 
     /**
      * 채팅 대기방 구독 이벤트 처리
      */
     @SubscribeMapping("/topic/rooms")
-    @SendTo("/topic/rooms")
     fun handleWaitingSubscription(
         principal: OAuth2AuthenticationToken,
         accessor: StompHeaderAccessor,
-    ): List<ChatRoomOccupancyQuery> {
-        return onlineRecorder.getChatRoomOccupancy()
+    ) {
+        chatOnlineService.sendOnlineCounts()
     }
 }

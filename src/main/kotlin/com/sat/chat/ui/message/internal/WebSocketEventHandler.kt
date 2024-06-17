@@ -1,8 +1,9 @@
 package com.sat.chat.ui.message.internal
 
-import com.sat.chat.application.command.ChatRoomTopic
-import com.sat.chat.application.command.OnlineRecorder
+import com.sat.chat.application.command.ChatOnlineService
+import com.sat.chat.domain.ChatMember
 import com.sat.chat.domain.ChatRoomDeletedEvent
+import com.sat.chat.domain.ChatSessionRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -12,18 +13,21 @@ val log = KotlinLogging.logger { }
 
 @Component
 class WebSocketEventHandler(
-    private val onlineRecorder: OnlineRecorder,
+    private val chatOnlineService: ChatOnlineService,
+    private val chatSessionRepository: ChatSessionRepository,
 ) {
 
     @EventListener
-    fun handleWebSocketDisconnectListener(event: SessionDisconnectEvent) {
-        onlineRecorder.exit(event.sessionId)
+    fun handleDisconnect(event: SessionDisconnectEvent) {
+        val topicId = chatSessionRepository.deleteSession(ChatMember(event.sessionId)) ?: return
+        chatOnlineService.sendOnlineCounts()
+        chatOnlineService.sendActiveUsers(topicId.split("/").last())
     }
 
     @EventListener
     fun deleteRoom(event: ChatRoomDeletedEvent) {
-        val chatTopicId = "/topic/rooms/${event.chatRoomId}/active-users"
-        val topic = ChatRoomTopic(event.chatRoomId, chatTopicId)
-        onlineRecorder.deleteChatRoom(topic)
+        val chatTopicId = "/topic/rooms/${event.chatRoomId}"
+        chatSessionRepository.findAllByTopicId(chatTopicId)
+            .forEach { chatOnlineService.exit(chatTopicId, it.sessionId) }
     }
 }
