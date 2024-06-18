@@ -14,7 +14,7 @@ data class MemberSimpleQuery(
     companion object {
         fun from(entity: Member): MemberSimpleQuery {
             return MemberSimpleQuery(
-                id = entity.id!!,
+                id = entity.id,
                 name = entity.name,
                 email = entity.email,
                 createdDateTime = entity.createdDateTime,
