@@ -1,13 +1,12 @@
-package com.sat.chat.application.query
+package com.sat.chat.query
 
-import com.sat.chat.domain.ChatMessageRepository
-import com.sat.chat.domain.ChatRoomRepository
+import com.sat.chat.command.domain.ChatMessageRepository
+import com.sat.chat.command.domain.ChatRoomRepository
 import com.sat.user.command.domain.member.MemberRepository
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
-private const val SEARCH_CONDITION_MINUTE: Long = 30
 
 @Service
 class ChatQueryService(
@@ -20,9 +19,8 @@ class ChatQueryService(
             .map { chatRoom -> ChatRoomQuery.from(chatRoom) }
     }
 
-    fun getMessages(roomId: String, now: LocalDateTime): List<ChatMessageQuery> {
-        val timeCondition = now.minusMinutes(SEARCH_CONDITION_MINUTE)
-        val messages = chatMessageRepository.getMessages(timeCondition, ObjectId(roomId))
+    fun getMessages(roomId: String, baseTime: LocalDateTime): List<ChatMessageQuery> {
+        val messages = chatMessageRepository.getMessages(baseTime, ObjectId(roomId))
 
         val memberIds = messages.map { it.senderId }.distinct()
         val members = memberRepository.findAllById(memberIds)

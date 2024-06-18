@@ -1,9 +1,9 @@
 package com.sat.chat.ui.web
 
-import com.sat.chat.application.command.ChatMessageCommand
-import com.sat.chat.application.command.ChatOnlineService
-import com.sat.chat.application.command.ChatService
-import com.sat.chat.domain.ChatMember
+import com.sat.chat.command.application.ChatMessageCommand
+import com.sat.chat.command.application.ChatOnlineService
+import com.sat.chat.command.application.ChatService
+import com.sat.chat.command.domain.ChatMember
 import com.sat.common.config.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid

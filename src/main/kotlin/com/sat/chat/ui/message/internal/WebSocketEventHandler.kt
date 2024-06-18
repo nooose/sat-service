@@ -1,9 +1,9 @@
 package com.sat.chat.ui.message.internal
 
-import com.sat.chat.application.command.ChatOnlineService
-import com.sat.chat.domain.ChatMember
-import com.sat.chat.domain.ChatRoomDeletedEvent
-import com.sat.chat.domain.ChatSessionRepository
+import com.sat.chat.command.application.ChatOnlineService
+import com.sat.chat.command.domain.ChatMember
+import com.sat.chat.command.domain.ChatRoomDeletedEvent
+import com.sat.chat.command.domain.ChatSessionRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component

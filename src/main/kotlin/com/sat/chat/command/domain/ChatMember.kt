@@ -1,4 +1,4 @@
-package com.sat.chat.domain
+package com.sat.chat.command.domain
 
 data class ChatMember(
     val sessionId: String,

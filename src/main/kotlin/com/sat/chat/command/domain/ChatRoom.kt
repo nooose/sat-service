@@ -1,4 +1,4 @@
-package com.sat.chat.domain
+package com.sat.chat.command.domain
 
 import jakarta.persistence.Id
 import org.bson.types.ObjectId

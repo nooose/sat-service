@@ -1,6 +1,6 @@
-package com.sat.chat.application.command
+package com.sat.chat.command.application
 
-import com.sat.chat.domain.*
+import com.sat.chat.command.domain.*
 import com.sat.common.domain.exception.NotFoundException
 import com.sat.event.utils.Events
 import org.bson.types.ObjectId

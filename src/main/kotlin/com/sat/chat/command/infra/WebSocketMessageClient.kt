@@ -1,6 +1,6 @@
-package com.sat.chat.infrastructure
+package com.sat.chat.command.infra
 
-import com.sat.chat.domain.MessageClient
+import com.sat.chat.command.domain.MessageClient
 import org.springframework.messaging.simp.SimpMessagingTemplate
 import org.springframework.messaging.simp.stomp.StompCommand
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor

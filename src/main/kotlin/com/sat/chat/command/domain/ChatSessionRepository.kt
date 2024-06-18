@@ -1,4 +1,4 @@
-package com.sat.chat.domain
+package com.sat.chat.command.domain
 
 import org.springframework.stereotype.Repository
 import java.util.concurrent.ConcurrentHashMap

@@ -1,9 +1,9 @@
-package com.sat.chat.application.command
+package com.sat.chat.command.application
 
-import com.sat.chat.domain.ChatMember
-import com.sat.chat.domain.ChatSessionRepository
-import com.sat.chat.domain.MessageClient
-import com.sat.chat.domain.dto.query.ChatRoomOccupancyQuery
+import com.sat.chat.command.domain.ChatMember
+import com.sat.chat.command.domain.ChatSessionRepository
+import com.sat.chat.command.domain.MessageClient
+import com.sat.chat.query.ChatRoomOccupancyQuery
 import org.springframework.stereotype.Service
 
 @Service

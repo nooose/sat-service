@@ -1,12 +1,12 @@
 package com.sat.chat.ui.web
 
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.chat.application.command.ChatRoomCreateCommand
-import com.sat.chat.application.command.ChatService
-import com.sat.chat.application.query.ChatMessageQuery
-import com.sat.chat.application.query.ChatQueryService
-import com.sat.chat.application.query.ChatRoomQuery
-import com.sat.chat.domain.ChatMessage
+import com.sat.chat.command.application.ChatRoomCreateCommand
+import com.sat.chat.command.application.ChatService
+import com.sat.chat.query.ChatMessageQuery
+import com.sat.chat.query.ChatQueryService
+import com.sat.chat.query.ChatRoomQuery
+import com.sat.chat.command.domain.ChatMessage
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.DELETE
 import com.sat.common.documentation.dsl.GET
