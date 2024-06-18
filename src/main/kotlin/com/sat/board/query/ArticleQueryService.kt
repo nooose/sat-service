@@ -8,8 +8,9 @@ import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.like.Like
 import com.sat.board.command.domain.like.LikeRepository
 import com.sat.common.config.jpa.limit
-import com.sat.common.domain.CursorRequest
-import com.sat.common.domain.PageCursor
+import com.sat.common.CursorRequest
+import com.sat.common.PageCursor
+import com.sat.common.nextCursorId
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.user.command.domain.member.MemberRepository
 import org.springframework.stereotype.Service
@@ -83,13 +84,6 @@ class ArticleQueryService(
             ).limit(cursorRequest.size)
         }.filterNotNull()
 
-        return PageCursor(cursorRequest.next(getNextId(likedArticles)), likedArticles)
-    }
-
-    private fun getNextId(likes: List<LikedArticleSimpleQuery>): Long {
-        if (likes.isEmpty()) {
-            return 0
-        }
-        return likes.minOf { it.id }
+        return PageCursor(cursorRequest.next(likedArticles.nextCursorId), likedArticles)
     }
 }

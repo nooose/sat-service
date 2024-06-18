@@ -1,6 +1,6 @@
 package com.sat.common.utils
 
-import com.sat.common.domain.exception.NotFoundException
+import com.sat.common.exception.NotFoundException
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.repository.findByIdOrNull
 

@@ -7,7 +7,7 @@ import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.article.Category
 import com.sat.board.command.domain.article.CategoryName
 import com.sat.board.command.domain.article.CategoryRepository
-import com.sat.common.domain.CursorRequest
+import com.sat.common.CursorRequest
 import com.sat.common.security.TestAuthUtils.setAuthentication
 import com.sat.user.command.application.MemberLoginService
 import com.sat.user.command.application.PointCommandService

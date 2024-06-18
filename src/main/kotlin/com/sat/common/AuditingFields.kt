@@ -1,4 +1,4 @@
-package com.sat.common.domain
+package com.sat.common
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners

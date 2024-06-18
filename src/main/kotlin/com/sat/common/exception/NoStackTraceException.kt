@@ -1,4 +1,4 @@
-package com.sat.common.domain.exception
+package com.sat.common.exception
 
 abstract class NoStackTraceException(
     message: String,

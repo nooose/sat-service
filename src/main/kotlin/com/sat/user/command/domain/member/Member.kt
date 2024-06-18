@@ -1,6 +1,6 @@
 package com.sat.user.command.domain.member
 
-import com.sat.common.domain.AuditingFields
+import com.sat.common.AuditingFields
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType

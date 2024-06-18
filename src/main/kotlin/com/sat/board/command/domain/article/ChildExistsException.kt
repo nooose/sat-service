@@ -1,6 +1,6 @@
 package com.sat.board.command.domain.article
 
-import com.sat.common.domain.exception.NoStackTraceException
+import com.sat.common.exception.NoStackTraceException
 
 open class ChildExistsException(
     message: String,

@@ -2,6 +2,7 @@ package com.sat.board.query
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.sat.common.Cursor
 import java.time.LocalDateTime
 
 
@@ -51,9 +52,9 @@ class CommentWithMemberQuery(
 }
 
 data class CommentWithArticleQuery(
-    val id: Long,
+    override val id: Long,
     var content: String,
     val articleId: Long,
     val articleTitle: String,
     val createdDateTime: LocalDateTime,
-)
+) : Cursor

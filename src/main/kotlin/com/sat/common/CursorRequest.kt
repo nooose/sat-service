@@ -1,4 +1,4 @@
-package com.sat.common.domain
+package com.sat.common
 
 private const val MAX_SIZE = 30
 private const val DEFAULT_SIZE = 15

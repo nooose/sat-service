@@ -1,7 +1,7 @@
 package com.sat.common.ui.web
 
-import com.sat.common.domain.exception.DuplicateException
-import com.sat.common.domain.exception.NotFoundException
+import com.sat.common.exception.DuplicateException
+import com.sat.common.exception.NotFoundException
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.beans.propertyeditors.StringTrimmerEditor
 import org.springframework.http.HttpStatus

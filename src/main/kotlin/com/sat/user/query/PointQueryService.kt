@@ -1,8 +1,9 @@
 package com.sat.user.query
 
 import com.sat.common.config.jpa.limit
-import com.sat.common.domain.CursorRequest
-import com.sat.common.domain.PageCursor
+import com.sat.common.CursorRequest
+import com.sat.common.PageCursor
+import com.sat.common.nextCursorId
 import com.sat.user.command.domain.point.Point
 import com.sat.user.command.domain.point.PointRepository
 import org.springframework.stereotype.Service
@@ -42,13 +43,6 @@ class PointQueryService(
                 path(Point::id).desc(),
             ).limit(cursorRequest.size)
         }.filterNotNull()
-        return PageCursor(cursorRequest.next(getNextId(points)), points)
-    }
-
-    private fun getNextId(points: List<MyPointQuery>): Long {
-        if (points.isEmpty()) {
-            return 0
-        }
-        return points.minOf { it.id }
+        return PageCursor(cursorRequest.next(points.nextCursorId), points)
     }
 }

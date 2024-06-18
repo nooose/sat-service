@@ -1,7 +1,7 @@
 package com.sat.board.command.application
 
 import com.sat.board.command.domain.article.*
-import com.sat.common.domain.exception.DuplicateException
+import com.sat.common.exception.DuplicateException
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

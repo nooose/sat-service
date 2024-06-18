@@ -3,8 +3,8 @@ package com.sat.user.ui.web
 import com.sat.board.query.*
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
-import com.sat.common.domain.CursorRequest
-import com.sat.common.domain.PageCursor
+import com.sat.common.CursorRequest
+import com.sat.common.PageCursor
 import com.sat.user.command.application.MemberCommandService
 import com.sat.user.command.application.MemberUpdateCommand
 import com.sat.user.query.MemberQueryService

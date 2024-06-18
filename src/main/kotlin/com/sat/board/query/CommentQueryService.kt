@@ -5,9 +5,10 @@ import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.comment.CommentRepository
 import com.sat.common.config.jpa.limit
-import com.sat.common.domain.CursorRequest
-import com.sat.common.domain.PageCursor
+import com.sat.common.CursorRequest
+import com.sat.common.PageCursor
 import com.sat.user.command.domain.member.Member
+import com.sat.common.nextCursorId
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -62,13 +63,6 @@ class CommentQueryService(
                 path(Comment::id).desc()
             ).limit(cursorRequest.size)
         }.filterNotNull()
-        return PageCursor(cursorRequest.next(getNextId(comments)), comments)
-    }
-
-    private fun getNextId(likes: List<CommentWithArticleQuery>): Long {
-        if (likes.isEmpty()) {
-            return 0
-        }
-        return likes.minOf { it.id }
+        return PageCursor(cursorRequest.next(comments.nextCursorId), comments)
     }
 }

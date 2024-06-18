@@ -6,8 +6,8 @@ import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.PUT
 import com.sat.common.documentation.dsl.andDocument
-import com.sat.common.domain.CursorRequest
-import com.sat.common.domain.PageCursor
+import com.sat.common.CursorRequest
+import com.sat.common.PageCursor
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.command.application.MemberCommandService
 import com.sat.user.command.application.MemberUpdateCommand

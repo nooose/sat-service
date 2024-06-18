@@ -1,7 +1,7 @@
 package com.sat.chat.command.application
 
 import com.sat.chat.command.domain.*
-import com.sat.common.domain.exception.NotFoundException
+import com.sat.common.exception.NotFoundException
 import com.sat.event.utils.Events
 import org.bson.types.ObjectId
 import org.springframework.data.repository.findByIdOrNull

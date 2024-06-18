@@ -1,6 +1,6 @@
-package com.sat.common.domain.exception
+package com.sat.common.exception
 
-open class DuplicateException(
+open class NotFoundException(
     message: String,
     cause: Throwable? = null,
 ) : NoStackTraceException(message, cause) {
