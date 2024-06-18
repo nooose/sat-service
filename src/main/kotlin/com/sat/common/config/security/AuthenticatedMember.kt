@@ -1,6 +1,6 @@
 package com.sat.common.config.security
 
-import com.sat.user.domain.Member
+import com.sat.user.command.domain.member.Member
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest

@@ -2,7 +2,7 @@ package com.sat.chat.application.query
 
 import com.sat.chat.domain.ChatMessageRepository
 import com.sat.chat.domain.ChatRoomRepository
-import com.sat.user.domain.port.repository.MemberRepository
+import com.sat.user.command.domain.member.MemberRepository
 import org.bson.types.ObjectId
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime

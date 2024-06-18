@@ -1,4 +1,4 @@
-package com.sat.user.application.query.dto
+package com.sat.user.query.dto
 
 import com.sat.common.config.security.AuthenticatedMember
 

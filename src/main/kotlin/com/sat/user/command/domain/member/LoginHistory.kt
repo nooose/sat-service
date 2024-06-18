@@ -1,4 +1,4 @@
-package com.sat.user.domain
+package com.sat.user.command.domain.member
 
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue

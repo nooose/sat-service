@@ -1,7 +1,7 @@
-package com.sat.user.application.query.dto
+package com.sat.user.query.dto
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.sat.user.domain.Member
+import com.sat.user.command.domain.member.Member
 import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)

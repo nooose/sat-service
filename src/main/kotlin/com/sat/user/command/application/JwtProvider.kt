@@ -1,4 +1,4 @@
-package com.sat.user.application.command
+package com.sat.user.command.application
 
 import com.sat.common.config.security.TokenConfigProperties
 import io.jsonwebtoken.Claims

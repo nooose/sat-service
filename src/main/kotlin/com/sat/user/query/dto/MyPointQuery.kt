@@ -1,6 +1,6 @@
-package com.sat.user.application.query.dto
+package com.sat.user.query.dto
 
-import com.sat.user.domain.PointType
+import com.sat.user.command.domain.point.PointType
 import java.time.LocalDateTime
 
 class MyPointQuery(

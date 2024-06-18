@@ -10,7 +10,7 @@ import com.sat.common.config.jpa.limit
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
 import com.sat.common.utils.findByIdOrThrow
-import com.sat.user.domain.port.repository.MemberRepository
+import com.sat.user.command.domain.member.MemberRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

@@ -11,7 +11,7 @@ import com.sat.board.domain.port.CommentRepository
 import com.sat.common.config.jpa.limit
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
-import com.sat.user.domain.Member
+import com.sat.user.command.domain.member.Member
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

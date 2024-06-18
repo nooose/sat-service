@@ -1,7 +1,6 @@
-package com.sat.user.domain.port.repository
+package com.sat.user.command.domain.point
 
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
-import com.sat.user.domain.Point
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PointRepository : JpaRepository<Point, Long>, KotlinJdslJpqlExecutor {

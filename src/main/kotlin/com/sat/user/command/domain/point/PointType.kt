@@ -1,4 +1,4 @@
-package com.sat.user.domain
+package com.sat.user.command.domain.point
 
 enum class PointType(
     val score: Int,

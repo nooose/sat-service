@@ -2,7 +2,7 @@ package com.sat.common.security
 
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.security.TestAuthUtils.authentication
-import com.sat.user.domain.Member
+import com.sat.user.command.domain.member.Member
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken

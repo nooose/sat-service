@@ -1,9 +1,9 @@
-package com.sat.user.application.command
+package com.sat.user.command.application
 
 import com.sat.common.utils.principal
 import com.sat.common.utils.replacePrincipal
-import com.sat.user.application.command.dto.MemberUpdateCommand
-import com.sat.user.domain.port.repository.MemberRepository
+import com.sat.user.command.application.dto.MemberUpdateCommand
+import com.sat.user.command.domain.member.MemberRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Service

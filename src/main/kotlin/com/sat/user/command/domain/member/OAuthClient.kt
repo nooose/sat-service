@@ -1,4 +1,4 @@
-package com.sat.user.domain.port.client
+package com.sat.user.command.domain.member
 
 interface OAuthClient {
     fun userInfo(token: String): UserInfo

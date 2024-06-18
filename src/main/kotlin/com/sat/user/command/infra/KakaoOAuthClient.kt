@@ -1,7 +1,7 @@
-package com.sat.user.infrastructure.client
+package com.sat.user.command.infra
 
-import com.sat.user.domain.port.client.OAuthClient
-import com.sat.user.domain.port.client.UserInfo
+import com.sat.user.command.domain.member.OAuthClient
+import com.sat.user.command.domain.member.UserInfo
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType.APPLICATION_JSON
 import org.springframework.stereotype.Component

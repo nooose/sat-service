@@ -13,7 +13,7 @@ import com.sat.board.domain.port.ArticleRepository
 import com.sat.board.domain.port.CategoryRepository
 import com.sat.board.domain.port.CommentRepository
 import com.sat.common.security.TestAuthUtils.setAuthentication
-import com.sat.user.application.command.MemberLoginService
+import com.sat.user.command.application.MemberLoginService
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.annotation.DisplayName

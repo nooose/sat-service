@@ -1,11 +1,11 @@
-package com.sat.user.application.command
+package com.sat.user.command.application
 
 import com.sat.board.domain.port.ArticleRepository
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.common.utils.toZeroTime
-import com.sat.user.domain.Point
-import com.sat.user.domain.port.repository.LoginHistoryRepository
-import com.sat.user.domain.port.repository.PointRepository
+import com.sat.user.command.domain.member.LoginHistoryRepository
+import com.sat.user.command.domain.point.Point
+import com.sat.user.command.domain.point.PointRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime

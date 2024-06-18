@@ -1,6 +1,5 @@
-package com.sat.user.domain.port.repository
+package com.sat.user.command.domain.member
 
-import com.sat.user.domain.Member
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MemberRepository : JpaRepository<Member, Long> {

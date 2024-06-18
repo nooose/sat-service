@@ -1,4 +1,4 @@
-package com.sat.user.domain
+package com.sat.user.command.domain.point
 
 import jakarta.persistence.*
 import org.springframework.data.annotation.CreatedDate

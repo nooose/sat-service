@@ -9,13 +9,13 @@ import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
-import com.sat.user.application.command.MemberCommandService
-import com.sat.user.application.command.dto.MemberUpdateCommand
-import com.sat.user.application.query.MemberQueryService
-import com.sat.user.application.query.PointQueryService
-import com.sat.user.application.query.dto.MemberInformation
-import com.sat.user.application.query.dto.MemberSimpleQuery
-import com.sat.user.application.query.dto.MyPointQuery
+import com.sat.user.command.application.MemberCommandService
+import com.sat.user.command.application.dto.MemberUpdateCommand
+import com.sat.user.query.MemberQueryService
+import com.sat.user.query.PointQueryService
+import com.sat.user.query.dto.MemberInformation
+import com.sat.user.query.dto.MemberSimpleQuery
+import com.sat.user.query.dto.MyPointQuery
 import org.springframework.web.bind.annotation.*
 
 @RestController

@@ -1,9 +1,9 @@
-package com.sat.user.application.command
+package com.sat.user.command.application
 
-import com.sat.user.domain.LoginHistory
-import com.sat.user.domain.Member
-import com.sat.user.domain.port.repository.LoginHistoryRepository
-import com.sat.user.domain.port.repository.MemberRepository
+import com.sat.user.command.domain.member.LoginHistory
+import com.sat.user.command.domain.member.Member
+import com.sat.user.command.domain.member.LoginHistoryRepository
+import com.sat.user.command.domain.member.MemberRepository
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

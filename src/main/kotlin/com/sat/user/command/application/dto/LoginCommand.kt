@@ -1,4 +1,4 @@
-package com.sat.user.application.command.dto
+package com.sat.user.command.application.dto
 
 import jakarta.validation.constraints.NotBlank
 
