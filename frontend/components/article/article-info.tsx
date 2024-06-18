@@ -43,7 +43,7 @@ export default async function ArticleInfo({id}: any) {
     return (
         <div className={styles.articleViewContainer}>
             <ClientArticleCategoryInfo category={article.category}/>
-            <ClientMember memberId={article.createdBy} memberName={article.createdName}/>
+            <ClientMember memberId={article.createdBy} memberName={article.createdByName}/>
 
             <div className="flex gap-4 items-center">
                 <Input

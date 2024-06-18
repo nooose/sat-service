@@ -75,7 +75,7 @@ class ArticleRestControllerTest : Documentation() {
                 field("category", "카테고리")
                 field("hasLike", "좋아요 여부")
                 field("createdBy", "게시글 작성자 ID")
-                field("createdName", "게시글 작성자 이름")
+                field("createdByName", "게시글 작성자 이름")
             }
         }
     }

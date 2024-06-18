@@ -9,7 +9,7 @@ data class ArticleQuery(
     val category: String,
     val hasLike: Boolean,
     val createdBy: Long,
-    val createdName: String,
+    val createdByName: String,
 ) {
     companion object {
         fun from(entity: Article, memberName: String, hasLike: Boolean): ArticleQuery {
@@ -20,7 +20,7 @@ data class ArticleQuery(
                 category = entity.category.name.value,
                 hasLike = hasLike,
                 createdBy = entity.createdBy!!,
-                createdName = memberName,
+                createdByName = memberName,
             )
         }
     }
