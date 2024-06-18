@@ -57,7 +57,7 @@ class ArticleRestControllerTest : Documentation() {
     @Test
     fun `게시글 조회`() {
         every { articleQueryService.get(any(), any()) } returns
-                ArticleQuery(1L, "제목", "내용", "IT", false, 1L)
+                ArticleQuery(1L, "제목", "내용", "IT", false, 1L, "김영철")
 
         mockMvc.GET("/board/articles/{articleId}", 1L) {
         }.andExpect {
@@ -75,6 +75,7 @@ class ArticleRestControllerTest : Documentation() {
                 field("category", "카테고리")
                 field("hasLike", "좋아요 여부")
                 field("createdBy", "게시글 작성자 ID")
+                field("createdByName", "게시글 작성자 이름")
             }
         }
     }

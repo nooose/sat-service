@@ -1,6 +1,6 @@
 interface CommentResponse {
     memberId: number,
-    memberName?: string,
+    memberName: string,
     id: number,
     content: string,
     children: CommentResponse[],

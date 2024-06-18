@@ -78,4 +78,23 @@ class MemberRestController(
     ): PageCursor<List<LikedArticleSimpleQuery>> {
         return articleQueryService.getLikedArticles(member.id, cursorRequest)
     }
+
+    @GetMapping("/user/members/{memberId}")
+    fun getInfo(@PathVariable memberId: Long): MemberSimpleQuery {
+        return memberQueryService.getInfo(memberId)
+    }
+
+    @GetMapping("/user/members/{memberId}/articles")
+    fun getArticles(@PathVariable memberId: Long): List<ArticleWithCount> {
+        // TODO: 커서 기능 추가
+        return articleQueryService.getAll(memberId)
+    }
+
+    @GetMapping("/user/members/{memberId}/comments")
+    fun getComments(
+        @PathVariable memberId: Long,
+        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
+    ): PageCursor<List<CommentWithArticle>> {
+        return commentQueryService.getComments(memberId, cursorRequest)
+    }
 }

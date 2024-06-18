@@ -9,10 +9,10 @@ data class ArticleQuery(
     val category: String,
     val hasLike: Boolean,
     val createdBy: Long,
-    // TODO: 게시글 작성자 정보를 보여줘야 한다.
+    val createdByName: String,
 ) {
     companion object {
-        fun from(entity: Article, hasLike: Boolean): ArticleQuery {
+        fun from(entity: Article, memberName: String, hasLike: Boolean): ArticleQuery {
             return ArticleQuery(
                 id = entity.id!!,
                 title = entity.title,
@@ -20,6 +20,7 @@ data class ArticleQuery(
                 category = entity.category.name.value,
                 hasLike = hasLike,
                 createdBy = entity.createdBy!!,
+                createdByName = memberName,
             )
         }
     }
