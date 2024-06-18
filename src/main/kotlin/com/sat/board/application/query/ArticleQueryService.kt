@@ -9,7 +9,6 @@ import com.sat.board.domain.port.LikeRepository
 import com.sat.common.config.jpa.limit
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
-import com.sat.common.domain.exception.NotFoundException
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.user.domain.port.repository.MemberRepository
 import org.springframework.stereotype.Service
@@ -30,7 +29,7 @@ class ArticleQueryService(
         }
 
         val member = memberRepository.findByIdOrThrow(article.createdBy!!)
-            { throw NotFoundException("존재하지 않는 유저입니다. - ${article.createdBy}") }
+            { "존재하지 않는 유저입니다. - ${article.createdBy}" }
 
         if (principalId == null) {
             return ArticleQuery.from(article, member.name, false)

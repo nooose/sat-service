@@ -10,9 +10,9 @@ export default function MemberSideMenu({ memberId }: { memberId: number }) {
     const router = useRouter();
 
     const menus = [
-        {href: `/member-page/${memberId}/info`, text: "정보"},
-        {href: `/member-page/${memberId}/articles`, text: "게시글"},
-        {href: `/member-page/${memberId}/comments`, text: "댓글"},
+        {href: `/member/${memberId}/info`, text: "정보"},
+        {href: `/member/${memberId}/articles`, text: "게시글"},
+        {href: `/member/${memberId}/comments`, text: "댓글"},
     ];
 
     return (

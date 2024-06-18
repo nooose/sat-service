@@ -3,7 +3,6 @@ import MemberArticles from "@/components/member/member-articles";
 import MemberComments from "@/components/member/member-comments";
 
 export default function MemberPage({ params }: { params: {id: number, menu: any} }) {
-    console.log(params);
     return (
         <div>
             {params.menu === "info" && <MemberInfo memberId={params.id}/>}

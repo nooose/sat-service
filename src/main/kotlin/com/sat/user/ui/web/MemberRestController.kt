@@ -80,12 +80,12 @@ class MemberRestController(
     }
 
     @GetMapping("/user/members/{memberId}")
-    fun you(@PathVariable memberId: Long): MemberSimpleQuery {
-        return memberQueryService.you(memberId)
+    fun findById(@PathVariable memberId: Long): MemberSimpleQuery {
+        return memberQueryService.findById(memberId)
     }
 
     @GetMapping("/user/members/{memberId}/articles")
-    fun yourArticles(@PathVariable memberId: Long): List<ArticleWithCount> {
+    fun getYourArticles(@PathVariable memberId: Long): List<ArticleWithCount> {
         // TODO: 커서 기능 추가
         return articleQueryService.getAll(memberId)
     }

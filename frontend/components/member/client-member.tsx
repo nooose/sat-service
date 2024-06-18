@@ -9,7 +9,7 @@ export default function ClientMember({ memberId, memberName }: { memberId: numbe
     const router = useRouter();
 
     const memberPage = () => {
-        router.push(`/member-page/${memberId}/info`);
+        router.push(`/member/${memberId}/info`);
     };
     return (
         <div>
