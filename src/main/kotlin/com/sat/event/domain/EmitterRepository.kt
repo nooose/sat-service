@@ -1,4 +1,4 @@
-package com.sat.event.application
+package com.sat.event.domain
 
 import org.springframework.stereotype.Repository
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter

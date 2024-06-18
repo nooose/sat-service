@@ -1,6 +1,7 @@
 package com.sat.event.application
 
 import com.sat.event.domain.ConnectedNotification
+import com.sat.event.domain.EmitterRepository
 import org.springframework.stereotype.Component
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
 import java.io.IOException
