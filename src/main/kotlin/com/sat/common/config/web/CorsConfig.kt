@@ -1,4 +1,4 @@
-package com.sat.common.config
+package com.sat.common.config.web
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
