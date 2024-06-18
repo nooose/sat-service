@@ -5,7 +5,7 @@ import com.sat.board.command.application.ArticleCreateCommand
 import com.sat.board.command.application.ArticleUpdateCommand
 import com.sat.board.query.ArticleQuery
 import com.sat.board.query.ArticleQueryService
-import com.sat.board.query.ArticleWithCount
+import com.sat.board.query.ArticleWithCountQuery
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -52,7 +52,7 @@ class ArticleRestController(
     }
 
     @GetMapping("/board/articles")
-    fun articles(): List<ArticleWithCount> {
+    fun articles(): List<ArticleWithCountQuery> {
         return articleQueryService.getAll()
     }
 

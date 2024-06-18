@@ -14,7 +14,7 @@ class Article(
 ) : AuditingFields() {
     var isDeleted: Boolean = false
 
-    fun update(that: ArticleWithoutCategoryDto) {
+    fun update(that: ArticleUpdateDto) {
         this.title = that.title
         this.content = that.content
     }

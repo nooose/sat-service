@@ -2,7 +2,6 @@ package com.sat.user.query
 
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.user.command.domain.member.MemberRepository
-import com.sat.user.query.dto.MemberSimpleQuery
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

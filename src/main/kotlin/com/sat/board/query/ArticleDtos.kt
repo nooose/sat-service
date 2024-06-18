@@ -27,7 +27,7 @@ data class ArticleQuery(
     }
 }
 
-data class ArticleWithCount(
+data class ArticleWithCountQuery(
     val id: Long,
     val title: String,
     val category: String,

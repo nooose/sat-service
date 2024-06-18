@@ -12,7 +12,7 @@ class Category(
     val id: Long = 0L,
 ) : AuditingFields() {
 
-    fun update(that: CategoryDto) {
+    fun update(that: CategoryUpdateDto) {
         this.name = that.name
         this.parentId = that.parentId
     }

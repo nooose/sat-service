@@ -1,12 +1,12 @@
 package com.sat.board.query
 
-import com.sat.board.command.domain.article.ArticleRepository
-import com.sat.board.command.domain.like.LikeRepository
 import com.sat.board.command.domain.article.Article
+import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.article.Category
 import com.sat.board.command.domain.article.CategoryName
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.like.Like
+import com.sat.board.command.domain.like.LikeRepository
 import com.sat.common.config.jpa.limit
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
@@ -39,9 +39,9 @@ class ArticleQueryService(
         return ArticleQuery.from(article, member.name, hasLike)
     }
 
-    fun getAll(memberId: Long? = null): List<ArticleWithCount> {
+    fun getAll(memberId: Long? = null): List<ArticleWithCountQuery> {
         return articleRepository.findAll {
-            selectNew<ArticleWithCount>(
+            selectNew<ArticleWithCountQuery>(
                 path(Article::id),
                 path(Article::title),
                 path(Article::category)(Category::name)(CategoryName::value),

@@ -1,6 +1,6 @@
 package com.sat.board.command.domain.article
 
-data class ArticleWithoutCategoryDto(
+data class ArticleUpdateDto(
     val title: String,
     val content: String,
 )

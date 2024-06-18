@@ -4,23 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
 
-class CommentHierarchy(
-    comments: List<CommentWithMemberDto>,
-) {
-    private val _commentQueries: MutableList<CommentQuery> = mutableListOf()
-
-    val comments: List<CommentQuery>
-        get() = _commentQueries.toList()
-
-    init {
-        val map = comments.map { CommentQuery.from(it) }.associateBy { it.id }
-        val commentQueries = map.values.filter { it.hasParent() }
-        for (commentQuery in commentQueries) {
-            map[commentQuery.parentId]!!.children.add(commentQuery)
-        }
-        this._commentQueries.addAll(map.values.filter { !it.hasParent() })
-    }
-}
 
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class CommentQuery(
@@ -39,7 +22,7 @@ data class CommentQuery(
     }
 
     companion object {
-        fun from(that: CommentWithMemberDto): CommentQuery {
+        fun from(that: CommentWithMemberQuery): CommentQuery {
             return CommentQuery(
                 memberId = that.memberId,
                 memberName = that.memberName,
@@ -52,7 +35,7 @@ data class CommentQuery(
     }
 }
 
-class CommentWithMemberDto(
+class CommentWithMemberQuery(
     val id: Long,
     content: String,
     val memberId: Long,
@@ -67,7 +50,7 @@ class CommentWithMemberDto(
     }
 }
 
-data class CommentWithArticle(
+data class CommentWithArticleQuery(
     val id: Long,
     var content: String,
     val articleId: Long,

@@ -1,4 +1,4 @@
-package com.sat.user.command.application.dto
+package com.sat.user.command.application
 
 import jakarta.validation.constraints.Size
 

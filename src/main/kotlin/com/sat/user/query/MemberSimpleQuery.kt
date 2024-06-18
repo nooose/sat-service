@@ -1,4 +1,4 @@
-package com.sat.user.query.dto
+package com.sat.user.query
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.sat.user.command.domain.member.Member

@@ -10,13 +10,13 @@ import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.command.application.MemberCommandService
-import com.sat.user.command.application.dto.MemberUpdateCommand
+import com.sat.user.command.application.MemberUpdateCommand
 import com.sat.user.command.domain.point.PointType
 import com.sat.user.query.MemberQueryService
 import com.sat.user.query.PointQueryService
-import com.sat.user.query.dto.MemberInformation
-import com.sat.user.query.dto.MemberSimpleQuery
-import com.sat.user.query.dto.MyPointQuery
+import com.sat.user.query.MemberInformation
+import com.sat.user.query.MemberSimpleQuery
+import com.sat.user.query.MyPointQuery
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -112,8 +112,8 @@ class MemberRestControllerTest : Documentation() {
     @Test
     fun `자신이 작성한 게시글 목록 조회`() {
         val responses = listOf(
-            ArticleWithCount(1, "테스트 A", "IT", 10, 15, LocalDateTime.now()),
-            ArticleWithCount(2, "테스트 B", "IT", 3, 5, LocalDateTime.now())
+            ArticleWithCountQuery(1, "테스트 A", "IT", 10, 15, LocalDateTime.now()),
+            ArticleWithCountQuery(2, "테스트 B", "IT", 3, 5, LocalDateTime.now())
         )
 
         every { articleQueryService.getAll(any()) } returns responses
@@ -124,7 +124,7 @@ class MemberRestControllerTest : Documentation() {
         }.andDocument {
             tag = "사용자"
             summary = "자신이 작성한 게시글 목록 조회"
-            responseBody<List<ArticleWithCount>> {
+            responseBody<List<ArticleWithCountQuery>> {
                 field("[].id", "게시글 ID")
                 field("[].title", "게시글 제목")
                 field("[].category", "게시글 카테고리")
@@ -139,8 +139,8 @@ class MemberRestControllerTest : Documentation() {
     @Test
     fun `자신이 작성한 댓글 목록 조회`() {
         val responses = listOf(
-            CommentWithArticle(1, "테스트 A", 1L, "제목 A", LocalDateTime.now()),
-            CommentWithArticle(2, "테스트 B", 2L, "제목 B", LocalDateTime.now()),
+            CommentWithArticleQuery(1, "테스트 A", 1L, "제목 A", LocalDateTime.now()),
+            CommentWithArticleQuery(2, "테스트 B", 2L, "제목 B", LocalDateTime.now()),
         )
 
         every { commentQueryService.getComments(any(), any()) } returns PageCursor(CursorRequest(2), responses)
@@ -155,7 +155,7 @@ class MemberRestControllerTest : Documentation() {
                 param("id", "커서 ID", optional = true)
                 param("size", "페이지 사이즈", optional = true)
             }
-            responseBody<PageCursor<CommentWithArticle>> {
+            responseBody<PageCursor<CommentWithArticleQuery>> {
                 field("nextCursor.id", "다음 커서 ID")
                 field("nextCursor.size", "다음 페이지 사이즈")
                 field("data[].id", "댓글 ID")

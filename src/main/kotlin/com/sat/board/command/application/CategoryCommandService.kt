@@ -1,10 +1,6 @@
 package com.sat.board.command.application
 
-import com.sat.board.command.domain.article.Category
-import com.sat.board.command.domain.article.CategoryName
-import com.sat.board.command.domain.article.CategoryRepository
-import com.sat.board.command.domain.article.ChildExistsException
-import com.sat.board.command.domain.article.CategoryDto
+import com.sat.board.command.domain.article.*
 import com.sat.common.domain.exception.DuplicateException
 import com.sat.common.utils.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -31,8 +27,8 @@ class CategoryCommandService(
         validateParent(command.parentId)
 
         val category = getCategory(id)
-        val categoryDto = CategoryDto(name, command.parentId)
-        category.update(categoryDto)
+        val updateDto = CategoryUpdateDto(name, command.parentId)
+        category.update(updateDto)
     }
 
     private fun validateName(name: CategoryName) {

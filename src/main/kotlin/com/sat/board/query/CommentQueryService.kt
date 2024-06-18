@@ -24,7 +24,7 @@ class CommentQueryService(
         check(!article.isDeleted) { "삭제된 게시글 입니다" }
 
         val comments = commentRepository.findAll {
-            selectNew<CommentWithMemberDto>(
+            selectNew<CommentWithMemberQuery>(
                 path(Comment::id),
                 path(Comment::content),
                 path(Comment::createdBy),
@@ -43,9 +43,9 @@ class CommentQueryService(
         return hierarchy.comments
     }
 
-    fun getComments(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<CommentWithArticle>> {
+    fun getComments(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<CommentWithArticleQuery>> {
         val comments = commentRepository.findAll {
-            selectNew<CommentWithArticle>(
+            selectNew<CommentWithArticleQuery>(
                 path(Comment::id),
                 path(Comment::content),
                 path(Article::id),
@@ -65,7 +65,7 @@ class CommentQueryService(
         return PageCursor(cursorRequest.next(getNextId(comments)), comments)
     }
 
-    private fun getNextId(likes: List<CommentWithArticle>): Long {
+    private fun getNextId(likes: List<CommentWithArticleQuery>): Long {
         if (likes.isEmpty()) {
             return 0
         }

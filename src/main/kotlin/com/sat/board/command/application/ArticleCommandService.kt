@@ -27,7 +27,7 @@ class ArticleCommandService(
 
     fun update(id: Long, command: ArticleUpdateCommand) {
         val article = getArticle(id)
-        val articleDto = ArticleWithoutCategoryDto(command.title, command.content)
+        val articleDto = ArticleUpdateDto(command.title, command.content)
         article.update(articleDto)
     }
 
@@ -39,12 +39,12 @@ class ArticleCommandService(
     private fun getArticle(id: Long) = articleRepository.findByIdOrThrow(id) { "게시글을 찾을 수 없습니다. - $id" }
 
     fun like(articleId: Long, principalId: Long) {
-        if (likeRepository.existsByArticleIdAndCreatedBy(articleId, principalId)) {
-            likeRepository.deleteByArticleIdAndCreatedBy(articleId, principalId)
+        val like = likeRepository.findByArticleIdAndCreatedBy(articleId, principalId)
+        if (like != null) {
+            likeRepository.delete(like)
             return
         }
 
-        val like = Like(articleId)
-        likeRepository.save(like)
+        likeRepository.save(Like(articleId))
     }
 }

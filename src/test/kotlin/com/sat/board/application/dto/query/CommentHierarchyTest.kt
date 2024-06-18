@@ -3,7 +3,7 @@ package com.sat.board.application.dto.query
 import com.sat.board.domain.*
 import com.sat.board.query.CommentHierarchy
 import com.sat.board.query.CommentQuery
-import com.sat.board.query.CommentWithMemberDto
+import com.sat.board.query.CommentWithMemberQuery
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -13,21 +13,21 @@ import io.kotest.matchers.shouldBe
 class CommentHierarchyTest : BehaviorSpec( {
     Given("댓글리스트가 있고") {
         val comments = listOf(
-            CommentWithMemberDto(
+            CommentWithMemberQuery(
                 memberId = 1L,
                 memberName = "영록",
                 id = 1L,
                 content = "재밌어요",
                 isDeleted = false,
             ),
-            CommentWithMemberDto(
+            CommentWithMemberQuery(
                 memberId = 2L,
                 memberName = "준혁",
                 id = 2L,
                 content = "재미없어요",
                 isDeleted = false,
             ),
-            CommentWithMemberDto(
+            CommentWithMemberQuery(
                 memberId = 3L,
                 memberName = "규정",
                 id = 3L,

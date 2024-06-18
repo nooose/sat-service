@@ -6,7 +6,7 @@ import com.sat.board.command.application.ArticleCreateCommand
 import com.sat.board.command.application.ArticleUpdateCommand
 import com.sat.board.query.ArticleQuery
 import com.sat.board.query.ArticleQueryService
-import com.sat.board.query.ArticleWithCount
+import com.sat.board.query.ArticleWithCountQuery
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
 import com.sat.common.security.WithAuthenticatedUser
@@ -83,9 +83,9 @@ class ArticleRestControllerTest : Documentation() {
     @Test
     fun `게시글 목록 조회`() {
         val response = listOf(
-            ArticleWithCount(1L, "제목 A", "IT", 0 , 0, LocalDateTime.now()),
-            ArticleWithCount(2L, "제목 B", "IT", 0, 0, LocalDateTime.now()),
-            ArticleWithCount(3L, "제목 C", "스포츠", 0, 0, LocalDateTime.now()),
+            ArticleWithCountQuery(1L, "제목 A", "IT", 0 , 0, LocalDateTime.now()),
+            ArticleWithCountQuery(2L, "제목 B", "IT", 0, 0, LocalDateTime.now()),
+            ArticleWithCountQuery(3L, "제목 C", "스포츠", 0, 0, LocalDateTime.now()),
         )
         every { articleQueryService.getAll(any()) } returns response
 
@@ -95,7 +95,7 @@ class ArticleRestControllerTest : Documentation() {
         }.andDocument {
             tag = "게시판 > 게시글"
             summary = "게시글 목록 조회"
-            responseBody<List<ArticleWithCount>> {
+            responseBody<List<ArticleWithCountQuery>> {
                 field("[].id", "게시글 ID")
                 field("[].title", "게시글 제목")
                 field("[].category", "카테고리")

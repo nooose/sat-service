@@ -1,4 +1,4 @@
-package com.sat.user.query.dto
+package com.sat.user.query
 
 import com.sat.user.command.domain.point.PointType
 import java.time.LocalDateTime

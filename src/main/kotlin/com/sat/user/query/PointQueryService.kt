@@ -5,7 +5,6 @@ import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
 import com.sat.user.command.domain.point.Point
 import com.sat.user.command.domain.point.PointRepository
-import com.sat.user.query.dto.MyPointQuery
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
