@@ -80,18 +80,18 @@ class MemberRestController(
     }
 
     @GetMapping("/user/members/{memberId}")
-    fun findById(@PathVariable memberId: Long): MemberSimpleQuery {
-        return memberQueryService.findById(memberId)
+    fun getInfo(@PathVariable memberId: Long): MemberSimpleQuery {
+        return memberQueryService.getInfo(memberId)
     }
 
     @GetMapping("/user/members/{memberId}/articles")
-    fun getYourArticles(@PathVariable memberId: Long): List<ArticleWithCount> {
+    fun getArticles(@PathVariable memberId: Long): List<ArticleWithCount> {
         // TODO: 커서 기능 추가
         return articleQueryService.getAll(memberId)
     }
 
     @GetMapping("/user/members/{memberId}/comments")
-    fun getYourComments(
+    fun getComments(
         @PathVariable memberId: Long,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
     ): PageCursor<List<CommentWithArticle>> {
