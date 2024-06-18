@@ -1,6 +1,6 @@
 package com.sat.user.command.application
 
-import com.sat.board.domain.port.ArticleRepository
+import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.common.utils.toZeroTime
 import com.sat.user.command.domain.member.LoginHistoryRepository

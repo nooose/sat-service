@@ -1,11 +1,7 @@
 package com.sat.user.ui.web
 
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.board.application.query.ArticleQueryService
-import com.sat.board.application.query.CommentQueryService
-import com.sat.board.application.query.dto.CommentWithArticle
-import com.sat.board.domain.dto.query.ArticleWithCount
-import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
+import com.sat.board.query.*
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.PUT
@@ -15,12 +11,12 @@ import com.sat.common.domain.PageCursor
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.command.application.MemberCommandService
 import com.sat.user.command.application.dto.MemberUpdateCommand
+import com.sat.user.command.domain.point.PointType
 import com.sat.user.query.MemberQueryService
 import com.sat.user.query.PointQueryService
 import com.sat.user.query.dto.MemberInformation
 import com.sat.user.query.dto.MemberSimpleQuery
 import com.sat.user.query.dto.MyPointQuery
-import com.sat.user.command.domain.point.PointType
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs

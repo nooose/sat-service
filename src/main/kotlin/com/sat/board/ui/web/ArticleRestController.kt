@@ -1,11 +1,11 @@
 package com.sat.board.ui.web
 
-import com.sat.board.application.command.ArticleCommandService
-import com.sat.board.application.command.dto.ArticleCreateCommand
-import com.sat.board.application.command.dto.ArticleUpdateCommand
-import com.sat.board.application.query.ArticleQueryService
-import com.sat.board.application.query.dto.ArticleQuery
-import com.sat.board.domain.dto.query.ArticleWithCount
+import com.sat.board.command.application.ArticleCommandService
+import com.sat.board.command.application.ArticleCreateCommand
+import com.sat.board.command.application.ArticleUpdateCommand
+import com.sat.board.query.ArticleQuery
+import com.sat.board.query.ArticleQueryService
+import com.sat.board.query.ArticleWithCount
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import io.github.oshai.kotlinlogging.KotlinLogging

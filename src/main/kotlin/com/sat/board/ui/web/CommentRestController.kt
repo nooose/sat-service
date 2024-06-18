@@ -1,10 +1,10 @@
 package com.sat.board.ui.web
 
-import com.sat.board.application.command.CommentCommandService
-import com.sat.board.application.command.dto.CommentCreateCommand
-import com.sat.board.application.command.dto.CommentUpdateCommand
-import com.sat.board.application.query.CommentQueryService
-import com.sat.board.application.query.dto.CommentQuery
+import com.sat.board.command.application.CommentCommandService
+import com.sat.board.command.application.CommentCreateCommand
+import com.sat.board.command.application.CommentUpdateCommand
+import com.sat.board.query.CommentQuery
+import com.sat.board.query.CommentQueryService
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import jakarta.validation.Valid

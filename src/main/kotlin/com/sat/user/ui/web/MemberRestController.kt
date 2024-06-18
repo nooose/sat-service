@@ -1,10 +1,6 @@
 package com.sat.user.ui.web
 
-import com.sat.board.application.query.ArticleQueryService
-import com.sat.board.application.query.CommentQueryService
-import com.sat.board.application.query.dto.CommentWithArticle
-import com.sat.board.domain.dto.query.ArticleWithCount
-import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
+import com.sat.board.query.*
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import com.sat.common.domain.CursorRequest

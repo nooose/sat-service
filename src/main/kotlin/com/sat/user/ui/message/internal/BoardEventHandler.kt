@@ -1,7 +1,7 @@
 package com.sat.user.ui.message.internal
 
-import com.sat.board.domain.event.ArticleCreateEvent
-import com.sat.board.domain.event.CommentCreateEvent
+import com.sat.board.command.domain.article.ArticleCreateEvent
+import com.sat.board.command.domain.comment.CommentCreateEvent
 import com.sat.user.command.application.PointCommandService
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.context.event.EventListener
