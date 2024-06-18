@@ -1,0 +1,19 @@
+package com.sat.board.command.domain.article
+
+import com.sat.common.domain.AuditingFields
+import jakarta.persistence.*
+
+@Entity
+class Category(
+    @Embedded
+    var name: CategoryName,
+    var parentId: Long? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Long = 0L,
+) : AuditingFields() {
+
+    fun update(that: CategoryUpdateDto) {
+        this.name = that.name
+        this.parentId = that.parentId
+    }
+}

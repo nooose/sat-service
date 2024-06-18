@@ -1,18 +1,18 @@
 package com.sat.board.ui.web
 
-import com.sat.board.application.command.ArticleCommandService
-import com.sat.board.application.command.dto.ArticleCreateCommand
-import com.sat.board.application.command.dto.ArticleUpdateCommand
-import com.sat.board.application.query.ArticleQueryService
-import com.sat.board.application.query.dto.ArticleQuery
-import com.sat.board.domain.dto.query.ArticleWithCount
+import com.sat.board.command.application.ArticleCommandService
+import com.sat.board.command.application.ArticleCreateCommand
+import com.sat.board.command.application.ArticleUpdateCommand
+import com.sat.board.query.ArticleQuery
+import com.sat.board.query.ArticleQueryService
+import com.sat.board.query.ArticleWithCountQuery
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri
 
 private val log = KotlinLogging.logger {}
 
@@ -25,8 +25,8 @@ class ArticleRestController(
     @PostMapping("/board/articles")
     fun create(@RequestBody @Valid command: ArticleCreateCommand): ResponseEntity<Unit> {
         val articleId = articleCommandService.create(command)
-        val uri = ServletUriComponentsBuilder.fromCurrentRequest()
-            .path("/board/articles/$articleId")
+        val uri = fromCurrentRequestUri()
+            .path("/$articleId")
             .build()
             .toUri()
         return ResponseEntity.created(uri).build()
@@ -52,7 +52,7 @@ class ArticleRestController(
     }
 
     @GetMapping("/board/articles")
-    fun articles(): List<ArticleWithCount> {
+    fun articles(): List<ArticleWithCountQuery> {
         return articleQueryService.getAll()
     }
 

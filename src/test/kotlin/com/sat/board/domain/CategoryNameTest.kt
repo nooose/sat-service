@@ -1,5 +1,6 @@
 package com.sat.board.domain
 
+import com.sat.board.command.domain.article.CategoryName
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.DisplayName
 import io.kotest.core.spec.style.StringSpec

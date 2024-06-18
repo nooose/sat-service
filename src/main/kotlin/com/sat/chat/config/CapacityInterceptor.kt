@@ -1,7 +1,7 @@
 package com.sat.chat.config
 
-import com.sat.chat.domain.ChatRoomRepository
-import com.sat.chat.domain.ChatSessionRepository
+import com.sat.chat.command.domain.ChatRoomRepository
+import com.sat.chat.command.domain.ChatSessionRepository
 import org.bson.types.ObjectId
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.messaging.Message

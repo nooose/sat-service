@@ -1,7 +1,7 @@
 package com.sat.board.ui.message
 
-import com.sat.board.application.command.CommentNotificationService
-import com.sat.board.domain.event.CommentCreateEvent
+import com.sat.board.command.application.CommentNotificationService
+import com.sat.board.command.domain.comment.CommentCreateEvent
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 

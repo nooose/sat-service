@@ -1,21 +1,17 @@
 package com.sat.user.ui.web
 
-import com.sat.board.application.query.ArticleQueryService
-import com.sat.board.application.query.CommentQueryService
-import com.sat.board.application.query.dto.CommentWithArticle
-import com.sat.board.domain.dto.query.ArticleWithCount
-import com.sat.board.domain.dto.query.LikedArticleSimpleQuery
+import com.sat.board.query.*
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import com.sat.common.domain.CursorRequest
 import com.sat.common.domain.PageCursor
-import com.sat.user.application.command.MemberCommandService
-import com.sat.user.application.command.dto.MemberUpdateCommand
-import com.sat.user.application.query.MemberQueryService
-import com.sat.user.application.query.PointQueryService
-import com.sat.user.application.query.dto.MemberInformation
-import com.sat.user.application.query.dto.MemberSimpleQuery
-import com.sat.user.application.query.dto.MyPointQuery
+import com.sat.user.command.application.MemberCommandService
+import com.sat.user.command.application.MemberUpdateCommand
+import com.sat.user.query.MemberQueryService
+import com.sat.user.query.PointQueryService
+import com.sat.user.query.MemberInformation
+import com.sat.user.query.MemberSimpleQuery
+import com.sat.user.query.MyPointQuery
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -50,7 +46,7 @@ class MemberRestController(
     fun articles(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
-    ): List<ArticleWithCount> {
+    ): List<ArticleWithCountQuery> {
         // TODO: 커서 기능 추가
         return articleQueryService.getAll(member.id)
     }
@@ -59,7 +55,7 @@ class MemberRestController(
     fun getMyComments(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
-    ): PageCursor<List<CommentWithArticle>> {
+    ): PageCursor<List<CommentWithArticleQuery>> {
         return commentQueryService.getComments(member.id, cursorRequest)
     }
 
@@ -85,7 +81,7 @@ class MemberRestController(
     }
 
     @GetMapping("/user/members/{memberId}/articles")
-    fun getArticles(@PathVariable memberId: Long): List<ArticleWithCount> {
+    fun getArticles(@PathVariable memberId: Long): List<ArticleWithCountQuery> {
         // TODO: 커서 기능 추가
         return articleQueryService.getAll(memberId)
     }
@@ -94,7 +90,7 @@ class MemberRestController(
     fun getComments(
         @PathVariable memberId: Long,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
-    ): PageCursor<List<CommentWithArticle>> {
+    ): PageCursor<List<CommentWithArticleQuery>> {
         return commentQueryService.getComments(memberId, cursorRequest)
     }
 }

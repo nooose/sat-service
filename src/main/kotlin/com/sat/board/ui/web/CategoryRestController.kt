@@ -1,10 +1,10 @@
 package com.sat.board.ui.web
 
-import com.sat.board.application.command.CategoryCommandService
-import com.sat.board.application.command.dto.CategoryCreateCommand
-import com.sat.board.application.command.dto.CategoryUpdateCommand
-import com.sat.board.application.query.CategoryQueryService
-import com.sat.board.application.query.dto.CategoryQuery
+import com.sat.board.command.application.CategoryCommandService
+import com.sat.board.command.application.CategoryCreateCommand
+import com.sat.board.command.application.CategoryUpdateCommand
+import com.sat.board.query.CategoryQuery
+import com.sat.board.query.CategoryQueryService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 

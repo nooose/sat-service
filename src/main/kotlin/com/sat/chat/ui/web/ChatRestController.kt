@@ -1,19 +1,20 @@
 package com.sat.chat.ui.web
 
-import com.sat.chat.application.command.ChatRoomCreateCommand
-import com.sat.chat.application.command.ChatService
-import com.sat.chat.application.query.ChatMessageQuery
-import com.sat.chat.application.query.ChatQueryService
-import com.sat.chat.application.query.ChatRoomQuery
+import com.sat.chat.command.application.ChatRoomCreateCommand
+import com.sat.chat.command.application.ChatService
+import com.sat.chat.query.ChatMessageQuery
+import com.sat.chat.query.ChatQueryService
+import com.sat.chat.query.ChatRoomQuery
 import com.sat.common.config.security.AuthenticatedMember
 import com.sat.common.config.security.LoginMember
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+private const val SEARCH_CONDITION_MINUTE: Long = 30
 
 @RestController
 class ChatRestController(
@@ -27,8 +28,8 @@ class ChatRestController(
         @Valid @RequestBody command: ChatRoomCreateCommand,
     ): ResponseEntity<Unit> {
         val roomId = chatService.createRoom(command, member.id)
-        val uri = fromCurrentRequest()
-            .path("/chat/rooms/${roomId}")
+        val uri = fromCurrentRequestUri()
+            .path("/${roomId}")
             .build()
             .toUri()
         return ResponseEntity.created(uri).build()
@@ -42,7 +43,7 @@ class ChatRestController(
     @GetMapping("/chat/rooms/{roomId}/messages")
     fun getMessages(@PathVariable roomId: String): List<ChatMessageQuery> {
         val now = LocalDateTime.now(ZoneOffset.UTC)
-        return chatQueryService.getMessages(roomId, now)
+        return chatQueryService.getMessages(roomId, now.minusMinutes(SEARCH_CONDITION_MINUTE))
     }
 
     @DeleteMapping("/chat/rooms/{roomId}")

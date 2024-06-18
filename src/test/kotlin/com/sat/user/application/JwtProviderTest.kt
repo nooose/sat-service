@@ -1,7 +1,7 @@
 package com.sat.user.application
 
 import com.sat.common.config.security.TokenConfigProperties
-import com.sat.user.application.command.JwtProvider
+import com.sat.user.command.application.JwtProvider
 import io.jsonwebtoken.ExpiredJwtException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.annotation.DisplayName

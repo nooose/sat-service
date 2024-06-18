@@ -1,5 +1,6 @@
 package com.sat.chat.domain
 
+import com.sat.chat.command.domain.ChatRoom
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.annotation.DisplayName
 import io.kotest.core.spec.style.StringSpec
