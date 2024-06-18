@@ -10,7 +10,7 @@ import com.sat.common.config.security.LoginMember
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequestUri
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -27,8 +27,8 @@ class ChatRestController(
         @Valid @RequestBody command: ChatRoomCreateCommand,
     ): ResponseEntity<Unit> {
         val roomId = chatService.createRoom(command, member.id)
-        val uri = fromCurrentRequest()
-            .path("/chat/rooms/${roomId}")
+        val uri = fromCurrentRequestUri()
+            .path("/${roomId}")
             .build()
             .toUri()
         return ResponseEntity.created(uri).build()
