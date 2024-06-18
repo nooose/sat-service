@@ -2,7 +2,7 @@ package com.sat.board.query
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.sat.common.Cursor
+import com.sat.common.CursorItem
 import java.time.LocalDateTime
 
 
@@ -57,4 +57,4 @@ data class CommentWithArticleQuery(
     val articleId: Long,
     val articleTitle: String,
     val createdDateTime: LocalDateTime,
-) : Cursor
+) : CursorItem

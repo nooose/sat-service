@@ -11,8 +11,8 @@ data class CursorRequest(
         require(size <= MAX_SIZE) { "요청 사이즈 크기는 $MAX_SIZE 초과할 수 없습니다." }
     }
 
-    fun next(minId: Long?): CursorRequest {
-        return copy(id = minId, size = size)
+    fun <T : CursorItem> nextFrom(items: List<T>): PageCursor<List<T>> {
+        return PageCursor(copy(id = items.nextCursorIdItem, size = size), items)
     }
 
     companion object {

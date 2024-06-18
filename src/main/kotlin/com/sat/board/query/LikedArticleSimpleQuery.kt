@@ -1,6 +1,6 @@
 package com.sat.board.query
 
-import com.sat.common.Cursor
+import com.sat.common.CursorItem
 import java.time.LocalDateTime
 
 data class LikedArticleSimpleQuery(
@@ -8,4 +8,4 @@ data class LikedArticleSimpleQuery(
     val articleId: Long,
     val articleTitle: String,
     val createdDateTime: LocalDateTime,
-) : Cursor
+) : CursorItem

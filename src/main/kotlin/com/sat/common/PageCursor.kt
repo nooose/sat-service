@@ -5,9 +5,9 @@ data class PageCursor<T>(
     val data: T,
 )
 
-interface Cursor {
+interface CursorItem {
     val id: Long
 }
 
-val <T : Cursor> List<T>.nextCursorId: Long
+val <T : CursorItem> List<T>.nextCursorIdItem: Long
     get() = if (this.isEmpty()) 0 else this.minOf { it.id }

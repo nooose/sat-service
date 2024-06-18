@@ -1,7 +1,7 @@
 package com.sat.user.query
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.sat.common.Cursor
+import com.sat.common.CursorItem
 import com.sat.user.command.domain.member.Member
 import java.time.LocalDateTime
 
@@ -11,7 +11,7 @@ data class MemberSimpleQuery(
     val name: String,
     val email: String,
     val createdDateTime: LocalDateTime?,
-) : Cursor {
+) : CursorItem {
     companion object {
         fun from(entity: Member): MemberSimpleQuery {
             return MemberSimpleQuery(
