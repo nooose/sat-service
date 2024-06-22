@@ -1,7 +1,10 @@
 package com.sat.board.command.domain.article
 
-import com.sat.common.AuditingFields
-import jakarta.persistence.*
+import com.sat.common.BaseEntity
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 
 @Entity
 class Article(
@@ -9,9 +12,8 @@ class Article(
     var content: String,
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "category_id")
     var category: Category,
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-) : AuditingFields() {
+    id: Long = 0L,
+) : BaseEntity(id) {
     var isDeleted: Boolean = false
 
     fun update(that: ArticleUpdateDto) {

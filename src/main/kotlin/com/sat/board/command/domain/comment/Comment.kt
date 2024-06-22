@@ -1,20 +1,16 @@
 package com.sat.board.command.domain.comment
 
 import com.sat.board.command.application.CommentUpdateCommand
-import com.sat.common.AuditingFields
+import com.sat.common.BaseEntity
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
 
 @Entity
-data class Comment(
+class Comment(
     val articleId: Long,
     var content: String,
     var parentId: Long? = null,
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-) : AuditingFields() {
+    id: Long = 0L,
+) : BaseEntity(id) {
     var isDeleted: Boolean = false
 
     fun update(that: CommentUpdateCommand, ownerId: Long) {

@@ -1,19 +1,15 @@
 package com.sat.user.command.domain.member
 
-import com.sat.common.AuditingFields
+import com.sat.common.BaseEntity
 import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
 
 @Entity
 class Member(
     val name: String,
     var nickname: String,
     val email: String,
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-) : AuditingFields() {
+    id: Long = 0L,
+) : BaseEntity(id) {
 
     fun updateNickname(nickname: String) {
         require(nickname.isNotBlank()) { "닉네임은 공백일 수 없습니다." }

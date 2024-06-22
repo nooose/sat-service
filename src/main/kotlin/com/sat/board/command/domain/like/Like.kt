@@ -1,12 +1,11 @@
 package com.sat.board.command.domain.like
 
-import com.sat.common.AuditingFields
+import com.sat.common.BaseEntity
 import jakarta.persistence.*
 
 @Table(name = "LIKES")
 @Entity
-data class Like(
+class Like(
     val articleId: Long,
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
-) : AuditingFields()
+    id: Long = 0L,
+) : BaseEntity(id)

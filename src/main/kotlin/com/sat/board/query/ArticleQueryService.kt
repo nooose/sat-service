@@ -27,15 +27,17 @@ class ArticleQueryService(
             selectNew<ArticleQuery>(
                 path(Article::id),
                 path(Article::title),
-                path(Article::category)(Category::name),
+                path(Article::content),
+                path(Article::category)(Category::name)(CategoryName::value),
                 path(Article::createdBy),
                 path(Member::name)
             ).from(
                 entity(Article::class),
                 join(Article::category),
-                join(entity(Member::class)).on(path(Article::createdBy).equal(path(Member::id)))
-            ).where(
-                path(Article::isDeleted).equal(false)
+                join(Member::class).on(path(Article::createdBy).equal(path(Member::id)))
+            ).whereAnd(
+                path(Article::createdBy).equal(id),
+                path(Article::isDeleted).equal(false),
             )
         } ?: throw NotFoundException("게시글을 찾을 수 없습니다. - $id")
 

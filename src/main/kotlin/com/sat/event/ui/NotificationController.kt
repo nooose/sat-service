@@ -1,8 +1,8 @@
-package com.sat.common.ui.web
+package com.sat.event.ui
 
+import com.sat.event.application.NotificationProcessor
 import com.sat.security.AuthenticatedMember
 import com.sat.security.LoginMember
-import com.sat.event.application.NotificationProcessor
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
