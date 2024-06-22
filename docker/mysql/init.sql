@@ -42,7 +42,7 @@ create table comment
 (
     id                 bigint not null AUTO_INCREMENT comment '댓글 아이디',
     parent_id          bigint comment '부모 댓글 아이디',
-    content            varchar(1000) not null comment '댓글 내용',
+    content            text not null comment '댓글 내용',
     article_id         bigint not null comment '게시글 아이디',
     created_by         bigint not null comment '댓글 작성자 아이디',
     created_date_time  datetime not null default now() comment '댓글 작성 시간',
