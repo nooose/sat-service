@@ -1,6 +1,6 @@
 package com.sat.user.command.application
 
-import com.sat.common.config.security.TokenConfigProperties
+import com.sat.security.TokenConfigProperties
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jws
 import io.jsonwebtoken.Jwts

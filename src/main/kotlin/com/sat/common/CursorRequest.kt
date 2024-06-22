@@ -16,8 +16,6 @@ data class CursorRequest(
     }
 
     companion object {
-        fun default(): CursorRequest {
-            return CursorRequest(null, 15)
-        }
+        val DEFAULT = CursorRequest(null, 15)
     }
 }

@@ -1,6 +1,6 @@
 package com.sat.common.config.jpa
 
-import com.sat.common.config.security.AuthenticatedMember
+import com.sat.security.AuthenticatedMember
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.AuditorAware

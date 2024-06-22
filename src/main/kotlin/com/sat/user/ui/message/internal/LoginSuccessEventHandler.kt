@@ -1,6 +1,6 @@
 package com.sat.user.ui.message.internal
 
-import com.sat.common.config.security.AuthenticatedMember
+import com.sat.security.AuthenticatedMember
 import com.sat.user.command.application.PointCommandService
 import org.springframework.context.event.EventListener
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent

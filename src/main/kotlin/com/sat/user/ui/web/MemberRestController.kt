@@ -1,17 +1,13 @@
 package com.sat.user.ui.web
 
 import com.sat.board.query.*
-import com.sat.common.config.security.AuthenticatedMember
-import com.sat.common.config.security.LoginMember
 import com.sat.common.CursorRequest
 import com.sat.common.PageCursor
+import com.sat.security.AuthenticatedMember
+import com.sat.security.LoginMember
 import com.sat.user.command.application.MemberCommandService
 import com.sat.user.command.application.MemberUpdateCommand
-import com.sat.user.query.MemberQueryService
-import com.sat.user.query.PointQueryService
-import com.sat.user.query.MemberInformation
-import com.sat.user.query.MemberSimpleQuery
-import com.sat.user.query.MyPointQuery
+import com.sat.user.query.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -45,7 +41,7 @@ class MemberRestController(
     @GetMapping("/user/articles")
     fun articles(
         @LoginMember member: AuthenticatedMember,
-        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
+        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): List<ArticleWithCountQuery> {
         // TODO: 커서 기능 추가
         return articleQueryService.getAll(member.id)
@@ -54,7 +50,7 @@ class MemberRestController(
     @GetMapping("/user/comments")
     fun getMyComments(
         @LoginMember member: AuthenticatedMember,
-        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
+        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<CommentWithArticleQuery>> {
         return commentQueryService.getComments(member.id, cursorRequest)
     }
@@ -62,7 +58,7 @@ class MemberRestController(
     @GetMapping("/user/points")
     fun points(
         @LoginMember member: AuthenticatedMember,
-        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
+        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<MyPointQuery>> {
         return pointQueryService.getPoints(member.id, cursorRequest)
     }
@@ -70,7 +66,7 @@ class MemberRestController(
     @GetMapping("/user/likes")
     fun likes(
         @LoginMember member: AuthenticatedMember,
-        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
+        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<LikedArticleSimpleQuery>> {
         return articleQueryService.getLikedArticles(member.id, cursorRequest)
     }
@@ -89,7 +85,7 @@ class MemberRestController(
     @GetMapping("/user/members/{memberId}/comments")
     fun getComments(
         @PathVariable memberId: Long,
-        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.default(),
+        @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<CommentWithArticleQuery>> {
         return commentQueryService.getComments(memberId, cursorRequest)
     }

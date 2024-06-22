@@ -4,7 +4,7 @@ import com.sat.chat.command.application.ChatMessageCommand
 import com.sat.chat.command.application.ChatOnlineService
 import com.sat.chat.command.application.ChatService
 import com.sat.chat.command.domain.ChatMember
-import com.sat.common.config.security.AuthenticatedMember
+import com.sat.security.AuthenticatedMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
 import org.springframework.messaging.handler.annotation.DestinationVariable

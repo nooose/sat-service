@@ -4,5 +4,5 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 
 fun LocalDateTime.toZeroTime(): LocalDateTime {
-    return LocalDateTime.of(this.toLocalDate(), LocalTime.of(0, 0))
+    return LocalDateTime.of(this.toLocalDate(), LocalTime.MIN)
 }

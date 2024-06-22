@@ -1,7 +1,7 @@
 package com.sat.common.ui.web
 
-import com.sat.common.config.security.AuthenticatedMember
-import com.sat.common.config.security.LoginMember
+import com.sat.security.AuthenticatedMember
+import com.sat.security.LoginMember
 import com.sat.event.application.NotificationProcessor
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Controller

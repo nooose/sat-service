@@ -1,6 +1,6 @@
 package com.sat.common.security
 
-import com.sat.common.config.security.AuthenticatedMember
+import com.sat.security.AuthenticatedMember
 import com.sat.common.security.TestAuthUtils.authentication
 import com.sat.user.command.domain.member.Member
 import org.springframework.security.core.context.SecurityContext

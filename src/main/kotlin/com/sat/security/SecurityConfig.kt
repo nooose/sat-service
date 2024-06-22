@@ -1,4 +1,4 @@
-package com.sat.common.config.security
+package com.sat.security
 
 import com.sat.user.command.application.MemberLoginService
 import org.springframework.context.annotation.Bean
@@ -24,12 +24,12 @@ class SecurityConfig{
 
     @Bean
     fun filterChain(
-            http: HttpSecurity,
-            corsConfigurationSource: UrlBasedCorsConfigurationSource,
-            oidcService: OAuth2UserService<OidcUserRequest, OidcUser>,
-            clientRegistrationRepository: ClientRegistrationRepository,
-            oidcSuccessHandler: OidcSuccessHandler,
-            entryPoint: CustomAuthenticationEntryPoint,
+        http: HttpSecurity,
+        corsConfigurationSource: UrlBasedCorsConfigurationSource,
+        oidcService: OAuth2UserService<OidcUserRequest, OidcUser>,
+        clientRegistrationRepository: ClientRegistrationRepository,
+        oidcSuccessHandler: OidcSuccessHandler,
+        entryPoint: CustomAuthenticationEntryPoint,
     ): SecurityFilterChain {
         val resolver = DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI)
         resolver.setAuthorizationRequestCustomizer(OAuth2AuthorizationRequestCustomizers.withPkce())

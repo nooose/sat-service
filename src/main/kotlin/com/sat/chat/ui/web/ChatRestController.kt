@@ -5,8 +5,8 @@ import com.sat.chat.command.application.ChatService
 import com.sat.chat.query.ChatMessageQuery
 import com.sat.chat.query.ChatQueryService
 import com.sat.chat.query.ChatRoomQuery
-import com.sat.common.config.security.AuthenticatedMember
-import com.sat.common.config.security.LoginMember
+import com.sat.security.AuthenticatedMember
+import com.sat.security.LoginMember
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

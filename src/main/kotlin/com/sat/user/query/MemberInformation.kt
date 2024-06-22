@@ -1,6 +1,6 @@
 package com.sat.user.query
 
-import com.sat.common.config.security.AuthenticatedMember
+import com.sat.security.AuthenticatedMember
 
 
 data class MemberInformation(

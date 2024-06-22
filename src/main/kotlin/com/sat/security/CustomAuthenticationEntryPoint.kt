@@ -1,4 +1,4 @@
-package com.sat.common.config.security
+package com.sat.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.sat.common.ui.web.ErrorResponse

@@ -1,4 +1,4 @@
-package com.sat.common.config.security
+package com.sat.security
 
 import com.sat.user.command.domain.member.Member
 import org.springframework.security.core.GrantedAuthority

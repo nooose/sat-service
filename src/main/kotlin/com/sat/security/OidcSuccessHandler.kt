@@ -1,4 +1,4 @@
-package com.sat.common.config.security
+package com.sat.security
 
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest

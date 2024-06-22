@@ -1,4 +1,4 @@
-package com.sat.common.config.security
+package com.sat.security
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import java.time.Duration

@@ -5,8 +5,8 @@ import com.sat.board.command.application.CommentCreateCommand
 import com.sat.board.command.application.CommentUpdateCommand
 import com.sat.board.query.CommentQuery
 import com.sat.board.query.CommentQueryService
-import com.sat.common.config.security.AuthenticatedMember
-import com.sat.common.config.security.LoginMember
+import com.sat.security.AuthenticatedMember
+import com.sat.security.LoginMember
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

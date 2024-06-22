@@ -1,4 +1,4 @@
-package com.sat.common.config.security
+package com.sat.security
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 

@@ -6,8 +6,8 @@ import com.sat.board.command.application.ArticleUpdateCommand
 import com.sat.board.query.ArticleQuery
 import com.sat.board.query.ArticleQueryService
 import com.sat.board.query.ArticleWithCountQuery
-import com.sat.common.config.security.AuthenticatedMember
-import com.sat.common.config.security.LoginMember
+import com.sat.security.AuthenticatedMember
+import com.sat.security.LoginMember
 import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
