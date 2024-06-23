@@ -1,5 +1,5 @@
 provider "aws" {
-  profile = "default"
+  profile = "sat"
   region  = "ap-northeast-2"
 }
 
