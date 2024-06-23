@@ -14,9 +14,9 @@ variable "vpc_id" {
 }
 
 variable "ingress_rules" {
-  type        = list(object({
+  type = list(object({
     port     = number
-    protocol    = string
+    protocol = string
     cidr_blocks = list(string)
   }))
   description = "List of ingress rules for the security group"

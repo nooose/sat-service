@@ -4,14 +4,14 @@ resource "aws_iam_instance_profile" "ssm_instance_profile" {
 }
 
 resource "aws_instance" "ec2" {
-  ami = "ami-0edc5427d49d09d2a"
-  instance_type = var.instance_type
+  ami                  = "ami-0edc5427d49d09d2a"
+  instance_type        = var.instance_type
   iam_instance_profile = aws_iam_instance_profile.ssm_instance_profile.name
-  subnet_id = var.subnet_id
+  subnet_id            = var.subnet_id
 
   tags = {
     Name = "${var.instance_name}-ec2"
   }
 
-  security_groups        = [var.security_group_id]
+  security_groups = [var.security_group_id]
 }

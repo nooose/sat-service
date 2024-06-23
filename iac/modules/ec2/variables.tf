@@ -10,7 +10,7 @@ variable "instance_name" {
 }
 
 variable "instance_profile_role" {
-  type        = string
+  type = string
 }
 
 variable "subnet_id" {
