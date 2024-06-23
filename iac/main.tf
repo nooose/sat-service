@@ -67,12 +67,34 @@ module "ssm_iam_role" {
 # |______\_____|____|
 #
 
-module "ec2" {
-  source        = "./modules/ec2"
-  instance_type = "t2.micro"
-  instance_name = "prd-sat-web"
+module "web_security_group" {
+  source = "./modules/security_group"
+
+  name        = "prd-sat-public"
+  description = "Security group for public"
+  vpc_id      = module.vpc.vpc_id
+
+  ingress_rules = [
+    {
+      port     = 80
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      port     = 443
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+  ]
+}
+
+module "web_ec2" {
+  source                = "./modules/ec2"
+  instance_type         = "t2.micro"
+  instance_name         = "prd-sat-web"
   instance_profile_role = module.ssm_iam_role.role_name
-  subnet_id = module.vpc.public_subnet_id
+  subnet_id             = module.vpc.public_subnet_id
+  security_group_id     = module.web_security_group.security_group_id
 }
 
 #             _               _

@@ -12,4 +12,6 @@ resource "aws_instance" "ec2" {
   tags = {
     Name = "${var.instance_name}-ec2"
   }
+
+  security_groups        = [var.security_group_id]
 }
