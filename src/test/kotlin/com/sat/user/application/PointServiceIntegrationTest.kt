@@ -109,7 +109,7 @@ class PointServiceIntegrationTest (
         pointCommandService.dailyPointAward(loginMember.id, now.plusDays(7))
         When("포인트를 조회하면") {
             val totalPoint = pointQueryService.getTotalPoint(loginMember.id)
-            val cursorResponse = pointQueryService.getPoints(loginMember.id, CursorRequest.default())
+            val cursorResponse = pointQueryService.getPoints(loginMember.id, CursorRequest.DEFAULT)
             Then("포인트 정보를 확인할 수 있다.") {
                 assertSoftly {
                     totalPoint shouldBe 20

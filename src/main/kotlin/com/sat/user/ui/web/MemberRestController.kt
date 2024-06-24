@@ -1,6 +1,6 @@
 package com.sat.user.ui.web
 
-import com.sat.board.query.*
+import com.sat.board.query.ArticleWithCountQuery
 import com.sat.common.CursorRequest
 import com.sat.common.PageCursor
 import com.sat.security.AuthenticatedMember
@@ -15,8 +15,7 @@ class MemberRestController(
     private val memberCommandService: MemberCommandService,
     private val memberQueryService: MemberQueryService,
     private val pointQueryService: PointQueryService,
-    private val articleQueryService: ArticleQueryService,
-    private val commentQueryService: CommentQueryService,
+    private val boardQueryService: BoardQueryService,
 ) {
 
     @GetMapping("/user/members/me")
@@ -44,7 +43,7 @@ class MemberRestController(
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): List<ArticleWithCountQuery> {
         // TODO: 커서 기능 추가
-        return articleQueryService.getAll(member.id)
+        return boardQueryService.getArticles(member.id)
     }
 
     @GetMapping("/user/comments")
@@ -52,7 +51,7 @@ class MemberRestController(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<CommentWithArticleQuery>> {
-        return commentQueryService.getComments(member.id, cursorRequest)
+        return boardQueryService.getComments(member.id, cursorRequest)
     }
 
     @GetMapping("/user/points")
@@ -68,7 +67,7 @@ class MemberRestController(
         @LoginMember member: AuthenticatedMember,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<LikedArticleSimpleQuery>> {
-        return articleQueryService.getLikedArticles(member.id, cursorRequest)
+        return boardQueryService.getLikedArticles(member.id, cursorRequest)
     }
 
     @GetMapping("/user/members/{memberId}")
@@ -79,7 +78,7 @@ class MemberRestController(
     @GetMapping("/user/members/{memberId}/articles")
     fun getArticles(@PathVariable memberId: Long): List<ArticleWithCountQuery> {
         // TODO: 커서 기능 추가
-        return articleQueryService.getAll(memberId)
+        return boardQueryService.getArticles(memberId)
     }
 
     @GetMapping("/user/members/{memberId}/comments")
@@ -87,6 +86,6 @@ class MemberRestController(
         @PathVariable memberId: Long,
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<CommentWithArticleQuery>> {
-        return commentQueryService.getComments(memberId, cursorRequest)
+        return boardQueryService.getComments(memberId, cursorRequest)
     }
 }

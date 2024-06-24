@@ -14,8 +14,7 @@ class CategoryCommandService(
 
     fun create(command: CategoryCreateCommand) {
         val name = CategoryName(command.name)
-        validateName(name)
-        validateParent(command.parentId)
+        validate(name, command.parentId)
 
         val category = Category(name, command.parentId)
         categoryRepository.save(category)
@@ -23,12 +22,16 @@ class CategoryCommandService(
 
     fun update(id: Long, command: CategoryUpdateCommand) {
         val name = CategoryName(command.name)
-        validateName(name)
-        validateParent(command.parentId)
+        validate(name, command.parentId)
 
         val category = getCategory(id)
         val updateDto = CategoryUpdateDto(name, command.parentId)
         category.update(updateDto)
+    }
+
+    private fun validate(name: CategoryName, parentId: Long?) {
+        validateName(name)
+        validateParent(parentId)
     }
 
     private fun validateName(name: CategoryName) {

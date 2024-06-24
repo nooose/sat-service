@@ -1,12 +1,8 @@
 package com.sat.board.query
 
-import com.sat.board.command.domain.article.Article
 import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.comment.CommentRepository
-import com.sat.common.CursorRequest
-import com.sat.common.PageCursor
-import com.sat.common.config.jpa.limit
 import com.sat.user.command.domain.member.Member
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -18,7 +14,7 @@ class CommentQueryService(
     private val articleRepository: ArticleRepository,
     private val commentRepository: CommentRepository,
 ) {
-    fun get(articleId: Long): List<CommentQuery> {
+    fun getComments(articleId: Long): List<CommentQuery> {
         val article = articleRepository.findByIdOrNull(articleId)
             ?: throw IllegalStateException("게시글이 존재하지 않습니다. - $articleId")
         check(!article.isDeleted) { "삭제된 게시글 입니다" }
@@ -41,27 +37,5 @@ class CommentQueryService(
 
         val hierarchy = CommentHierarchy(comments)
         return hierarchy.comments
-    }
-
-    fun getComments(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<CommentWithArticleQuery>> {
-        val comments = commentRepository.findAll {
-            selectNew<CommentWithArticleQuery>(
-                path(Comment::id),
-                path(Comment::content),
-                path(Article::id),
-                path(Article::title),
-                path(Comment::createdDateTime),
-            ).from(
-                entity(Comment::class),
-                join(Article::class).on(path(Comment::articleId).equal(path(Article::id))),
-            ).whereAnd(
-                cursorRequest.id?.let { path(Comment::id).lessThan(it) },
-                path(Comment::createdBy).equal(memberId),
-                path(Comment::isDeleted).equal(false),
-            ).orderBy(
-                path(Comment::id).desc()
-            ).limit(cursorRequest.size)
-        }.filterNotNull()
-        return cursorRequest.nextFrom(comments)
     }
 }

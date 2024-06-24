@@ -51,10 +51,3 @@ class CommentWithMemberQuery(
     }
 }
 
-data class CommentWithArticleQuery(
-    override val id: Long,
-    var content: String,
-    val articleId: Long,
-    val articleTitle: String,
-    val createdDateTime: LocalDateTime,
-) : CursorItem

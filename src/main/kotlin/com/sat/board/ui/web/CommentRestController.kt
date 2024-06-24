@@ -32,7 +32,7 @@ class CommentRestController(
 
     @GetMapping("/board/articles/{articleId}/comments")
     fun get(@PathVariable articleId: Long): List<CommentQuery>{
-        return commentQueryService.get(articleId)
+        return commentQueryService.getComments(articleId)
     }
 
     @PutMapping("/board/comments/{id}")

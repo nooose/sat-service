@@ -76,7 +76,7 @@ class CommentRestControllerTest : Documentation(){
             )
         )
 
-        every { commentQueryService.get(any()) } returns response
+        every { commentQueryService.getComments(any()) } returns response
 
         mockMvc.GET("/board/articles/{articleId}/comments", 1L) {
         }.andExpect {

@@ -85,7 +85,7 @@ class CommentCommandServiceTest(
         When("대댓글을 작성하면") {
             commentCommandService.create(article.id, CommentCreateCommand("댓글 B", commentA.id))
             Then("조회할 수 있다.") {
-                val comments = commentQueryService.get(article.id)
+                val comments = commentQueryService.getComments(article.id)
                 comments shouldHaveSize 1
 
                 assertSoftly {
