@@ -32,7 +32,6 @@ class JpqlLimitSerializer : JpqlSerializer<JpqlLimit<*>> {
         delegate.serialize(part.selectQuery, writer, context)
         writer.write(" LIMIT ${part.limit}")
     }
-
 }
 
 fun <T : Any> KotlinJdslJpqlExecutor.findOne(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): T? {
