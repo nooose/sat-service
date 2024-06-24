@@ -13,6 +13,7 @@ import com.sat.common.config.jpa.findOne
 import com.sat.common.config.jpa.limit
 import com.sat.common.exception.NotFoundException
 import com.sat.user.command.domain.member.Member
+import com.sat.user.query.LikedArticleSimpleQuery
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -71,27 +72,5 @@ class ArticleQueryService(
                 path(Article::id).desc()
             )
         }.filterNotNull()
-    }
-
-    // TODO: 인덱스 추가
-    fun getLikedArticles(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<LikedArticleSimpleQuery>> {
-        val likedArticles = articleRepository.findAll {
-            selectNew<LikedArticleSimpleQuery>(
-                path(Like::id),
-                path(Like::articleId),
-                path(Article::title),
-                path(Article::createdDateTime),
-            ).from(
-                entity(Like::class),
-                join(Article::class).on(path(Like::articleId).equal(path(Article::id)))
-            ).whereAnd(
-                cursorRequest.id?.let { path(Like::id).lessThan(it) },
-                path(Like::createdBy).equal(memberId)
-            ).orderBy(
-                path(Like::id).desc()
-            ).limit(cursorRequest.size)
-        }.filterNotNull()
-
-        return cursorRequest.nextFrom(likedArticles)
     }
 }

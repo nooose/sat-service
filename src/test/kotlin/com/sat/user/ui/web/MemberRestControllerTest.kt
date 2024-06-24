@@ -12,11 +12,7 @@ import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.command.application.MemberCommandService
 import com.sat.user.command.application.MemberUpdateCommand
 import com.sat.user.command.domain.point.PointType
-import com.sat.user.query.MemberQueryService
-import com.sat.user.query.PointQueryService
-import com.sat.user.query.MemberInformation
-import com.sat.user.query.MemberSimpleQuery
-import com.sat.user.query.MyPointQuery
+import com.sat.user.query.*
 import io.mockk.every
 import io.mockk.just
 import io.mockk.runs
@@ -36,9 +32,7 @@ class MemberRestControllerTest : Documentation() {
     @MockkBean
     lateinit var pointQueryService: PointQueryService
     @MockkBean
-    lateinit var articleQueryService: ArticleQueryService
-    @MockkBean
-    lateinit var commentQueryService: CommentQueryService
+    lateinit var boardQueryService: BoardQueryService
 
     @WithAuthenticatedUser
     @Test
@@ -116,7 +110,7 @@ class MemberRestControllerTest : Documentation() {
             ArticleWithCountQuery(2, "테스트 B", "IT", 3, 5, LocalDateTime.now())
         )
 
-        every { articleQueryService.getAll(any()) } returns responses
+        every { boardQueryService.getArticles(any()) } returns responses
 
         mockMvc.GET("/user/articles") {
         }.andExpect {
@@ -143,7 +137,7 @@ class MemberRestControllerTest : Documentation() {
             CommentWithArticleQuery(2, "테스트 B", 2L, "제목 B", LocalDateTime.now()),
         )
 
-        every { commentQueryService.getComments(any(), any()) } returns PageCursor(CursorRequest(2), responses)
+        every { boardQueryService.getComments(any(), any()) } returns PageCursor(CursorRequest(2), responses)
 
         mockMvc.GET("/user/comments") {
         }.andExpect {
@@ -206,7 +200,7 @@ class MemberRestControllerTest : Documentation() {
             LikedArticleSimpleQuery(1, 2, "좋아요 B", LocalDateTime.now()),
         )
 
-        every { articleQueryService.getLikedArticles(any(), any()) } returns PageCursor(CursorRequest(2), responses)
+        every { boardQueryService.getLikedArticles(any(), any()) } returns PageCursor(CursorRequest(2), responses)
 
         mockMvc.GET("/user/likes") {
         }.andExpect {
