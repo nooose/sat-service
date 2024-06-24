@@ -14,8 +14,6 @@ import com.sat.common.documentation.dsl.POST
 import com.sat.common.documentation.dsl.andDocument
 import com.sat.common.security.WithAuthenticatedUser
 import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -29,7 +27,7 @@ import java.util.*
 @WebMvcTest(ChatRestController::class)
 class ChatRestControllerTest : Documentation() {
 
-    @MockkBean
+    @MockkBean(relaxUnitFun = true)
     private lateinit var chatService: ChatService
 
     @MockkBean
@@ -107,8 +105,6 @@ class ChatRestControllerTest : Documentation() {
     @WithAuthenticatedUser
     @Test
     fun `채팅방 삭제`() {
-        every { chatService.deleteRoom(any(), any()) } just runs
-
         mockMvc.DELETE("/chat/rooms/{roomId}", 1L) {
         }.andExpect {
             status { isOk() }

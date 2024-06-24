@@ -10,8 +10,6 @@ import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
 import com.sat.common.security.WithAuthenticatedUser
 import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -22,7 +20,7 @@ import org.springframework.http.HttpHeaders
 @WebMvcTest(CommentRestController::class)
 class CommentRestControllerTest : Documentation(){
 
-    @MockkBean
+    @MockkBean(relaxUnitFun = true)
     lateinit var commentCommandService: CommentCommandService
 
     @MockkBean
@@ -32,8 +30,6 @@ class CommentRestControllerTest : Documentation(){
     @Test
     fun `댓글 생성`() {
         val request = CommentCreateCommand("이 게시글은 정말 유익합니다.", 2L)
-
-        every { commentCommandService.create(any(), any()) } just runs
 
         mockMvc.POST("/board/articles/{articleId}/comments", 1L) {
             jsonContent(request)
@@ -104,8 +100,6 @@ class CommentRestControllerTest : Documentation(){
     fun `댓글 수정`() {
         val request = CommentUpdateCommand("너무너무 재밌어요")
 
-        every { commentCommandService.update(any(), any(), any()) } just runs
-
         mockMvc.PUT("/board/comments/{id}", 2L) {
             jsonContent(request)
         }.andExpect {
@@ -126,8 +120,6 @@ class CommentRestControllerTest : Documentation(){
     @WithAuthenticatedUser
     @Test
     fun `댓글 삭제`() {
-        every { commentCommandService.delete(any(), any()) } just runs
-
         mockMvc.DELETE("/board/comments/{id}", 1L) {
         }.andExpect {
             status { isOk() }

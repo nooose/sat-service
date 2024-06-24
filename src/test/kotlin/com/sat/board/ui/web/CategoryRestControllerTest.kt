@@ -9,8 +9,6 @@ import com.sat.board.query.CategoryQueryService
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
 import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -20,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 @WebMvcTest(CategoryRestController::class)
 class CategoryRestControllerTest : Documentation() {
 
-    @MockkBean
+    @MockkBean(relaxUnitFun = true)
     lateinit var categoryCommandService : CategoryCommandService
 
     @MockkBean
@@ -29,8 +27,6 @@ class CategoryRestControllerTest : Documentation() {
     @Test
     fun `카테고리 생성`() {
         val request = CategoryCreateCommand(name = "IT", 1L)
-
-        every { categoryCommandService.create(any()) } just runs
 
         mockMvc.POST("/board/categories") {
             jsonContent(request)
@@ -72,8 +68,6 @@ class CategoryRestControllerTest : Documentation() {
     fun `카테고리 수정`() {
         val request = CategoryUpdateCommand("수정", 1L)
 
-        every { categoryCommandService.update(any(), any()) } just runs
-
         mockMvc.PUT("/board/categories/{id}", 2L) {
             jsonContent(request)
         }.andExpect {
@@ -93,8 +87,6 @@ class CategoryRestControllerTest : Documentation() {
 
     @Test
     fun `카테고리 삭제`() {
-        every { categoryCommandService.delete(any()) } just runs
-
         mockMvc.DELETE("/board/categories/{id}", 1L) {
         }.andExpect {
             status { isOk() }

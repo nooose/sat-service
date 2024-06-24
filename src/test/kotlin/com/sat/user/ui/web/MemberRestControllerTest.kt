@@ -14,8 +14,6 @@ import com.sat.user.command.application.MemberUpdateCommand
 import com.sat.user.command.domain.point.PointType
 import com.sat.user.query.*
 import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -25,7 +23,7 @@ import java.time.LocalDateTime
 @WebMvcTest(MemberRestController::class)
 class MemberRestControllerTest : Documentation() {
 
-    @MockkBean
+    @MockkBean(relaxUnitFun = true)
     lateinit var memberCommandService: MemberCommandService
     @MockkBean
     lateinit var memberQueryService: MemberQueryService
@@ -86,8 +84,6 @@ class MemberRestControllerTest : Documentation() {
     @Test
     fun `자신의 정보 수정`() {
         val request = MemberUpdateCommand("닉네임")
-
-        every { memberCommandService.update(any(), any()) } just runs
 
         mockMvc.PUT("/user/members/me") {
             jsonContent(request)
