@@ -11,8 +11,6 @@ import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.*
 import com.sat.common.security.WithAuthenticatedUser
 import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -23,7 +21,7 @@ import java.time.LocalDateTime
 @WebMvcTest(ArticleRestController::class)
 class ArticleRestControllerTest : Documentation() {
 
-    @MockkBean
+    @MockkBean(relaxUnitFun = true)
     lateinit var articleCommandService: ArticleCommandService
 
     @MockkBean
@@ -110,8 +108,6 @@ class ArticleRestControllerTest : Documentation() {
     fun `게시글 수정`() {
         val request = ArticleUpdateCommand("수정 제목", "수정 내용")
 
-        every { articleCommandService.update(any(), any()) } just runs
-
         mockMvc.PUT("/board/articles/{articleId}", 1L) {
             jsonContent(request)
         }.andExpect {
@@ -131,8 +127,6 @@ class ArticleRestControllerTest : Documentation() {
 
     @Test
     fun `게시글 삭제`() {
-        every { articleCommandService.delete(any()) } just runs
-
         mockMvc.DELETE("/board/articles/{articleId}", 1L) {
         }.andExpect {
             status { isOk() }
@@ -149,8 +143,6 @@ class ArticleRestControllerTest : Documentation() {
     @WithAuthenticatedUser
     @Test
     fun `게시글 좋아요`() {
-        every { articleCommandService.like(any(), any()) } just runs
-
         mockMvc.POST("/board/articles/{articleId}:like", 1L) {
         }.andExpect {
             status { isOk() }
