@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "terraform_bucket" {
 
 terraform {
   backend "s3" {
-    bucket = "prd-sat-state"
+    bucket = aws_s3_bucket.terraform_bucket.bucket
     key    = "terraform.tfstate"
     region = "ap-northeast-2"
   }
