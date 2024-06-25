@@ -3,6 +3,7 @@ package com.sat.board.query
 import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.comment.CommentRepository
+import com.sat.common.config.jpa.findNotNullAll
 import com.sat.user.command.domain.member.Member
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -19,7 +20,7 @@ class CommentQueryService(
             ?: throw IllegalStateException("게시글이 존재하지 않습니다. - $articleId")
         check(!article.isDeleted) { "삭제된 게시글 입니다" }
 
-        val comments = commentRepository.findAll {
+        val comments = commentRepository.findNotNullAll {
             selectNew<CommentWithMemberQuery>(
                 path(Comment::id),
                 path(Comment::content),
@@ -33,7 +34,7 @@ class CommentQueryService(
             ).where(
                 path(Comment::articleId).equal(articleId)
             )
-        }.filterNotNull()
+        }
 
         val hierarchy = CommentHierarchy(comments)
         return hierarchy.comments

@@ -5,7 +5,7 @@ internal object CurrentFunNameHolder {
 
     var funName: String?
         get() = methodNameHolder.get()
-        set(value) = if (methodNameHolder.get() == null) methodNameHolder.set(value) else Unit
+        set(value) = methodNameHolder.set(value)
 
     fun clear() {
         methodNameHolder.remove()

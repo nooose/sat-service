@@ -34,12 +34,6 @@ class JpqlLimitSerializer : JpqlSerializer<JpqlLimit<*>> {
     }
 }
 
-fun <T : Any> KotlinJdslJpqlExecutor.findOne(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): T? {
-    val result = this.findAll(Jpql, init).filterNotNull()
-    check(result.size < 2) { "다건 조회가 발생했습니다." }
-    return result.firstOrNull()
-}
-
 inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.limit(limit: Int): JpqlLimit<T> {
     return JpqlLimit(
         this.toQuery(),
@@ -47,3 +41,29 @@ inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.limit(limit: Int): Jp
         T::class,
     )
 }
+
+fun <T : Any> KotlinJdslJpqlExecutor.findOne(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): T? {
+    try {
+        CurrentFunNameHolder.funName = Thread.currentThread().callerName
+        val result = this.findAll(Jpql, init).filterNotNull()
+        check(result.size < 2) { "다건 조회가 발생했습니다." }
+        return result.firstOrNull()
+    } finally {
+        CurrentFunNameHolder.clear()
+    }
+}
+
+fun <T : Any> KotlinJdslJpqlExecutor.findNotNullAll(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): List<T> {
+    try {
+        CurrentFunNameHolder.funName = Thread.currentThread().callerName
+        return this.findAll(Jpql, init).filterNotNull()
+    } finally {
+        CurrentFunNameHolder.clear()
+    }
+}
+
+val Thread.callerName: String
+    get() {
+        val stack = this.stackTrace[3]
+        return "${stack.className}-${stack.methodName}"
+    }

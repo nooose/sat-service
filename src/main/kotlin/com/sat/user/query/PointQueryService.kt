@@ -2,6 +2,8 @@ package com.sat.user.query
 
 import com.sat.common.CursorRequest
 import com.sat.common.PageCursor
+import com.sat.common.config.jpa.findNotNullAll
+import com.sat.common.config.jpa.findOne
 import com.sat.common.config.jpa.limit
 import com.sat.user.command.domain.point.Point
 import com.sat.user.command.domain.point.PointRepository
@@ -15,7 +17,7 @@ class PointQueryService(
 ) {
 
     fun getTotalPoint(memberId: Long): Int {
-        return pointRepository.findAll {
+        return pointRepository.findOne {
             select(
                 sum(Point::point)
             ).from(
@@ -23,11 +25,11 @@ class PointQueryService(
             ).where(
                 path(Point::memberId).equal(memberId)
             )
-        }.firstOrNull()?.toInt() ?: 0
+        }?.toInt() ?: 0
     }
 
     fun getPoints(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<MyPointQuery>> {
-        val points = pointRepository.findAll {
+        val points = pointRepository.findNotNullAll {
             selectNew<MyPointQuery>(
                 path(Point::id),
                 path(Point::point),
@@ -41,7 +43,7 @@ class PointQueryService(
             ).orderBy(
                 path(Point::id).desc(),
             ).limit(cursorRequest.size)
-        }.filterNotNull()
+        }
         return cursorRequest.nextFrom(points)
     }
 }

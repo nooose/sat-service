@@ -7,13 +7,10 @@ import com.sat.board.command.domain.article.CategoryName
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.like.Like
 import com.sat.board.command.domain.like.LikeRepository
-import com.sat.common.CursorRequest
-import com.sat.common.PageCursor
+import com.sat.common.config.jpa.findNotNullAll
 import com.sat.common.config.jpa.findOne
-import com.sat.common.config.jpa.limit
 import com.sat.common.exception.NotFoundException
 import com.sat.user.command.domain.member.Member
-import com.sat.user.query.LikedArticleSimpleQuery
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -50,7 +47,7 @@ class ArticleQueryService(
     }
 
     fun getAll(memberId: Long? = null): List<ArticleWithCountQuery> {
-        return articleRepository.findAll {
+        return articleRepository.findNotNullAll {
             selectNew<ArticleWithCountQuery>(
                 path(Article::id),
                 path(Article::title),
@@ -71,6 +68,6 @@ class ArticleQueryService(
             ).orderBy(
                 path(Article::id).desc()
             )
-        }.filterNotNull()
+        }
     }
 }
