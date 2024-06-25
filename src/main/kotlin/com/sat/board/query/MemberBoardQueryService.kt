@@ -7,6 +7,7 @@ import com.sat.board.command.domain.comment.CommentRepository
 import com.sat.board.command.domain.like.Like
 import com.sat.common.CursorRequest
 import com.sat.common.PageCursor
+import com.sat.common.config.jpa.findNotNullAll
 import com.sat.common.config.jpa.limit
 import com.sat.user.query.BoardQueryService
 import com.sat.user.query.CommentWithArticleQuery
@@ -25,7 +26,7 @@ class MemberBoardQueryService(
     }
 
     override fun getComments(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<CommentWithArticleQuery>> {
-        val comments = commentRepository.findAll {
+        val comments = commentRepository.findNotNullAll {
             selectNew<CommentWithArticleQuery>(
                 path(Comment::id),
                 path(Comment::content),
@@ -42,12 +43,12 @@ class MemberBoardQueryService(
             ).orderBy(
                 path(Comment::id).desc()
             ).limit(cursorRequest.size)
-        }.filterNotNull()
+        }
         return cursorRequest.nextFrom(comments)
     }
 
     override fun getLikedArticles(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<LikedArticleSimpleQuery>> {
-        val likedArticles = articleRepository.findAll {
+        val likedArticles = articleRepository.findNotNullAll {
             selectNew<LikedArticleSimpleQuery>(
                 path(Like::id),
                 path(Like::articleId),
@@ -62,7 +63,7 @@ class MemberBoardQueryService(
             ).orderBy(
                 path(Like::id).desc()
             ).limit(cursorRequest.size)
-        }.filterNotNull()
+        }
         return cursorRequest.nextFrom(likedArticles)
     }
 }
