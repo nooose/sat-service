@@ -9,6 +9,8 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 import kotlin.reflect.KClass
 
@@ -62,7 +64,17 @@ fun <T : Any> KotlinJdslJpqlExecutor.findNotNullAll(init: Jpql.() -> JpqlQueryab
     }
 }
 
-val Thread.callerName: String
+fun <T : Any> KotlinJdslJpqlExecutor.findNotNullPage(pageable: Pageable, init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): PageImpl<T> {
+    try {
+        CurrentFunNameHolder.funName = Thread.currentThread().callerName
+        val page = this.findPage(Jpql, pageable, init)
+        return PageImpl(page.filterNotNull(), pageable, page.totalElements)
+    } finally {
+        CurrentFunNameHolder.clear()
+    }
+}
+
+private val Thread.callerName: String
     get() {
         val stack = this.stackTrace[3]
         return "${stack.className}-${stack.methodName}"
