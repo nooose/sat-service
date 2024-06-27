@@ -1,5 +1,4 @@
 import {Link, NavbarItem} from "@nextui-org/react";
-import {cookies} from "next/headers";
 import SatUser from "@/model/domain/SatUser";
 import React from "react";
 import UserProfile from "@/components/user-profile";
@@ -21,12 +20,11 @@ export async function getUserInfo(cookie: string | undefined): Promise<SatUser> 
         json.email,
         json.avatar,
         json.point,
+        json.isAdmin,
     );
 }
 
-export default async function UserLogin() {
-    const cookie = cookies().get("JSESSIONID")?.value
-    const userInfo = await getUserInfo(cookie);
+export default async function UserLogin({userInfo}: {userInfo: SatUser}) {
     const isAuthenticated = userInfo.isAuthenticated();
     return (
         <div>
@@ -38,7 +36,6 @@ export default async function UserLogin() {
                             name={userInfo.nickname}
                             point={userInfo.point}
                             avatar={userInfo.avatar}
-                            cookie={cookie!!}
                         />
                     </NavbarItem>
                 </div>
