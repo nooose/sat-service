@@ -12,6 +12,9 @@ import com.sat.common.security.TestAuthUtils.setAuthentication
 import com.sat.user.command.application.MemberLoginService
 import com.sat.user.command.application.PointCommandService
 import com.sat.user.command.domain.member.LoginHistoryRepository
+import com.sat.user.command.domain.member.Role
+import com.sat.user.command.domain.member.RoleRepository
+import com.sat.user.command.domain.member.RoleType
 import com.sat.user.command.domain.point.PointRepository
 import com.sat.user.command.domain.point.PointType
 import com.sat.user.query.PointQueryService
@@ -35,8 +38,13 @@ class PointServiceIntegrationTest (
     private val articleCommandService: ArticleCommandService,
     private val pointRepository: PointRepository,
     private val memberLoginHistoryRepository: LoginHistoryRepository,
+    private val roleRepository: RoleRepository,
 ) : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
+
+    beforeTest {
+        roleRepository.save(Role(RoleType.BASIC, 1L))
+    }
 
     Given("로그인을 하고") {
         val now = LocalDateTime.now()
