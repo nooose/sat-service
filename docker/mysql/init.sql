@@ -1,14 +1,27 @@
+create table role
+(
+    id                 bigint not null AUTO_INCREMENT comment '권한 아이디',
+    type               varchar(15) not null comment '권한 타입',
+    created_by         bigint not null comment '사용자 생성자 아이디',
+    created_date_time  datetime not null default now() comment '사용자 생성 시간',
+    modified_by        bigint comment '사용자 수정자 아이디',
+    modified_date_time datetime default now() comment '사용자 수정 시간',
+    primary key (id)
+);
+
 create table member
 (
     id                 bigint not null AUTO_INCREMENT comment '사용자 아이디',
     name               varchar(30) not null comment '사용자 이름',
     nickname           varchar(30) not null comment '사용자 닉네임',
     email              varchar(50) not null comment '사용자 이메일',
+    role_id            bigint not null comment '권한 아이디',
     created_by         bigint not null comment '사용자 생성자 아이디',
     created_date_time  datetime not null default now() comment '사용자 생성 시간',
     modified_by        bigint comment '사용자 수정자 아이디',
     modified_date_time datetime default now() comment '사용자 수정 시간',
-    primary key (id)
+    primary key (id),
+    foreign key (role_id) references role (id)
 ) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
 create table category
@@ -82,17 +95,21 @@ create table point
     primary key (id)
 ) default charset=utf8mb4 collate=utf8mb4_general_ci;
 
-insert into member (id, name, nickname, email, created_by, modified_by)
-values (1, '성준혁', '성준혁', 'noose@kakao.com', 1, 1),
-(2, '권규정', '권규정', 'kgu1060@daum.net', 2, 2),
-(3, '노영록', '노영록', 'nstockley2@nymag.com', 3, 3),
-(4, '김영철', '김영철', 'mbillson3@comcast.net', 4, 4),
-(5, '박지수', '박지수', 'rpittel4@si.edu', 5, 5),
-(6, '아이유', '아이유', 'iu4@si.edu', 6, 6),
-(7, '수지', '수지', 'suzy@si.edu', 7, 7),
-(8, '차은우', '차은우', 'cha@si.edu', 8, 8),
-(9, '김은희', '김은희', 'mother@si.edu', 9, 9),
-(10, '김민희', '김민희', 'mother2@si.edu', 10, 10);
+insert into role (id, type, created_by, modified_by)
+values (1, 'BASIC', 0, 0),
+       (2, 'ADMIN', 0, 0);
+
+insert into member (id, name, nickname, email, role_id, created_by, modified_by)
+values (1, '성준혁', '성준혁', 'noose@kakao.com', 2, 1, 1),
+(2, '권규정', '권규정', 'kgu1060@daum.net',2, 2, 2),
+(3, '노영록', '노영록', 'nstockley2@nymag.com', 1, 3, 3),
+(4, '김영철', '김영철', 'mbillson3@comcast.net', 1, 4, 4),
+(5, '박지수', '박지수', 'rpittel4@si.edu', 1, 5, 5),
+(6, '아이유', '아이유', 'iu4@si.edu', 1, 6, 6),
+(7, '수지', '수지', 'suzy@si.edu', 1, 7, 7),
+(8, '차은우', '차은우', 'cha@si.edu', 1, 8, 8),
+(9, '김은희', '김은희', 'mother@si.edu', 1, 9, 9),
+(10, '김민희', '김민희', 'mother2@si.edu', 1, 10, 10);
 
 insert into category (id, name, parent_id, created_by, modified_by)
 values

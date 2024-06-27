@@ -1,13 +1,13 @@
 package com.sat.user.ui.web
 
 import com.ninjasquad.springmockk.MockkBean
-import com.sat.board.query.*
+import com.sat.board.query.ArticleWithCountQuery
+import com.sat.common.CursorRequest
+import com.sat.common.PageCursor
 import com.sat.common.documentation.Documentation
 import com.sat.common.documentation.dsl.GET
 import com.sat.common.documentation.dsl.PUT
 import com.sat.common.documentation.dsl.andDocument
-import com.sat.common.CursorRequest
-import com.sat.common.PageCursor
 import com.sat.common.security.WithAuthenticatedUser
 import com.sat.user.command.application.MemberCommandService
 import com.sat.user.command.application.MemberUpdateCommand
@@ -50,6 +50,7 @@ class MemberRestControllerTest : Documentation() {
                 field("email", "이메일")
                 field("avatar", "Avatar 사진 URL")
                 field("point", "포인트")
+                field("isAdmin", "관리자 여부")
             }
         }
     }

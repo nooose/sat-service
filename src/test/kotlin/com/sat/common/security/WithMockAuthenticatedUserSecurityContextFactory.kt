@@ -1,8 +1,10 @@
 package com.sat.common.security
 
-import com.sat.security.AuthenticatedMember
 import com.sat.common.security.TestAuthUtils.authentication
+import com.sat.security.AuthenticatedMember
 import com.sat.user.command.domain.member.Member
+import com.sat.user.command.domain.member.Role
+import com.sat.user.command.domain.member.RoleType
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
@@ -59,7 +61,7 @@ object TestAuthUtils {
             .build()
         val oidcUserRequest = OidcUserRequest(clientRegistration, accessToken, oidcIdToken)
 
-        val member = Member(name, name, "test@test.com", id)
+        val member = Member(name, name, "test@test.com", Role(RoleType.ADMIN), id)
         val principal = AuthenticatedMember.from(oidcUserRequest, member)
         return OAuth2AuthenticationToken(principal, principal.authorities, registrationId)
     }

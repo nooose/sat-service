@@ -1,13 +1,17 @@
 import React from "react";
 import {Link, Navbar, NavbarBrand, NavbarContent, NavbarItem} from "@nextui-org/react";
-import UserLogin from "@/components/user-login";
+import UserLogin, {getUserInfo} from "@/components/user-login";
+import {cookies} from "next/headers";
 
 const links = [
-    { href: "/category", label: "카테고리" },
-    { href: "/chat", label: "채팅" },
+    { href: "/category", label: "카테고리", isAdminOnly: true },
+    { href: "/chat", label: "채팅", isAdminOnly: false },
 ];
 
-export default function Navigation() {
+export default async function Navigation() {
+    const cookie = cookies().get("JSESSIONID")?.value
+    const userInfo = await getUserInfo(cookie);
+    const filteredLinks = links.filter(link => userInfo.isAdmin || !link.isAdminOnly);
 
     return (
         <Navbar shouldHideOnScroll>
@@ -15,7 +19,7 @@ export default function Navigation() {
                 <a href="/" className="font-bold text-inherit">S.A.T</a>
             </NavbarBrand>
             <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                {links.map((link, index) => (
+                {filteredLinks.map((link, index) => (
                     <NavbarItem key={index}>
                         <Link href={link.href}>
                             {link.label}
@@ -24,7 +28,7 @@ export default function Navigation() {
                 ))}
             </NavbarContent>
             <NavbarContent justify="end">
-                <UserLogin/>
+                <UserLogin userInfo={userInfo}/>
             </NavbarContent>
         </Navbar>
     );
