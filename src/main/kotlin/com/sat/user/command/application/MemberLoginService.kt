@@ -1,9 +1,6 @@
 package com.sat.user.command.application
 
-import com.sat.user.command.domain.member.LoginHistory
-import com.sat.user.command.domain.member.Member
-import com.sat.user.command.domain.member.LoginHistoryRepository
-import com.sat.user.command.domain.member.MemberRepository
+import com.sat.user.command.domain.member.*
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,6 +12,7 @@ val log = KotlinLogging.logger { }
 @Service
 class MemberLoginService(
     private val memberRepository: MemberRepository,
+    private val roleRepository: RoleRepository,
     private val loginHistoryRepository: LoginHistoryRepository,
 ) {
 
@@ -29,8 +27,8 @@ class MemberLoginService(
     }
 
     private fun saveMember(name: String, email: String): Member {
-        val newMember = Member.new(name = name, email = email)
-        memberRepository.save(newMember)
-        return newMember
+        val defaultRole = roleRepository.findByType(RoleType.DEFAULT)
+        val newMember = Member.new(name = name, email = email, defaultRole = defaultRole)
+        return memberRepository.save(newMember)
     }
 }

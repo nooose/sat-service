@@ -1,6 +1,7 @@
 package com.sat.security
 
 import com.sat.user.command.domain.member.Member
+import com.sat.user.command.domain.member.RoleType
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.AuthorityUtils
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest
@@ -14,6 +15,7 @@ data class AuthenticatedMember(
     val nickname: String,
     private val email: String,
     val avatar: String,
+    val roles: List<RoleType>,
     private val idToken: OidcIdToken,
 ) : OidcUser {
     override fun getName(): String {
@@ -25,7 +27,7 @@ data class AuthenticatedMember(
     }
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        return AuthorityUtils.NO_AUTHORITIES
+        return AuthorityUtils.createAuthorityList(roles.map { "ROLE_$it" })
     }
 
     override fun getClaims(): Map<String, Any> {
@@ -52,7 +54,8 @@ data class AuthenticatedMember(
                 nickname = loginMember.nickname,
                 email = request.idToken.email as String,
                 avatar = request.idToken.claims["picture"] as String,
-                request.idToken
+                roles = listOf(loginMember.role.type),
+                idToken = request.idToken,
             )
         }
     }

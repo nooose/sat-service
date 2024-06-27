@@ -1,6 +1,7 @@
 package com.sat.security
 
 import com.sat.user.command.application.MemberLoginService
+import com.sat.user.command.domain.member.RoleType
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -51,6 +52,9 @@ class SecurityConfig{
             }
             authorizeHttpRequests {
                 authorize(HttpMethod.GET, "/board/articles/**", permitAll)
+                authorize(HttpMethod.PUT, "/board/categories/**", hasRole(RoleType.ADMIN.name))
+                authorize(HttpMethod.POST, "/board/categories/**", hasRole(RoleType.ADMIN.name))
+                authorize(HttpMethod.DELETE, "/board/categories/**", hasRole(RoleType.ADMIN.name))
                 authorize("/**", authenticated)
             }
             exceptionHandling {
