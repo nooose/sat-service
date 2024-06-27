@@ -6,17 +6,15 @@ import {Dropdown, DropdownTrigger} from "@nextui-org/dropdown";
 import {useRouter} from "next/navigation";
 import {RestClient} from "@/utils/rest-client";
 
-export default function UserProfile({id, name, point, avatar, cookie}: {
+export default function UserProfile({id, name, point, avatar}: {
     id: number,
     name: string,
     point: number,
     avatar: string,
-    cookie: string
 }) {
     const router = useRouter();
     const logout = () => {
         RestClient.get("/logout")
-            .session(cookie)
             .successHandler(() => {
                 router.push("/");
                 router.refresh();

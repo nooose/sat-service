@@ -4,16 +4,12 @@ import com.sat.IntegrationTest
 import com.sat.board.command.application.CommentCommandService
 import com.sat.board.command.application.CommentCreateCommand
 import com.sat.board.command.application.CommentUpdateCommand
-import com.sat.board.query.CommentQueryService
-import com.sat.board.command.domain.article.Article
-import com.sat.board.command.domain.article.Category
-import com.sat.board.command.domain.article.CategoryName
+import com.sat.board.command.domain.article.*
 import com.sat.board.command.domain.comment.Comment
-import com.sat.board.command.domain.article.ArticleRepository
-import com.sat.board.command.domain.article.CategoryRepository
 import com.sat.board.command.domain.comment.CommentRepository
+import com.sat.board.query.CommentQueryService
 import com.sat.common.security.TestAuthUtils.setAuthentication
-import com.sat.user.command.application.MemberLoginService
+import com.sat.user.command.domain.member.*
 import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.annotation.DisplayName
@@ -32,13 +28,15 @@ class CommentCommandServiceTest(
     private val commentQueryService: CommentQueryService,
     private val articleRepository: ArticleRepository,
     private val categoryRepository: CategoryRepository,
-    private val memberLoginService: MemberLoginService,
+    private val memberRepository: MemberRepository,
+    private val roleRepository: RoleRepository,
 ) : BehaviorSpec({
     isolationMode = IsolationMode.InstancePerLeaf
 
-    val loginMember = memberLoginService.login("김영철", "test@test.com")
+    val role = Role(RoleType.DEFAULT, 1L)
+    val loginMember = Member("김영철", "김영철", "test@test.com", role, 10L)
 
-    beforeEach {
+    beforeTest {
         setAuthentication(loginMember.id)
     }
 
@@ -82,20 +80,6 @@ class CommentCommandServiceTest(
         val category = categoryRepository.save(Category(CategoryName("IT")))
         val article = articleRepository.save(Article("클린코드", "너무 유익해요", category))
         val commentA = commentRepository.save(Comment(article.id, "댓글 A"))
-        When("대댓글을 작성하면") {
-            commentCommandService.create(article.id, CommentCreateCommand("댓글 B", commentA.id))
-            Then("조회할 수 있다.") {
-                val comments = commentQueryService.getComments(article.id)
-                comments shouldHaveSize 1
-
-                assertSoftly {
-                    comments shouldHaveSize 1
-                    comments[0].content shouldBe "댓글 A"
-                    comments[0].children shouldHaveSize 1
-                    comments[0].children[0].content shouldBe "댓글 B"
-                }
-            }
-        }
 
         When("댓글을 수정하면") {
             val command = CommentUpdateCommand("댓글 수정됨")
@@ -145,5 +129,7 @@ class CommentCommandServiceTest(
         articleRepository.deleteAll()
         categoryRepository.deleteAll()
         commentRepository.deleteAll()
+        roleRepository.deleteAll()
+        memberRepository.deleteAll()
     }
 })

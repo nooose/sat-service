@@ -1,6 +1,7 @@
 package com.sat.user.query
 
 import com.sat.security.AuthenticatedMember
+import com.sat.user.command.domain.member.RoleType
 
 
 data class MemberInformation(
@@ -10,6 +11,7 @@ data class MemberInformation(
     val email: String,
     val avatar: String,
     val point: Int,
+    val isAdmin: Boolean,
 ) {
     companion object {
         fun of(member: AuthenticatedMember, point: Int): MemberInformation {
@@ -20,6 +22,7 @@ data class MemberInformation(
                 email = member.email,
                 avatar = member.avatar,
                 point = point,
+                isAdmin = member.roles.contains(RoleType.ADMIN)
             )
         }
     }
