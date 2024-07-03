@@ -19,6 +19,13 @@ spring:
     mongodb:
       uri: mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin
 
+    redis:
+      host: localhost
+      port: 6379
+
+  cache:
+    type: redis
+
   security:
     oauth2:
       client:
