@@ -28,8 +28,10 @@ jobs:
         run: |
           date=$(date +%Y%m%d.%H%M)
           commit_id=${{ github.sha }}
-          image_tag=kwongyujung/sat:$date-${commit_id:0:4} kwongyujung/sat:latest
-          echo "image-tag=$image_tag" >> "$GITHUB_OUTPUT"
+          image_tag_latest=kwongyujung/sat:latest
+          image_tag_time=kwongyujung/sat:$date-${commit_id:0:4} 
+          echo "image-tag-latest=image_tag_latest" >> "$GITHUB_OUTPUT"
+          echo "image-tag-time=image_tag_time" >> "$GITHUB_OUTPUT"
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
@@ -42,4 +44,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.image-tag.outputs.image-tag }}
+          tags: |
+            ${{ steps.image-tag.outputs.image-tag-latest }}
+            ${{ steps.image-tag.outputs.image-tag-time }}
