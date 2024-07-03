@@ -1,5 +1,6 @@
 package com.sat.board.query
 
+import com.sat.common.OnceWriteProperty
 import java.time.LocalDateTime
 
 data class ArticleQuery(
@@ -10,7 +11,7 @@ data class ArticleQuery(
     val createdBy: Long,
     val createdByName: String,
 ) {
-    var hasLike: Boolean = false
+    var hasLike: Boolean by OnceWriteProperty(false)
 }
 
 data class ArticleWithCountQuery(
