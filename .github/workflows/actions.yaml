@@ -4,8 +4,6 @@ on:
   push:
     branches: [main, feature/*]
 
-permissions:
-  contents: read
 jobs:
   CI:
     runs-on: ubuntu-latest
@@ -19,30 +17,28 @@ jobs:
           java-version: '21'
           distribution: 'corretto'
 
-      - name: Gradle Build
-        run: ./gradlew bootJar
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Docker Image Build
+      - name: Build app
+        run: ./gradlew bootJar
+
+      - name: Generate image tag
+        id: image-tag
         run: |
-          date=$(date +%Y-%m-%d)
-          docker build -t "sat:${{ github.sha }}-$date" .
+          date=$(date +%Y%m%d.%H%M)
+          commit_id=${{ github.sha }}
+          image_tag=kwongyujung/sat:$date-${commit_id:0:4}
+          echo "image-tag=$image_tag" >> "$GITHUB_OUTPUT"
 
-## 실제 명령어로 스크립트 짜보기
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-#      - name: Login to DockerHub
-#        uses: docker/login-action@v1
-#        with:
-#          username: ${{ secrets.DOCKERHUB_USERNAME }}
-#          password: ${{ secrets.DOCKERHUB_TOKEN }}
-#
-#      - name: Docker Build and push
-#        uses: docker/build-push-action@v2
-#        with:
-#          context: .
-#          file: ./Dockerfile
-#          platforms: linux/amd64
-#          push: true
-#          tags: ${{ steps.docker_meta.outputs.tags }}
+      - name: Docker Build and push
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ steps.image-tag.outputs.image-tag }}
