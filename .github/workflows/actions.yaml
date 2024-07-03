@@ -28,7 +28,7 @@ jobs:
         run: |
           date=$(date +%Y%m%d.%H%M)
           commit_id=${{ github.sha }}
-          image_tag=kwongyujung/sat:$date-${commit_id:0:4}-latest
+          image_tag=kwongyujung/sat:latest:$date-${commit_id:0:4}
           echo "image-tag=$image_tag" >> "$GITHUB_OUTPUT"
 
       - name: Login to DockerHub
