@@ -28,7 +28,7 @@ jobs:
       - name: Docker Image Build
         run: |
           date=$(date +%Y-%m-%d)
-          docker build -t "sat:${{ github.sha }}:$data"
+          docker build -t "sat:${{ github.sha }}:$date" .
 
 ## 실제 명령어로 스크립트 짜보기
 
