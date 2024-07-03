@@ -1,5 +1,7 @@
+
 import io.swagger.v3.oas.models.servers.Server
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
 	id("org.springframework.boot") version "3.3.1"
@@ -22,7 +24,7 @@ java {
 	sourceCompatibility = JavaVersion.VERSION_21
 }
 
-tasks.named<Jar>("jar") {
+tasks.named<BootJar>("bootJar") {
 	archiveFileName = "application.jar"
 }
 
