@@ -30,8 +30,8 @@ jobs:
           commit_id=${{ github.sha }}
           image_tag_latest=kwongyujung/sat:latest
           image_tag=kwongyujung/sat:$date-${commit_id:0:4} 
-          echo "image-tag-latest=image_tag_latest" >> "$GITHUB_OUTPUT"
-#          echo "image-tag=image_tag" >> "$GITHUB_OUTPUT"
+          echo "image-tag-latest=$image_tag_latest" >> "$GITHUB_OUTPUT"
+          echo "image-tag=$image_tag" >> "$GITHUB_OUTPUT"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
