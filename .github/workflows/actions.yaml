@@ -23,8 +23,8 @@ jobs:
       - name: Build app
         run: ./gradlew bootJar
 
-      - name: Jar extract
-        run: java -Djarmode=tools -jar application.jar extract
+      - name: Extract jar
+        run: java -Djarmode=tools -jar build/libs/application.jar extract
 
       - name: Generate image tag
         id: image-tag
