@@ -1,6 +1,6 @@
 # 기술 다 때려박아 (SAT: Stuff All Tech)
 커뮤니티 사이트를 만들어보자!
-
+테스트입니다.
 ## 기술 스택
 - App
   - Kotlin / Java 21
