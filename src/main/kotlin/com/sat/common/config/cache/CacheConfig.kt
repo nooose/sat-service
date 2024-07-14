@@ -9,7 +9,7 @@ import org.springframework.data.redis.cache.RedisCacheManager
 import org.springframework.data.redis.connection.RedisConnectionFactory
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair
-import org.springframework.data.redis.serializer.StringRedisSerializer
+import org.springframework.data.redis.serializer.RedisSerializer
 import java.time.Duration
 
 
@@ -18,10 +18,14 @@ import java.time.Duration
 class CacheConfig {
 
     @Bean
-    fun cacheManager(factory: RedisConnectionFactory): CacheManager {
+    fun cacheManager(
+        factory: RedisConnectionFactory,
+        keySerializer: RedisSerializer<String>,
+        valueSerializer: GenericJackson2JsonRedisSerializer,
+    ): CacheManager {
         val configuration = RedisCacheConfiguration.defaultCacheConfig()
-            .serializeKeysWith(SerializationPair.fromSerializer(StringRedisSerializer()))
-            .serializeValuesWith(SerializationPair.fromSerializer(GenericJackson2JsonRedisSerializer()))
+            .serializeKeysWith(SerializationPair.fromSerializer(keySerializer))
+            .serializeValuesWith(SerializationPair.fromSerializer(valueSerializer))
             .entryTtl(Duration.ofMinutes(1L))
 
         return RedisCacheManager.RedisCacheManagerBuilder
