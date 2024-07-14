@@ -6,6 +6,8 @@ import com.sat.common.utils.toZeroTime
 import com.sat.user.command.domain.member.LoginHistoryRepository
 import com.sat.user.command.domain.point.Point
 import com.sat.user.command.domain.point.PointRepository
+import com.sat.user.query.PointQueryService
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -17,12 +19,15 @@ class PointCommandService(
     private val loginHistoryRepository: LoginHistoryRepository,
     private val articleRepository: ArticleRepository,
     private val memberLoginService: MemberLoginService,
+    private val pointQueryService: PointQueryService,
+    private val redisTemplate: RedisTemplate<String, Any>
 ) {
     fun dailyPointAward(memberId: Long, today: LocalDateTime) {
         if (!existsTodayLoginHistory(today)) {
             val loginPoint = Point.login(memberId)
             pointRepository.save(loginPoint)
             log.info { "로그인 포인트 적립 완료 - $memberId" }
+            updateMemberTotalPoint(memberId)
         }
         memberLoginService.createLoginHistory(memberId, today)
     }
@@ -39,6 +44,7 @@ class PointCommandService(
         }
         val commentPoint = Point.comment(principalId)
         pointRepository.save(commentPoint)
+        updateMemberTotalPoint(principalId)
     }
 
     /**
@@ -47,5 +53,12 @@ class PointCommandService(
     fun articlePointAward(principalId: Long) {
         val articlePoint = Point.article(principalId)
         pointRepository.save(articlePoint)
+        updateMemberTotalPoint(principalId)
+    }
+
+    private fun updateMemberTotalPoint(memberId: Long) {
+        val totalPoint = pointQueryService.getTotalPoint(memberId)
+        val opsForValue = redisTemplate.opsForValue()
+        opsForValue.set(memberId.toString(), totalPoint)
     }
 }

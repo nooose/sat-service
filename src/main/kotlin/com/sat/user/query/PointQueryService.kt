@@ -46,4 +46,17 @@ class PointQueryService(
         }
         return cursorRequest.nextFrom(points)
     }
+
+    fun getTotalPointsOfMembers(): List<MemberPointQuery> {
+        return pointRepository.findNotNullAll {
+            selectNew<MemberPointQuery>(
+                path(Point::memberId),
+                sum(path(Point::point)),
+            ).from(
+                entity(Point::class)
+            ).groupBy(
+                path(Point::memberId)
+            )
+        }
+    }
 }
