@@ -9,6 +9,7 @@ import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
 import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import kotlin.reflect.KClass
 
@@ -23,6 +24,7 @@ class JpqlLimitSerializer : JpqlSerializer<JpqlLimit<*>> {
     override fun handledType(): KClass<JpqlLimit<*>> {
         return JpqlLimit::class
     }
+
     override fun serialize(
         part: JpqlLimit<*>,
         writer: JpqlWriter,
@@ -34,6 +36,8 @@ class JpqlLimitSerializer : JpqlSerializer<JpqlLimit<*>> {
     }
 }
 
+private val log = KotlinLogging.logger { }
+
 inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.limit(limit: Int): JpqlLimit<T> {
     return JpqlLimit(
         this.toQuery(),
@@ -43,23 +47,16 @@ inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.limit(limit: Int): Jp
 }
 
 fun <T : Any> KotlinJdslJpqlExecutor.findOne(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): T? {
-    try {
-        CurrentFunNameHolder.funName = Thread.currentThread().callerName
-        val result = this.findAll(Jpql, init).filterNotNull()
-        check(result.size < 2) { "다건 조회가 발생했습니다." }
-        return result.firstOrNull()
-    } finally {
-        CurrentFunNameHolder.clear()
-    }
+    CurrentFunNameHolder.funName = Thread.currentThread().callerName
+    val result = this.findAll(Jpql, init).filterNotNull()
+    check(result.size < 2) { "다건 조회가 발생했습니다." }
+    return result.firstOrNull()
 }
 
 fun <T : Any> KotlinJdslJpqlExecutor.findNotNullAll(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): List<T> {
-    try {
-        CurrentFunNameHolder.funName = Thread.currentThread().callerName
-        return this.findAll(Jpql, init).filterNotNull()
-    } finally {
-        CurrentFunNameHolder.clear()
-    }
+    CurrentFunNameHolder.funName = Thread.currentThread().callerName
+    val result = this.findAll(Jpql, init).filterNotNull()
+    return result
 }
 
 val Thread.callerName: String

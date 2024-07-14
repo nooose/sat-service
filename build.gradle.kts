@@ -44,7 +44,7 @@ val mockkVersion = "1.13.10"
 val springMockkVersion = "4.0.2"
 val kotlinLoggingVersion = "6.0.9"
 val jjwtVersion = "0.12.5"
-val jdslVersion = "3.4.2"
+val jdslVersion = "3.5.1"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
