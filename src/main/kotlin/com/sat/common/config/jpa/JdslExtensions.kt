@@ -55,8 +55,7 @@ fun <T : Any> KotlinJdslJpqlExecutor.findOne(init: Jpql.() -> JpqlQueryable<Sele
 
 fun <T : Any> KotlinJdslJpqlExecutor.findNotNullAll(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): List<T> {
     CurrentFunNameHolder.funName = Thread.currentThread().callerName
-    val result = this.findAll(Jpql, init).filterNotNull()
-    return result
+    return this.findAll(Jpql, init).filterNotNull()
 }
 
 val Thread.callerName: String
