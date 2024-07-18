@@ -20,7 +20,7 @@ class MemberRestController(
 
     @GetMapping("/user/members/me")
     fun me(@LoginMember member: AuthenticatedMember): MemberInformation {
-        val point = pointQueryService.getTotalPoint(member.id)
+        val point = pointQueryService.getPoint(member.id)
         return MemberInformation.of(member, point)
     }
 
@@ -87,5 +87,11 @@ class MemberRestController(
         @ModelAttribute cursorRequest: CursorRequest = CursorRequest.DEFAULT,
     ): PageCursor<List<CommentWithArticleQuery>> {
         return boardQueryService.getComments(memberId, cursorRequest)
+    }
+
+    //todo: api 만 만들어놓음
+    @GetMapping("/user/point-ranking")
+    fun getPointRanking(): List<PointQuery> {
+        return pointQueryService.getPointRanking()
     }
 }

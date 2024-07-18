@@ -5,8 +5,10 @@ import com.sat.common.PageCursor
 import com.sat.common.config.jpa.findNotNullAll
 import com.sat.common.config.jpa.findOne
 import com.sat.common.config.jpa.limit
+import com.sat.common.domain.RedisCacheName
 import com.sat.user.command.domain.point.Point
 import com.sat.user.command.domain.point.PointRepository
+import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class PointQueryService(
     private val pointRepository: PointRepository,
+    private val redisTemplate: RedisTemplate<String, Any>,
 ) {
 
     fun getTotalPoint(memberId: Long): Int {
@@ -58,5 +61,16 @@ class PointQueryService(
                 path(Point::memberId)
             )
         }
+    }
+
+    fun getPoint(memberId: Long): Int {
+        val points = redisTemplate.opsForZSet()
+        return points.score(RedisCacheName.RANKING.key, memberId)!!.toInt()
+    }
+
+    fun getPointRanking(): List<PointQuery> {
+        val points = redisTemplate.opsForZSet()
+        val ranking = points.reverseRangeWithScores(RedisCacheName.RANKING.key, 0, 9)
+        return ranking!!.map { PointQuery(memberId = (it.value as Int).toLong(), point = it.score!!) }
     }
 }

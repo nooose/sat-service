@@ -1,12 +1,12 @@
 package com.sat.user.command.application
 
 import com.sat.board.command.domain.article.ArticleRepository
+import com.sat.common.domain.RedisCacheName
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.common.utils.toZeroTime
 import com.sat.user.command.domain.member.LoginHistoryRepository
 import com.sat.user.command.domain.point.Point
 import com.sat.user.command.domain.point.PointRepository
-import com.sat.user.query.PointQueryService
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -19,22 +19,21 @@ class PointCommandService(
     private val loginHistoryRepository: LoginHistoryRepository,
     private val articleRepository: ArticleRepository,
     private val memberLoginService: MemberLoginService,
-    private val pointQueryService: PointQueryService,
-    private val redisTemplate: RedisTemplate<String, Any>
+    private val redisTemplate: RedisTemplate<String, Any>,
 ) {
     fun dailyPointAward(memberId: Long, today: LocalDateTime) {
-        if (!existsTodayLoginHistory(today)) {
+        if (!existsTodayLoginHistory(today, memberId)) {
             val loginPoint = Point.login(memberId)
             pointRepository.save(loginPoint)
             log.info { "로그인 포인트 적립 완료 - $memberId" }
-            updateMemberTotalPoint(memberId)
+            updatePointRanking(memberId, loginPoint.point)
         }
         memberLoginService.createLoginHistory(memberId, today)
     }
 
-    private fun existsTodayLoginHistory(today: LocalDateTime): Boolean {
+    private fun existsTodayLoginHistory(today: LocalDateTime, memberId: Long): Boolean {
         val zeroTime = today.toZeroTime()
-        return loginHistoryRepository.existsByLoginDateTimeAfter(zeroTime)
+        return loginHistoryRepository.existsByLoginDateTimeAfterAndMemberId(zeroTime, memberId)
     }
 
     fun commentPointAward(articleId: Long, principalId: Long) {
@@ -44,7 +43,7 @@ class PointCommandService(
         }
         val commentPoint = Point.comment(principalId)
         pointRepository.save(commentPoint)
-        updateMemberTotalPoint(principalId)
+        updatePointRanking(principalId, commentPoint.point)
     }
 
     /**
@@ -53,12 +52,11 @@ class PointCommandService(
     fun articlePointAward(principalId: Long) {
         val articlePoint = Point.article(principalId)
         pointRepository.save(articlePoint)
-        updateMemberTotalPoint(principalId)
+        updatePointRanking(principalId, articlePoint.point)
     }
 
-    private fun updateMemberTotalPoint(memberId: Long) {
-        val totalPoint = pointQueryService.getTotalPoint(memberId)
-        val opsForValue = redisTemplate.opsForValue()
-        opsForValue.set(memberId.toString(), totalPoint)
+    private fun updatePointRanking(memberId: Long, point: Int) {
+        val valueOperations = redisTemplate.opsForZSet()
+        valueOperations.incrementScore(RedisCacheName.RANKING.key, memberId, point.toDouble())
     }
 }
