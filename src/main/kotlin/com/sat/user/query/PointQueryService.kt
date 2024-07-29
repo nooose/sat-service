@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class PointQueryService(
     private val pointRepository: PointRepository,
+    private val memberQueryService: MemberQueryService,
     private val redisTemplate: RedisTemplate<String, Any>,
 ) {
 
@@ -71,6 +72,11 @@ class PointQueryService(
     fun getPointRanking(): List<PointQuery> {
         val points = redisTemplate.opsForZSet()
         val ranking = points.reverseRangeWithScores(RedisCacheName.RANKING.key, 0, 9)
-        return ranking!!.map { PointQuery(memberId = (it.value as Int).toLong(), point = it.score!!) }
+        val pointRankings = ranking!!.map { PointQuery(memberId = (it.value as Int).toLong(), point = it.score!!) }
+
+        val memberIds = pointRankings.map { it.memberId }
+        val members = memberQueryService.getByIds(memberIds)
+
+        return PointRankingWithMemberNameDto(pointRankings, members).pointRankings
     }
 }
