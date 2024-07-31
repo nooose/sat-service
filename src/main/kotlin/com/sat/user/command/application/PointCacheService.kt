@@ -13,9 +13,9 @@ class PointCacheService(
 ): InitializingBean {
     override fun afterPropertiesSet() {
         val totalPointsOfMembers = pointQueryService.getTotalPointsOfMembers()
-        val valueOperations = redisTemplate.opsForZSet()
+        val pointRankingZSetOps = redisTemplate.opsForZSet()
         totalPointsOfMembers.forEach {
-            valueOperations.add(RedisCacheName.RANKING.key, it.memberId, it.point.toDouble())
+            pointRankingZSetOps.add(RedisCacheName.RANKING.key, it.memberId, it.point.toDouble())
         }
     }
 }

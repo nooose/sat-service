@@ -89,7 +89,6 @@ class MemberRestController(
         return boardQueryService.getComments(memberId, cursorRequest)
     }
 
-    //todo: api 만 만들어놓음
     @GetMapping("/user/point-ranking")
     fun getPointRanking(): List<PointQuery> {
         return pointQueryService.getPointRanking()
