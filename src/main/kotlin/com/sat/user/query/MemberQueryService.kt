@@ -19,4 +19,9 @@ class MemberQueryService(
         val member = memberRepository.findByIdOrThrow(memberId){ "존재하지 않는 회원입니다 - $memberId" }
         return MemberSimpleQuery.from(member)
     }
+
+    fun getByIds(ids: List<Long>): List<MemberSimpleQuery> {
+        val members = memberRepository.findAllById(ids)
+        return members.map { MemberSimpleQuery.from(it) }
+    }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.InitBinder
 import org.springframework.web.bind.annotation.RestControllerAdvice
 
-val log = KotlinLogging.logger { }
+private val log = KotlinLogging.logger { }
 
 @RestControllerAdvice
 class GlobalRestControllerAdvice {
@@ -26,11 +26,13 @@ class GlobalRestControllerAdvice {
 
     @ExceptionHandler(IllegalArgumentException::class, IllegalStateException::class)
     fun error(e: RuntimeException): ResponseEntity<ErrorResponse<String>> {
+        log.warn { e.message }
         return ResponseEntity.badRequest().body(ErrorResponse(e.message ?: ""))
     }
 
     @ExceptionHandler(NotFoundException::class)
     fun error(e: NotFoundException): ResponseEntity<ErrorResponse<String>> {
+        log.warn { e.message }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ErrorResponse(e.message))
     }
 

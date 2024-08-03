@@ -5,5 +5,5 @@ import java.time.LocalDateTime
 
 interface LoginHistoryRepository : JpaRepository<LoginHistory, Long> {
 
-    fun existsByLoginDateTimeAfter(today: LocalDateTime): Boolean
+    fun existsByLoginDateTimeAfterAndMemberId(today: LocalDateTime, memberId: Long): Boolean
 }

@@ -5,6 +5,7 @@ import com.sat.common.utils.findByIdOrThrow
 import com.sat.common.utils.toZeroTime
 import com.sat.user.command.domain.member.LoginHistoryRepository
 import com.sat.user.command.domain.point.Point
+import com.sat.user.command.domain.point.PointCacheRepository
 import com.sat.user.command.domain.point.PointRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,19 +18,21 @@ class PointCommandService(
     private val loginHistoryRepository: LoginHistoryRepository,
     private val articleRepository: ArticleRepository,
     private val memberLoginService: MemberLoginService,
+    private val pointCacheRepository: PointCacheRepository,
 ) {
     fun dailyPointAward(memberId: Long, today: LocalDateTime) {
-        if (!existsTodayLoginHistory(today)) {
+        if (!existsTodayLoginHistory(today, memberId)) {
             val loginPoint = Point.login(memberId)
             pointRepository.save(loginPoint)
             log.info { "로그인 포인트 적립 완료 - $memberId" }
+            pointCacheRepository.increase(memberId, loginPoint.point)
         }
         memberLoginService.createLoginHistory(memberId, today)
     }
 
-    private fun existsTodayLoginHistory(today: LocalDateTime): Boolean {
+    private fun existsTodayLoginHistory(today: LocalDateTime, memberId: Long): Boolean {
         val zeroTime = today.toZeroTime()
-        return loginHistoryRepository.existsByLoginDateTimeAfter(zeroTime)
+        return loginHistoryRepository.existsByLoginDateTimeAfterAndMemberId(zeroTime, memberId)
     }
 
     fun commentPointAward(articleId: Long, principalId: Long) {
@@ -39,6 +42,7 @@ class PointCommandService(
         }
         val commentPoint = Point.comment(principalId)
         pointRepository.save(commentPoint)
+        pointCacheRepository.increase(principalId, commentPoint.point)
     }
 
     /**
@@ -47,5 +51,6 @@ class PointCommandService(
     fun articlePointAward(principalId: Long) {
         val articlePoint = Point.article(principalId)
         pointRepository.save(articlePoint)
+        pointCacheRepository.increase(principalId, articlePoint.point)
     }
 }

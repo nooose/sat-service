@@ -6,6 +6,7 @@ import {cookies} from "next/headers";
 const links = [
     { href: "/category", label: "카테고리", isAdminOnly: true },
     { href: "/chat", label: "채팅", isAdminOnly: false },
+    { href: "/point/ranking", label: "포인트랭킹", isAdminOnly: false },
 ];
 
 export default async function Navigation() {

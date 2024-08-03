@@ -11,3 +11,8 @@ spring:
 external:
   frontend:
     url: http://www.sat.com:3000
+
+logging:
+  level:
+    com.sat: debug
+    org.hibernate.orm.jdbc.bind: trace
