@@ -55,6 +55,7 @@ class PointCommandService(
         updatePointRanking(principalId, articlePoint.point)
     }
 
+    // TODO: DIP
     private fun updatePointRanking(memberId: Long, point: Int) {
         val valueOperations = redisTemplate.opsForZSet()
         valueOperations.incrementScore(RedisCacheName.RANKING.key, memberId, point.toDouble())

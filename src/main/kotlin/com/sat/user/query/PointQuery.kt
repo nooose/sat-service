@@ -2,6 +2,6 @@ package com.sat.user.query
 
 data class PointQuery(
     val memberId: Long,
-    val point: Double,
+    val point: Int,
     var memberName: String? = null,
 )

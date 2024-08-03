@@ -72,11 +72,12 @@ class PointQueryService(
     fun getPointRanking(): List<PointQuery> {
         val pointRankingZSetOps = redisTemplate.opsForZSet()
         val ranking = pointRankingZSetOps.reverseRangeWithScores(RedisCacheName.RANKING.key, 0, 9)
+                ?: throw IllegalStateException("포인트 랭킹 정보를 찾을 수 없습니다.")
 
-        val pointRankings = ranking!!.map { PointQuery(memberId = (it.value as Int).toLong(), point = it.score!!) }
+        val pointRankings = ranking.map { PointQuery(memberId = it.value as Long, point = it.score?.toInt() ?: 0) }
         val memberIds = pointRankings.map { it.memberId }
         val members = memberQueryService.getByIds(memberIds)
 
-        return PointRankingWithMemberNameDto(pointRankings, members).pointRankings
+        return PointRankingWithMember(pointRankings, members).pointRankings
     }
 }
