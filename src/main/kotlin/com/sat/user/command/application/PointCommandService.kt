@@ -1,13 +1,12 @@
 package com.sat.user.command.application
 
 import com.sat.board.command.domain.article.ArticleRepository
-import com.sat.common.domain.RedisCacheName
 import com.sat.common.utils.findByIdOrThrow
 import com.sat.common.utils.toZeroTime
 import com.sat.user.command.domain.member.LoginHistoryRepository
 import com.sat.user.command.domain.point.Point
+import com.sat.user.command.domain.point.PointCacheRepository
 import com.sat.user.command.domain.point.PointRepository
-import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
@@ -19,14 +18,14 @@ class PointCommandService(
     private val loginHistoryRepository: LoginHistoryRepository,
     private val articleRepository: ArticleRepository,
     private val memberLoginService: MemberLoginService,
-    private val redisTemplate: RedisTemplate<String, Any>,
+    private val pointCacheRepository: PointCacheRepository,
 ) {
     fun dailyPointAward(memberId: Long, today: LocalDateTime) {
         if (!existsTodayLoginHistory(today, memberId)) {
             val loginPoint = Point.login(memberId)
             pointRepository.save(loginPoint)
             log.info { "로그인 포인트 적립 완료 - $memberId" }
-            updatePointRanking(memberId, loginPoint.point)
+            pointCacheRepository.increase(memberId, loginPoint.point)
         }
         memberLoginService.createLoginHistory(memberId, today)
     }
@@ -43,7 +42,7 @@ class PointCommandService(
         }
         val commentPoint = Point.comment(principalId)
         pointRepository.save(commentPoint)
-        updatePointRanking(principalId, commentPoint.point)
+        pointCacheRepository.increase(principalId, commentPoint.point)
     }
 
     /**
@@ -52,12 +51,6 @@ class PointCommandService(
     fun articlePointAward(principalId: Long) {
         val articlePoint = Point.article(principalId)
         pointRepository.save(articlePoint)
-        updatePointRanking(principalId, articlePoint.point)
-    }
-
-    // TODO: DIP
-    private fun updatePointRanking(memberId: Long, point: Int) {
-        val valueOperations = redisTemplate.opsForZSet()
-        valueOperations.incrementScore(RedisCacheName.RANKING.key, memberId, point.toDouble())
+        pointCacheRepository.increase(principalId, articlePoint.point)
     }
 }
