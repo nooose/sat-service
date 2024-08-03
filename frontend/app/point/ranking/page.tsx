@@ -6,7 +6,7 @@ import PointRanking from "@/components/point/pointRanking";
 
 async function getPointRankings() {
     const cookie = cookies().get("JSESSIONID")?.value
-    const response = await RestClient.get("/user/point-ranking")
+    const response = await RestClient.get("/user/points/ranking")
         .session(cookie)
         .fetch();
     return await response.json();

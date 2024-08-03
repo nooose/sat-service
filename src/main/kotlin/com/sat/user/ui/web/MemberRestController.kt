@@ -88,9 +88,4 @@ class MemberRestController(
     ): PageCursor<List<CommentWithArticleQuery>> {
         return boardQueryService.getComments(memberId, cursorRequest)
     }
-
-    @GetMapping("/user/point-ranking")
-    fun getPointRanking(): List<PointQuery> {
-        return pointQueryService.getPointRanking()
-    }
 }

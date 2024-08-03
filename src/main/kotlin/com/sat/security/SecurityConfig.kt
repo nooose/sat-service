@@ -52,7 +52,7 @@ class SecurityConfig{
             }
             authorizeHttpRequests {
                 authorize(HttpMethod.GET, "/board/articles/**", permitAll)
-                authorize(HttpMethod.GET, "/user/point-ranking", permitAll)
+                authorize(HttpMethod.GET, "/user/points/ranking", permitAll)
                 authorize(HttpMethod.PUT, "/board/categories/**", hasRole(RoleType.ADMIN.name))
                 authorize(HttpMethod.POST, "/board/categories/**", hasRole(RoleType.ADMIN.name))
                 authorize(HttpMethod.DELETE, "/board/categories/**", hasRole(RoleType.ADMIN.name))
