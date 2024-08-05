@@ -12,6 +12,7 @@ data class ArticleQuery(
     val createdByName: String,
 ) {
     var hasLike: Boolean by OnceWriteProperty(false)
+    var views: Long = 0
 }
 
 data class ArticleWithCountQuery(

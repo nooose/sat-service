@@ -14,6 +14,7 @@ class Article(
     var category: Category,
     id: Long = 0L,
 ) : BaseEntity(id) {
+    var views: Long = 0
     var isDeleted: Boolean = false
 
     fun update(that: ArticleUpdateDto) {

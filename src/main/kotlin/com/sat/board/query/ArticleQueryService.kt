@@ -1,9 +1,6 @@
 package com.sat.board.query
 
-import com.sat.board.command.domain.article.Article
-import com.sat.board.command.domain.article.ArticleRepository
-import com.sat.board.command.domain.article.Category
-import com.sat.board.command.domain.article.CategoryName
+import com.sat.board.command.domain.article.*
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.like.Like
 import com.sat.board.command.domain.like.LikeRepository
@@ -19,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 class ArticleQueryService(
     private val articleRepository: ArticleRepository,
     private val likeRepository: LikeRepository,
+    private val articleCacheRepository: ArticleCacheRepository,
 ) {
     fun get(id: Long, principalId: Long? = null): ArticleQuery {
         val article = articleRepository.findOne {
@@ -42,7 +40,10 @@ class ArticleQueryService(
         if (principalId == null) {
             return article
         }
+        articleCacheRepository.increase(id)
+
         article.hasLike = likeRepository.existsByArticleIdAndCreatedBy(id, principalId)
+        article.views = articleCacheRepository.getViews(id)
         return article
     }
 
@@ -67,6 +68,17 @@ class ArticleQueryService(
                 path(Article::id)
             ).orderBy(
                 path(Article::id).desc()
+            )
+        }
+    }
+
+    fun getArticlesOfViews(): List<ArticleWithViews> {
+        return articleRepository.findNotNullAll {
+            selectNew<ArticleWithViews>(
+                path(Article::id),
+                path(Article::views)
+            ).from(
+                entity(Article::class)
             )
         }
     }

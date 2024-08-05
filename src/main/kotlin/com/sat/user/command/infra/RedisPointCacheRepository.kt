@@ -11,6 +11,6 @@ class RedisPointCacheRepository(
 ) : PointCacheRepository {
     override fun increase(memberId: Long, point: Int) {
         val valueOperations = redisTemplate.opsForZSet()
-        valueOperations.incrementScore(RedisCacheName.RANKING.key, memberId, point.toDouble())
+        valueOperations.incrementScore(RedisCacheName.POINT_RANKING.key, memberId, point.toDouble())
     }
 }
