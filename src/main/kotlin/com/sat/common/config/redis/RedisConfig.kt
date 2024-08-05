@@ -17,7 +17,6 @@ class RedisConfig {
     @Bean
     fun redisTemplate(
         redisConnectionFactory: RedisConnectionFactory,
-        springSessionDefaultRedisSerializer: RedisSerializer<Any>,
     ): RedisTemplate<String, Any> {
         return RedisTemplate<String, Any>().apply {
             connectionFactory = redisConnectionFactory

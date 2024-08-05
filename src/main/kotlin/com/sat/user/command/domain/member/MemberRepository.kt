@@ -1,11 +1,10 @@
 package com.sat.user.command.domain.member
 
-import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.query.Param
 
-interface MemberRepository : JpaRepository<Member, Long>, KotlinJdslJpqlExecutor {
+interface MemberRepository : JpaRepository<Member, Long> {
     @Query(
         """
             select m from Member m

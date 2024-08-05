@@ -1,14 +1,12 @@
 package com.sat.board.query
 
 import com.sat.board.command.domain.article.Article
-import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.article.Category
 import com.sat.board.command.domain.article.CategoryName
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.like.Like
 import com.sat.board.command.domain.like.LikeRepository
-import com.sat.common.config.jpa.findNotNullAll
-import com.sat.common.config.jpa.findOne
+import com.sat.common.JdslRepository
 import com.sat.common.exception.NotFoundException
 import com.sat.user.command.domain.member.Member
 import org.springframework.stereotype.Service
@@ -17,11 +15,11 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 @Service
 class ArticleQueryService(
-    private val articleRepository: ArticleRepository,
+    private val jdslRepository: JdslRepository,
     private val likeRepository: LikeRepository,
 ) {
     fun get(id: Long, principalId: Long? = null): ArticleQuery {
-        val article = articleRepository.findOne {
+        val article = jdslRepository.findOne {
             selectNew<ArticleQuery>(
                 path(Article::id),
                 path(Article::title),
@@ -47,7 +45,7 @@ class ArticleQueryService(
     }
 
     fun getAll(memberId: Long? = null): List<ArticleWithCountQuery> {
-        return articleRepository.findNotNullAll {
+        return jdslRepository.findAll {
             selectNew<ArticleWithCountQuery>(
                 path(Article::id),
                 path(Article::title),

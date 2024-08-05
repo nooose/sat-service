@@ -20,7 +20,7 @@ class MemberRestController(
 
     @GetMapping("/user/members/me")
     fun me(@LoginMember member: AuthenticatedMember): MemberInformation {
-        val point = pointQueryService.getPoint(member.id)
+        val point = pointQueryService.getTotalPoint(member.id)
         return MemberInformation.of(member, point)
     }
 

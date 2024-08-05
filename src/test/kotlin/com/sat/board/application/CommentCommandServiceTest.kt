@@ -7,7 +7,6 @@ import com.sat.board.command.application.CommentUpdateCommand
 import com.sat.board.command.domain.article.*
 import com.sat.board.command.domain.comment.Comment
 import com.sat.board.command.domain.comment.CommentRepository
-import com.sat.board.query.CommentQueryService
 import com.sat.common.security.TestAuthUtils.setAuthentication
 import com.sat.user.command.domain.member.*
 import io.kotest.assertions.assertSoftly
@@ -25,7 +24,6 @@ import org.springframework.data.repository.findByIdOrNull
 class CommentCommandServiceTest(
     private val commentRepository: CommentRepository,
     private val commentCommandService: CommentCommandService,
-    private val commentQueryService: CommentQueryService,
     private val articleRepository: ArticleRepository,
     private val categoryRepository: CategoryRepository,
     private val memberRepository: MemberRepository,

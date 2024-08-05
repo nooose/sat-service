@@ -2,8 +2,7 @@ package com.sat.board.query
 
 import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.comment.Comment
-import com.sat.board.command.domain.comment.CommentRepository
-import com.sat.common.config.jpa.findNotNullAll
+import com.sat.common.JdslRepository
 import com.sat.user.command.domain.member.Member
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -13,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class CommentQueryService(
     private val articleRepository: ArticleRepository,
-    private val commentRepository: CommentRepository,
+    private val jdslRepository: JdslRepository,
 ) {
     fun getComments(articleId: Long): List<CommentQuery> {
         val article = articleRepository.findByIdOrNull(articleId)
             ?: throw IllegalStateException("게시글이 존재하지 않습니다. - $articleId")
         check(!article.isDeleted) { "삭제된 게시글 입니다" }
 
-        val comments = commentRepository.findNotNullAll {
+        val comments = jdslRepository.findAll {
             selectNew<CommentWithMemberQuery>(
                 path(Comment::id),
                 path(Comment::content),

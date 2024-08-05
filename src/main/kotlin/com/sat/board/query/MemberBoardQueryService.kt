@@ -1,13 +1,11 @@
 package com.sat.board.query
 
 import com.sat.board.command.domain.article.Article
-import com.sat.board.command.domain.article.ArticleRepository
 import com.sat.board.command.domain.comment.Comment
-import com.sat.board.command.domain.comment.CommentRepository
 import com.sat.board.command.domain.like.Like
 import com.sat.common.CursorRequest
+import com.sat.common.JdslRepository
 import com.sat.common.PageCursor
-import com.sat.common.config.jpa.findNotNullAll
 import com.sat.common.config.jpa.limit
 import com.sat.user.query.BoardQueryService
 import com.sat.user.query.CommentWithArticleQuery
@@ -18,15 +16,14 @@ import org.springframework.stereotype.Service
 @Service
 class MemberBoardQueryService(
     private val articleQueryService: ArticleQueryService,
-    private val articleRepository: ArticleRepository,
-    private val commentRepository: CommentRepository,
+    private val jdslRepository: JdslRepository,
 ) : BoardQueryService {
     override fun getArticles(memberId: Long): List<ArticleWithCountQuery> {
         return articleQueryService.getAll(memberId)
     }
 
     override fun getComments(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<CommentWithArticleQuery>> {
-        val comments = commentRepository.findNotNullAll {
+        val comments = jdslRepository.findAll {
             selectNew<CommentWithArticleQuery>(
                 path(Comment::id),
                 path(Comment::content),
@@ -48,7 +45,7 @@ class MemberBoardQueryService(
     }
 
     override fun getLikedArticles(memberId: Long, cursorRequest: CursorRequest): PageCursor<List<LikedArticleSimpleQuery>> {
-        val likedArticles = articleRepository.findNotNullAll {
+        val likedArticles = jdslRepository.findAll {
             selectNew<LikedArticleSimpleQuery>(
                 path(Like::id),
                 path(Like::articleId),

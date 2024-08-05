@@ -1,6 +1,5 @@
 package com.sat.common.config.jpa
 
-import com.linecorp.kotlinjdsl.dsl.jpql.Jpql
 import com.linecorp.kotlinjdsl.querymodel.QueryPart
 import com.linecorp.kotlinjdsl.querymodel.jpql.JpqlQueryable
 import com.linecorp.kotlinjdsl.querymodel.jpql.select.SelectQuery
@@ -8,7 +7,6 @@ import com.linecorp.kotlinjdsl.render.RenderContext
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlRenderSerializer
 import com.linecorp.kotlinjdsl.render.jpql.serializer.JpqlSerializer
 import com.linecorp.kotlinjdsl.render.jpql.writer.JpqlWriter
-import com.linecorp.kotlinjdsl.support.spring.data.jpa.repository.KotlinJdslJpqlExecutor
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.stereotype.Component
 import kotlin.reflect.KClass
@@ -45,21 +43,3 @@ inline fun <reified T : Any> JpqlQueryable<SelectQuery<T>>.limit(limit: Int): Jp
         T::class,
     )
 }
-
-fun <T : Any> KotlinJdslJpqlExecutor.findOne(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): T? {
-    CurrentFunNameHolder.funName = Thread.currentThread().callerName
-    val result = this.findAll(Jpql, init).filterNotNull()
-    check(result.size < 2) { "다건 조회가 발생했습니다." }
-    return result.firstOrNull()
-}
-
-fun <T : Any> KotlinJdslJpqlExecutor.findNotNullAll(init: Jpql.() -> JpqlQueryable<SelectQuery<T>>): List<T> {
-    CurrentFunNameHolder.funName = Thread.currentThread().callerName
-    return this.findAll(Jpql, init).filterNotNull()
-}
-
-val Thread.callerName: String
-    get() {
-        val stack = this.stackTrace[3]
-        return "${stack.className}-${stack.methodName}"
-    }

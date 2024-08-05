@@ -4,6 +4,7 @@ import io.kotest.core.spec.AfterTest
 import io.kotest.core.spec.Spec
 import io.kotest.core.test.isRootTest
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestConstructor
 
@@ -13,12 +14,12 @@ import org.springframework.test.context.TestConstructor
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
 annotation class TestEnvironment
 
+@Import(TestConfig::class)
 @TestEnvironment
 @SpringBootTest
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class IntegrationTest
-
 
 fun Spec.afterRootTest(f: AfterTest) {
     afterTest {
