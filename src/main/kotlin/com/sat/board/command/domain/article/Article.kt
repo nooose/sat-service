@@ -1,16 +1,15 @@
 package com.sat.board.command.domain.article
 
 import com.sat.common.BaseEntity
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.ManyToOne
+import jakarta.persistence.*
 
 @Entity
 class Article(
+    @Column(nullable = false)
     var title: String,
+    @Column(nullable = false)
     var content: String,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "category_id")
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "category_id", nullable = false)
     var category: Category,
     id: Long = 0L,
 ) : BaseEntity(id) {

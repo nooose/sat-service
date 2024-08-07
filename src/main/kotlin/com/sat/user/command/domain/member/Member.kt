@@ -1,16 +1,20 @@
 package com.sat.user.command.domain.member
 
 import com.sat.common.BaseEntity
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToOne
 
 @Entity
 class Member(
+    @Column(nullable = false)
     val name: String,
+    @Column(nullable = false)
     var nickname: String,
+    @Column(nullable = false)
     val email: String,
-    @OneToOne @JoinColumn(name = "role_id")
+    @OneToOne @JoinColumn(name = "role_id", nullable = false)
     val role: Role,
     id: Long = 0L,
 ) : BaseEntity(id) {

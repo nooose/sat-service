@@ -8,8 +8,9 @@ import java.time.LocalDateTime
 @EntityListeners(AuditingEntityListener::class)
 @Entity
 class Point(
+    @Column(nullable = false)
     val memberId: Long,
-    @Enumerated(EnumType.STRING)
+    @Column(nullable = false) @Enumerated(EnumType.STRING)
     val type: PointType,
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0L,

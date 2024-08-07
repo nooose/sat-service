@@ -2,11 +2,14 @@ package com.sat.board.command.domain.comment
 
 import com.sat.board.command.application.CommentUpdateCommand
 import com.sat.common.BaseEntity
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 
 @Entity
 class Comment(
+    @Column(nullable = false)
     val articleId: Long,
+    @Column(nullable = false)
     var content: String,
     var parentId: Long? = null,
     id: Long = 0L,
