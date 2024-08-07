@@ -16,9 +16,11 @@ class PointCacheInitializer(
         val totalPointsOfMembers = pointQueryService.getTotalPointsOfMembers()
         val pointRankingZSetOps = redisTemplate.opsForZSet()
 
-        val tupleSet = totalPointsOfMembers.map {
-            DefaultTypedTuple(it.memberId as Any, it.point.toDouble())
-        }.toSet()
-        pointRankingZSetOps.add(RedisCacheName.POINT_RANKING.key, tupleSet)
+        if (totalPointsOfMembers.isNotEmpty()) {
+            val tupleSet = totalPointsOfMembers.map {
+                DefaultTypedTuple(it.memberId as Any, it.point.toDouble())
+            }.toSet()
+            pointRankingZSetOps.add(RedisCacheName.POINT_RANKING.key, tupleSet)
+        }
     }
 }

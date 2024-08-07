@@ -16,9 +16,11 @@ class ArticleOfViewsCacheInitializer(
         val articlesOfViews = articleQueryService.getArticlesOfViews()
         val articleViewsZSetOps = redisTemplate.opsForZSet()
 
-        val tupleSet = articlesOfViews.map {
-            DefaultTypedTuple(it.articleId as Any, it.views.toDouble())
-        }.toSet()
-        articleViewsZSetOps.add(RedisCacheName.ARTICLE_RANKING.key, tupleSet)
+        if (articlesOfViews.isEmpty()) {
+            val tupleSet = articlesOfViews.map {
+                DefaultTypedTuple(it.articleId as Any, it.views.toDouble())
+            }.toSet()
+            articleViewsZSetOps.add(RedisCacheName.ARTICLE_RANKING.key, tupleSet)
+        }
     }
 }

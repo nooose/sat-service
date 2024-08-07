@@ -24,3 +24,9 @@ data class ArticleWithCountQuery(
     val createdDateTime: LocalDateTime,
 )
 
+data class ArticleWithViews(
+    val articleId: Long,
+    val views: Long,
+)
+
+
