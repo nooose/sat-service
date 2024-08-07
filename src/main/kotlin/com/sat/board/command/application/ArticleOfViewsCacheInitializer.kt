@@ -16,7 +16,7 @@ class ArticleOfViewsCacheInitializer(
         val articlesOfViews = articleQueryService.getArticlesOfViews()
         val articleViewsZSetOps = redisTemplate.opsForZSet()
 
-        if (articlesOfViews.isEmpty()) {
+        if (articlesOfViews.isNotEmpty()) {
             val tupleSet = articlesOfViews.map {
                 DefaultTypedTuple(it.articleId as Any, it.views.toDouble())
             }.toSet()
