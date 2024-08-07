@@ -18,4 +18,13 @@ class RedisArticleCacheRepository(
         val valueOperations = redisTemplate.opsForZSet()
         return valueOperations.score(RedisCacheName.ARTICLE_RANKING.key, articleId)!!.toLong()
     }
+
+    override fun getAllArticleViews(): Map<Long, Long> {
+        val valueOperations = redisTemplate.opsForZSet()
+        val tuples = valueOperations.rangeWithScores(RedisCacheName.ARTICLE_RANKING.key, 0, -1)
+
+        return tuples?.associate { tuple ->
+            (tuple.value as Int).toLong() to tuple.score!!.toLong()
+        } ?: emptyMap()
+    }
 }

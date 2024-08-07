@@ -48,7 +48,7 @@ class ArticleQueryService(
     }
 
     fun getAll(memberId: Long? = null): List<ArticleWithCountQuery> {
-        return articleRepository.findNotNullAll {
+        val articles = articleRepository.findNotNullAll {
             selectNew<ArticleWithCountQuery>(
                 path(Article::id),
                 path(Article::title),
@@ -69,6 +69,12 @@ class ArticleQueryService(
             ).orderBy(
                 path(Article::id).desc()
             )
+        }
+
+        val articlesWithViews = articleCacheRepository.getAllArticleViews()
+        return articles.map {
+            it.views = articlesWithViews[it.id] ?: 0
+            it
         }
     }
 

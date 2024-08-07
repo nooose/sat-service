@@ -22,7 +22,9 @@ data class ArticleWithCountQuery(
     val commentCount: Long,
     val likeCount: Long,
     val createdDateTime: LocalDateTime,
-)
+) {
+    var views: Long = 0
+}
 
 data class ArticleWithViews(
     val articleId: Long,
