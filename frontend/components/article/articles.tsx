@@ -13,6 +13,7 @@ async function getArticles() {
 
 export default async function Articles() {
     const articles = await getArticles();
+    console.log(articles);
     return (
         <div>
             {articles.map((article: ArticleSimpleResponse) => (

@@ -32,6 +32,10 @@ export default function ClientArticle({article}: { article: ArticleSimpleRespons
                         <p className="font-semibold text-default-400 text-small">{article.likeCount}</p>
                         <p className="text-default-400 text-small">좋아요</p>
                     </div>
+                    <div className="flex gap-1">
+                        <p className="font-semibold text-default-400 text-small">{article.views}</p>
+                        <p className=" text-default-400 text-small">조회수</p>
+                    </div>
                 </CardFooter>
             </Card>
         </div>
