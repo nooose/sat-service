@@ -47,6 +47,7 @@ create table article
     modified_by        bigint comment '게시글 수정자 아이디',
     modified_date_time datetime default now() comment '게시글 수정 시간',
     is_deleted         boolean default false comment '게시글 삭제 유무',
+    views              bigint not null default 0 comment '게시글 조회수',
     primary key (id),
     foreign key (category_id) references category (id)
 ) default charset=utf8mb4 collate=utf8mb4_general_ci;
